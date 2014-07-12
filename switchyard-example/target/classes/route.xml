@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="ASCII"?>
+<routes xmlns="http://camel.apache.org/schema/spring">
+    <route>
+        <from uri="switchyard://ESBService"/>
+        <log loggingLevel="DEBUG" message="CamelInterface - message received: ${body} ESTOY EN CAMEL!!!!!!">
+            <description>&lt;log loggingLevel="DEBUG" message="CamelInterface - message received: ${body} ESTOY EN CAMEL!!!!!!"/&gt;</description>
+        </log>
+        <transform>
+            <simple>${in.body} extra data!</simple>
+        </transform>
+    </route>
+</routes>
