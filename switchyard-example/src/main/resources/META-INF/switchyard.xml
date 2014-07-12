@@ -21,6 +21,12 @@
       <sca:service name="ESBService">
         <sy:interface.esb inputType="java:java.lang.String" outputType="java:java.lang.String"/>
       </sca:service>
+      <sca:reference name="ServicioA">
+        <sca:interface.java interface="com.example.switchyard.example.ServicioA"/>
+      </sca:reference>
+      <sca:reference name="ServicioB">
+        <sca:interface.java interface="com.example.switchyard.example.ServicioB"/>
+      </sca:reference>
     </sca:component>
     <sca:service name="ESBService" promote="Route/ESBService">
       <sy:interface.esb inputType="java:java.lang.String" outputType="java:java.lang.String"/>
@@ -30,5 +36,17 @@
         <http:contextPath>switchyard-example/concha</http:contextPath>
       </http:binding.http>
     </sca:service>
+    <sca:component name="ServicioABean">
+      <bean:implementation.bean class="com.example.switchyard.example.ServicioABean"/>
+      <sca:service name="ServicioA">
+        <sca:interface.java interface="com.example.switchyard.example.ServicioA"/>
+      </sca:service>
+    </sca:component>
+    <sca:component name="ServicioBBean">
+      <bean:implementation.bean class="com.example.switchyard.example.ServicioBBean"/>
+      <sca:service name="ServicioB">
+        <sca:interface.java interface="com.example.switchyard.example.ServicioB"/>
+      </sca:service>
+    </sca:component>
   </sca:composite>
 </sy:switchyard>
