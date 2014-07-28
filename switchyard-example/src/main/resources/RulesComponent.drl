@@ -1,0 +1,11 @@
+package com.example.switchyard.example
+import org.switchyard.Message
+global Message message
+
+rule "RulesComponent"
+    when
+        // insert conditional here
+    then
+        // insert consequence here
+        System.out.println("service: ServicioCEP, payload: " + message.getContent());
+end
