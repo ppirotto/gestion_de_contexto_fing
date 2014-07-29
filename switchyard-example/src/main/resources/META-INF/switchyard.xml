@@ -58,6 +58,13 @@
             <rules:resource location="RulesComponent.drl" type="DRL"/>
           </rules:resources>
         </rules:manifest>
+        <rules:operations>
+          <rules:operation eventId="" name="processLocation" type="EXECUTE">
+            <rules:inputs>
+              <rules:input from="message.content.userLocation"/>
+            </rules:inputs>
+          </rules:operation>
+        </rules:operations>
       </rules:implementation.rules>
       <sca:service name="ServicioCEP">
         <sca:interface.java interface="com.example.switchyard.example.ServicioCEP"/>
