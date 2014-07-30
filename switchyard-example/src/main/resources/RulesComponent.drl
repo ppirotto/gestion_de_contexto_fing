@@ -4,8 +4,13 @@ global Message message
 
 rule "RulesComponent"
     when
-        $usrloc : UserLocation
+        $userLoc : UserLocation
     then
+    	InCity userInCity = new InCity();
+    	userInCity.setCiudad($userLoc.getCiudad());
+    	userInCity.setUserId($userLoc.getUserId);
+    	userInCity.setTimestamp($userLoc.getTimeStamp());
+    	insert(userInCity);
         // insert consequence here
         System.out.println("service: ServicioCEP, payload: " + message.getContent());
 end
