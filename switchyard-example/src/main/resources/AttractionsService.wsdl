@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="AttractionsService"
+	targetNamespace="urn:com.example.switchyard:switchyard-example:1.0"
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="urn:com.example.switchyard:switchyard-example:1.0"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+	<wsdl:types>
+		<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+			xmlns:tns="urn:com.example.switchyard:switchyard-example:1.0"
+			attributeFormDefault="unqualified" elementFormDefault="qualified"
+			targetNamespace="urn:com.example.switchyard:switchyard-example:1.0">
+			<xsd:element name="getAttractions" type="tns:getAttractions" />
+			<xsd:complexType name="getAttractions">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" name="city" type="xsd:string" />
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="getAttractionsResponse" type="tns:getAttractionsResponse" />
+			<xsd:complexType name="getAttractionsResponse">
+				<xsd:sequence>
+					<xsd:element maxOccurs="unbounded" minOccurs="0" name="list"
+						type="xsd:string" />
+				</xsd:sequence>
+			</xsd:complexType>
+		</xsd:schema>
+	</wsdl:types>
+	<wsdl:message name="getAttractions">
+		<wsdl:part name="parameters" element="tns:getAttractions">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getAttractionsResponse">
+		<wsdl:part name="parameters" element="tns:getAttractionsResponse">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:portType name="AttractionsServicePortType">
+		<wsdl:operation name="getAttractions">
+			<wsdl:input name="getAttractions" message="tns:getAttractions">
+			</wsdl:input>
+			<wsdl:output name="getAttractionsResponse" message="tns:getAttractionsResponse">
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="AttractionsServiceSoapBinding" type="tns:AttractionsServicePortType">
+		<soap:binding style="document"
+			transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="getAttractions">
+			<soap:operation soapAction="getAttractions" style="document" />
+			<wsdl:input name="getAttractions">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="getAttractionsResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="AttractionsService">
+		<wsdl:port name="AttractionsServicePort" binding="tns:AttractionsServiceSoapBinding">
+			<soap:address
+				location="http://localhost:8080/switchyard-example/AttractionsService" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>
