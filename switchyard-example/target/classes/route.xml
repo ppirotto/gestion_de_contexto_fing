@@ -5,8 +5,11 @@
         <log loggingLevel="DEBUG" message="CamelInterface - message received: ${body} ESTOY EN CAMEL!!!!!!">
             <description>&lt;log loggingLevel="DEBUG" message="CamelInterface - message received: ${body} ESTOY EN CAMEL!!!!!!"/&gt;</description>
         </log>
-        <transform>
-            <simple>${in.body} extra data!</simple>
-        </transform>
+        <setHeader headerName="header">
+            <method beanType="com.example.switchyard.example.Header" method="setHeader" ref="null"></method>
+        </setHeader>
+        <routingSlip uriDelimiter=",">
+            <header>header</header>
+        </routingSlip>
     </route>
 </routes>

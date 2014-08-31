@@ -7,6 +7,8 @@ public class ServicioBBean implements ServicioB {
 	
 	@Override
 	public String apendear(String name) {
+		System.out.println("PASO POR B");
+		System.out.println(name);
 		return name + "PASO POR B";
 	}
 

@@ -5,9 +5,9 @@
 	xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
 	<wsdl:types>
 		<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-			xmlns:tns="urn:com.example.switchyard:switchyard-example:1.0"
-			attributeFormDefault="unqualified" elementFormDefault="qualified"
-			targetNamespace="urn:com.example.switchyard:switchyard-example:1.0">
+	xmlns:tns="urn:com.example.switchyard:switchyard-example:1.0"
+	attributeFormDefault="unqualified" elementFormDefault="qualified"
+	targetNamespace="urn:com.example.switchyard:switchyard-example:1.0">
 			<xsd:element name="sayHello" type="tns:sayHello" />
 			<xsd:complexType name="sayHello">
 				<xsd:sequence>
