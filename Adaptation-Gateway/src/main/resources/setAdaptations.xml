@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="ASCII"?>
+<routes xmlns="http://camel.apache.org/schema/spring">
+    <route>
+        <from uri="switchyard://SetAdaptationService"/>
+        <setHeader headerName="itinerary">
+            <method beanType="edu.fing.switchyard.Adaptation_Gateway.Itinerary"></method>
+        </setHeader>
+        <log message="SetAdaptationService - message received: ${body} ${headers}"/>
+        <to uri="switchyard://AdaptationsService"/>
+    </route>
+</routes>
