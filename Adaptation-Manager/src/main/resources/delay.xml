@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="ASCII"?>
+<routes xmlns="http://camel.apache.org/schema/spring">
+    <route>
+        <from uri="switchyard://DelayService"/>
+        <log message="DelayService - message received: ${body} ${headers}"/>
+        <delay>
+            <simple>500</simple>
+        </delay>
+    </route>
+</routes>
