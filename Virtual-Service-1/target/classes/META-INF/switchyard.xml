@@ -1,10 +1,11 @@
-<?xml version="1.0" encoding="UTF-8"?><sy:switchyard xmlns:sy="urn:switchyard-config:switchyard:1.1" xmlns:camel="urn:switchyard-component-camel:config:1.1" xmlns:http="urn:switchyard-component-http:config:1.1" xmlns:sca="http://docs.oasis-open.org/ns/opencsa/sca/200912" xmlns:soap="urn:switchyard-component-soap:config:1.1" name="Virtual-Service-1" targetNamespace="urn:edu.fing.switchyard:Virtual-Service-1:1.0">
+<?xml version="1.0" encoding="UTF-8"?>
+<sy:switchyard xmlns:sy="urn:switchyard-config:switchyard:1.1" xmlns:camel="urn:switchyard-component-camel:config:1.1" xmlns:http="urn:switchyard-component-http:config:1.1" xmlns:sca="http://docs.oasis-open.org/ns/opencsa/sca/200912" xmlns:soap="urn:switchyard-component-soap:config:1.1" name="Virtual-Service-1" targetNamespace="urn:edu.fing.switchyard:Virtual-Service-1:1.0">
     <sca:composite name="Virtual-Service-1" targetNamespace="urn:edu.fing.switchyard:Virtual-Service-1:1.0">
         <sca:service name="VirtualService" promote="InvokeAG/InvokeService">
             <sy:interface.esb inputType="java.lang.String" outputType="java.lang.String"/>
             <soap:binding.soap name="soap1">
                 <soap:contextMapper soapHeadersType="VALUE"/>
-                <soap:wsdl>http://192.168.0.102:8080/attractions-provider/AttractionsService?wsdl</soap:wsdl>
+                <soap:wsdl>http://localhost:8080/attractions-provider/AttractionsService?wsdl</soap:wsdl>
                 <soap:contextPath>Virtual-Service-1</soap:contextPath>
             </soap:binding.soap>
         </sca:service>
@@ -12,7 +13,7 @@
             <sy:interface.esb inputType="java.lang.String" outputType="java.lang.String"/>
             <soap:binding.soap name="soap3">
                 <soap:contextMapper soapHeadersType="VALUE"/>
-                <soap:wsdl>http://192.168.0.102:8080/attractions-provider/AttractionsService?wsdl</soap:wsdl>
+                <soap:wsdl>http://localhost:8080/attractions-provider/AttractionsService?wsdl</soap:wsdl>
                 <soap:contextPath>vane</soap:contextPath>
             </soap:binding.soap>
         </sca:service>
@@ -24,7 +25,7 @@
             <sy:interface.esb inputType="java.lang.String" outputType="java.lang.String"/>
             <soap:binding.soap name="soap2">
                 <soap:contextMapper soapHeadersType="VALUE"/>
-                <soap:wsdl>http://192.168.0.102:8080/attractions-provider/AttractionsService?wsdl</soap:wsdl>
+                <soap:wsdl>http://localhost:8080/attractions-provider/AttractionsService?wsdl</soap:wsdl>
             </soap:binding.soap>
         </sca:reference>
         <sca:component name="InvokeAG">

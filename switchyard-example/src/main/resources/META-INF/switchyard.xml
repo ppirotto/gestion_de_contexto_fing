@@ -76,6 +76,18 @@
         <soap:endpointAddress>http://localhost:8080/attractions-provider/</soap:endpointAddress>
       </soap:binding.soap>
     </sca:reference>
+    <sca:component name="RulesComponent">
+      <rules:implementation.rules>
+        <rules:manifest>
+          <rules:resources>
+            <rules:resource location="RulesComponent.drl" type="DRL"/>
+          </rules:resources>
+        </rules:manifest>
+      </rules:implementation.rules>
+      <sca:service name="RulesService">
+        <sy:interface.esb inputType="java.lang.String" outputType="java.lang.String"/>
+      </sca:service>
+    </sca:component>
   </sca:composite>
   <sy:domain>
     <sy:properties/>

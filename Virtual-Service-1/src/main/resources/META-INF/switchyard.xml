@@ -16,7 +16,7 @@
       <sy:interface.esb inputType="java.lang.String" outputType="java.lang.String"/>
       <soap:binding.soap name="soap1">
         <soap:contextMapper soapHeadersType="VALUE"/>
-        <soap:wsdl>http://192.168.0.102:8080/attractions-provider/AttractionsService?wsdl</soap:wsdl>
+        <soap:wsdl>http://localhost:8080/attractions-provider/AttractionsService?wsdl</soap:wsdl>
         <soap:contextPath>Virtual-Service-1</soap:contextPath>
       </soap:binding.soap>
     </sca:service>
@@ -39,7 +39,7 @@
       <sy:interface.esb inputType="java.lang.String" outputType="java.lang.String"/>
       <soap:binding.soap name="soap3">
         <soap:contextMapper soapHeadersType="VALUE"/>
-        <soap:wsdl>http://192.168.0.102:8080/attractions-provider/AttractionsService?wsdl</soap:wsdl>
+        <soap:wsdl>http://localhost:8080/attractions-provider/AttractionsService?wsdl</soap:wsdl>
         <soap:contextPath>vane</soap:contextPath>
       </soap:binding.soap>
     </sca:service>
@@ -47,7 +47,7 @@
       <sy:interface.esb inputType="java.lang.String" outputType="java.lang.String"/>
       <soap:binding.soap name="soap2">
         <soap:contextMapper soapHeadersType="VALUE"/>
-        <soap:wsdl>http://192.168.0.102:8080/attractions-provider/AttractionsService?wsdl</soap:wsdl>
+        <soap:wsdl>http://localhost:8080/attractions-provider/AttractionsService?wsdl</soap:wsdl>
       </soap:binding.soap>
     </sca:reference>
   </sca:composite>
