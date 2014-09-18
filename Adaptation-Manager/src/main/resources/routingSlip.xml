@@ -6,5 +6,6 @@
         <routingSlip uriDelimiter=",">
             <header>itinerary</header>
         </routingSlip>
+        <log message="RoutingService - response received: ${body}"/>
     </route>
 </routes>

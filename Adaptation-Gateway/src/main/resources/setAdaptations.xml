@@ -7,5 +7,6 @@
         </setHeader>
         <log message="SetAdaptationService - message received: ${body} ${headers}"/>
         <to uri="switchyard://AdaptationsService"/>
+        <log message="SetAdaptationService - response received: ${body}"/>
     </route>
 </routes>

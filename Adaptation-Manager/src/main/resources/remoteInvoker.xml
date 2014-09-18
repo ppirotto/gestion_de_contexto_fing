@@ -3,10 +3,7 @@
     <route>
         <from uri="switchyard://RemoteInvokerService"/>
         <log message="RemoteInvokerService - message received: ${headers}"/>
-        <to uri="http:localhost:8080/vane/AttractionsService"/>
-<!--         <to uri="http:192.168.0.102:8080/attractions-provider/AttractionsService"/> -->
-        <log message="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa">
-            <description>&lt;to uri="http:localhost:8080/vane/AttractionsService"/&gt;</description>
-        </log>
+        <log message="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"/>
+        <to uri="switchyard://InvokerService"/>
     </route>
 </routes>

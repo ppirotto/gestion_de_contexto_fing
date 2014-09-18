@@ -7,5 +7,6 @@
         </setHeader>
         <log message="InvokeAG - message received: ${body} ${headers}"/>
         <to uri="switchyard://ESBService"/>
+        <log message="InvokeAG - response received: ${body}"/>
     </route>
 </routes>
