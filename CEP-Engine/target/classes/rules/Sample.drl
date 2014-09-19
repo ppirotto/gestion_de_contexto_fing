@@ -1,7 +1,0 @@
-import edu.fing.switchyard.CEP_Engine.DroolsInputMessage
-rule "Hello World"
-when
-    message:DroolsInputMessage (type=="PRUEBA")
-then
-    System.out.println("Hello World, Drools! conchaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-end
