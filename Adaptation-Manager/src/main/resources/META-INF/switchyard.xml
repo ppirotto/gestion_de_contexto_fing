@@ -51,7 +51,7 @@
     </sca:component>
     <sca:reference name="InvokerService" multiplicity="0..1" promote="RemoteInvoker/InvokerService">
       <sy:interface.esb inputType="java:java.lang.String" outputType="java:java.lang.String"/>
-      <sca:binding.sca sy:clustered="false" sy:target="ESBService" sy:targetNamespace="urn:edu.fing.switchyard:Service-Invoker2:1.0" name="sca2"/>
+      <sca:binding.sca sy:clustered="false" sy:target="ESBService" sy:targetNamespace="urn:edu.fing.switchyard:Service-Invoker:1.0" name="sca2"/>
     </sca:reference>
   </sca:composite>
 </sy:switchyard>
