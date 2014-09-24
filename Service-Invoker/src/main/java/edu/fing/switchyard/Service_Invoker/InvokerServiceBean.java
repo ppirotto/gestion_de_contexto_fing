@@ -9,29 +9,33 @@ import java.io.StringWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import javax.inject.Inject;
 import javax.xml.transform.Templates;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
+import org.switchyard.Context;
 import org.switchyard.component.bean.Service;
 
 @Service(InvokerService.class)
 public class InvokerServiceBean implements InvokerService {
+	
+	@Inject
+	private Context context;
 
 	private static final TransformerFactory tFactory = TransformerFactory.newInstance();
 	
 	public String invokeRealService(String message) {
-		System.out.println("DATAAAAAAAAAAAAA : " + message);
+		
+		String serviceUrl = context.getPropertyValue("service");
 		String response = null;
 		
-		message = this.addEnvelopeToRequest(message);		
-		System.out.println("Data con envelope!!!! --->" + message);
+		String request = this.addEnvelopeToRequest(message);		
 		
 		if (message != null){
-			response = this.postSoapMessage(message);
+			response = this.postSoapMessage(request,serviceUrl);
 			response = this.removeEnvelopeFromResponse(response);
-			System.out.println("respuesta:   --->"+response);
 		}
 		
 		return response;
@@ -56,13 +60,12 @@ public class InvokerServiceBean implements InvokerService {
 		return null;
 	}
 	
-	private String postSoapMessage(String message){
+	private String postSoapMessage(String message, String serviceUrl){
 		try {
-			String url = "http://localhost:8080/attractions-provider/AttractionsService";
-			URL obj = new URL(url);
+			URL obj = new URL(serviceUrl);
 			HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 	
-			// add reuqest header
+			// add request header
 			con.setRequestMethod("POST");
 			// con.setRequestProperty("User-Agent", USER_AGENT);
 			con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
@@ -73,12 +76,7 @@ public class InvokerServiceBean implements InvokerService {
 			wr.writeBytes(message);
 			wr.flush();
 			wr.close();
-	
-			int responseCode = con.getResponseCode();
-			System.out.println("\nSending 'POST' request to URL : " + url);
-			System.out.println("Post parameters : " + message);
-			System.out.println("Response Code : " + responseCode);
-	
+					
 			BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
 			String inputLine;
 			StringBuffer response = new StringBuffer();
@@ -87,11 +85,9 @@ public class InvokerServiceBean implements InvokerService {
 				response.append(inputLine);
 			}
 			in.close();
-	
-			// print result
-			System.out.println(response.toString());
 			
 			return response.toString();
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

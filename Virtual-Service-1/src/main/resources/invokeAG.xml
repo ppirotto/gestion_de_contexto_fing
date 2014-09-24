@@ -2,8 +2,8 @@
 <routes xmlns="http://camel.apache.org/schema/spring">
     <route>
         <from uri="switchyard://InvokeService"/>
-        <setHeader headerName="hola">
-            <simple>http:localhost:8080/Virtual-Service-1/ContextAwareService</simple>
+        <setHeader headerName="service">
+            <simple>http://localhost:8080/attractions-provider/AttractionsService</simple>
         </setHeader>
         <log message="InvokeAG - message received: ${body} ${headers}"/>
         <to uri="switchyard://ESBService"/>
