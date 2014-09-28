@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sy:switchyard xmlns:sca="http://docs.oasis-open.org/ns/opencsa/sca/200912" xmlns:sy="urn:switchyard-config:switchyard:1.1" name="Context-Reasoner" targetNamespace="urn:edu.fing.switchyard:Context-Reasoner:1.0">
+  <sca:composite name="Context-Reasoner" targetNamespace="urn:edu.fing.switchyard:Context-Reasoner:1.0"/>
+</sy:switchyard>
