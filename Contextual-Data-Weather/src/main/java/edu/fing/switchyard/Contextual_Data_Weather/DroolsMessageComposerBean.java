@@ -1,4 +1,4 @@
-package edu.fing.switchyard.Contextual_Data_Input_1;
+package edu.fing.switchyard.Contextual_Data_Weather;
 
 import static java.lang.System.out;
 
@@ -28,7 +28,7 @@ public class DroolsMessageComposerBean implements DroolsMessageComposer {
 		RemoteInvoker invoker = new HttpInvoker("http://localhost:" + port + "/switchyard-remote");
 
 		HashMap<String, String> inputMessage = new HashMap<String, String>();
-		inputMessage.put("type", "USER_LOCATION");
+		inputMessage.put("type", "CITY_WEATHER");
 		inputMessage.put("body", originalMessage);
 		
 		// Create the request message
@@ -45,6 +45,9 @@ public class DroolsMessageComposerBean implements DroolsMessageComposer {
 						+ reply.getContent());
 			} else {
 				response = (String) reply.getContent();
+//				out.println("==================================");
+//				out.println(response + "...");
+//				out.println("==================================");
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

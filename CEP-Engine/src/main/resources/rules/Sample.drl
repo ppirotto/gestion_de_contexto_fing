@@ -1,7 +1,7 @@
-import edu.fing.switchyard.CEP_Engine.DroolsInputMessage
-rule "Hello World"
+import java.util.HashMap;
+rule "Hello World2"
 when
-    message:DroolsInputMessage (type=="PRUEBA")
+    message:HashMap(this["type"] == "PRUEBA")
 then
-    System.out.println("Hello World, Drools! conchaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+    System.out.println("Hello World, Drools!");
 end

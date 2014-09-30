@@ -1,5 +1,7 @@
 package edu.fing.switchyard.CEP_Engine;
 
+import java.util.HashMap;
+
 import javax.inject.Inject;
 
 import org.switchyard.component.bean.Reference;
@@ -15,7 +17,7 @@ public class DroolsFeederServiceBean implements DroolsFeederService {
 	private DroolsManagerService droolsManager;
 	
 	@Override
-	public String receiveMessage(DroolsInputMessage input) {
+	public String receiveMessage(HashMap<String, String> input) {
 		
 		droolsManager.insert(input);
 		return null;

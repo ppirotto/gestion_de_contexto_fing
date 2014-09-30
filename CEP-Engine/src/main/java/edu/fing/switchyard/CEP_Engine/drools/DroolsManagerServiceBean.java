@@ -1,57 +1,22 @@
 package edu.fing.switchyard.CEP_Engine.drools;
 
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
+import java.util.HashMap;
 
 import javax.annotation.PostConstruct;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-import org.drools.compiler.builder.impl.KnowledgeBuilderImpl;
-import org.drools.compiler.compiler.DroolsParserException;
-import org.drools.core.impl.InternalKnowledgeBase;
 import org.kie.api.KieBase;
 import org.kie.api.KieBaseConfiguration;
 import org.kie.api.KieServices;
-import org.kie.api.builder.KieBuilder;
 import org.kie.api.builder.KieFileSystem;
 import org.kie.api.builder.KieRepository;
-import org.kie.api.builder.model.KieBaseModel;
-import org.kie.api.builder.model.KieModuleModel;
-import org.kie.api.builder.model.KieSessionModel;
-import org.kie.api.cdi.KSession;
-import org.kie.api.conf.EqualityBehaviorOption;
 import org.kie.api.conf.EventProcessingOption;
 import org.kie.api.io.KieResources;
 import org.kie.api.io.Resource;
-import org.kie.api.persistence.jpa.KieStoreServices;
-import org.kie.api.runtime.Environment;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
-import org.kie.api.runtime.KieSessionConfiguration;
-import org.kie.api.runtime.conf.ClockTypeOption;
-import org.kie.api.runtime.conf.KieSessionOption;
 import org.switchyard.component.bean.Service;
-
-import edu.fing.switchyard.CEP_Engine.DroolsInputMessage;
 
 @Service(DroolsManagerService.class)
 public class DroolsManagerServiceBean implements DroolsManagerService {
@@ -71,9 +36,19 @@ public class DroolsManagerServiceBean implements DroolsManagerService {
 			KieBaseConfiguration config = kieServices.newKieBaseConfiguration();
 			config.setOption( EventProcessingOption.STREAM );
 			KieFileSystem kfs = kieServices.newKieFileSystem();
-			InputStream inputStram = new FileInputStream("C:\\Eclipse Kepler personal\\workspace\\CEP-Engine\\src\\main\\resources\\rules\\Sample.drl");
+			
+			InputStream inputStram = new FileInputStream("C:\\ProyectoGrado\\gestion_de_contexto_fing\\CEP-Engine\\src\\main\\resources\\rules\\Sample.drl");
 			Resource resource = kieServices.getResources().newInputStreamResource(inputStram );
 			kfs.write("src/main/resources/rules/Sample.drl",resource);
+			
+			InputStream inputStram2 = new FileInputStream("C:\\ProyectoGrado\\gestion_de_contexto_fing\\CEP-Engine\\src\\main\\resources\\rules\\UserLocation.drl");
+			Resource resource2 = kieServices.getResources().newInputStreamResource(inputStram2 );
+			kfs.write("src/main/resources/rules/UserLocation.drl",resource2);
+			
+			InputStream inputStram3 = new FileInputStream("C:\\ProyectoGrado\\gestion_de_contexto_fing\\CEP-Engine\\src\\main\\resources\\rules\\CityWeather.drl");
+			Resource resource3 = kieServices.getResources().newInputStreamResource(inputStram3 );
+			kfs.write("src/main/resources/rules/CityWeather.drl",resource3);
+			
 			
 			kieServices.newKieBuilder(kfs).buildAll();
 			
@@ -93,7 +68,7 @@ public class DroolsManagerServiceBean implements DroolsManagerService {
 	};
 	
 	@Override
-	public void insert(DroolsInputMessage inputMessage){
+	public void insert(HashMap<String, String> inputMessage){
 		kSession.insert(inputMessage);
 	}
 	

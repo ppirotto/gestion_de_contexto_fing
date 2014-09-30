@@ -1,40 +1,33 @@
-package edu.fing.switchyard.Contextual_Data_Input_1;
-
-import static java.lang.System.out;
+package edu.fing.switchyard.CEP_Engine;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 
 import javax.xml.namespace.QName;
 
-import org.switchyard.component.bean.Service;
 import org.switchyard.remote.RemoteInvoker;
 import org.switchyard.remote.RemoteMessage;
 import org.switchyard.remote.http.HttpInvoker;
 
-
-
-@Service(DroolsMessageComposer.class)
-public class DroolsMessageComposerBean implements DroolsMessageComposer {
-
+public class CepUtils {
 	private static final QName SERVICE = new QName(
 			"urn:edu.fing.switchyard:CEP-Engine:1.0", "ESBServiceDrools");
 
-	@Override
-	public String send(String originalMessage) {
+	public static void notifyContextReasoner(HashMap<String, String> msg){
 		String response = null;
 		String port = System.getProperty(
 				"org.switchyard.component.sca.client.port", "8080");
 		RemoteInvoker invoker = new HttpInvoker("http://localhost:" + port + "/switchyard-remote");
 
-		HashMap<String, String> inputMessage = new HashMap<String, String>();
-		inputMessage.put("type", "USER_LOCATION");
-		inputMessage.put("body", originalMessage);
+//		HashMap<String, String> inputMessage = new HashMap<String, String>();
+//		inputMessage.put("type", "USER_LOCATION");
+//		inputMessage.put("body", originalMessage);
 		
 		// Create the request message
 		RemoteMessage message = new RemoteMessage();
 		message.setService(SERVICE).setOperation("receiveMessage")
-				.setContent(inputMessage);
+				.setContent(msg);
 
 		// Invoke the service
 		RemoteMessage reply;
@@ -51,7 +44,6 @@ public class DroolsMessageComposerBean implements DroolsMessageComposer {
 			e.printStackTrace();
 		}
 
-		return response;
+//		return response;
 	}
-
 }

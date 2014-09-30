@@ -1,0 +1,12 @@
+/.settings/
+.project
+**/src/main/conf/
+*.class
+*.prefs
+**/target
+**/bin
+org.eclipse.*
+META\-INF/
+pom.properties
+.classpath
+/target

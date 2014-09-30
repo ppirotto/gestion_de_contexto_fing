@@ -1,0 +1,65 @@
+import java.util.HashMap;
+
+declare CityWeatherUpdate
+@role(event)
+	city:	String
+	raining:boolean
+end
+
+declare CityWeather
+@role(event)
+	city:	String
+	raining:boolean
+end
+/*
+rule "CityWeatherUpdate Message Mapper"
+when
+    message:HashMap(this["type"] == "CITY_WEATHER")
+
+then
+    System.out.println("Mapping message to CityWeatherUpdate...");
+	String body = (String)message.get("body");
+	CityWeather cityWeather = new CityWeather();
+	String[] split = body.split(",");
+	cityWeather.setCity(split[0]);
+	cityWeather.setRaining(Boolean.parseBoolean(split[1]));
+	insert(cityWeather);    
+end*/
+
+
+rule "CityWeatherUpdate Message Mapper"
+when
+    message:HashMap(this["type"] == "CITY_WEATHER")
+
+then
+    System.out.println("Mapping message to CityWeatherUpdate...");
+	String body = (String)message.get("body");
+	CityWeatherUpdate cityWeatherUpdate = new CityWeatherUpdate();
+	String[] split = body.split(",");
+	cityWeatherUpdate.setCity(split[0]);
+	cityWeatherUpdate.setRaining(Boolean.parseBoolean(split[1]));
+	insert(cityWeatherUpdate);    
+end
+
+rule "CityWeather, new city!"
+when
+    cityWeatherUpdate:CityWeatherUpdate()
+    not (exists CityWeather(city==cityWeatherUpdate.city ))
+then
+    System.out.println("CityWeather, new city! city= " + cityWeatherUpdate.getCity());
+	CityWeather cityWeather = new CityWeather();
+	cityWeather.setCity(cityWeatherUpdate.getCity());
+	cityWeather.setRaining(cityWeatherUpdate.isRaining());
+	insert(cityWeather);     
+end
+
+rule "CityWeather, update weather from existing city!"
+no-loop true
+when
+    cityWeatherUpdate:CityWeatherUpdate()
+    cityWeather:CityWeather(city==cityWeatherUpdate.city)
+then
+    System.out.println("CityWeather, update weather from existing city! city= " + cityWeatherUpdate.getCity());
+	cityWeather.setRaining(cityWeatherUpdate.isRaining()); 
+	update(cityWeather);
+end

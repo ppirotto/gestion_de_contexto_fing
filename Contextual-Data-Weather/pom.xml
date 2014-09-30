@@ -3,23 +3,13 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
   <groupId>edu.fing.switchyard</groupId>
-  <artifactId>Service-Invoker2</artifactId>
+  <artifactId>Contextual-Data-Weather</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <name>edu.fing.switchyard:Service-Invoker2</name>
+  <name>edu.fing.switchyard:Contextual-Data-Weather</name>
   <properties>
     <switchyard.version>1.1.0.Final</switchyard.version>
   </properties>
   <dependencies>
-    <dependency>
-      <groupId>org.switchyard.components</groupId>
-      <artifactId>switchyard-component-bean</artifactId>
-      <version>${switchyard.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.switchyard.components</groupId>
-      <artifactId>switchyard-component-sca</artifactId>
-      <version>${switchyard.version}</version>
-    </dependency>
     <dependency>
       <groupId>org.switchyard</groupId>
       <artifactId>switchyard-api</artifactId>
@@ -52,9 +42,32 @@
       <version>${switchyard.version}</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+    	<groupId>org.switchyard.components</groupId>
+    	<artifactId>switchyard-component-bean</artifactId>
+    	<version>${switchyard.version}</version>
+    </dependency>
+    <dependency>
+    	<groupId>org.switchyard.components</groupId>
+    	<artifactId>switchyard-component-sca</artifactId>
+    	<version>${switchyard.version}</version>
+    </dependency>
+    <dependency>
+    	<groupId>org.switchyard.components</groupId>
+    	<artifactId>switchyard-component-http</artifactId>
+    	<version>${switchyard.version}</version>
+    </dependency>
+
+
+
+    <dependency>
+    	<groupId>edu.fing.switchyard</groupId>
+    	<artifactId>CEP-Engine</artifactId>
+    	<version>0.0.1-SNAPSHOT</version>
+    </dependency>
   </dependencies>
 	<build>
-		<finalName>Contextual-Data-Input-1</finalName>
+		<finalName>Contextual-Data-Weather</finalName>
 		<pluginManagement>
 			<plugins>
 				<plugin>

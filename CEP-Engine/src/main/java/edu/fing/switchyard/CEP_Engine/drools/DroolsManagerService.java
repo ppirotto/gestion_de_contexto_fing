@@ -1,9 +1,9 @@
 package edu.fing.switchyard.CEP_Engine.drools;
 
-import edu.fing.switchyard.CEP_Engine.DroolsInputMessage;
+import java.util.HashMap;
 
 public interface DroolsManagerService {
 
-	void insert(DroolsInputMessage inputMessage);
+	void insert(HashMap<String, String> inputMessage);
 
 }
