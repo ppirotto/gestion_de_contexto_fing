@@ -15,7 +15,7 @@ import javax.persistence.Table;
 public class Situation {
 
 	private Long id;
-	private String situationId;
+	private String name;
 	private String description;
 	private Set<Adaptation> adaptations;
 
@@ -26,9 +26,9 @@ public class Situation {
 		return this.id;
 	}
 
-	@Column(name = "SITUATION_ID")
-	public String getSituationId() {
-		return situationId;
+	@Column(name = "NAME")
+	public String getName() {
+		return name;
 	}
 	
 	@Column(name = "DESCRIPTION")
@@ -41,7 +41,7 @@ public class Situation {
 		return adaptations;
 	}
 	public void setSituationId(String situationId) {
-		this.situationId = situationId;
+		this.name = situationId;
 	}
 	public void setDescription(String description) {
 		this.description = description;

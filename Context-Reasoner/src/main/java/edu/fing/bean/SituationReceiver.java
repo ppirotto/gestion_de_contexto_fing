@@ -4,5 +4,5 @@ import java.util.HashMap;
 
 public interface SituationReceiver {
 
-	String receiveSituationFromCEP(HashMap<String, String> input);
+	String receiveSituationFromCEP(HashMap<String, Object> input);
 }
