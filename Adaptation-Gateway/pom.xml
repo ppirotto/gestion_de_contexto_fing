@@ -62,6 +62,18 @@
         	<artifactId>switchyard-component-camel-core</artifactId>
         	<version>${switchyard.version}</version>
         </dependency>
+        <dependency>
+        	<groupId>org.switchyard.components</groupId>
+        	<artifactId>switchyard-component-bean</artifactId>
+        	<version>${switchyard.version}</version>
+        </dependency>
+
+
+        <dependency>
+        	<groupId>edu.fing.commons</groupId>
+        	<artifactId>adaptation-commons</artifactId>
+        	<version>0.0.1-SNAPSHOT</version>
+        </dependency>
   </dependencies>
   <build>
     <plugins>
