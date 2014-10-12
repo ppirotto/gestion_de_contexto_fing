@@ -1,5 +1,6 @@
 package edu.fing.model;
 
+import java.io.Serializable;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -12,8 +13,12 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "SITUATION")
-public class Situation {
+public class Situation  implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Long id;
 	private String name;
 	private String description;
@@ -41,13 +46,21 @@ public class Situation {
 		return adaptations;
 	}
 	public void setSituationId(String situationId) {
-		this.name = situationId;
+		this.setName(situationId);
 	}
 	public void setDescription(String description) {
 		this.description = description;
 	}
 	public void setAdaptations(Set<Adaptation> adaptations) {
 		this.adaptations = adaptations;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 	
 }

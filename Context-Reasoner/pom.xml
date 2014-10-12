@@ -47,63 +47,36 @@
       <version>${switchyard.version}</version>
       <scope>test</scope>
     </dependency>
-     <dependency>
-        <groupId>mysql</groupId>
-        <artifactId>mysql-connector-java</artifactId>
-        <version>5.1.18</version>
-    </dependency>
-
-<dependency>
-    <groupId>org.hibernate</groupId>
-    <artifactId>hibernate-core</artifactId>
-    <version>4.3.6.Final</version>
-</dependency>
 
 <!-- for JPA, use hibernate-entitymanager instead of hibernate-core -->
+
+
+
 <dependency>
     <groupId>org.hibernate</groupId>
     <artifactId>hibernate-entitymanager</artifactId>
-    <version>4.3.6.Final</version>
+    <version>4.2.0.Final</version>
 </dependency>
-
-<!-- optional -->
-
-<dependency>
-    <groupId>org.hibernate</groupId>
-    <artifactId>hibernate-osgi</artifactId>
-    <version>4.3.6.Final</version>
-</dependency>
-<dependency>
-    <groupId>org.hibernate</groupId>
-    <artifactId>hibernate-envers</artifactId>
-    <version>4.3.6.Final</version>
-</dependency>
-<dependency>
-    <groupId>org.hibernate</groupId>
-    <artifactId>hibernate-c3p0</artifactId>
-    <version>4.3.6.Final</version>
-</dependency>
-<dependency>
-    <groupId>org.hibernate</groupId>
-    <artifactId>hibernate-proxool</artifactId>
-    <version>4.3.6.Final</version>
-</dependency>
-<dependency>
-    <groupId>org.hibernate</groupId>
-    <artifactId>hibernate-infinispan</artifactId>
-    <version>4.3.6.Final</version>
-</dependency>
-<dependency>
-    <groupId>org.hibernate</groupId>
-    <artifactId>hibernate-ehcache</artifactId>
-    <version>4.3.6.Final</version>
-</dependency>
-
 
   	<dependency>
   		<groupId>org.switchyard.components</groupId>
   		<artifactId>switchyard-component-sca</artifactId>
   		<version>${switchyard.version}</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>org.switchyard.components</groupId>
+  		<artifactId>switchyard-component-http</artifactId>
+  		<version>${switchyard.version}</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>edu.fing.switchyard</groupId>
+  		<artifactId>Adaptation-Gateway</artifactId>
+  		<version>0.0.1-SNAPSHOT</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>edu.fing.commons</groupId>
+  		<artifactId>adaptation-commons</artifactId>
+  		<version>0.0.1-SNAPSHOT</version>
   	</dependency>
   </dependencies>
   <build>
