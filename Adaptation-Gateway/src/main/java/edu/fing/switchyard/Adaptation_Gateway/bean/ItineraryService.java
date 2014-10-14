@@ -1,4 +1,4 @@
-package edu.fing.switchyard.Adaptation_Gateway;
+package edu.fing.switchyard.Adaptation_Gateway.bean;
 
 import java.util.List;
 
