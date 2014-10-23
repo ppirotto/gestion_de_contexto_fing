@@ -1,14 +1,9 @@
-package edu.fing.util;
+package edu.fing.context.reasoner.util;
 
-import java.io.File;
-
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.service.ServiceRegistryBuilder;
-
-import edu.fing.model.Adaptation;
 
 public class HibernateUtils {
  

@@ -1,4 +1,4 @@
-package edu.fing.model;
+package edu.fing.context.reasoner.model;
 
 import java.io.Serializable;
 

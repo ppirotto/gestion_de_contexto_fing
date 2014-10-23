@@ -1,4 +1,4 @@
-package edu.fing;
+package edu.fing.commons;
 
 public class Adaptation {
 

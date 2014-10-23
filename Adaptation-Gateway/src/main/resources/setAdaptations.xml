@@ -3,7 +3,7 @@
     <route>
         <from uri="switchyard://SetAdaptationService"/>
         <setHeader headerName="itinerary">
-            <method beanType="edu.fing.switchyard.Adaptation_Gateway.Itinerary"></method>
+            <method beanType="edu.fing.adaptation.gateway.model.Itinerary" method="setItinerary" ref="null"></method>
         </setHeader>
         <log message="SetAdaptationService - message received: ${body} ${headers}"/>
         <to uri="switchyard://AdaptationsService"/>

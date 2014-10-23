@@ -21,13 +21,13 @@
       <sca:binding.sca sy:targetNamespace="urn:edu.fing.switchyard:Adaptation-Manager:1.0" sy:target="RoutingService" name="sca2"/>
     </sca:reference>
     <sca:component name="ItineraryServiceBean">
-      <bean:implementation.bean class="edu.fing.switchyard.Adaptation_Gateway.bean.ItineraryServiceBean"/>
+      <bean:implementation.bean class="edu.fing.adaptation.gateway.bean.ItineraryServiceBean"/>
       <sca:service name="ItineraryService">
-        <sca:interface.java interface="edu.fing.switchyard.Adaptation_Gateway.bean.ItineraryService"/>
+        <sca:interface.java interface="edu.fing.adaptation.gateway.bean.ItineraryService"/>
       </sca:service>
     </sca:component>
     <sca:service name="ItineraryService" promote="ItineraryServiceBean/ItineraryService">
-      <sca:interface.java interface="edu.fing.switchyard.Adaptation_Gateway.bean.ItineraryService"/>
+      <sca:interface.java interface="edu.fing.adaptation.gateway.bean.ItineraryService"/>
       <sca:binding.sca name="sca2"/>
     </sca:service>
   </sca:composite>

@@ -1,4 +1,4 @@
-package edu.fing.bean;
+package edu.fing.context.reasoner.bean;
 
 import java.util.HashMap;
 

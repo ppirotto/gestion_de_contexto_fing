@@ -1,8 +1,8 @@
-package edu.fing.switchyard.Adaptation_Gateway.bean;
+package edu.fing.adaptation.gateway.bean;
 
 import java.util.List;
 
-import edu.fing.ContextReasonerData;
+import edu.fing.commons.ContextReasonerData;
 
 public interface ItineraryService {
 

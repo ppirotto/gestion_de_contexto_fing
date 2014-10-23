@@ -1,29 +1,24 @@
-package edu.fing.bean;
+package edu.fing.context.reasoner.bean;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import javax.inject.Inject;
 import javax.xml.namespace.QName;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.switchyard.component.bean.Reference;
 import org.switchyard.component.bean.Service;
-
-
-
-
 import org.switchyard.remote.RemoteInvoker;
 import org.switchyard.remote.RemoteMessage;
 import org.switchyard.remote.http.HttpInvoker;
 
-import edu.fing.ContextReasonerData;
-import edu.fing.model.Adaptation;
-import edu.fing.util.HibernateUtils;
+import edu.fing.commons.ContextReasonerData;
+import edu.fing.context.reasoner.model.Adaptation;
+import edu.fing.context.reasoner.util.HibernateUtils;
+
 
 @Service(SituationReceiver.class)
 public class SituationReceiverBean implements SituationReceiver {

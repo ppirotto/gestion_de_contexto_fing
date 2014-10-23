@@ -2,15 +2,15 @@
 <sy:switchyard xmlns:bean="urn:switchyard-component-bean:config:1.1" xmlns:http="urn:switchyard-component-http:config:1.1" xmlns:sca="http://docs.oasis-open.org/ns/opencsa/sca/200912" xmlns:sy="urn:switchyard-config:switchyard:1.1" name="Context-Reasoner" targetNamespace="urn:edu.fing.switchyard:Context-Reasoner:1.0">
   <sca:composite name="Context-Reasoner" targetNamespace="urn:edu.fing.switchyard:Context-Reasoner:1.0">
     <sca:component name="SituationReceiverBean">
-      <bean:implementation.bean class="edu.fing.bean.SituationReceiverBean"/>
+      <bean:implementation.bean class="edu.fing.context.reasoner.bean.SituationReceiverBean"/>
       <sca:service name="SituationReceiver">
-        <sca:interface.java interface="edu.fing.bean.SituationReceiver"/>
+        <sca:interface.java interface="edu.fing.context.reasoner.bean.SituationReceiver"/>
       </sca:service>
     </sca:component>
     <sca:service name="SituationReceiver" promote="SituationReceiverBean/SituationReceiver">
-      <sca:interface.java interface="edu.fing.bean.SituationReceiver"/>
+      <sca:interface.java interface="edu.fing.context.reasoner.bean.SituationReceiver"/>
       <sca:binding.sca name="sca1"/>
-      <http:binding.http name="http1">
+      <http:binding.http name="http122">
         <sy:operationSelector operationName="receiveSituationFromCEP2"/>
         <http:contextPath>context-reasoner</http:contextPath>
       </http:binding.http>
