@@ -9,19 +9,18 @@ import org.switchyard.component.bean.Service;
 
 import edu.fing.switchyard.CEP_Engine.drools.DroolsManagerService;
 
-@Service(DroolsFeederService.class)
-public class DroolsFeederServiceBean implements DroolsFeederService {
+@Service(DroolsConfigService.class)
+public class DroolsConfigServiceBean implements DroolsConfigService {
 
 	@Inject
 	@Reference	
 	private DroolsManagerService droolsManager;
 	
 	@Override
-	public String receiveMessage(HashMap<String, String> input) {
-		
-		return droolsManager.insert(input);
+	public String addRule() {
+		// TODO Auto-generated method stub
+		droolsManager.addRule();
+		return null;
 	}
-	
-	
 
 }

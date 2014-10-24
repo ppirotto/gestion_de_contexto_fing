@@ -1,7 +1,6 @@
 package edu.fing.switchyard.CEP_Engine;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.HashMap;
 
 import javax.xml.namespace.QName;
@@ -11,23 +10,23 @@ import org.switchyard.remote.RemoteMessage;
 import org.switchyard.remote.http.HttpInvoker;
 
 public class CepUtils {
+//	public static void probar(){
+//		System.out.println("LLEGUEEEEEEEEEEEEEEEEEEEe");
+//		
+//	}
 	private static final QName SERVICE = new QName(
-			"urn:edu.fing.switchyard:CEP-Engine:1.0", "ESBServiceDrools");
+			"urn:edu.fing.switchyard:Context-Reasoner:1.0", "SituationReceiver");
 
-	public static void notifyContextReasoner(HashMap<String, String> msg){
+	public static void notifyContextReasoner(HashMap<String, Object> msg){
+		System.err.println("BBBBBBBBBBBBBBBBBBBB");
 		String response = null;
 		String port = System.getProperty(
 				"org.switchyard.component.sca.client.port", "8080");
 		RemoteInvoker invoker = new HttpInvoker("http://localhost:" + port + "/switchyard-remote");
-
-//		HashMap<String, String> inputMessage = new HashMap<String, String>();
-//		inputMessage.put("type", "USER_LOCATION");
-//		inputMessage.put("body", originalMessage);
 		
 		// Create the request message
 		RemoteMessage message = new RemoteMessage();
-		message.setService(SERVICE).setOperation("receiveMessage")
-				.setContent(msg);
+		message.setService(SERVICE).setOperation("receiveSituationFromCEP").setContent(msg);
 
 		// Invoke the service
 		RemoteMessage reply;

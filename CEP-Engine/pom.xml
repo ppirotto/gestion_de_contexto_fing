@@ -9,7 +9,7 @@
 	<name>edu.fing.switchyard:CEP-Engine</name>
 	<properties>
 		<switchyard.version>1.1.0.Final</switchyard.version>
-		<droolsVersion>6.1.0.Final</droolsVersion>
+		<droolsVersion>6.0.0.Final</droolsVersion>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -84,6 +84,11 @@
 		<dependency>
 			<groupId>org.switchyard.components</groupId>
 			<artifactId>switchyard-component-sca</artifactId>
+			<version>${switchyard.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.switchyard.components</groupId>
+			<artifactId>switchyard-component-http</artifactId>
 			<version>${switchyard.version}</version>
 		</dependency>
 	</dependencies>

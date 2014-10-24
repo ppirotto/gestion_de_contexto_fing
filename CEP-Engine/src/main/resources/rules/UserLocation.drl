@@ -1,4 +1,6 @@
+package edu.fing.drools;
 import java.util.HashMap;
+
 
 declare UserLocation
 @role(event)
@@ -13,7 +15,11 @@ declare InCity
 	userId:	String
 end
 
-
+declare CityWeather
+@role(event)
+	city:	String
+	raining:boolean
+end
 
 rule "UserLocationMessageMapper"
 when
@@ -60,6 +66,13 @@ when
     CityWeather (city == usrInCity.city, raining == true) over window:time( 30m )
 then
     System.out.println("UserInCity RAINING!!! userId= " + usrInCity.getUserId() + "city= " + usrInCity.getCity() + "  ---  NOTIFICAR CONTEXT REASONER!!!!!");
-    //NOTIFICAR CONTEXT REASONER!!!!!    
+    ContextReasonerNotification notif = new ContextReasonerNotification();
+    notif.setSituationName("UserInCityRaining");
+    notif.setUserId(usrInCity.getUserId());
+    HashMap<String,String> contextualData = new HashMap<String,String>();
+    contextualData.put("city",usrInCity.getCity());
+    notif.setContextualData(contextualData);
+    System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+	insert(notif);
 end
 

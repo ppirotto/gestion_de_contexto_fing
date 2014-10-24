@@ -1,0 +1,26 @@
+package edu.fing.drools;
+
+import java.util.HashMap;
+import edu.fing.switchyard.CEP_Engine.CepUtils;
+
+
+declare ContextReasonerNotification
+@role(event)
+	situationName:	String
+	userId:			String
+	contextualData:	HashMap
+end
+
+
+rule "ContextReasoner Notification..."
+when
+    notif:ContextReasonerNotification()
+then
+    System.out.println("ContextReasoner Notification!!! Preparing to notify!");
+	HashMap hash = new HashMap<String,Object>();
+	hash.put("situationName",notif.getSituationName());
+	hash.put("userId",notif.getUserId());
+	hash.put("contextualData",notif.getContextualData());
+	CepUtils.notifyContextReasoner(hash);
+end
+

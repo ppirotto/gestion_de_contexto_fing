@@ -4,6 +4,8 @@ import java.util.HashMap;
 
 public interface DroolsManagerService {
 
-	void insert(HashMap<String, String> inputMessage);
+	String insert(HashMap<String, String> inputMessage);
+
+	void addRule();
 
 }
