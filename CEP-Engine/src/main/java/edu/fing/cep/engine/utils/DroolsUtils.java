@@ -1,4 +1,4 @@
-package edu.fing.switchyard.CEP_Engine;
+package edu.fing.cep.engine.utils;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;

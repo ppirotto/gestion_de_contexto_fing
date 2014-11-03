@@ -1,6 +1,7 @@
-package edu.fing.switchyard.CEP_Engine.drools;
+package edu.fing.cep.engine.bean;
 
 import java.util.HashMap;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import javax.annotation.PostConstruct;
 
@@ -12,10 +13,9 @@ import org.kie.api.builder.ReleaseId;
 import org.kie.api.conf.EventProcessingOption;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
-import org.kie.api.runtime.KieSessionConfiguration;
 import org.switchyard.component.bean.Service;
 
-import edu.fing.switchyard.CEP_Engine.DroolsUtils;
+import edu.fing.cep.engine.utils.DroolsUtils;
 
 @Service(DroolsManagerService.class)
 public class DroolsManagerServiceBean implements DroolsManagerService {
@@ -26,6 +26,7 @@ public class DroolsManagerServiceBean implements DroolsManagerService {
 	private static KieServices kServices;
 	private KieBaseConfiguration streamModeConfig;
 
+	private static ReentrantReadWriteLock  lock = new ReentrantReadWriteLock();
 	@PostConstruct
 	void intializeDroolsContext() {
 		try {
@@ -41,20 +42,36 @@ public class DroolsManagerServiceBean implements DroolsManagerService {
 
 			KieModule kieModule = DroolsUtils.createAndDeployJar( kServices, releaseId1, drl1/*, drl2, drl3*/ );
 		
-			// Create a session and fire rules
-			kContainer = kServices.newKieContainer( kieModule.getReleaseId() );
-			KieBase kBase = kContainer.newKieBase(streamModeConfig);
-
-			kSession = kBase.newKieSession();
 			
-			new Thread(new Runnable() {
-				public void run() {
-	        	   	kSession.fireUntilHalt();
-	           	}
-			}).start();
+
+			
+			startSession(kieModule);
 			
 		} catch (Throwable t) {
 			t.printStackTrace();
+		}
+	}
+
+
+
+	private void startSession(KieModule kieModule) {
+		// Create a session and fire rules
+		kContainer = kServices.newKieContainer(kieModule.getReleaseId());
+		KieBase kBase = kContainer.newKieBase(streamModeConfig);
+		try {
+			lock.writeLock().lock();
+			if (kSession != null) {
+				kSession.halt();
+				kSession.destroy();
+			}
+			kSession = kBase.newKieSession();
+			new Thread(new Runnable() {
+				public void run() {
+					kSession.fireUntilHalt();
+				}
+			}).start();
+		} finally {
+			lock.writeLock().unlock();
 		}
 	};
 	
@@ -65,10 +82,13 @@ public class DroolsManagerServiceBean implements DroolsManagerService {
 		try{
 			ClassLoader classLoader=	Thread.currentThread().getContextClassLoader();
 			System.out.println(classLoader);
+			lock.readLock().lock();
 			kSession.insert(inputMessage);
 			return "OK";
 		} catch(Exception e) {
 			return "ERROR";
+		} finally{
+			lock.readLock().unlock();
 		}
 	}
 
@@ -90,17 +110,8 @@ public class DroolsManagerServiceBean implements DroolsManagerService {
 		kContainer = kServices.newKieContainer( kieModule.getReleaseId() );
 		KieBase kBase = kContainer.newKieBase(streamModeConfig);
 		
-		kSession.halt();
-		kSession.destroy();
-
-		kSession = kBase.newKieSession();
+		startSession(kieModule);
 		
-		new Thread(new Runnable() {
-			public void run() {
-        	   	kSession.fireUntilHalt();
-           	}
-		}).start();
-		System.out.println("asdasdasdasads");
 	}
 	
 }

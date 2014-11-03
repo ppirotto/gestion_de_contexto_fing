@@ -1,13 +1,9 @@
-package edu.fing.switchyard.CEP_Engine;
-
-import java.util.HashMap;
+package edu.fing.cep.engine.bean;
 
 import javax.inject.Inject;
 
 import org.switchyard.component.bean.Reference;
 import org.switchyard.component.bean.Service;
-
-import edu.fing.switchyard.CEP_Engine.drools.DroolsManagerService;
 
 @Service(DroolsConfigService.class)
 public class DroolsConfigServiceBean implements DroolsConfigService {
