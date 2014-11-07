@@ -32,7 +32,12 @@
     <sca:service name="DroolsConfigService" promote="DroolsConfigServiceBean/DroolsConfigService">
       <sca:interface.java interface="edu.fing.cep.engine.bean.DroolsConfigService"/>
       <http:binding.http name="http1">
-        <http:contextPath>drools-config</http:contextPath>
+        <sy:operationSelector operationName="deployVersion"/>
+        <http:contextPath>drools-config/deployVersion</http:contextPath>
+      </http:binding.http>
+      <http:binding.http name="http2">
+        <sy:operationSelector operationName="updateActiveVersion"/>
+        <http:contextPath>drools-config/updateActiveVersion</http:contextPath>
       </http:binding.http>
     </sca:service>
   </sca:composite>
