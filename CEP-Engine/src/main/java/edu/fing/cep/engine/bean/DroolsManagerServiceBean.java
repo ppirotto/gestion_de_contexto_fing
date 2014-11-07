@@ -1,10 +1,16 @@
 package edu.fing.cep.engine.bean;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Set;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import javax.annotation.PostConstruct;
 
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.kie.api.KieBase;
 import org.kie.api.KieBaseConfiguration;
 import org.kie.api.KieServices;
@@ -15,7 +21,11 @@ import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
 import org.switchyard.component.bean.Service;
 
+import edu.fing.cep.engine.model.ActiveConfiguration;
+import edu.fing.cep.engine.model.Rule;
+import edu.fing.cep.engine.model.Version;
 import edu.fing.cep.engine.utils.DroolsUtils;
+import edu.fing.cep.engine.utils.HibernateUtils;
 
 @Service(DroolsManagerService.class)
 public class DroolsManagerServiceBean implements DroolsManagerService {
@@ -30,26 +40,55 @@ public class DroolsManagerServiceBean implements DroolsManagerService {
 	@PostConstruct
 	void intializeDroolsContext() {
 		try {
-
+			//inicializo fields para Drools
 			kServices = KieServices.Factory.get();			
 			streamModeConfig = kServices.newKieBaseConfiguration();
 			streamModeConfig.setOption( EventProcessingOption.STREAM );
-			
-			//TODO le deberia pedir al repositorio la version activa
-			ReleaseId releaseId1 = kServices.newReleaseId("edu.fing.cep.engine", "drools-context-rules", "1");
-			
-			String drl1 = DroolsUtils.getFileContent("C:\\ProyectoGrado\\gestion_de_contexto_fing\\CEP-Engine\\src\\main\\resources\\rules\\ContextReasonerNotification.drl");
 
-			KieModule kieModule = DroolsUtils.createAndDeployJar( kServices, releaseId1, drl1/*, drl2, drl3*/ );
+			//Obtengo version activa para deployar
+			Version activeVersion = getActiveVersion();
+			
+			//Creo el releaseId
+			ReleaseId releaseId1 = kServices.newReleaseId("edu.fing.cep.engine", "drools-context-rules", activeVersion.getVersionNumber());
+			
+			List<String> stringRules = getStringRules(activeVersion);
+
+			KieModule kieModule = DroolsUtils.createAndDeployJar( kServices, releaseId1, stringRules);
 		
-			
-
-			
 			startSession(kieModule);
 			
 		} catch (Throwable t) {
 			t.printStackTrace();
 		}
+	}
+
+
+
+	private Version getActiveVersion() {
+		SessionFactory sessionFactory = HibernateUtils.getSessionFactory();
+		Session session = sessionFactory.openSession();
+		
+		session.beginTransaction();
+		
+		StringBuilder queryString = new StringBuilder();
+
+		queryString.append("SELECT * ");
+		queryString.append("FROM ACTIVE_CONFIGURATION");
+
+		Query query = session.createSQLQuery(queryString.toString()).addEntity(ActiveConfiguration.class);
+//			query.setParameter("situationName", "InCityRaining");
+
+		@SuppressWarnings("unchecked")
+		ActiveConfiguration config = (ActiveConfiguration) query.uniqueResult();
+		if (config==null){
+			return null;
+		}
+		Version activeVersion = config.getVersion();
+		System.out.println("versionNumber: "+activeVersion.getVersionNumber());
+		
+		session.getTransaction().commit();
+		session.close();
+		return activeVersion;
 	}
 
 
@@ -93,19 +132,14 @@ public class DroolsManagerServiceBean implements DroolsManagerService {
 	}
 
 	@Override
-	public void addRule() {
+	public void deployVersion(String versionNumber) {
+		
+		Version desiredVersion = getVersion(versionNumber);
+		
+		ReleaseId newReleaseId = kServices.newReleaseId("edu.fing.cep.engine", "drools-context-rules", desiredVersion.getVersionNumber());
 
-		// TODO pedir version activa al repo
-		String activeVersion = "2";
-
-		ReleaseId newReleaseId = kServices.newReleaseId("edu.fing.cep.engine", "drools-context-rules", activeVersion);
-
-		// TODO pedir files al repo
-		String drl1 = DroolsUtils.getFileContent("C:\\ProyectoGrado\\gestion_de_contexto_fing\\CEP-Engine\\src\\main\\resources\\rules\\ContextReasonerNotification.drl");
-		String drl2 = DroolsUtils.getFileContent("C:\\ProyectoGrado\\gestion_de_contexto_fing\\CEP-Engine\\src\\main\\resources\\rules\\UserLocation.drl");
-		String drl3 = DroolsUtils.getFileContent("C:\\ProyectoGrado\\gestion_de_contexto_fing\\CEP-Engine\\src\\main\\resources\\rules\\CityWeather.drl");
-
-		KieModule kieModule = DroolsUtils.createAndDeployJar(kServices, newReleaseId, drl1, drl2, drl3);
+		List<String> stringRules = getStringRules(desiredVersion);
+		KieModule kieModule = DroolsUtils.createAndDeployJar(kServices, newReleaseId, stringRules);
 
 		kContainer = kServices.newKieContainer( kieModule.getReleaseId() );
 		KieBase kBase = kContainer.newKieBase(streamModeConfig);
@@ -113,5 +147,73 @@ public class DroolsManagerServiceBean implements DroolsManagerService {
 		startSession(kieModule);
 		
 	}
+
+
+
+	private List<String> getStringRules(Version desiredVersion) {
+		//Obtengo las reglas asociadas a la version
+		Set<Rule> rules = desiredVersion.getRules();
+		List<String> stringRules = new ArrayList<String>();
+		for(Rule rule : rules){
+			stringRules.add(rule.getRule());
+		}
+		return stringRules;
+	}
+	
+	private Version getVersion(String version) {
+		SessionFactory sessionFactory = HibernateUtils.getSessionFactory();
+		Session session = sessionFactory.openSession();
+		
+		session.beginTransaction();
+		
+		StringBuilder queryString = new StringBuilder();
+
+		queryString.append("SELECT * ");
+		queryString.append("FROM VERSION ");
+		queryString.append("WHERE VERSION_NUMBER = :version");
+
+		Query query = session.createSQLQuery(queryString.toString()).addEntity(Version.class);
+		query.setParameter("version", version);
+
+		@SuppressWarnings("unchecked")
+		Version desiredVersion = (Version) query.uniqueResult();
+		if (desiredVersion==null){
+			return null;
+		}
+		System.out.println("Version versionNumber: "+desiredVersion.getVersionNumber() + " loaded from database.");
+		
+		session.getTransaction().commit();
+		session.close();
+		return desiredVersion;
+	}
+
+
+
+	@Override
+	public void updateActiveVersion(String versionNumber) {
+		SessionFactory sessionFactory = HibernateUtils.getSessionFactory();
+		Session session = sessionFactory.openSession();
+		session.beginTransaction();
+
+		Query query = session.createSQLQuery("SELECT * FROM ACTIVE_CONFIGURATION").addEntity(ActiveConfiguration.class);
+
+		@SuppressWarnings("unchecked")
+		ActiveConfiguration activeConfig = (ActiveConfiguration) query.uniqueResult();
+		
+		Query queryNewVersion = session.createSQLQuery("SELECT * FROM VERSION WHERE VERSION_NUMBER = :version ").addEntity(Version.class);
+		queryNewVersion.setParameter("version", versionNumber);
+		
+		@SuppressWarnings("unchecked")
+		Version newVersion = (Version) queryNewVersion.uniqueResult();
+		
+		activeConfig.setVersion(newVersion);
+		System.out.println("Updating to versionNumber: "+activeConfig.getVersion().getVersionNumber());
+		session.update(activeConfig);
+		
+		session.getTransaction().commit();
+		session.close();
+	}
+	
+	
 	
 }

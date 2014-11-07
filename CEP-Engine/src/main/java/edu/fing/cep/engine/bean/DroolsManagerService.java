@@ -6,6 +6,7 @@ public interface DroolsManagerService {
 
 	String insert(HashMap<String, String> inputMessage);
 
-	void addRule();
+	void deployVersion(String versionNumber);
 
+	void updateActiveVersion(String versionNumber);
 }

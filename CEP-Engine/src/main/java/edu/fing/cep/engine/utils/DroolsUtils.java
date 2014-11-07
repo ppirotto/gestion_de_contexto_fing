@@ -3,6 +3,7 @@ package edu.fing.cep.engine.utils;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.List;
 
 import org.drools.compiler.kie.builder.impl.InternalKieModule;
 import org.kie.api.KieServices;
@@ -14,21 +15,21 @@ import org.kie.api.io.Resource;
 
 public class DroolsUtils {
 
-	public static KieModule createAndDeployJar(KieServices ks, ReleaseId releaseId, String... drls) {
+	public static KieModule createAndDeployJar(KieServices ks, ReleaseId releaseId, List<String> drls) {
 		byte[] jar = createKJar(ks, releaseId, null, drls);
 		return deployJar(ks, jar);
 	}
 
-	public static byte[] createKJar(KieServices ks, ReleaseId releaseId, String pom, String... drls) {
+	public static byte[] createKJar(KieServices ks, ReleaseId releaseId, String pom, List<String> drls) {
 		KieFileSystem kfs = ks.newKieFileSystem();
 		if (pom != null) {
 			kfs.write("pom.xml", pom);
 		} else {
 			kfs.generateAndWritePomXML(releaseId);
 		}
-		for (int i = 0; i < drls.length; i++) {
-			if (drls[i] != null) {
-				kfs.write("src/main/resources/r" + i + ".drl", drls[i]);
+		for (int i = 0; i < drls.size(); i++) {
+			if (drls.get(i) != null) {
+				kfs.write("src/main/resources/r" + i + ".drl", drls.get(i));
 			}
 		}
 		KieBuilder kb = ks.newKieBuilder(kfs).buildAll();

@@ -2,9 +2,12 @@ package edu.fing.cep.engine.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -43,7 +46,8 @@ public class Rule {
 		this.rule = rule;
 	}
 	
-	@Column(name = "VERSION", nullable = false)
+	@ManyToOne(fetch=FetchType.EAGER)
+	@JoinColumn(name = "VERSION_ID", nullable = false)
 	public Version getVersion() {
 		return version;
 	}

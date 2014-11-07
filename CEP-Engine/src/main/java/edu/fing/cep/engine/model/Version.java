@@ -1,12 +1,16 @@
 package edu.fing.cep.engine.model;
 
 import java.util.Date;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -18,6 +22,7 @@ public class Version {
 	private Long id;
 	private String versionNumber;
 	private Date creationDate;
+	private Set<Rule> rules;
 	
 	@Id
 	@GeneratedValue
@@ -46,10 +51,12 @@ public class Version {
 		this.creationDate = creationDate;
 	}
 	
-//	@Lob
-//	@Column(name = "DATA", columnDefinition = "MEDIUMTEXT")
-
-//	@Id
-//	@GeneratedValue
-//	@Column(name = "ID", nullable = false)
+	@OneToMany(fetch=FetchType.EAGER, mappedBy="version")
+	public Set<Rule> getRules() {
+		return rules;
+	}
+	public void setRules(Set<Rule> rules) {
+		this.rules = rules;
+	}
+	
 }

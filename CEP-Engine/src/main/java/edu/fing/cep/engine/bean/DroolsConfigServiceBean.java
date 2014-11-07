@@ -13,9 +13,16 @@ public class DroolsConfigServiceBean implements DroolsConfigService {
 	private DroolsManagerService droolsManager;
 	
 	@Override
-	public String addRule() {
+	public String deployVersion(String versionNumber) {
 		// TODO Auto-generated method stub
-		droolsManager.addRule();
+		droolsManager.deployVersion(versionNumber);
+		return null;
+	}
+	
+	@Override
+	public String updateActiveVersion(String versionNumber) {
+		// TODO Auto-generated method stub
+		droolsManager.updateActiveVersion(versionNumber);
 		return null;
 	}
 
