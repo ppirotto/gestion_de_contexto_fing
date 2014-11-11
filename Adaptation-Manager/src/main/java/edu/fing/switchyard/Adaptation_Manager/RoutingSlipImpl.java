@@ -6,7 +6,7 @@ import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 import org.apache.camel.builder.RouteBuilder;
 
-import edu.fing.AdaptedMessage;
+import edu.fing.commons.AdaptedMessage;
 
 public class RoutingSlipImpl extends RouteBuilder {
 

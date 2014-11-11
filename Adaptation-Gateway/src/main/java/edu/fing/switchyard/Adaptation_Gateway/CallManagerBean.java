@@ -2,7 +2,7 @@ package edu.fing.switchyard.Adaptation_Gateway;
 
 import org.switchyard.component.bean.Service;
 
-import edu.fing.AdaptedMessage;
+import edu.fing.commons.*;
 
 @Service(CallManager.class)
 public class CallManagerBean implements CallManager {

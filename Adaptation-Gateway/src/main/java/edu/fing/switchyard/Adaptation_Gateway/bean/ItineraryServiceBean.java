@@ -14,8 +14,8 @@ import org.switchyard.remote.RemoteInvoker;
 import org.switchyard.remote.RemoteMessage;
 import org.switchyard.remote.http.HttpInvoker;
 
-import edu.fing.AdaptedMessage;
 import edu.fing.ItineraryService;
+import edu.fing.commons.AdaptedMessage;
 
 @Service(ItineraryService.class)
 public class ItineraryServiceBean implements ItineraryService {
@@ -51,6 +51,7 @@ public class ItineraryServiceBean implements ItineraryService {
 
 		CompositeContext contextE = (CompositeContext) message.getContext();
 		DefaultContext defaultContext = new DefaultContext();
+		// new CamelCompositeContext(exchange);
 		defaultContext.mergeInto(this.context);// setProperty("itinerary",
 												// itinerary);
 		contextE.setContext(Scope.MESSAGE, defaultContext);

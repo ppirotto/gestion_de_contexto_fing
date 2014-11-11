@@ -1,6 +1,6 @@
 package edu.fing.switchyard.Adaptation_Manager;
 
-import edu.fing.AdaptedMessage;
+import edu.fing.commons.AdaptedMessage;
 
 public interface PruebaRouting {
 

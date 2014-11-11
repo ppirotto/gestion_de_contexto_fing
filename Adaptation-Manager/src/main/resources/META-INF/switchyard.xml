@@ -6,7 +6,7 @@
         <camel:java class="edu.fing.switchyard.Adaptation_Manager.RoutingSlipImpl"/>
       </camel:implementation.camel>
       <sca:reference name="PruebaRouting">
-        <sy:interface.esb inputType="java:edu.fing.AdaptedMessage" outputType="java:edu.fing.AdaptedMessage"/>
+        <sca:interface.java interface="edu.fing.switchyard.Adaptation_Manager.PruebaRouting"/>
       </sca:reference>
       <sca:service name="RoutingServiceInterface">
         <sca:interface.java interface="edu.fing.switchyard.Adaptation_Manager.RoutingServiceInterface"/>

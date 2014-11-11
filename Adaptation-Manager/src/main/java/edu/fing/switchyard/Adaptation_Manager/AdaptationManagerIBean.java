@@ -5,7 +5,7 @@ import javax.inject.Inject;
 import org.switchyard.Context;
 import org.switchyard.component.bean.Service;
 
-import edu.fing.AdaptedMessage;
+import edu.fing.commons.AdaptedMessage;
 
 @Service(AdaptationManagerI.class)
 public class AdaptationManagerIBean implements AdaptationManagerI {

@@ -2,7 +2,7 @@ package edu.fing.switchyard.Adaptation_Manager;
 
 import org.switchyard.component.bean.Service;
 
-import edu.fing.AdaptedMessage;
+import edu.fing.commons.AdaptedMessage;
 
 @Service(PruebaRouting.class)
 public class PruebaRoutingBean implements PruebaRouting {

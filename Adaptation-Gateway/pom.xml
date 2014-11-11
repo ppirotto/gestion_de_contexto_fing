@@ -71,7 +71,11 @@
 			<version>${switchyard.version}</version>
 		</dependency>
 
-
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+			<version>4.2.0.Final</version>
+		</dependency>
 		<dependency>
 			<groupId>edu.fing.commons</groupId>
 			<artifactId>adaptation-commons</artifactId>
