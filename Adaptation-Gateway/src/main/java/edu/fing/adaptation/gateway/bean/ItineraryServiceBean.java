@@ -7,7 +7,7 @@ import org.hibernate.SessionFactory;
 import org.switchyard.component.bean.Service;
 
 import edu.fing.adaptation.gateway.util.HibernateUtils;
-import edu.fing.commons.ContextReasonerData;
+import edu.fing.commons.dto.ContextReasonerData;
 
 @Service(ItineraryService.class)
 public class ItineraryServiceBean implements ItineraryService {

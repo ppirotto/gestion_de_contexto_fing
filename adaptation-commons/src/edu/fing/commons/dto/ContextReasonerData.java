@@ -1,4 +1,4 @@
-package edu.fing.commons;
+package edu.fing.commons.dto;
 
 import java.util.List;
 

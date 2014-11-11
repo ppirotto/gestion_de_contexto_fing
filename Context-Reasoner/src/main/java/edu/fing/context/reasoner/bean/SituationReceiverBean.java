@@ -15,7 +15,7 @@ import org.switchyard.remote.RemoteInvoker;
 import org.switchyard.remote.RemoteMessage;
 import org.switchyard.remote.http.HttpInvoker;
 
-import edu.fing.commons.ContextReasonerData;
+import edu.fing.commons.dto.ContextReasonerData;
 import edu.fing.context.reasoner.model.Adaptation;
 import edu.fing.context.reasoner.util.HibernateUtils;
 

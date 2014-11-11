@@ -4,12 +4,11 @@
 	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>edu.fing.switchyard</groupId>
-	<artifactId>CEP-Engine</artifactId>
+	<artifactId>context-management-backoffice</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>edu.fing.switchyard:CEP-Engine</name>
+	<name>edu.fing.switchyard:context-management-backoffice</name>
 	<properties>
 		<switchyard.version>1.1.0.Final</switchyard.version>
-		<droolsVersion>6.0.0.Final</droolsVersion>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -44,62 +43,44 @@
 			<version>${switchyard.version}</version>
 			<scope>test</scope>
 		</dependency>
+		<!-- Import the CDI API, we use provided scope as the API is included in 
+			JBoss AS 7 -->
+		<dependency>
+			<groupId>javax.enterprise</groupId>
+			<artifactId>cdi-api</artifactId>
+			<scope>provided</scope>
+			<version>1.0</version>
+		</dependency>
+		<!-- Import the Common Annotations API (JSR-250), we use provided scope 
+			as the API is included in JBoss AS 7 -->
+		<dependency>
+			<groupId>org.jboss.spec.javax.annotation</groupId>
+			<artifactId>jboss-annotations-api_1.1_spec</artifactId>
+			<scope>provided</scope>
+			<version>1.0.1.Final</version>
+		</dependency>
+		<!-- Import the JSF API, we use provided scope as the API is included in 
+			JBoss AS 7 -->
+		<dependency>
+			<groupId>org.jboss.spec.javax.faces</groupId>
+			<artifactId>jboss-jsf-api_2.1_spec</artifactId>
+			<scope>provided</scope>
+			<version>2.0.9.Final</version>
+		</dependency>
+		<dependency>
+			<groupId>edu.fing.commons</groupId>
+			<artifactId>adaptation-commons</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 		<dependency>
 			<groupId>org.switchyard.components</groupId>
 			<artifactId>switchyard-component-bean</artifactId>
 			<version>${switchyard.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.drools</groupId>
-			<artifactId>drools-compiler</artifactId>
-			<version>${droolsVersion}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-entitymanager</artifactId>
-			<version>4.2.0.Final</version>
-		</dependency>
-		<!-- <dependency> -->
-		<!-- <groupId>org.drools</groupId> -->
-		<!-- <artifactId>drools-compiler</artifactId> -->
-		<!-- <version>${droolsVersion}</version> -->
-		<!-- </dependency> -->
-
-		<!-- <dependency> -->
-		<!-- <groupId>org.drools</groupId> -->
-		<!-- <artifactId>knowledge-api</artifactId> -->
-		<!-- <version>${droolsVersion}</version> -->
-		<!-- </dependency> -->
-		<!-- <dependency> -->
-		<!-- <groupId>org.drools</groupId> -->
-		<!-- <artifactId>drools-core</artifactId> -->
-		<!-- <version>${droolsVersion}</version> -->
-		<!-- </dependency> -->
-		<!-- <dependency> -->
-		<!-- <groupId>org.drools</groupId> -->
-		<!-- <artifactId>drools-compiler</artifactId> -->
-		<!-- <version>${droolsVersion}</version> -->
-		<!-- </dependency> -->
-		<!-- <dependency> -->
-		<!-- <groupId>com.thoughtworks.xstream</groupId> -->
-		<!-- <artifactId>xstream</artifactId> -->
-		<!-- <version>1.3.1</version> -->
-		<!-- </dependency> -->
-
-		<dependency>
 			<groupId>org.switchyard.components</groupId>
 			<artifactId>switchyard-component-sca</artifactId>
 			<version>${switchyard.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.switchyard.components</groupId>
-			<artifactId>switchyard-component-http</artifactId>
-			<version>${switchyard.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>edu.fing.commons</groupId>
-			<artifactId>adaptation-commons</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 	<build>
@@ -133,7 +114,7 @@
 				</configuration>
 			</plugin>
 			<plugin>
-				<artifactId>maven-jar-plugin</artifactId>
+				<artifactId>maven-war-plugin</artifactId>
 				<configuration>
 					<!-- Java EE 6 doesn't require web.xml, Maven needs to catch up! -->
 					<failOnMissingWebXml>false</failOnMissingWebXml>
