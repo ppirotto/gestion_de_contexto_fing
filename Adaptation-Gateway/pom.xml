@@ -31,18 +31,20 @@
 			<artifactId>switchyard-plugin</artifactId>
 			<version>${switchyard.version}</version>
 		</dependency>
-		<dependency>
-			<groupId>org.switchyard</groupId>
-			<artifactId>switchyard-test</artifactId>
-			<version>${switchyard.version}</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.switchyard.components</groupId>
-			<artifactId>switchyard-component-test-mixin-cdi</artifactId>
-			<version>${switchyard.version}</version>
-			<scope>test</scope>
-		</dependency>
+	        <dependency>
+            <groupId>javax.enterprise</groupId>
+            <artifactId>cdi-api</artifactId>
+            <version>1.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <!-- Import the Common Annotations API (JSR-250), we use provided scope as the API is included in JBoss AS 7 -->
+        <dependency>
+            <groupId>org.jboss.spec.javax.annotation</groupId>
+            <artifactId>jboss-annotations-api_1.1_spec</artifactId>
+            <version>1.0.1.FINAL</version>
+            <scope>provided</scope>
+        </dependency>
+
 		<dependency>
 			<groupId>org.switchyard.components</groupId>
 			<artifactId>switchyard-component-camel</artifactId>
@@ -69,16 +71,16 @@
 			<version>${switchyard.version}</version>
 		</dependency>
 
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-entitymanager</artifactId>
-			<version>4.2.0.Final</version>
-		</dependency>
 
 		<dependency>
 			<groupId>edu.fing.commons</groupId>
 			<artifactId>adaptation-commons</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.switchyard.components</groupId>
+			<artifactId>switchyard-component-http</artifactId>
+			<version>${switchyard.version}</version>
 		</dependency>
 	</dependencies>
 	<build>
@@ -109,6 +111,17 @@
 					<debug>true</debug>
 					<showWarnings>true</showWarnings>
 					<showDeprecation>true</showDeprecation>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifestEntries>
+							<Dependencies>deployment.adaptation-commons.jar</Dependencies>
+						</manifestEntries>
+					</archive>
 				</configuration>
 			</plugin>
 		</plugins>
