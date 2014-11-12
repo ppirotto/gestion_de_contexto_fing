@@ -20,7 +20,7 @@
     </sca:component>
     <sca:service name="RoutingServiceInterface" promote="RoutingSlipImpl/RoutingServiceInterface">
       <sca:interface.java interface="edu.fing.switchyard.Adaptation_Manager.RoutingServiceInterface"/>
-      <sca:binding.sca name="sca1"/>
+      <sca:binding.sca name="sca33"/>
     </sca:service>
     <sca:component name="AdaptationManagerIBean">
       <bean:implementation.bean class="edu.fing.switchyard.Adaptation_Manager.AdaptationManagerIBean"/>

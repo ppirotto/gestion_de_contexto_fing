@@ -11,8 +11,8 @@
       <sca:reference name="AdaptationsService">
         <sy:interface.esb inputType="java.lang.String" outputType="java.lang.String"/>
       </sca:reference>
-      <sca:reference name="ItineraryService">
-        <sca:interface.java interface="edu.fing.ItineraryService"/>
+      <sca:reference name="ItineraryServiceI">
+        <sca:interface.java interface="edu.fing.switchyard.Adaptation_Gateway.bean.ItineraryServiceI"/>
       </sca:reference>
     </sca:component>
     <sca:service name="SetAdaptationService" promote="SetAdaptations/SetAdaptationService">
@@ -28,17 +28,9 @@
     </sca:reference>
     <sca:component name="ItineraryServiceBean">
       <bean:implementation.bean class="edu.fing.switchyard.Adaptation_Gateway.bean.ItineraryServiceBean"/>
-      <sca:service name="ItineraryService">
-        <sca:interface.java interface="edu.fing.ItineraryService"/>
+      <sca:service name="ItineraryServiceI">
+        <sca:interface.java interface="edu.fing.switchyard.Adaptation_Gateway.bean.ItineraryServiceI"/>
       </sca:service>
     </sca:component>
-    <sca:service name="ItineraryService" promote="ItineraryServiceBean/ItineraryService">
-      <sca:interface.java interface="edu.fing.ItineraryService"/>
-      <sca:binding.sca name="sca2"/>
-      <http:binding.http name="httpAdaptation">
-        <sy:operationSelector operationName="receiveAdaptations"/>
-        <http:contextPath>httpAdaptation</http:contextPath>
-      </http:binding.http>
-    </sca:service>
   </sca:composite>
 </sy:switchyard>

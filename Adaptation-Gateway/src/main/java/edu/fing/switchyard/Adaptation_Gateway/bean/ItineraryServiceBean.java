@@ -14,11 +14,10 @@ import org.switchyard.remote.RemoteInvoker;
 import org.switchyard.remote.RemoteMessage;
 import org.switchyard.remote.http.HttpInvoker;
 
-import edu.fing.ItineraryService;
 import edu.fing.commons.AdaptedMessage;
 
-@Service(ItineraryService.class)
-public class ItineraryServiceBean implements ItineraryService {
+@Service(ItineraryServiceI.class)
+public class ItineraryServiceBean implements ItineraryServiceI {
 
 	private static final QName SERVICE = new QName("urn:edu.fing.switchyard:Adaptation-Manager:1.0", "RoutingServiceInterface");
 

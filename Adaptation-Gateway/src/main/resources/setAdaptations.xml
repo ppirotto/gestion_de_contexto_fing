@@ -3,11 +3,12 @@
     <route>
         <from uri="switchyard://SetAdaptationService"/>
         <setHeader headerName="itinerary">
-            <method beanType="edu.fing.adaptation.gateway.model.Itinerary" method="setItinerary" ref="null"></method>
+            <method ref="null" method="setItinerary" beanType="edu.fing.adaptation.gateway.model.Itinerary"></method>
         </setHeader>
         <log message="SetAdaptationService - message received: ${body} ${headers}"/>
-        <to uri="switchyard://ItineraryService"/>
-<!-- <to uri="switchyard://AdaptationsService"/> -->
-        <log message="SetAdaptationService - response received: ${body}"/>
+        <to uri="switchyard://ItineraryServiceI"/>
+        <log message="SetAdaptationService - response received: ${body}">
+            <description>&lt;to uri="switchyard://AdaptationsService"/&gt;</description>
+        </log>
     </route>
 </routes>
