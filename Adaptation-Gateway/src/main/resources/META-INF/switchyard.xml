@@ -31,6 +31,13 @@
       <sca:service name="ItineraryServiceI">
         <sca:interface.java interface="edu.fing.switchyard.Adaptation_Gateway.bean.ItineraryServiceI"/>
       </sca:service>
+      <sca:reference name="InterfaceManager">
+        <sca:interface.java interface="edu.fing.switchyard.Adaptation_Gateway.InterfaceManager"/>
+      </sca:reference>
     </sca:component>
+    <sca:reference name="RoutingServiceInterface" multiplicity="0..1" promote="ItineraryServiceBean/InterfaceManager">
+      <sca:interface.java interface="edu.fing.switchyard.Adaptation_Gateway.InterfaceManager"/>
+      <sca:binding.sca sy:target="RoutingServiceInterface" sy:targetNamespace="urn:edu.fing.switchyard:Adaptation-Manager:1.0" name="sca34"/>
+    </sca:reference>
   </sca:composite>
 </sy:switchyard>

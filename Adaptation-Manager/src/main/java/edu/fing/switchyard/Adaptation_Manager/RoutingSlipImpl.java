@@ -25,6 +25,7 @@ public class RoutingSlipImpl extends RouteBuilder {
 				HashMap<String, String> hashMap = new HashMap<String, String>();
 				hashMap.put("itinerary", "switchyard://PruebaRouting?operationName=hola");
 				exchange.getContext().setProperties(hashMap);
+				exchange.getIn().setHeader("itinerary", "switchyard://PruebaRouting?operationName=hola");
 				AdaptedMessage adaptedMessage = exchange.getIn().getBody(AdaptedMessage.class);
 				System.out.println(adaptedMessage.getMessage());
 				// Set<Property> properties =

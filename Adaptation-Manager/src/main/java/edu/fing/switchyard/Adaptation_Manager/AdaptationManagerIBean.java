@@ -22,4 +22,13 @@ public class AdaptationManagerIBean implements AdaptationManagerI {
 		System.out.println(this.context);
 		return "OK";
 	}
+
+	public String recieve(AdaptedMessage msg) {
+		System.out.println("EN EL ADAPTER MANAGER2");
+
+		String itinerary = this.context.getPropertyValue("itinerary");
+		System.out.println(itinerary);
+		System.out.println(this.context);
+		return "OK";
+	}
 }
