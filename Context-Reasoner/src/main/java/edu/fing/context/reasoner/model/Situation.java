@@ -13,13 +13,14 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "SITUATION")
-public class Situation  implements Serializable{
+public class Situation implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	private Long id;
 	private String name;
 	private String description;
+	private Long minuteDuration;
 	private Set<Adaptation> adaptations;
 
 	@Id
@@ -33,22 +34,30 @@ public class Situation  implements Serializable{
 	public String getName() {
 		return name;
 	}
-	
+
 	@Column(name = "DESCRIPTION")
 	public String getDescription() {
 		return description;
 	}
-	
+
+	@Column(name = "MINUTE_DURATION", nullable = true)
+	public Long getMinuteDuration() {
+		return minuteDuration;
+	}
+
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "situation")
 	public Set<Adaptation> getAdaptations() {
 		return adaptations;
 	}
+
 	public void setSituationId(String situationId) {
 		this.setName(situationId);
 	}
+
 	public void setDescription(String description) {
 		this.description = description;
 	}
+
 	public void setAdaptations(Set<Adaptation> adaptations) {
 		this.adaptations = adaptations;
 	}
@@ -60,5 +69,9 @@ public class Situation  implements Serializable{
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
+	public void setMinuteDuration(Long minuteDuration) {
+		this.minuteDuration = minuteDuration;
+	}
+
 }
