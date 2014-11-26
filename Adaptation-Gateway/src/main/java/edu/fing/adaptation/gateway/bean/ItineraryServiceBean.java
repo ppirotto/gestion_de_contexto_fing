@@ -7,16 +7,12 @@ import org.hibernate.SessionFactory;
 import org.switchyard.component.bean.Service;
 
 import edu.fing.adaptation.gateway.util.HibernateUtils;
-import edu.fing.commons.ContextReasonerData;
 
 @Service(ItineraryService.class)
 public class ItineraryServiceBean implements ItineraryService {
 
 	@Override
-	public void receiveAdaptations(List<ContextReasonerData> contextReasonerData) {
-		for (ContextReasonerData data : contextReasonerData) {
-			System.out.println("data recibida del context reasoner: user:" + data.getUser() + " service:" + data.getService());
-		}
+	public void receiveAdaptations(List<String> contextReasonerData) {
 
 		SessionFactory sessionFactory = HibernateUtils.getSessionFactory();
 		Session session = sessionFactory.openSession();

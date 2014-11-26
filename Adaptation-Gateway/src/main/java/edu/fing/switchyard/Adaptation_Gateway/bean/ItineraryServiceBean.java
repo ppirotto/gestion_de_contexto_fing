@@ -1,5 +1,7 @@
 package edu.fing.switchyard.Adaptation_Gateway.bean;
 
+import java.util.ArrayList;
+
 import javax.inject.Inject;
 import javax.xml.namespace.QName;
 
@@ -7,6 +9,7 @@ import org.switchyard.Context;
 import org.switchyard.component.bean.Reference;
 import org.switchyard.component.bean.Service;
 
+import edu.fing.commons.Adaptation;
 import edu.fing.commons.AdaptedMessage;
 import edu.fing.switchyard.Adaptation_Gateway.InterfaceManager;
 
@@ -24,7 +27,7 @@ public class ItineraryServiceBean implements ItineraryServiceI {
 
 	@Override
 	public void receiveAdaptations(String mess) {
-		// for (ContextReasonerData data : contextReasonerData) {
+
 		// System.out.println("data recibida del context reasoner: user:" +
 		// data.getUser() + " service:" + data.getService());
 		// }
@@ -36,7 +39,18 @@ public class ItineraryServiceBean implements ItineraryServiceI {
 		System.out.println("en el gatewaaaaay");
 
 		AdaptedMessage adaptedMessage = new AdaptedMessage();
-		adaptedMessage.setMessage("hola HIJO DE MIL PUTAS");
+		adaptedMessage.setMessage(mess);
+		adaptedMessage.setHeader("switchyard://DelayService,switchyard://DelayService");
+		ArrayList<Adaptation> adaptations = new ArrayList<Adaptation>();
+		Adaptation adapt = new Adaptation();
+		adapt.setData(10000);
+		adapt.setName("Delay");
+		adaptations.add(adapt);
+		Adaptation adapt2 = new Adaptation();
+		adapt2.setData(10000);
+		adapt2.setName("Delay");
+		adaptations.add(adapt2);
+		adaptedMessage.setAdaptations(adaptations);
 
 		this.interfaceManager.submit(adaptedMessage);
 

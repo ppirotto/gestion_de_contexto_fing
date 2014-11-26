@@ -11,6 +11,9 @@
       <sca:service name="RoutingServiceInterface">
         <sca:interface.java interface="edu.fing.switchyard.Adaptation_Manager.RoutingServiceInterface"/>
       </sca:service>
+      <sca:reference name="DelayService">
+        <sca:interface.java interface="edu.fing.switchyard.Adaptation_Manager.DelayService"/>
+      </sca:reference>
     </sca:component>
     <sca:component name="PruebaRoutingBean">
       <bean:implementation.bean class="edu.fing.switchyard.Adaptation_Manager.PruebaRoutingBean"/>
@@ -32,5 +35,13 @@
       <sca:interface.java interface="edu.fing.switchyard.Adaptation_Manager.AdaptationManagerI"/>
       <sca:binding.sca sy:clustered="false" name="sca12"/>
     </sca:service>
+    <sca:component name="CamelDelay">
+      <camel:implementation.camel>
+        <camel:java class="edu.fing.switchyard.Adaptation_Manager.CamelDelay"/>
+      </camel:implementation.camel>
+      <sca:service name="DelayService">
+        <sca:interface.java interface="edu.fing.switchyard.Adaptation_Manager.DelayService"/>
+      </sca:service>
+    </sca:component>
   </sca:composite>
 </sy:switchyard>

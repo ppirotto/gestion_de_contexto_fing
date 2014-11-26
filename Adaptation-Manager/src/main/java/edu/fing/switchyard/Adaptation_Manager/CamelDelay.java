@@ -6,7 +6,7 @@ import org.apache.camel.builder.RouteBuilder;
 
 import edu.fing.commons.AdaptedMessage;
 
-public class RoutingSlipImpl extends RouteBuilder {
+public class CamelDelay extends RouteBuilder {
 
 	/**
 	 * The Camel route is configured via this method. The from endpoint is
@@ -14,18 +14,20 @@ public class RoutingSlipImpl extends RouteBuilder {
 	 */
 	@Override
 	public void configure() {
-
 		// TODO Auto-generated method stub
-		from("switchyard://RoutingServiceInterface").process(new Processor() {
+		from("switchyard://DelayService").process(new Processor() {
 
 			@Override
 			public void process(Exchange exchange) throws Exception {
 				AdaptedMessage adaptedMessage = exchange.getIn().getBody(AdaptedMessage.class);
-				exchange.getIn().setHeader("itinerary", adaptedMessage.getHeader());
-				System.out.println(adaptedMessage.getMessage());
+				exchange.getIn().setHeader("delayTime", adaptedMessage.getAdaptations().get(0).getData());
+				adaptedMessage.getAdaptations().remove(0);
+				System.out.println("message: " + adaptedMessage.getMessage());
+				System.out.println("cantidad de adaptations: " + adaptedMessage.getAdaptations().size());
 
-				System.out.println("ESTAMOS EN EL ROUTING NOMAA");
+				System.out.println("ESTAMOS EN EL DELAY");
 			}
-		}).log("Received message for 'RoutingSlip' : ${headers} ${body}").routingSlip().header("itinerary").log("PASO EL ROUT");
+		}).log("Received message for 'DelayService' : ${body}").delay(header("delayTime")).log("volvi de dormirme");
 	}
+
 }
