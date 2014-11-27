@@ -5,4 +5,7 @@ public interface DroolsConfigService {
 	String deployVersion(String versionNumber);
 
 	String updateActiveVersion(String versionNumber);
+	
+	String getAvailableRules();
+	
 }

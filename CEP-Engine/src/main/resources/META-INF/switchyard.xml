@@ -39,6 +39,7 @@
         <sy:operationSelector operationName="updateActiveVersion"/>
         <http:contextPath>drools-config/updateActiveVersion</http:contextPath>
       </http:binding.http>
+      <sca:binding.sca name="sca123"/>
     </sca:service>
   </sca:composite>
 </sy:switchyard>
