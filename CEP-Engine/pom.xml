@@ -132,7 +132,17 @@
 					<showDeprecation>true</showDeprecation>
 				</configuration>
 			</plugin>
-			
+			<plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifestEntries>
+                            <Dependencies>deployment.adaptation-commons.jar</Dependencies>
+                        </manifestEntries>
+                    </archive>
+                </configuration>
+            </plugin>
 		</plugins>
 	</build>
 </project>

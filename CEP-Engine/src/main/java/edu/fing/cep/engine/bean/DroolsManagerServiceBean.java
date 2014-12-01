@@ -26,12 +26,14 @@ import edu.fing.cep.engine.model.Rule;
 import edu.fing.cep.engine.model.Version;
 import edu.fing.cep.engine.utils.DroolsUtils;
 import edu.fing.cep.engine.utils.HibernateUtils;
+import edu.fing.commons.front.dto.AvailableRulesTO;
+import edu.fing.commons.front.dto.RuleTO;
+import edu.fing.commons.front.dto.VersionTO;
 
 @Service(DroolsManagerService.class)
 public class DroolsManagerServiceBean implements DroolsManagerService {
 
 	private static KieSession kSession;
-//	private static KieFileSystem kFileSystem;
 	private static KieContainer kContainer;
 	private static KieServices kServices;
 	private KieBaseConfiguration streamModeConfig;
@@ -212,6 +214,52 @@ public class DroolsManagerServiceBean implements DroolsManagerService {
 		
 		session.getTransaction().commit();
 		session.close();
+	}
+
+
+
+	@Override
+	public AvailableRulesTO getAvailableRules() {
+		// TODO Auto-generated method stub
+		AvailableRulesTO res = new AvailableRulesTO();
+		
+		SessionFactory sessionFactory = HibernateUtils.getSessionFactory();
+		Session session = sessionFactory.openSession();
+		session.beginTransaction();
+		
+		Query activeConfigurationQuery = session.createSQLQuery("SELECT * FROM ACTIVE_CONFIGURATION").addEntity(ActiveConfiguration.class);
+
+		@SuppressWarnings("unchecked")
+		ActiveConfiguration activeConfig = (ActiveConfiguration) activeConfigurationQuery.uniqueResult();
+		
+		res.setActiveVersionId(activeConfig.getId());
+		res.setLastDeployDate(activeConfig.getLastDeployDate());
+		List<VersionTO> versions = new ArrayList<VersionTO>();
+		res.setVersions(versions);
+		
+		Query allVersionsQuery = session.createSQLQuery("SELECT * FROM VERSION").addEntity(Version.class);
+		
+		@SuppressWarnings("unchecked")
+		List<Version> allVersions = allVersionsQuery.list();
+		
+		for (Version version : allVersions) {
+			VersionTO newVersionTO = new VersionTO();
+			newVersionTO.setCreationDate(version.getCreationDate());
+			newVersionTO.setId(version.getId());
+			newVersionTO.setVersionNumber(version.getVersionNumber());
+			List<RuleTO> rulesTO = new ArrayList<RuleTO>();
+			for (Rule rule : version.getRules()) {
+				RuleTO ruleTO = new RuleTO();
+				ruleTO.setId(rule.getId());
+				ruleTO.setName(rule.getName());
+				ruleTO.setRule(rule.getRule());
+				rulesTO.add(ruleTO);
+			}
+			newVersionTO.setRules(rulesTO);
+			res.getVersions().add(newVersionTO);
+		}
+
+		return res;
 	}
 	
 	
