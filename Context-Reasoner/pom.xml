@@ -69,11 +69,6 @@
   		<version>${switchyard.version}</version>
   	</dependency>
   	<dependency>
-  		<groupId>edu.fing.switchyard</groupId>
-  		<artifactId>Adaptation-Gateway</artifactId>
-  		<version>0.0.1-SNAPSHOT</version>
-  	</dependency>
-  	<dependency>
   		<groupId>edu.fing.commons</groupId>
   		<artifactId>adaptation-commons</artifactId>
   		<version>0.0.1-SNAPSHOT</version>
@@ -109,6 +104,17 @@
           <showDeprecation>true</showDeprecation>
         </configuration>
       </plugin>
+      <plugin>
+               <groupId>org.apache.maven.plugins</groupId>
+               <artifactId>maven-jar-plugin</artifactId>
+               <configuration>
+                   <archive>
+                       <manifestEntries>
+                           <Dependencies>deployment.adaptation-commons.jar</Dependencies>
+                       </manifestEntries>
+                   </archive>
+               </configuration>
+           </plugin>
     </plugins>
   </build>
 </project>

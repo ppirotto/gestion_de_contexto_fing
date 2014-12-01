@@ -87,13 +87,17 @@
     	<groupId>org.apache.camel</groupId>
     	<artifactId>camel-core</artifactId>
     	<version>2.12.2</version>
-    	
     </dependency>
     <dependency>
     	<groupId>org.switchyard.components</groupId>
     	<artifactId>switchyard-component-soap</artifactId>
     	<version>${switchyard.version}</version>
     </dependency>
+    <dependency>
+			<groupId>edu.fing.commons</groupId>
+			<artifactId>adaptation-commons</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
   </dependencies>
   <build>
     <plugins>
@@ -125,6 +129,17 @@
           <showDeprecation>true</showDeprecation>
         </configuration>
       </plugin>
+      <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-jar-plugin</artifactId>
+            <configuration>
+                <archive>
+                    <manifestEntries>
+                        <Dependencies>deployment.adaptation-commons.jar</Dependencies>
+                    </manifestEntries>
+                </archive>
+            </configuration>
+        </plugin>
     </plugins>
   </build>
 </project>

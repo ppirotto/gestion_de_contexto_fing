@@ -46,17 +46,17 @@
       <children xsi:type="pi:ContainerShape" visible="true" active="true">
         <graphicsAlgorithm xsi:type="al:Image" lineWidth="1" transparency="0.0" width="20" height="20" x="105" y="25" id="org.switchyard.tools.ui.editor.reference.scale" stretchH="true" stretchV="true" proportional="true"/>
         <link>
-          <businessObjects href="../../../../../src/main/resources/META-INF/switchyard.xml#ComponentReference:InvokeAG:ESBService"/>
+          <businessObjects href="../../../../../src/main/resources/META-INF/switchyard.xml#ComponentReference:InvokeAG:AdaptationGatewayService"/>
         </link>
         <anchors xsi:type="pi:BoxRelativeAnchor" visible="true" active="true" outgoingConnections="//@connections.1" useAnchorLocationAsConnectionEndpoint="true" relativeWidth="1.0" relativeHeight="0.5">
           <graphicsAlgorithm xsi:type="al:Ellipse" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="10" height="10" x="-10" y="-5"/>
           <link>
-            <businessObjects href="../../../../../src/main/resources/META-INF/switchyard.xml#ComponentReference:InvokeAG:ESBService"/>
+            <businessObjects href="../../../../../src/main/resources/META-INF/switchyard.xml#ComponentReference:InvokeAG:AdaptationGatewayService"/>
           </link>
         </anchors>
         <anchors xsi:type="pi:ChopboxAnchor">
           <link>
-            <businessObjects href="../../../../../src/main/resources/META-INF/switchyard.xml#ComponentReference:InvokeAG:ESBService"/>
+            <businessObjects href="../../../../../src/main/resources/META-INF/switchyard.xml#ComponentReference:InvokeAG:AdaptationGatewayService"/>
           </link>
         </anchors>
       </children>
@@ -91,16 +91,16 @@
       </anchors>
     </children>
     <children xsi:type="pi:ContainerShape" visible="true" active="true">
-      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="120" height="50" x="430" y="80">
+      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="100" height="50" x="450" y="80">
         <graphicsAlgorithmChildren xsi:type="al:Polygon" lineWidth="2" filled="true" transparency="0.0" width="100" height="50" style="//@styles.3">
           <properties key="sca-type" value="composite-reference"/>
-          <graphicsAlgorithmChildren xsi:type="al:Text" foreground="//@colors.10" lineWidth="1" filled="false" transparency="0.0" width="62" height="50" x="28" font="//@fonts.1" horizontalAlignment="ALIGNMENT_CENTER" value="GatewayService"/>
+          <graphicsAlgorithmChildren xsi:type="al:Text" foreground="//@colors.10" lineWidth="1" filled="false" transparency="0.0" width="75" height="50" x="20" font="//@fonts.1" horizontalAlignment="ALIGNMENT_CENTER" value="AdaptationGatewayService"/>
           <points before="3" after="3"/>
-          <points x="90" before="3" after="3"/>
-          <points x="120" y="25" before="3" after="3"/>
-          <points x="90" y="50" before="3" after="3"/>
+          <points x="75" before="3" after="3"/>
+          <points x="100" y="25" before="3" after="3"/>
+          <points x="75" y="50" before="3" after="3"/>
           <points y="50" before="3" after="3"/>
-          <points x="18" y="25" before="3" after="3"/>
+          <points x="15" y="25" before="3" after="3"/>
           <points before="3" after="3"/>
         </graphicsAlgorithmChildren>
       </graphicsAlgorithm>
@@ -112,7 +112,7 @@
         <link>
           <businessObjects href="../../../../../src/main/resources/META-INF/switchyard.xml#//@switchyard/@composite/@reference.0"/>
         </link>
-        <location x="16" y="25"/>
+        <location x="14" y="25"/>
       </anchors>
       <anchors xsi:type="pi:ChopboxAnchor">
         <link>

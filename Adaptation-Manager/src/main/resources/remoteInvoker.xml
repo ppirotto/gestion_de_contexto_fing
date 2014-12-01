@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="ASCII"?>
-<routes xmlns="http://camel.apache.org/schema/spring">
-    <route>
-        <from uri="switchyard://RemoteInvokerService"/>
-        <log message="RemoteInvokerService - message received: ${headers}"/>
-        <log message="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"/>
-        <to uri="switchyard://InvokerService"/>
-    </route>
-</routes>

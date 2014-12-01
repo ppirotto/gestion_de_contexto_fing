@@ -3,55 +3,26 @@
   <sca:composite name="Adaptation-Manager" targetNamespace="urn:edu.fing.context.management:adaptation-manager:1.0">
     <sca:component name="RoutingSlip">
       <camel:implementation.camel>
-        <camel:xml path="routingSlip.xml"/>
+        <camel:java class="edu.fing.adaptation.manager.RoutingSlip"/>
       </camel:implementation.camel>
       <sca:service name="RoutingService">
-        <sy:interface.esb inputType="java:java.lang.String" outputType="java:java.lang.String"/>
+        <sca:interface.java interface="edu.fing.adaptation.manager.RoutingService"/>
       </sca:service>
-      <sca:reference name="AppendService">
-        <sy:interface.esb inputType="java.lang.String" outputType="java.lang.String"/>
-      </sca:reference>
       <sca:reference name="DelayService">
-        <sy:interface.esb inputType="java.lang.String" outputType="java.lang.String"/>
+        <sca:interface.java interface="edu.fing.adaptation.manager.DelayService"/>
       </sca:reference>
-      <sca:reference name="RemoteInvokerService">
-        <sy:interface.esb inputType="java.lang.String" outputType="java.lang.String"/>
-      </sca:reference>
-    </sca:component>
-    <sca:service name="RoutingService" promote="RoutingSlip/RoutingService">
-      <sy:interface.esb inputType="java:java.lang.String" outputType="java:java.lang.String"/>
-      <sca:binding.sca name="sca1"/>
-    </sca:service>
-    <sca:component name="Append">
-      <camel:implementation.camel>
-        <camel:xml path="append.xml"/>
-      </camel:implementation.camel>
-      <sca:service name="AppendService">
-        <sy:interface.esb inputType="java.lang.String" outputType="java.lang.String"/>
-      </sca:service>
     </sca:component>
     <sca:component name="Delay">
       <camel:implementation.camel>
-        <camel:xml path="delay.xml"/>
+        <camel:java class="edu.fing.adaptation.manager.Delay"/>
       </camel:implementation.camel>
       <sca:service name="DelayService">
-        <sy:interface.esb inputType="java.lang.String" outputType="java.lang.String"/>
+        <sca:interface.java interface="edu.fing.adaptation.manager.DelayService"/>
       </sca:service>
     </sca:component>
-    <sca:component name="RemoteInvoker">
-      <camel:implementation.camel>
-        <camel:xml path="remoteInvoker.xml"/>
-      </camel:implementation.camel>
-      <sca:service name="RemoteInvokerService">
-        <sy:interface.esb inputType="java.lang.String" outputType="java.lang.String"/>
-      </sca:service>
-      <sca:reference name="InvokerService">
-        <sy:interface.esb inputType="java:java.lang.String" outputType="java:java.lang.String"/>
-      </sca:reference>
-    </sca:component>
-    <sca:reference name="InvokerService" multiplicity="0..1" promote="RemoteInvoker/InvokerService">
-      <sy:interface.esb inputType="java:java.lang.String" outputType="java:java.lang.String"/>
-      <sca:binding.sca sy:clustered="false" sy:target="ESBService" sy:targetNamespace="urn:edu.fing.context.management:service-invoker:1.0" name="sca2"/>
-    </sca:reference>
+    <sca:service name="RoutingService" promote="RoutingSlip/RoutingService">
+      <sca:interface.java interface="edu.fing.adaptation.manager.RoutingService"/>
+      <sca:binding.sca name="sca112321"/>
+    </sca:service>
   </sca:composite>
 </sy:switchyard>
