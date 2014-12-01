@@ -22,7 +22,7 @@
     </sca:component>
     <sca:reference name="AdaptationManager" multiplicity="0..1" promote="AdaptationServiceBean/AdaptationManager">
       <sca:interface.java interface="edu.fing.adaptation.gateway.bean.AdaptationManager"/>
-      <sca:binding.sca sy:target="RoutingService" sy:targetNamespace="urn:edu.fing.context.management:adaptation-manager:1.0" name="scaAdaptation"/>
+      <sca:binding.sca sy:target="AdaptedMessageService" sy:targetNamespace="urn:edu.fing.context.management:adaptation-manager:1.0" name="scaAdaptation"/>
     </sca:reference>
     <sca:service name="AdaptationService" promote="AdaptationServiceBean/AdaptationService">
       <sca:interface.java interface="edu.fing.adaptation.gateway.bean.AdaptationService"/>

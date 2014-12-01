@@ -6,6 +6,7 @@ public class AdaptedMessage {
 
 	private String message;
 	private String itinerary;
+	private String service;
 	private List<Adaptation> adaptations;
 
 	public List<Adaptation> getAdaptations() {
@@ -30,5 +31,13 @@ public class AdaptedMessage {
 
 	public void setItinerary(String itinerary) {
 		this.itinerary = itinerary;
+	}
+
+	public String getService() {
+		return service;
+	}
+
+	public void setService(String service) {
+		this.service = service;
 	}
 }

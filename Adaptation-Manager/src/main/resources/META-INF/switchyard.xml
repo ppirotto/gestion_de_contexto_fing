@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<sy:switchyard xmlns:camel="urn:switchyard-component-camel:config:1.1" xmlns:sca="http://docs.oasis-open.org/ns/opencsa/sca/200912" xmlns:soap="urn:switchyard-component-soap:config:1.1" xmlns:sy="urn:switchyard-config:switchyard:1.1" name="Adaptation-Manager" targetNamespace="urn:edu.fing.context.management:adaptation-manager:1.0">
+<sy:switchyard xmlns:bean="urn:switchyard-component-bean:config:1.1" xmlns:camel="urn:switchyard-component-camel:config:1.1" xmlns:sca="http://docs.oasis-open.org/ns/opencsa/sca/200912" xmlns:soap="urn:switchyard-component-soap:config:1.1" xmlns:sy="urn:switchyard-config:switchyard:1.1" name="Adaptation-Manager" targetNamespace="urn:edu.fing.context.management:adaptation-manager:1.0">
   <sca:composite name="Adaptation-Manager" targetNamespace="urn:edu.fing.context.management:adaptation-manager:1.0">
     <sca:component name="RoutingSlip">
       <camel:implementation.camel>
         <camel:java class="edu.fing.adaptation.manager.RoutingSlip"/>
       </camel:implementation.camel>
+      <sca:reference name="DelayService">
+        <sca:interface.java interface="edu.fing.adaptation.manager.DelayService"/>
+      </sca:reference>
       <sca:service name="RoutingService">
         <sca:interface.java interface="edu.fing.adaptation.manager.RoutingService"/>
       </sca:service>
-      <sca:reference name="DelayService">
-        <sca:interface.java interface="edu.fing.adaptation.manager.DelayService"/>
+      <sca:reference name="ExternalInvocationService">
+        <sca:interface.java interface="edu.fing.adaptation.manager.ExternalInvocationService"/>
       </sca:reference>
     </sca:component>
     <sca:component name="Delay">
@@ -20,9 +23,33 @@
         <sca:interface.java interface="edu.fing.adaptation.manager.DelayService"/>
       </sca:service>
     </sca:component>
-    <sca:service name="RoutingService" promote="RoutingSlip/RoutingService">
-      <sca:interface.java interface="edu.fing.adaptation.manager.RoutingService"/>
-      <sca:binding.sca name="sca112321"/>
+    <sca:component name="AdaptedMessageServiceBean">
+      <bean:implementation.bean class="edu.fing.adaptation.manager.AdaptedMessageServiceBean"/>
+      <sca:service name="AdaptedMessageService">
+        <sca:interface.java interface="edu.fing.adaptation.manager.AdaptedMessageService"/>
+      </sca:service>
+      <sca:reference name="RoutingService">
+        <sca:interface.java interface="edu.fing.adaptation.manager.RoutingService"/>
+      </sca:reference>
+    </sca:component>
+    <sca:service name="AdaptedMessageService" promote="AdaptedMessageServiceBean/AdaptedMessageService">
+      <sca:interface.java interface="edu.fing.adaptation.manager.AdaptedMessageService"/>
+      <sca:binding.sca name="sca123333"/>
     </sca:service>
+    <sca:component name="RemoteInvoker">
+      <camel:implementation.camel>
+        <camel:xml path="remoteInvoker.xml"/>
+      </camel:implementation.camel>
+      <sca:reference name="ServiceInvoker">
+        <sca:interface.java interface="edu.fing.adaptation.manager.ServiceInvoker"/>
+      </sca:reference>
+      <sca:service name="ExternalInvocationService">
+        <sca:interface.java interface="edu.fing.adaptation.manager.ExternalInvocationService"/>
+      </sca:service>
+    </sca:component>
+    <sca:reference name="ServiceInvoker" multiplicity="0..1" promote="RemoteInvoker/ServiceInvoker">
+      <sca:interface.java interface="edu.fing.adaptation.manager.ServiceInvoker"/>
+      <sca:binding.sca sy:targetNamespace="urn:edu.fing.context.management:service-invoker:1.0" sy:target="InvokerService" name="scaServiceInvoker"/>
+    </sca:reference>
   </sca:composite>
 </sy:switchyard>

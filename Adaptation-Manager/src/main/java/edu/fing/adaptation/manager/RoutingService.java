@@ -4,5 +4,5 @@ import edu.fing.commons.dto.AdaptedMessage;
 
 public interface RoutingService {
 
-	String submit(AdaptedMessage adaptedMessage);
+	AdaptedMessage submit(AdaptedMessage adaptedMessage);
 }

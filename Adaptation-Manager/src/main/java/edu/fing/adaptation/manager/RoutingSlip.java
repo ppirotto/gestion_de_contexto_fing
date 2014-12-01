@@ -21,7 +21,6 @@ public class RoutingSlip extends RouteBuilder {
 
 				AdaptedMessage adaptedMessage = exchange.getIn().getBody(AdaptedMessage.class);
 				exchange.getIn().setHeader("itinerary", adaptedMessage.getItinerary());
-
 				System.out.println(adaptedMessage.getMessage());
 				System.out.println("ESTAMOS EN EL ROUTING NOMAA");
 			}
