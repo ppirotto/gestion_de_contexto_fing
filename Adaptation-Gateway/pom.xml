@@ -3,10 +3,10 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
 	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>edu.fing.switchyard</groupId>
-	<artifactId>Adaptation-Gateway</artifactId>
+	<groupId>edu.fing.context.management</groupId>
+	<artifactId>adaptation-gateway</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>edu.fing.switchyard:Adaptation-Gateway</name>
+	<name>edu.fing.context.management:adaptation-gateway</name>
 	<properties>
 		<switchyard.version>1.1.0.Final</switchyard.version>
 	</properties>
@@ -111,6 +111,17 @@
 					<showDeprecation>true</showDeprecation>
 				</configuration>
 			</plugin>
+			<plugin>
+               <groupId>org.apache.maven.plugins</groupId>
+               <artifactId>maven-jar-plugin</artifactId>
+               <configuration>
+                   <archive>
+                       <manifestEntries>
+                           <Dependencies>deployment.adaptation-commons.jar</Dependencies>
+                       </manifestEntries>
+                   </archive>
+               </configuration>
+           </plugin>
 		</plugins>
 	</build>
 </project>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<sy:switchyard xmlns:bean="urn:switchyard-component-bean:config:1.1" xmlns:sca="http://docs.oasis-open.org/ns/opencsa/sca/200912" xmlns:sy="urn:switchyard-config:switchyard:1.1" name="Service-Invoker" targetNamespace="urn:edu.fing.switchyard:Service-Invoker:1.0">
-  <sca:composite name="Service-Invoker" targetNamespace="urn:edu.fing.switchyard:Service-Invoker:1.0">
+<sy:switchyard xmlns:bean="urn:switchyard-component-bean:config:1.1" xmlns:sca="http://docs.oasis-open.org/ns/opencsa/sca/200912" xmlns:sy="urn:switchyard-config:switchyard:1.1" name="Service-Invoker" targetNamespace="urn:edu.fing.context.management:service-invoker:1.0">
+  <sca:composite name="Service-Invoker" targetNamespace="urn:edu.fing.context.management:service-invoker:1.0">
     <sca:component name="InvokerServiceBean">
       <bean:implementation.bean class="edu.fing.switchyard.Service_Invoker.InvokerServiceBean"/>
       <sca:service name="InvokerService">
