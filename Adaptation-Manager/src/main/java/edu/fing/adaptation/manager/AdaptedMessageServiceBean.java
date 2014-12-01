@@ -17,8 +17,8 @@ public class AdaptedMessageServiceBean implements AdaptedMessageService {
 	@Override
 	public String submit(AdaptedMessage adaptedMessage) {
 
-		// AdaptedMessage response = this.routingService.submit(adaptedMessage);
-		return adaptedMessage.getMessage();
+		AdaptedMessage response = this.routingService.submit(adaptedMessage);
+		return response.getMessage();
 	}
 
 }

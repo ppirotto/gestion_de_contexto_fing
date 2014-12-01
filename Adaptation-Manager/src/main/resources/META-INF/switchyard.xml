@@ -36,9 +36,9 @@
       <sca:interface.java interface="edu.fing.adaptation.manager.AdaptedMessageService"/>
       <sca:binding.sca name="sca123333"/>
     </sca:service>
-    <sca:component name="RemoteInvoker">
+    <sca:component name="ExternalInvocation">
       <camel:implementation.camel>
-        <camel:xml path="remoteInvoker.xml"/>
+        <camel:xml path="externalInvocation.xml"/>
       </camel:implementation.camel>
       <sca:reference name="ServiceInvoker">
         <sca:interface.java interface="edu.fing.adaptation.manager.ServiceInvoker"/>
@@ -47,7 +47,7 @@
         <sca:interface.java interface="edu.fing.adaptation.manager.ExternalInvocationService"/>
       </sca:service>
     </sca:component>
-    <sca:reference name="ServiceInvoker" multiplicity="0..1" promote="RemoteInvoker/ServiceInvoker">
+    <sca:reference name="ServiceInvoker" multiplicity="0..1" promote="ExternalInvocation/ServiceInvoker">
       <sca:interface.java interface="edu.fing.adaptation.manager.ServiceInvoker"/>
       <sca:binding.sca sy:targetNamespace="urn:edu.fing.context.management:service-invoker:1.0" sy:target="InvokerService" name="scaServiceInvoker"/>
     </sca:reference>
