@@ -1,7 +1,9 @@
 package edu.fing.cep.engine.bean;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -232,7 +234,7 @@ public class DroolsManagerServiceBean implements DroolsManagerService {
 		@SuppressWarnings("unchecked")
 		ActiveConfiguration activeConfig = (ActiveConfiguration) activeConfigurationQuery.uniqueResult();
 		
-		res.setActiveVersionId(activeConfig.getId());
+		res.setActiveVersionId(activeConfig.getVersion().getId());
 		res.setLastDeployDate(activeConfig.getLastDeployDate());
 		List<VersionTO> versions = new ArrayList<VersionTO>();
 		res.setVersions(versions);
@@ -259,6 +261,56 @@ public class DroolsManagerServiceBean implements DroolsManagerService {
 			res.getVersions().add(newVersionTO);
 		}
 
+		return res;
+	}
+
+
+
+	@Override
+	public Boolean createNewVersion(VersionTO versionTO) {
+		SessionFactory sessionFactory = HibernateUtils.getSessionFactory();
+		Session session = sessionFactory.openSession();
+		session.beginTransaction();
+
+		
+		Query queryNewVersion = session.createSQLQuery("SELECT * FROM VERSION WHERE VERSION_NUMBER = :version ").addEntity(Version.class);
+		queryNewVersion.setParameter("version", versionTO.getVersionNumber());
+		
+		@SuppressWarnings("unchecked")
+		Version savedVersion = (Version) queryNewVersion.uniqueResult();
+		
+		if (savedVersion!=null){
+			return Boolean.FALSE;
+		}
+		Version newVersion = this.mapToEntity(versionTO);
+		session.save(newVersion);
+		
+		session.getTransaction().commit();
+		session.close();
+		
+		return Boolean.TRUE;
+	}
+
+
+
+	private Version mapToEntity(VersionTO versionTO) {
+		Version res = new Version();
+		res.setCreationDate(new Date());
+		res.setVersionNumber(versionTO.getVersionNumber());
+		res.setRules(new HashSet<Rule>());
+		for (RuleTO r : versionTO.getRules()) {
+			res.getRules().add(mapToEntity(r,res));
+		}
+		return res;
+	}
+
+
+
+	private Rule mapToEntity(RuleTO r, Version v) {
+		Rule res = new Rule();
+		res.setName(r.getName());
+		res.setRule(r.getRule());
+		res.setVersion(v);
 		return res;
 	}
 	

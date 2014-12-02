@@ -3,6 +3,7 @@ package edu.fing.cep.engine.bean;
 import java.util.HashMap;
 
 import edu.fing.commons.front.dto.AvailableRulesTO;
+import edu.fing.commons.front.dto.VersionTO;
 
 public interface DroolsManagerService {
 
@@ -13,4 +14,6 @@ public interface DroolsManagerService {
 	void updateActiveVersion(String versionNumber);
 
 	AvailableRulesTO getAvailableRules();
+
+	Boolean createNewVersion(VersionTO version);
 }

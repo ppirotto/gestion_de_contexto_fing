@@ -25,42 +25,34 @@ public class DroolsConfigServiceBean implements DroolsConfigService {
 	private DroolsManagerService droolsManager;
 	
 	@Override
-	public String deployVersion(String versionNumber) {
+	public Boolean deployVersion(String versionNumber) {
 		// TODO Auto-generated method stub
-		droolsManager.deployVersion(versionNumber);
-		return "OK!";
+		try {
+			droolsManager.deployVersion(versionNumber);
+			droolsManager.updateActiveVersion(versionNumber);
+			return Boolean.TRUE;
+		} catch (Exception e){
+			return Boolean.FALSE;
+		}
 	}
 	
-	@Override
-	public String updateActiveVersion(String versionNumber) {
-		// TODO Auto-generated method stub
-		droolsManager.updateActiveVersion(versionNumber);
-		return  "OK!";
-	}
+//	@Override
+//	public String updateActiveVersion(String versionNumber) {
+//		// TODO Auto-generated method stub
+//		droolsManager.updateActiveVersion(versionNumber);
+//		return  "OK!";
+//	}
 
 	@Override
 	public AvailableRulesTO getAvailableRules() {
 		// TODO Auto-generated method stub
 		return droolsManager.getAvailableRules();
-//		AvailableRulesTO res = new AvailableRulesTO();
-//		res.setActiveVersionId(0);
-//		res.setLastDeployDate(new Date());
-//		List<VersionTO> versions = new ArrayList<VersionTO>();
-//		VersionTO v = new VersionTO();
-//		v.setCreationDate(new Date());
-//		v.setId(2L);
-//		v.setVersionNumber("concha");
-//		List<RuleTO> rules = new ArrayList<RuleTO>();
-//		RuleTO r = new RuleTO();
-//		r.setId(123);
-//		r.setName("conchuda");
-//		r.setRule("regluda");
-//		rules.add(r);
-//		v.setRules(rules );
-//		versions.add(v);
-//		res.setVersions(versions );
-//		return res;
-//		return new AvailableRulesTO();
+	}
+
+	@Override
+	public Boolean createNewVersion(VersionTO version) {
+		// TODO Auto-generated method stub
+		return droolsManager.createNewVersion(version);
 	}
 	
 	

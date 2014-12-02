@@ -15,6 +15,9 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
 @Entity
 @Table(name = "VERSION")
 public class Version {
@@ -52,6 +55,7 @@ public class Version {
 	}
 	
 	@OneToMany(fetch=FetchType.EAGER, mappedBy="version")
+	@Cascade(CascadeType.SAVE_UPDATE)
 	public Set<Rule> getRules() {
 		return rules;
 	}
