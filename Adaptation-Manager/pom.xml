@@ -94,7 +94,7 @@
     	<version>${switchyard.version}</version>
     </dependency>
     <dependency>
-			<groupId>edu.fing.commons</groupId>
+			<groupId>edu.fing.context.management</groupId>
 			<artifactId>adaptation-commons</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
