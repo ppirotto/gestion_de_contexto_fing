@@ -5,6 +5,8 @@ import java.util.List;
 public class AdaptedMessage {
 
 	private String message;
+	private String itinerary;
+	private String service;
 	private List<Adaptation> adaptations;
 
 	public List<Adaptation> getAdaptations() {
@@ -21,5 +23,21 @@ public class AdaptedMessage {
 
 	public void setMessage(String message) {
 		this.message = message;
+	}
+
+	public String getItinerary() {
+		return itinerary;
+	}
+
+	public void setItinerary(String itinerary) {
+		this.itinerary = itinerary;
+	}
+
+	public String getService() {
+		return service;
+	}
+
+	public void setService(String service) {
+		this.service = service;
 	}
 }

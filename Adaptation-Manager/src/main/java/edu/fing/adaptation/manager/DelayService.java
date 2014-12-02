@@ -1,8 +1,8 @@
-package edu.fing.switchyard.Service_Invoker;
+package edu.fing.adaptation.manager;
 
 import edu.fing.commons.dto.AdaptedMessage;
 
-public interface InvokerService {
+public interface DelayService {
 
 	AdaptedMessage submit(AdaptedMessage adaptedMessage);
 }

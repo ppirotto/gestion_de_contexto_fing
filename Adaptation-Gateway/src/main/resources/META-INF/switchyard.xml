@@ -1,25 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <sy:switchyard xmlns:bean="urn:switchyard-component-bean:config:1.1" xmlns:camel="urn:switchyard-component-camel:config:1.1" xmlns:sca="http://docs.oasis-open.org/ns/opencsa/sca/200912" xmlns:sy="urn:switchyard-config:switchyard:1.1" name="Adaptation-Gateway" targetNamespace="urn:edu.fing.context.management:adaptation-gateway:1.0">
   <sca:composite name="Adaptation-Gateway" targetNamespace="urn:edu.fing.context.management:adaptation-gateway:1.0">
-    <sca:component name="SetAdaptations">
-      <camel:implementation.camel>
-        <camel:xml path="setAdaptations.xml"/>
-      </camel:implementation.camel>
-      <sca:service name="SetAdaptationService">
-        <sy:interface.esb inputType="java.lang.String" outputType="java.lang.String"/>
-      </sca:service>
-      <sca:reference name="AdaptationsService">
-        <sy:interface.esb inputType="java.lang.String" outputType="java.lang.String"/>
-      </sca:reference>
-    </sca:component>
-    <sca:service name="SetAdaptationService" promote="SetAdaptations/SetAdaptationService">
-      <sy:interface.esb inputType="java.lang.String" outputType="java.lang.String"/>
-      <sca:binding.sca name="sca1233"/>
-    </sca:service>
-    <sca:reference name="AdaptationsService" multiplicity="0..1" promote="SetAdaptations/AdaptationsService">
-      <sy:interface.esb inputType="java.lang.String" outputType="java.lang.String"/>
-      <sca:binding.sca sy:targetNamespace="urn:edu.fing.context.management:adaptation-manager:1.0" sy:target="RoutingService" name="sca2"/>
-    </sca:reference>
     <sca:component name="ItineraryServiceBean">
       <bean:implementation.bean class="edu.fing.adaptation.gateway.bean.ItineraryServiceBean"/>
       <sca:service name="ItineraryService">
@@ -29,6 +10,23 @@
     <sca:service name="ItineraryService" promote="ItineraryServiceBean/ItineraryService">
       <sca:interface.java interface="edu.fing.adaptation.gateway.bean.ItineraryService"/>
       <sca:binding.sca name="sca2"/>
+    </sca:service>
+    <sca:component name="AdaptationServiceBean">
+      <bean:implementation.bean class="edu.fing.adaptation.gateway.bean.AdaptationServiceBean"/>
+      <sca:reference name="AdaptationManager">
+        <sca:interface.java interface="edu.fing.adaptation.gateway.bean.AdaptationManager"/>
+      </sca:reference>
+      <sca:service name="AdaptationService">
+        <sca:interface.java interface="edu.fing.adaptation.gateway.bean.AdaptationService"/>
+      </sca:service>
+    </sca:component>
+    <sca:reference name="AdaptationManager" multiplicity="0..1" promote="AdaptationServiceBean/AdaptationManager">
+      <sca:interface.java interface="edu.fing.adaptation.gateway.bean.AdaptationManager"/>
+      <sca:binding.sca sy:target="AdaptedMessageService" sy:targetNamespace="urn:edu.fing.context.management:adaptation-manager:1.0" name="scaAdaptation"/>
+    </sca:reference>
+    <sca:service name="AdaptationService" promote="AdaptationServiceBean/AdaptationService">
+      <sca:interface.java interface="edu.fing.adaptation.gateway.bean.AdaptationService"/>
+      <sca:binding.sca name="sca155"/>
     </sca:service>
   </sca:composite>
 </sy:switchyard>

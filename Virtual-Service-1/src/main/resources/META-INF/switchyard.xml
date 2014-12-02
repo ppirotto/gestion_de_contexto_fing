@@ -8,8 +8,8 @@
       <sca:service name="InvokeService">
         <sy:interface.esb inputType="java.lang.String" outputType="java.lang.String"/>
       </sca:service>
-      <sca:reference name="ESBService">
-        <sy:interface.esb inputType="java.lang.String" outputType="java.lang.String"/>
+      <sca:reference name="AdaptationGatewayService">
+        <sca:interface.java interface="edu.fing.virtual.service.AdaptationGatewayService"/>
       </sca:reference>
     </sca:component>
     <sca:service name="VirtualService" promote="InvokeAG/InvokeService">
@@ -20,9 +20,9 @@
         <soap:contextPath>Virtual-Service-1</soap:contextPath>
       </soap:binding.soap>
     </sca:service>
-    <sca:reference name="GatewayService" multiplicity="0..1" promote="InvokeAG/ESBService">
-      <sy:interface.esb inputType="java.lang.String" outputType="java.lang.String"/>
-      <sca:binding.sca sy:target="SetAdaptationService" sy:targetNamespace="urn:edu.fing.context.management:adaptation-gateway:1.0" name="sca12324"/>
+    <sca:reference name="AdaptationGatewayService" multiplicity="0..1" promote="InvokeAG/AdaptationGatewayService">
+      <sca:interface.java interface="edu.fing.virtual.service.AdaptationGatewayService"/>
+      <sca:binding.sca sy:targetNamespace="urn:edu.fing.context.management:adaptation-gateway:1.0" sy:target="AdaptationService" name="sca1123"/>
     </sca:reference>
   </sca:composite>
   <sy:domain>

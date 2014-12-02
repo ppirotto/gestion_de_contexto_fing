@@ -6,7 +6,7 @@
             <simple>http://localhost:8080/attractions-provider/AttractionsService</simple>
         </setHeader>
         <log message="InvokeAG - message received: ${body} ${headers}"/>
-        <to uri="switchyard://ESBService"/>
+        <to uri="switchyard://AdaptationGatewayService"/>
         <log message="InvokeAG - response received: ${body}"/>
     </route>
 </routes>
