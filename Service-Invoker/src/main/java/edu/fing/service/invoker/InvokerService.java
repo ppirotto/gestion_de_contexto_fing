@@ -1,4 +1,4 @@
-package edu.fing.switchyard.Service_Invoker;
+package edu.fing.service.invoker;
 
 import edu.fing.commons.dto.AdaptedMessage;
 

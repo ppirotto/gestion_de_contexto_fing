@@ -2,13 +2,13 @@
 <sy:switchyard xmlns:bean="urn:switchyard-component-bean:config:1.1" xmlns:sca="http://docs.oasis-open.org/ns/opencsa/sca/200912" xmlns:sy="urn:switchyard-config:switchyard:1.1" name="Service-Invoker" targetNamespace="urn:edu.fing.context.management:service-invoker:1.0">
   <sca:composite name="Service-Invoker" targetNamespace="urn:edu.fing.context.management:service-invoker:1.0">
     <sca:component name="InvokerServiceBean">
-      <bean:implementation.bean class="edu.fing.switchyard.Service_Invoker.InvokerServiceBean"/>
+      <bean:implementation.bean class="edu.fing.service.invoker.InvokerServiceBean"/>
       <sca:service name="InvokerService">
-        <sca:interface.java interface="edu.fing.switchyard.Service_Invoker.InvokerService"/>
+        <sca:interface.java interface="edu.fing.service.invoker.InvokerService"/>
       </sca:service>
     </sca:component>
     <sca:service name="InvokerService" promote="InvokerServiceBean/InvokerService">
-      <sca:interface.java interface="edu.fing.switchyard.Service_Invoker.InvokerService"/>
+      <sca:interface.java interface="edu.fing.service.invoker.InvokerService"/>
       <sca:binding.sca name="sca1"/>
     </sca:service>
   </sca:composite>
