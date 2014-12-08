@@ -2,7 +2,7 @@
 <routes xmlns="http://camel.apache.org/schema/spring">
     <route>
         <from uri="switchyard://ExternalInvocationService"/>
-        <log message="RemoteInvokerService - message received: ${body}"/>
+        <log message="ExternalInvokerService - message received: ${body}"/>
         <to uri="switchyard://ServiceInvoker"/>
     </route>
 </routes>

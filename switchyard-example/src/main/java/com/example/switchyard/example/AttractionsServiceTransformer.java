@@ -9,11 +9,15 @@ public final class AttractionsServiceTransformer {
 
 	@Transformer(to = "{urn:com.example.switchyard:switchyard-example:1.0}getAttractionsResponse")
 	public String transformListToGetAttractionsResponse(List<String> from) {
-		String res="<getAttractionsResponse xmlns=\"urn:com.example.switchyard:switchyard-example:1.0\">";
-		for (String elem: from){
-			res+="<list>"+elem+"</list>";
+		String res = "<getAttractionsResponse xmlns=\"urn:com.example.switchyard:switchyard-example:1.0\">";
+		for (String elem : from) {
+			boolean outside = false;
+			if (elem.equals("Parque")) {
+				outside = true;
+			}
+			res += "<attraction><place>" + elem + "</place><outside>" + outside + "</outside></attraction>";
 		}
-		res+= "</getAttractionsResponse>";
+		res += "</getAttractionsResponse>";
 		return res;
 	}
 

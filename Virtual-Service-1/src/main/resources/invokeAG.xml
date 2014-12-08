@@ -5,8 +5,8 @@
         <setHeader headerName="service">
             <simple>http://localhost:8080/attractions-provider/AttractionsService</simple>
         </setHeader>
-        <log message="InvokeAG - message received: ${body} ${headers}"/>
+        <log message="Virtual Service - message received: ${body}"/>
         <to uri="switchyard://AdaptationGatewayService"/>
-        <log message="InvokeAG - response received: ${body}"/>
+        <log message="Virtual Service - response received: ${body}"/>
     </route>
 </routes>

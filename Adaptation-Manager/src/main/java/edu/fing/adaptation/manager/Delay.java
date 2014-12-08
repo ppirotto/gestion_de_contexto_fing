@@ -21,12 +21,8 @@ public class Delay extends RouteBuilder {
 				AdaptedMessage adaptedMessage = exchange.getIn().getBody(AdaptedMessage.class);
 				exchange.getIn().setHeader("delayTime", adaptedMessage.getAdaptations().get(0).getData());
 				adaptedMessage.getAdaptations().remove(0);
-				System.out.println("message: " + adaptedMessage.getMessage());
-				System.out.println("cantidad de adaptations: " + adaptedMessage.getAdaptations().size());
-
-				System.out.println("ESTAMOS EN EL DELAY");
 			}
-		}).log("Received message for 'DelayService' : ${body}").delay(header("delayTime")).log("volvi de dormirme");
+		}).log("Received message for 'DelayService' : ${body}").delay(header("delayTime")).log("Finish Delay");
 
 	}
 

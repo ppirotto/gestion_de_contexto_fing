@@ -5,8 +5,8 @@
         <setHeader headerName="itinerary">
             <method beanType="edu.fing.adaptation.gateway.model.Itinerary" method="setItinerary" ref="null"></method>
         </setHeader>
-        <log message="SetAdaptationService - message received: ${body} ${headers}"/>
+        <log message="Adaptation Gateway - message received: ${body}"/>
         <to uri="switchyard://AdaptationsService"/>
-        <log message="SetAdaptationService - response received: ${body}"/>
+        <log message="Adaptation Gateway - response received: ${body}"/>
     </route>
 </routes>
