@@ -148,8 +148,4 @@ public class RulesBean {
 		this.versionToDeploy = versionToDeploy;
 	}
 
-	// public AvailableRulesTO availableRules(){
-	// return res;
-	// }
-
 }

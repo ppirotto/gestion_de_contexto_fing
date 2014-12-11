@@ -4,3 +4,7 @@
     overflow: auto;
     position: relative;
 }
+
+.ui-layout-unit {
+    visibility: visible !important;
+}

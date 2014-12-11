@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form>
+		<p:panelMenu  autoDisplay="true"
+			multiple="false">
+
+
+			<p:submenu label="Adaptaciones" autoDisplay="true">
+				<p:menuitem value="Crear" styleClass="textoMenuItems"
+					url="/faces/altaEmpresa.xhtml" icon="ui-icon-plusthick" />
+				<p:menuitem value="Eliminar" styleClass="textoMenuItems" onclick=""
+					icon="ui-icon-close" />
+				<p:menuitem value="Modificar" styleClass="textoMenuItems" onclick=""
+					icon="ui-icon-pencil" />
+			</p:submenu>
+			
+			<p:submenu label="Itinerario" autoDisplay="true">
+				<p:menuitem value="Crear" styleClass="textoMenuItems"
+					url="/faces/altaSitioInteres.xhtml" icon="ui-icon-plusthick" />
+				<p:menuitem value="Modificar" styleClass="textoMenuItems" onclick=""
+					icon="ui-icon-pencil" />
+			</p:submenu>
+			
+			<p:submenu label="Fuentes de Contexto" >
+				<p:menuitem value="" styleClass="textoMenuItems" onclick=""
+					url="/faces/altaEvento.xhtml" icon="ui-icon-pencil" />
+			</p:submenu>
+			<p:submenu label="Reportes" >
+				<p:menuitem value="Crear Reporte" styleClass="textoMenuItems" onclick=""
+					url="/faces/reportes.xhtml" icon="ui-icon-pencil" />
+			</p:submenu>
+			
+		</p:panelMenu>
+	</h:form>
+
+	
+
+
+</ui:composition>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+
+<h:head>
+	<script name="jquery/jquery.js" library="primefaces"></script>
+
+	<h:outputStylesheet library="primefaces-extensions"	name="codemirror/mode/tiki.css" />
+	<title><ui:insert name="title">Proyecto</ui:insert></title>
+	<h:outputStylesheet library="css" name="style.css"  />
+	
+</h:head>
+<h:body>
+	<p:layout fullPage="true"> 
+	
+	
+		<p:layoutUnit position="west" size="250" >
+				<ui:insert name="menuIzq" >ahah </ui:insert>
+		</p:layoutUnit>
+		
+		<p:layoutUnit position="center" >
+			<ui:insert name="body">Bienvenido!!!</ui:insert>
+		</p:layoutUnit>
+	
+			
+
+	</p:layout>
+</h:body>
+
+</html>
