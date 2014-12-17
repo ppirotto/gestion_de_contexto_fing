@@ -6,6 +6,9 @@
       <sca:service name="DroolsMessageComposer">
         <sca:interface.java interface="edu.fing.switchyard.Contextual_Data_Input_1.DroolsMessageComposer"/>
       </sca:service>
+      <sca:reference name="DroolsFeederService">
+        <sca:interface.java interface="edu.fing.switchyard.Contextual_Data_Input_1.DroolsFeederService"/>
+      </sca:reference>
     </sca:component>
     <sca:service name="DroolsMessageComposer" promote="DroolsMessageComposerBean/DroolsMessageComposer">
       <sca:interface.java interface="edu.fing.switchyard.Contextual_Data_Input_1.DroolsMessageComposer"/>
@@ -14,5 +17,9 @@
         <http:contextPath>contextual-data-1</http:contextPath>
       </http:binding.http>
     </sca:service>
+    <sca:reference name="DroolsFeederService" multiplicity="0..1" promote="DroolsMessageComposerBean/DroolsFeederService">
+      <sca:interface.java interface="edu.fing.switchyard.Contextual_Data_Input_1.DroolsFeederService"/>
+      <sca:binding.sca sy:target="ESBServiceDrools" sy:targetNamespace="urn:edu.fing.switchyard:CEP-Engine:1.0" name="sca13232"/>
+    </sca:reference>
   </sca:composite>
 </sy:switchyard>

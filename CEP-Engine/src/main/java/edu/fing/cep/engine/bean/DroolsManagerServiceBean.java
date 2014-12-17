@@ -28,6 +28,7 @@ import edu.fing.cep.engine.model.Rule;
 import edu.fing.cep.engine.model.Version;
 import edu.fing.cep.engine.utils.DroolsUtils;
 import edu.fing.cep.engine.utils.HibernateUtils;
+import edu.fing.commons.dto.ContextualDataTO;
 import edu.fing.commons.front.dto.AvailableRulesTO;
 import edu.fing.commons.front.dto.RuleTO;
 import edu.fing.commons.front.dto.VersionTO;
@@ -121,12 +122,12 @@ public class DroolsManagerServiceBean implements DroolsManagerService {
 	
 
 	@Override
-	public String insert(HashMap<String, String> inputMessage){
+	public String insert(ContextualDataTO data){
 		try{
 			ClassLoader classLoader=	Thread.currentThread().getContextClassLoader();
 			System.out.println(classLoader);
 			lock.readLock().lock();
-			kSession.insert(inputMessage);
+			kSession.insert(data);
 			return "OK";
 		} catch(Exception e) {
 			return "ERROR";

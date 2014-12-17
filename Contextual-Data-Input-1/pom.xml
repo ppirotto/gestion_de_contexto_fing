@@ -1,71 +1,85 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>edu.fing.switchyard</groupId>
-  <artifactId>Contextual-Data-Input-1</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
-  <name>edu.fing.switchyard:Contextual-Data-Input-1</name>
-  <properties>
-    <switchyard.version>1.1.0.Final</switchyard.version>
-  </properties>
-  <dependencies>
-    <dependency>
-      <groupId>org.switchyard</groupId>
-      <artifactId>switchyard-api</artifactId>
-      <version>${switchyard.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.switchyard</groupId>
-      <artifactId>switchyard-transform</artifactId>
-      <version>${switchyard.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.switchyard</groupId>
-      <artifactId>switchyard-validate</artifactId>
-      <version>${switchyard.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.switchyard</groupId>
-      <artifactId>switchyard-plugin</artifactId>
-      <version>${switchyard.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.switchyard</groupId>
-      <artifactId>switchyard-test</artifactId>
-      <version>${switchyard.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.switchyard.components</groupId>
-      <artifactId>switchyard-component-test-mixin-cdi</artifactId>
-      <version>${switchyard.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-    	<groupId>org.switchyard.components</groupId>
-    	<artifactId>switchyard-component-bean</artifactId>
-    	<version>${switchyard.version}</version>
-    </dependency>
-    <dependency>
-    	<groupId>org.switchyard.components</groupId>
-    	<artifactId>switchyard-component-sca</artifactId>
-    	<version>${switchyard.version}</version>
-    </dependency>
-    <dependency>
-    	<groupId>org.switchyard.components</groupId>
-    	<artifactId>switchyard-component-http</artifactId>
-    	<version>${switchyard.version}</version>
-    </dependency>
-
-
-
-    <dependency>
-    	<groupId>edu.fing.switchyard</groupId>
-    	<artifactId>CEP-Engine</artifactId>
-    	<version>0.0.1-SNAPSHOT</version>
-    </dependency>
-  </dependencies>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>edu.fing.switchyard</groupId>
+	<artifactId>Contextual-Data-Input-1</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>edu.fing.switchyard:Contextual-Data-Input-1</name>
+	<properties>
+		<switchyard.version>1.1.0.Final</switchyard.version>
+	</properties>
+	<dependencies>
+		<dependency>
+			<groupId>org.switchyard</groupId>
+			<artifactId>switchyard-api</artifactId>
+			<version>${switchyard.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.switchyard</groupId>
+			<artifactId>switchyard-transform</artifactId>
+			<version>${switchyard.version}</version>
+			<!-- <exclusions> -->
+			<!-- <exclusion> -->
+			<!-- <groupId>com.thoughtworks.xstream</groupId> -->
+			<!-- <artifactId>xstream</artifactId> -->
+			<!-- </exclusion> -->
+			<!-- </exclusions> -->
+		</dependency>
+		<dependency>
+			<groupId>org.switchyard</groupId>
+			<artifactId>switchyard-validate</artifactId>
+			<version>${switchyard.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.switchyard</groupId>
+			<artifactId>switchyard-plugin</artifactId>
+			<version>${switchyard.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.switchyard</groupId>
+			<artifactId>switchyard-test</artifactId>
+			<version>${switchyard.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.switchyard.components</groupId>
+			<artifactId>switchyard-component-test-mixin-cdi</artifactId>
+			<version>${switchyard.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.switchyard.components</groupId>
+			<artifactId>switchyard-component-bean</artifactId>
+			<version>${switchyard.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.switchyard.components</groupId>
+			<artifactId>switchyard-component-sca</artifactId>
+			<version>${switchyard.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.switchyard.components</groupId>
+			<artifactId>switchyard-component-http</artifactId>
+			<version>${switchyard.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>edu.fing.context.management</groupId>
+			<artifactId>adaptation-commons</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.codehaus.castor</groupId>
+			<artifactId>castor</artifactId>
+			<version>1.2</version>
+		</dependency>
+		<dependency>
+			<groupId>xerces</groupId>
+			<artifactId>xercesImpl</artifactId>
+			<version>2.8.1</version>
+		</dependency>
+	</dependencies>
 	<build>
 		<finalName>Contextual-Data-Input-1</finalName>
 		<pluginManagement>
@@ -92,6 +106,17 @@
 								</pluginExecution>
 							</pluginExecutions>
 						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-jar-plugin</artifactId>
+					<configuration>
+						<archive>
+							<manifestEntries>
+								<Dependencies>deployment.adaptation-commons.jar</Dependencies>
+							</manifestEntries>
+						</archive>
 					</configuration>
 				</plugin>
 			</plugins>
@@ -140,22 +165,22 @@
 					</archive>
 				</configuration>
 			</plugin>
-<!-- 			<plugin> -->
-<!-- 				<groupId>org.apache.maven.plugins</groupId> -->
-<!-- 				<artifactId>maven-dependency-plugin</artifactId> -->
-<!-- 				<executions> -->
-<!-- 					<execution> -->
-<!-- 						<id>copy-dependencies</id> -->
-<!-- 						<phase>package</phase> -->
-<!-- 						<goals> -->
-<!-- 							<goal>copy-dependencies</goal> -->
-<!-- 						</goals> -->
-<!-- 						<configuration> -->
-<!-- 							<outputDirectory>${project.build.directory}/libs</outputDirectory> -->
-<!-- 						</configuration> -->
-<!-- 					</execution> -->
-<!-- 				</executions> -->
-<!-- 			</plugin> -->
+			<!-- <plugin> -->
+			<!-- <groupId>org.apache.maven.plugins</groupId> -->
+			<!-- <artifactId>maven-dependency-plugin</artifactId> -->
+			<!-- <executions> -->
+			<!-- <execution> -->
+			<!-- <id>copy-dependencies</id> -->
+			<!-- <phase>package</phase> -->
+			<!-- <goals> -->
+			<!-- <goal>copy-dependencies</goal> -->
+			<!-- </goals> -->
+			<!-- <configuration> -->
+			<!-- <outputDirectory>${project.build.directory}/libs</outputDirectory> -->
+			<!-- </configuration> -->
+			<!-- </execution> -->
+			<!-- </executions> -->
+			<!-- </plugin> -->
 		</plugins>
 	</build>
 </project>

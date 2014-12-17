@@ -1,11 +1,11 @@
 package edu.fing.cep.engine.bean;
 
-import java.util.HashMap;
-
 import javax.inject.Inject;
 
 import org.switchyard.component.bean.Reference;
 import org.switchyard.component.bean.Service;
+
+import edu.fing.commons.dto.ContextualDataTO;
 
 @Service(DroolsFeederService.class)
 public class DroolsFeederServiceBean implements DroolsFeederService {
@@ -15,9 +15,9 @@ public class DroolsFeederServiceBean implements DroolsFeederService {
 	private DroolsManagerService droolsManager;
 	
 	@Override
-	public String receiveMessage(HashMap<String, String> input) {
+	public String receiveMessage(ContextualDataTO data) {
 		
-		return droolsManager.insert(input);
+		return droolsManager.insert(data);
 	}
 	
 	
