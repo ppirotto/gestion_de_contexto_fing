@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="/masterTemplate.xhtml"
+	xmlns:m="http://code.google.com/p/gmaps4jsf/">
+
+
+
+	<ui:define name="title">Reportes</ui:define>
+	<ui:define name="body">
+
+		
+		<h:form >
+			<p:growl id="growlReporte" />
+
+			<p:panelGrid id="grid32" columns="2" style="padding:10px;width:100%;">
+				<f:facet name="header">  
+        			 Reportes
+    			 </f:facet>
+
+				<h:outputLabel  value="Elija fecha de comienzo: " />
+				 <p:calendar value="#{reporteBean.fechaInicio}" pattern="dd/MM/yyyy HH:mm" />  
+				 
+				 <h:outputLabel  value="Elija fecha de fin: " />
+				 <p:calendar value="#{reporteBean.fechaFin}" pattern="dd/MM/yyyy HH:mm" />  
+
+	
+			
+				<f:facet name="footer">
+					<p:commandButton
+						action="#{reporteBean.cantidadCheckIns}"
+						 value="Generar reporte CheckINs" />
+						 <p:spacer width="10"> </p:spacer>
+							<p:commandButton value="Generar reporte Ofertas" id="botonRegistrar"
+							ajax="false" actionListener="#{reporteBean.reporteOfertas()}"
+							update="growlReporte grid32">
+							<p:fileDownload value="#{reporteBean.archivo}" />
+						</p:commandButton>
+				</f:facet>
+
+			</p:panelGrid>
+
+
+		</h:form>
+
+	</ui:define>
+	<ui:define name="menuIzq">
+		<ui:include src="/menuPrincipalSuperAdmin.xhtml" />
+
+	</ui:define>
+</ui:composition>

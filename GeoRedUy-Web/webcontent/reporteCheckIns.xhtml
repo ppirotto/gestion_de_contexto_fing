@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="/masterTemplate.xhtml"
+	xmlns:m="http://code.google.com/p/gmaps4jsf/">
+
+<script
+
+src="http://maps.google.com/maps?file=api&amp;v=2&amp;
+key=ABQIAAAAxrVS1QxlpJHXxQ2Vxg2bJBT2yXp_ZAY8_ufC3CFXhHIE1NvwkxS9AOPy_YJl48ifAy4mq6I8SgK8fg"
+type="text/javascript">
+
+</script>    
+
+	<ui:define name="title">Reportes</ui:define>
+	<ui:define name="body">
+
+		
+		<h:form >
+			<p:growl id="growlOferta"  />
+			<p:panelGrid columns="1" style="padding:10px;width:100%;">
+				<f:facet name="header">  
+        			 Reporte CheckIns
+    			 </f:facet>
+
+			
+				
+
+			<m:map id="mapa" width="800px" height="450px"  autoReshape="true" >
+			 
+			 <m:mapControl name="GLargeMapControl" position="G_ANCHOR_BOTTOM_RIGHT" />
+               <m:mapControl name="GMapTypeControl"/>  
+               
+               <ui:repeat var="loc" value="#{reporteBean.lista}">
+			 		<m:marker latitude="#{loc.latitud}" longitude="#{loc.longitud}">
+			 		 <m:htmlInformationWindow htmlText="En #{loc.nombreSitio} se realizaron #{loc.cantidadC} CheckIns"/>
+			 		 </m:marker>
+			 </ui:repeat>
+			
+			 
+			
+			</m:map>
+			
+				<f:facet name="footer">
+					<p:commandButton
+						action="volverReportes"
+						update="" value="Volver" />
+				</f:facet>
+
+			</p:panelGrid>
+
+
+		</h:form>
+
+	</ui:define>
+	<ui:define name="menuIzq">
+		<ui:include src="/menuPrincipalSuperAdmin.xhtml" />
+
+	</ui:define>
+</ui:composition>

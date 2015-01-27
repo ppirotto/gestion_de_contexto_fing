@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="/masterTemplate.xhtml"
+	>
+
+
+
+	<ui:define name="title">Alta Empresa</ui:define>
+	<ui:define name="body">
+
+		<h:form enctype="multipart/form-data">
+			<p:growl id="growlSitio"  />
+			
+			<!-- 			 <p:graphicImage id="lafoto" value="/ServletImagen?tipo=Empresa&amp;nombreEmpresa=#{sesionBean.nombreEmpresa}" />   -->
+			
+		
+			
+			<p:panelGrid columns="2" style="padding:10px;width:100%;">
+			<f:facet name="header">  
+        			Datos Actuales
+    			 </f:facet>
+			<h:outputLabel for="lafoto" value="Logo: " />
+			
+	 <p:graphicImage id="lafoto" value="/ServletImagen?tipo=#{sesionBean.nombreEmpresa}" />   
+			
+			
+			</p:panelGrid>
+			
+			
+			<p:panelGrid id="gridEmpresa" columns="2" style="padding:10px;width:100%;">
+				<f:facet name="header">  
+        			 Modificar Datos de la Empresa
+    			 </f:facet>
+				
+			
+				<h:outputLabel for="descripcion" value="Descripción: " />
+				<p:inputTextarea id="descripcion"
+					value="#{modificarEmpresaBean.descripcion}" rows="3" cols="46" requiredMessage="Ingrese Descripción"
+					required="true" />
+			
+					
+					<h:outputLabel  value="Logo:" />
+				
+				
+				
+						
+						<p:fileUpload fileUploadListener="#{modificarEmpresaBean.upload}"
+							multiple="true" allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
+							sizeLimit="100000" invalidFileMessage="fichero inválido"
+							invalidSizeMessage="Foto demasiado grande"
+							label="Seleccionar imagen" update="growlFoto" cancelLabel="Cancelar"
+							uploadLabel="Subir" />
+				
+					
+				<f:facet name="footer">
+					<p:commandButton
+						action="#{modificarEmpresaBean.modificarEmpresa}"
+						update="growlSitio gridEmpresa" value="Modificar" />
+				</f:facet>
+
+			</p:panelGrid>
+<p:growl id="growlFoto" showDetail="true" />
+
+		</h:form>
+
+	</ui:define>
+	<ui:define name="menuIzq">
+		<ui:include src="/menuPrincipalAdminEmpresa.xhtml" />
+
+	</ui:define>
+</ui:composition>

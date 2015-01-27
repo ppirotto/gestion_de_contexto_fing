@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="/masterTemplate.xhtml"
+	>
+
+
+
+	<ui:define name="title">Alta Empresa</ui:define>
+	<ui:define name="body">
+
+		<h:form >
+			<p:growl id="growlSitio"  />
+			<p:panelGrid id="gridEmpresa" columns="2" style="padding:10px;width:100%;">
+				<f:facet name="header">  
+        			 Nueva Empresa
+    			 </f:facet>
+
+				<h:outputLabel for="nombre" value="Nombre: " />
+				<p:inputText id="nombre" value="#{altaEmpresaBean.nombreEmpresa}"
+					label="Nombre:" requiredMessage="Ingrese Nombre" required="true" />
+
+				<h:outputLabel for="nombreAdmin" value="Email del Admin: " />
+			
+				<p:inputText id="nombreAdmin" value="#{altaEmpresaBean.email}"
+					label="Nombre:" requiredMessage="Ingrese Email" required="true" />
+			
+				<h:outputLabel for="contrasenia" value="Contraseña: "
+					styleClass="UserPass" />
+				<p:inputText id="contrasenia" type="password"
+					value="#{altaEmpresaBean.contrasenia}" 
+					required="true" requiredMessage="Debe ingresar su contraseña." />
+					
+				
+					
+				<f:facet name="footer">
+					<p:commandButton
+						action="#{altaEmpresaBean.crearEmpresa}"
+						update="growlSitio gridEmpresa" value="Crear Empresa" />
+				</f:facet>
+
+			</p:panelGrid>
+
+
+		</h:form>
+
+	</ui:define>
+	<ui:define name="menuIzq">
+		<ui:include src="/menuPrincipalSuperAdmin.xhtml" />
+
+	</ui:define>
+</ui:composition>

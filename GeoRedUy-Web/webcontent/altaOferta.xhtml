@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="/masterTemplate.xhtml"
+	xmlns:m="http://code.google.com/p/gmaps4jsf/">
+
+
+
+	<ui:define name="title">Alta Oferta</ui:define>
+	<ui:define name="body">
+
+		
+		<h:form >
+			<p:growl id="growlOferta"  />
+			<p:panelGrid columns="2" style="padding:10px;width:100%;">
+				<f:facet name="header">  
+        			 Nuevo Sitio de Interés
+    			 </f:facet>
+
+				<h:outputLabel for="nombre" value="Nombre: " />
+				<p:inputText id="nombre" value="#{altaOfertaBean.nombre}"
+					label="Nombre:" requiredMessage="Ingrese Nombre" required="true" />
+
+				<h:outputLabel for="descripcion" value="Descripción: " />
+				<p:inputTextarea id="descripcion"
+					value="#{altaOfertaBean.descripcion}" rows="3" cols="46" requiredMessage="Ingrese Descripción"
+					required="true" />
+					
+				<h:outputLabel for="costo" value="Costo: " />
+				<p:inputText id="costo" value="#{altaOfertaBean.costo}"
+					label="Costo" requiredMessage="Ingrese Costo" required="true" />
+
+				<h:outputLabel  value="Elija fecha de comienzo: " />
+				 <p:calendar value="#{altaOfertaBean.fechaInicio}" pattern="dd/MM/yyyy HH:mm" />  
+				 
+				 <h:outputLabel  value="Elija fecha de fin: " />
+				 <p:calendar value="#{altaOfertaBean.fechaFin}" pattern="dd/MM/yyyy HH:mm" />  
+
+				<h:outputLabel for="categorias" value="Categorias: " />
+				<p:selectCheckboxMenu style="top:10px;" id="categorias"
+					value="#{altaOfertaBean.categoriasSelec}"
+					label="Seleccione las categorias" filter="true" filterText="Filter"
+					filterMatchMode="startsWith" panelStyle="width:220px">
+
+					<f:selectItems value="#{altaOfertaBean.listarCategorias()}" />
+
+				</p:selectCheckboxMenu>
+
+				  <h:outputText value="Selecione Local: " />  
+			        <p:selectOneMenu value="#{altaOfertaBean.localSelec}" effect="fade" >  
+			            <f:selectItem itemLabel="Select One" itemValue="" />  
+			            <f:selectItems value="#{altaOfertaBean.listarLocales()}" var="LocalEmp" itemLabel="#{LocalEmp.nombre}" itemValue="#{LocalEmp.id}"/>  
+			        </p:selectOneMenu>  
+
+				
+					<h:outputLabel  value="Imagen: " />
+				
+				
+					<h:form enctype="multipart/form-data">
+						<p:growl id="growlLogo" showDetail="true" />
+						<p:fileUpload fileUploadListener="#{altaOfertaBean.upload}"
+							 allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
+							sizeLimit="100000" invalidFileMessage="fichero inválido"
+							invalidSizeMessage="ha excedido el tamaño máximo permitido"
+							label="Seleccionar imagen" update="growlLogo" cancelLabel="Cancelar"
+							uploadLabel="Subir" />
+					</h:form>
+					
+				<f:facet name="footer">
+					<p:commandButton
+						action="#{altaOfertaBean.crearOferta()}"
+						update="growlOferta" value="Crear" />
+				</f:facet>
+
+			</p:panelGrid>
+
+
+		</h:form>
+
+	</ui:define>
+	<ui:define name="menuIzq">
+		<ui:include src="/menuPrincipalAdminEmpresa.xhtml" />
+
+	</ui:define>
+</ui:composition>

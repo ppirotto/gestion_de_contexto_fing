@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<faces-config xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd" version="2.0">
+    <managed-bean>
+        <managed-bean-name>loginBean</managed-bean-name>
+        <managed-bean-class>beans.LoginBean</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+        <managed-property>
+            <property-name>sesion</property-name>
+            <value>#{sesionBean}</value>
+        </managed-property>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>sesionBean</managed-bean-name>
+        <managed-bean-class>beans.SesionBean</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    
+      <managed-bean>
+        <managed-bean-name>altaEmpresaBean</managed-bean-name>
+        <managed-bean-class>beans.AltaEmpresaBean</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    
+     <managed-bean>
+        <managed-bean-name>altaSitioInteresBean</managed-bean-name>
+        <managed-bean-class>beans.AltaSitioInteresBean</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+    
+   
+    
+    <navigation-rule>
+        <from-view-id>/*</from-view-id>
+        <navigation-case>
+            <from-outcome>homeAdminApp</from-outcome>
+            <to-view-id>/homeAdmin.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/login.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>homeAdmin</from-outcome>
+            <to-view-id>/homeAdminEmpresa.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    
+      <navigation-rule>
+        <from-view-id>/*</from-view-id>
+        <navigation-case>
+            <from-outcome>homeAdminEmpresa</from-outcome>
+            <to-view-id>/homeAdminEmpresa.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    
+      
+      
+        <navigation-rule>
+        <from-view-id>/reportes.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>reporteCheckIN</from-outcome>
+            <to-view-id>/reporteCheckIns.xhtml</to-view-id>
+            <redirect></redirect>
+        </navigation-case>
+    </navigation-rule>
+    
+          <navigation-rule>
+        <from-view-id>/reporteCheckIns.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>volverReportes</from-outcome>
+            <to-view-id>/reportes.xhtml</to-view-id>
+             <redirect></redirect>
+        </navigation-case>
+    </navigation-rule>
+    
+      
+      
+</faces-config>
