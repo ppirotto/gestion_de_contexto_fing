@@ -36,6 +36,7 @@ public class RulesBean {
 	public void charge() {
 		this.res = RemoteInvokerUtils.invoke(RemoteInvokerUtils.DroolsConfigService, "getAvailableRules", null, AvailableRulesTO.class);
 		if (this.res == null) {
+
 			this.res = new AvailableRulesTO();
 
 			this.res.setActiveVersionId((long) 3.3);

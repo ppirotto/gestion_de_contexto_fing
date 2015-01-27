@@ -6,36 +6,39 @@
 	xmlns:p="http://primefaces.org/ui">
 
 	<h:form>
-		<p:panelMenu  autoDisplay="true"
-			multiple="false">
+		<p:menu  autoDisplay="true"
+			multiple="false" style="width:auto; ">
 
 
 			<p:submenu label="Adaptaciones" autoDisplay="true">
-				<p:menuitem value="Crear" styleClass="textoMenuItems"
+				<p:menuitem value="Crear" 
 					url="/faces/altaEmpresa.xhtml" icon="ui-icon-plusthick" />
-				<p:menuitem value="Eliminar" styleClass="textoMenuItems" onclick=""
+				<p:menuitem value="Eliminar"  onclick=""
 					icon="ui-icon-close" />
-				<p:menuitem value="Modificar" styleClass="textoMenuItems" onclick=""
+				<p:menuitem value="Modificar"  onclick=""
 					icon="ui-icon-pencil" />
 			</p:submenu>
 			
 			<p:submenu label="Itinerario" autoDisplay="true">
 				<p:menuitem value="Crear" styleClass="textoMenuItems"
-					url="/faces/altaSitioInteres.xhtml" icon="ui-icon-plusthick" />
+					url="/faces/crearItinerario.xhtml" icon="ui-icon-plusthick" />
 				<p:menuitem value="Modificar" styleClass="textoMenuItems" onclick=""
 					icon="ui-icon-pencil" />
 			</p:submenu>
 			
-			<p:submenu label="Fuentes de Contexto" >
-				<p:menuitem value="" styleClass="textoMenuItems" onclick=""
-					url="/faces/altaEvento.xhtml" icon="ui-icon-pencil" />
-			</p:submenu>
-			<p:submenu label="Reportes" >
-				<p:menuitem value="Crear Reporte" styleClass="textoMenuItems" onclick=""
-					url="/faces/reportes.xhtml" icon="ui-icon-pencil" />
+				<p:submenu label="CEP" autoDisplay="true">
+				<p:menuitem value="Manejo de reglas" styleClass="textoMenuItems"
+					url="/faces/cepmanagement.xhtml" icon="ui-icon-plusthick" />
+				
 			</p:submenu>
 			
-		</p:panelMenu>
+			<p:submenu label="Fuentes de Contexto" >
+				<p:menuitem value="Crear" styleClass="textoMenuItems" onclick=""
+					url="/faces/altaEvento.xhtml" icon="ui-icon-pencil" />
+			</p:submenu>
+		
+			
+		</p:menu>
 	</h:form>
 
 	

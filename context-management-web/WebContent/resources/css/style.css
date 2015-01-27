@@ -8,3 +8,11 @@
 .ui-layout-unit {
     visibility: visible !important;
 }
+
+.ui-widget, .ui-widget .ui-widget {
+font-size: 99% !important;
+}
+.body{
+font-family: 'Tangerine', serif;
+}
+
