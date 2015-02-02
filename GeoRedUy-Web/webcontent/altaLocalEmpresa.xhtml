@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="/masterTemplate.xhtml"
+	>
+<ui:define name="title">Alta Empresa</ui:define>
+	<ui:define name="body">
+
+		<script
+			src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAUnJY3ChJhF0YgyTSDJuVfBTqu-zEVMNfNVaqfAe9FKyfKhfBExSs9LrIQ7GOuBeSnaddg05sRmEBxQ"
+			type="text/javascript"></script>
+		<script type="text/javascript">
+//<![CDATA[
+
+function load() {
+	if (GBrowserIsCompatible()) {
+		var map = new GMap2(document.getElementById("map"));	
+		map.setCenter(new GLatLng(-34.903619,-56.180759),12);	
+		map.addControl(new GLargeMapControl());
+		map.setMapType(G_NORMAL_MAP); 
+		
+		var point = new GPoint (-34.903619,-56.180759);
+		var marker = new GMarker(point); 
+		map.addOverlay(marker); 
+		var laY = document.getElementById('posicion:x');
+		var laX = document.getElementById('posicion:y'); 
+
+		var dir = document.getElementById('posicion:direccion'); 
+		
+		var geocoder = new GClientGeocoder();
+		 
+		GEvent.addListener(map, "click", function (overlay,point){
+			if (point){
+				
+				marker.setPoint(point);
+				laX.value=point.x;
+				laY.value=point.y;
+				
+				geocoder.getLocations(new GLatLng(point.y,point.x), function(addresses) {
+			          if(addresses.Status.code != 200) {
+				          dir.value="mal";
+			            alert("reverse geocoder failed to find an address for " + latlng.toUrlValue());
+			          }
+			          else {
+			            dir.value = addresses.Placemark[0].address;
+			            
+			          }
+			        });
+				
+			}
+		});
+	}
+}
+
+window.onload=load
+//]]>
+</script>
+
+
+       
+
+			
+
+		
+
+		<h:form action="#" id="posicion" name="posicion">
+			<p:growl id="growlSitio"  />
+			<p:panelGrid columns="2" style="padding:10px;width:100%;">
+				<f:facet name="header">  
+        			 Ingrese un local
+    			 </f:facet>
+
+				<h:outputLabel for="nombre" value="Nombre: " />
+				<p:inputText id="nombre" value="#{altaLocalEmpresaBean.nombre}"
+					label="Nombre:" requiredMessage="Ingrese Nombre" required="true" />
+					
+				<h:outputLabel value="Elija Ubicación " />
+
+
+				<p:panelGrid columns="1">
+					<div id="map" style="width: 620px; height: 278px"></div>
+
+					<p:panelGrid id="map1" columns="2" style="padding:10px;width:100%;">
+						<h:outputLabel for="x" value="Latitud: " />
+
+						<p:inputText id="x" value="#{altaLocalEmpresaBean.latitud}" />
+
+						<h:outputLabel for="y" value="Longitud: " />
+
+						<p:inputText id="y" value="#{altaLocalEmpresaBean.longitud}" />
+
+					</p:panelGrid>
+				</p:panelGrid>
+				
+				<h:outputLabel for="direccion" value="Dirección: " />
+				<p:inputText id="direccion" label="Direccion:"
+					value="#{altaLocalEmpresaBean.direccion}" style="width:90%;" requiredMessage="Ingrese dirección" required="true" />
+				
+				
+					
+				<f:facet name="footer">
+					<p:commandButton
+						action="#{altaLocalEmpresaBean.altaLocalEmpresa}"
+						update="growlSitio" value="Crear" />
+				</f:facet>
+
+			</p:panelGrid>
+
+
+		</h:form>
+
+	</ui:define>
+	<ui:define name="menuIzq">
+		<ui:include src="/menuPrincipalAdminEmpresa.xhtml" />
+
+	</ui:define>
+</ui:composition>

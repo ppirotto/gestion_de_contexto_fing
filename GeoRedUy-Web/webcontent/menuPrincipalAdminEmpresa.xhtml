@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form>
+		<p:panelMenu  autoDisplay="true"
+			multiple="false">
+
+
+			<p:submenu label="Empresas" autoDisplay="true">
+		
+				<p:menuitem value="Modificar" styleClass="textoMenuItems" onclick=""
+					url="/faces/modificarEmpresa.xhtml" icon="ui-icon-pencil" />
+				<p:menuitem value="Crear Local" styleClass="textoMenuItems" onclick=""
+					url="/faces/altaLocalEmpresa.xhtml" icon="ui-icon-pencil" />
+			</p:submenu>
+			<p:submenu label="Ofertas" >
+				<p:menuitem value="Crear Oferta" styleClass="textoMenuItems" onclick=""
+					url="/faces/altaOferta.xhtml" icon="ui-icon-pencil" />
+			</p:submenu>
+			
+			
+		</p:panelMenu>
+	</h:form>
+
+	
+
+
+</ui:composition>

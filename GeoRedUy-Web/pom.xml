@@ -1,0 +1,61 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>GeoRedUy-Web</groupId>
+  <artifactId>GeoRedUy-Web</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>war</packaging>
+  <build>
+    <sourceDirectory>src</sourceDirectory>
+    <plugins>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>2.3.2</version>
+        <configuration>
+          <source>1.6</source>
+          <target>1.6</target>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-war-plugin</artifactId>
+        <version>2.2</version>
+        <configuration>
+          <warSourceDirectory>WebContent</warSourceDirectory>
+          <failOnMissingWebXml>false</failOnMissingWebXml>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+  <dependencies>
+  
+  	
+
+  	<dependency>
+  		<groupId>org.primefaces.extensions</groupId>
+  		<artifactId>all-themes</artifactId>
+  		<version>1.0.8</version>
+  		<type>pom</type>
+  	</dependency>
+  	
+  	<dependency>
+  		<groupId>commons-io</groupId>
+  		<artifactId>commons-io</artifactId>
+  		<version>2.4</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>commons-fileupload</groupId>
+  		<artifactId>commons-fileupload</artifactId>
+  		<version>1.2.2</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>org.xhtmlrenderer</groupId>
+  		<artifactId>flying-saucer-pdf</artifactId>
+  		<version>9.0.1</version>
+  	</dependency>
+ 
+  	<dependency>
+  		<groupId>net.sourceforge.jexcelapi</groupId>
+  		<artifactId>jxl</artifactId>
+  		<version>2.6.12</version>
+  	</dependency>
+  </dependencies>
+</project>

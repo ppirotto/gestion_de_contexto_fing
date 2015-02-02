@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" 
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	template="/masterTemplate.xhtml">
+
+	<ui:define name="title">Home</ui:define>
+	<ui:define name="body">
+	<p:layout>
+		 	<p:layoutUnit position="north"  size="80">
+		 	
+		    </p:layoutUnit>
+		    <p:layoutUnit position="west" size="100" >
+		  
+		    </p:layoutUnit>
+		 
+		    <p:layoutUnit position="center"  >
+		
+			
+			</p:layoutUnit>
+	</p:layout>
+	</ui:define>
+	<ui:define name="menuIzq">
+		<ui:include src="/menuPrincipalSuperAdmin.xhtml" />
+	</ui:define>
+</ui:composition>

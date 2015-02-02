@@ -1,0 +1,73 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+
+
+<h:head>
+	<h:outputStylesheet library="css" name="login.css" />
+	<link rel="stylesheet" href="#{request.contextPath}/css/site_users.css"
+		type="text/css" />
+</h:head>
+
+<h:body>
+
+
+	<p:layout fullPage="true"> 
+		<p:layoutUnit position="west" size="250" >
+		</p:layoutUnit>
+		
+			<p:layoutUnit position="east" size="250" >
+		</p:layoutUnit>
+		
+			<p:layoutUnit position="north" size="150" >
+		</p:layoutUnit>
+		<p:layoutUnit position="center" size="400">
+			
+		<h:form>
+
+		<p:panel id="panelLogin" style="margin:20px auto;height:150px;width:300px;" >
+
+			<p:focus context="panelLogin" />
+
+			<p:growl id="GrowlLogin"  />
+
+
+
+
+
+			<h:panelGrid columns="3" styleClass="containerPanel">
+				<h:outputLabel for="usuario" value="Email: " styleClass="UserName" />
+				<p:inputText id="usuario" value="#{loginBean.usuario}"
+					styleClass="UserName" required="true"
+					requiredMessage="Debe ingresar su email."
+					validatorMessage="Mail invalido.">
+
+				</p:inputText>
+				<p:message for="usuario" display="icon" />
+
+
+				<h:outputLabel for="contrasenia" value="Contraseña: "
+					styleClass="UserPass" />
+				<p:inputText id="contrasenia" type="password"
+					value="#{loginBean.contrasenia}" styleClass="UserPass"
+					required="true" requiredMessage="Debe ingresar su contrasenna." />
+				
+
+
+			</h:panelGrid>
+
+			<p:commandButton value="iniciar" update="GrowlLogin" 
+				styleClass="buttonLogin" action="#{loginBean.iniciarSesion()}" />
+
+			
+
+		</p:panel>
+
+	</h:form>
+		
+		</p:layoutUnit>
+</p:layout>
+</h:body>
+</html>

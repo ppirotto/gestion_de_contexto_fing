@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+
+<h:head>
+	<script name="jquery/jquery.js" library="primefaces"></script>
+<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'></link>
+	<h:outputStylesheet library="primefaces-extensions"
+		name="http://fonts.googleapis.com/css?family=Tangerine" />
+	<title><ui:insert name="title">Proyecto</ui:insert></title>
+	
+	<h:outputStylesheet library="css" name="style.css" />
+	<h:outputStylesheet library="css" name="style.css" />
+<!-- 	<h:outputStylesheet library="css" name="bootstrap.css" /> -->
+
+</h:head>
+<h:body>
+	<p:layout fullPage="true">
+
+		<p:layoutUnit position="north" size="80" >
+			<ui:insert name="headerGeneral">
+			
+				<h1 style="font-size:40px;margin: 7px;font-family: 'Tangerine', serif;">Gestión de Contexto en Plataformas de Integración</h1>
+			</ui:insert>
+		</p:layoutUnit>
+
+		<p:layoutUnit position="west" size="260" style="border: 0px;">
+			<ui:insert name="menuIzq">ahah </ui:insert>
+		</p:layoutUnit>
+
+		<p:layoutUnit position="center" size="500" style="border: 0px;">
+			<ui:insert name="body">Bienvenido!!!</ui:insert>
+		</p:layoutUnit>
+
+
+
+	</p:layout>
+</h:body>
+
+</html>
