@@ -1,7 +1,6 @@
 package edu.fing.adaptation.manager;
 
-
-public interface ExternalInvocationService {
+public interface TransformService {
 
 	String submit(String adaptedMessage);
 }

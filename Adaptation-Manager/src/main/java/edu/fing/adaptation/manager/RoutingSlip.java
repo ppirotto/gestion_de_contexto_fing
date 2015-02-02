@@ -20,7 +20,10 @@ public class RoutingSlip extends RouteBuilder {
 			public void process(Exchange exchange) throws Exception {
 
 				AdaptedMessage adaptedMessage = exchange.getIn().getBody(AdaptedMessage.class);
+				exchange.getIn().setBody(adaptedMessage.getMessage());
+				exchange.getIn().setHeader("adaptedMessage", adaptedMessage);
 				exchange.getIn().setHeader("itinerary", adaptedMessage.getItinerary());
+				exchange.getIn().setHeader("service", adaptedMessage.getService());
 			}
 		}).log("Received message for 'RoutingSlip' : ${body}").routingSlip().header("itinerary").log("Finish routing");
 	}
