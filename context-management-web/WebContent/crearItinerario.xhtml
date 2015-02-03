@@ -3,25 +3,55 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:p="http://primefaces.org/ui" 
+	xmlns:p="http://primefaces.org/ui"
 	xmlns:pe="http://primefaces.org/ui/extensions"
 	template="/masterTemplate.xhtml">
 
 	<ui:define name="title">Home</ui:define>
 	<ui:define name="body">
-	<p:layout>
-		 	<p:layoutUnit position="north"  size="80">
-		 	
-		    </p:layoutUnit>
-		    <p:layoutUnit position="west" size="100" >
-		  
-		    </p:layoutUnit>
-		 
-		    <p:layoutUnit position="center"  >
-		
+		<!-- 	<p:layout> -->
+		<!-- 		 	<p:layoutUnit position="north"  size="80"> -->
+
+		<!-- 		    </p:layoutUnit> -->
+		<!-- 		    <p:layoutUnit position="west" size="100" > -->
+
+		<!-- 		    </p:layoutUnit> -->
+
+		<!-- 		    <p:layoutUnit position="center"  > -->
+
+
+		<!-- 			</p:layoutUnit> -->
+		<!-- 	</p:layout> -->
+
+		<p:panelGrid columns="2">
+
+			<p:outputLabel for="selectMenu" value="Servicio " />
+			<p:selectOneMenu id="selectMenu" autoupdate="true"
+				value="#{itineraryBean.nombreServicioSelec}" effect="fade">
+				<f:selectItem itemLabel="Selecione un servicio" itemValue="" />
+				<f:selectItems value="#{itineraryBean.serviceList}"
+					var="Service" itemLabel="#{Service}"
+					itemValue="#{Service}" />
+			</p:selectOneMenu>
+
+
+
+			<p:outputLabel for="selectSituation" value="Situación " />
+			<p:selectOneMenu id="selectSituation" autoupdate="true"
+				value="#{itineraryBean.nombreSituacionSelec}" effect="fade">
+				<f:selectItem itemLabel="Selecione una situación" itemValue="" />
+				<f:selectItems value="#{itineraryBean.situationList}"
+					var="Situation" itemLabel="#{Situation}"
+					itemValue="#{Situation}" />
+			</p:selectOneMenu>
 			
-			</p:layoutUnit>
-	</p:layout>
+			<h:outputLabel value="Itinerario" />
+		<p:spacer width="5" ></p:spacer>
+		</p:panelGrid>
+		
+		
+
+
 	</ui:define>
 	<ui:define name="menuIzq">
 		<ui:include src="/menuPrincipalSuperAdmin.xhtml" />

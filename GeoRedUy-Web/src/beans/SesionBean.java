@@ -1,49 +1,44 @@
 package beans;
 
+@ManagedBean
+@SessionScoped
 public class SesionBean {
-	
+
 	private String tokenId;
 	private String mail;
 	private String tipoUsuario;
 	private String nombreEmpresa;
-	
+
+	public String getMail() {
+		return this.mail;
+	}
 
 	public String getNombreEmpresa() {
-		return nombreEmpresa;
+		return this.nombreEmpresa;
+	}
+
+	public String getTipoUsuario() {
+		return this.tipoUsuario;
+	}
+
+	public String getTokenId() {
+		return this.tokenId;
+	}
+
+	public void setMail(String mail) {
+		this.mail = mail;
 	}
 
 	public void setNombreEmpresa(String nombreEmpresa) {
 		this.nombreEmpresa = nombreEmpresa;
 	}
 
-	public String getMail() {
-		return mail;
-	}
-
-	public void setMail(String mail) {
-		this.mail = mail;
-	}
-	
-
-	public String getTokenId() {
-		return tokenId;
+	public void setTipoUsuario(String tipoUsuario) {
+		this.tipoUsuario = tipoUsuario;
 	}
 
 	public void setTokenId(String tokenId) {
 		this.tokenId = tokenId;
 	}
 
-	public String getTipoUsuario() {
-		return tipoUsuario;
-	}
-
-	public void setTipoUsuario(String tipoUsuario) {
-		this.tipoUsuario = tipoUsuario;
-	}
-	
-
-	
-
-	
-	
 }
