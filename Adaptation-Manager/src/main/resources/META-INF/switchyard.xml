@@ -14,6 +14,9 @@
       <sca:reference name="ExternalInvocationService">
         <sca:interface.java interface="edu.fing.adaptation.manager.ExternalInvocationService"/>
       </sca:reference>
+      <sca:reference name="FilterService">
+        <sca:interface.java interface="edu.fing.adaptation.manager.FilterService"/>
+      </sca:reference>
     </sca:component>
     <sca:component name="Delay">
       <camel:implementation.camel>
@@ -23,33 +26,32 @@
         <sca:interface.java interface="edu.fing.adaptation.manager.DelayService"/>
       </sca:service>
     </sca:component>
-    <sca:component name="AdaptedMessageServiceBean">
-      <bean:implementation.bean class="edu.fing.adaptation.manager.AdaptedMessageServiceBean"/>
-      <sca:service name="AdaptedMessageService">
-        <sca:interface.java interface="edu.fing.adaptation.manager.AdaptedMessageService"/>
-      </sca:service>
-      <sca:reference name="RoutingService">
-        <sca:interface.java interface="edu.fing.adaptation.manager.RoutingService"/>
-      </sca:reference>
-    </sca:component>
-    <sca:service name="AdaptedMessageService" promote="AdaptedMessageServiceBean/AdaptedMessageService">
+    <sca:service name="AdaptedMessageService" promote="RoutingSlip/RoutingService">
       <sca:interface.java interface="edu.fing.adaptation.manager.AdaptedMessageService"/>
       <sca:binding.sca name="sca123333"/>
     </sca:service>
-    <sca:component name="ExternalInvocation">
-      <camel:implementation.camel>
-        <camel:xml path="externalInvocation.xml"/>
-      </camel:implementation.camel>
-      <sca:reference name="ServiceInvoker">
-        <sca:interface.java interface="edu.fing.adaptation.manager.ServiceInvoker"/>
-      </sca:reference>
-      <sca:service name="ExternalInvocationService">
-        <sca:interface.java interface="edu.fing.adaptation.manager.ExternalInvocationService"/>
-      </sca:service>
-    </sca:component>
     <sca:reference name="ServiceInvoker" multiplicity="0..1" promote="ExternalInvocation/ServiceInvoker">
       <sca:interface.java interface="edu.fing.adaptation.manager.ServiceInvoker"/>
       <sca:binding.sca sy:targetNamespace="urn:edu.fing.context.management:service-invoker:1.0" sy:target="InvokerService" name="scaServiceInvoker"/>
     </sca:reference>
+    <sca:component name="ExternalInvocation">
+      <camel:implementation.camel>
+        <camel:java class="edu.fing.adaptation.manager.ExternalInvocation"/>
+      </camel:implementation.camel>
+      <sca:service name="ExternalInvocationService">
+        <sca:interface.java interface="edu.fing.adaptation.manager.ExternalInvocationService"/>
+      </sca:service>
+      <sca:reference name="ServiceInvoker">
+        <sca:interface.java interface="edu.fing.adaptation.manager.ServiceInvoker"/>
+      </sca:reference>
+    </sca:component>
+    <sca:component name="Filter">
+      <camel:implementation.camel>
+        <camel:java class="edu.fing.adaptation.manager.Filter"/>
+      </camel:implementation.camel>
+      <sca:service name="FilterService">
+        <sca:interface.java interface="edu.fing.adaptation.manager.FilterService"/>
+      </sca:service>
+    </sca:component>
   </sca:composite>
 </sy:switchyard>

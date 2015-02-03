@@ -23,17 +23,21 @@ public class AdaptationServiceBean implements AdaptationService {
 		// Ir a buscar a la base el itinerario dado el servicio y el user
 		AdaptedMessage adaptedMessage = new AdaptedMessage();
 		adaptedMessage.setMessage(message);
-		adaptedMessage.setItinerary("switchyard://DelayService,switchyard://ExternalInvocationService,switchyard://DelayService");
+		adaptedMessage.setItinerary("switchyard://DelayService,switchyard://ExternalInvocationService,switchyard://FilterService");
 		adaptedMessage.setService("http://localhost:8080/attractions-provider/AttractionsService");
 		ArrayList<Adaptation> adaptations = new ArrayList<Adaptation>();
 		Adaptation adapt = new Adaptation();
-		adapt.setData(10000);
-		adapt.setName("Delay");
+		adapt.setData("5000");
+		adapt.setName("delay");
 		adaptations.add(adapt);
 		Adaptation adapt2 = new Adaptation();
-		adapt2.setData(10000);
-		adapt2.setName("Delay");
+		adapt2.setData("/getAttractionsResponse/attraction[outside='false']");
+		adapt2.setName("filter");
 		adaptations.add(adapt2);
+		// Adaptation adapt3 = new Adaptation();
+		// adapt3.setData("2000");
+		// adapt3.setName("delay");
+		// adaptations.add(adapt3);
 		adaptedMessage.setAdaptations(adaptations);
 
 		return this.adaptationManager.submit(adaptedMessage);

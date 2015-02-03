@@ -24,11 +24,6 @@ public class Itinerary {
 	private int priority;
 	private Date expirationDate;
 	private List<ContextAwareAdaptation> adaptationDirective;
-	
-	public String setItinerary(){
-		String itinerary = "switchyard://DelayService,switchyard://AppendService,switchyard://RemoteInvokerService";
-		return itinerary;
-	}
 
 	@Id
 	@GeneratedValue
@@ -56,13 +51,13 @@ public class Itinerary {
 	public int getPriority() {
 		return priority;
 	}
-	
+
 	@Column(name = "EXPIRATION_DATE", nullable = true)
-    @Temporal(TemporalType.TIMESTAMP)
+	@Temporal(TemporalType.TIMESTAMP)
 	public Date getExpirationDate() {
 		return expirationDate;
 	}
-	
+
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "itinerary")
 	public List<ContextAwareAdaptation> getAdaptationDirective() {
 		return adaptationDirective;
@@ -87,7 +82,7 @@ public class Itinerary {
 	public void setPriority(int priority) {
 		this.priority = priority;
 	}
-	
+
 	public void setExpirationDate(Date expirationDate) {
 		this.expirationDate = expirationDate;
 	}
