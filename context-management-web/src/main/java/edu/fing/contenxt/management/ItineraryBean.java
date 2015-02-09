@@ -1,6 +1,7 @@
 package edu.fing.contenxt.management;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -14,17 +15,31 @@ import javax.faces.context.FacesContext;
 @ViewScoped
 public class ItineraryBean {
 
+	public enum AdaptationType {
+		FILTER, ENRICH, DELAY
+	}
+
+	private AdaptationType adaptSelec;
+
 	private String descripcion;
 
 	private List<String> serviceList;
 
 	private List<String> situationList;
-
 	private String nombreServicioSelec;
-	private String nombreSituacionSelec;
+	private String nombreSituacionSelec;;
+
+	private List<AdaptationDto> adaptations = new LinkedList<AdaptationDto>();
 
 	@ManagedProperty(value = "#{sesionBean}")
 	private SesionBean sesion;
+
+	public void agregarAdaptacion() {
+
+		AdaptationDto a = new AdaptationDto(this.adaptations.size(), this.getAdaptSelec());
+		this.adaptations.add(a);
+
+	}
 
 	public String crearEvento() {
 		System.out.println("Crear el evento");
@@ -32,6 +47,14 @@ public class ItineraryBean {
 		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(mensaje, null));
 		return "homeAdminApp";
 
+	}
+
+	public List<AdaptationDto> getAdaptations() {
+		return this.adaptations;
+	}
+
+	public AdaptationType getAdaptSelec() {
+		return this.adaptSelec;
 	}
 
 	public String getDescripcion() {
@@ -71,6 +94,14 @@ public class ItineraryBean {
 		this.situationList.add("InCity");
 		this.situationList.add("WithCar");
 
+	}
+
+	public void setAdaptations(List<AdaptationDto> adaptations) {
+		this.adaptations = adaptations;
+	}
+
+	public void setAdaptSelec(AdaptationType adaptSelec) {
+		this.adaptSelec = adaptSelec;
 	}
 
 	public void setDescripcion(String descripcion) {

@@ -5,7 +5,8 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:pe="http://primefaces.org/ui/extensions"
-	template="/masterTemplate.xhtml">
+	template="/masterTemplate.xhtml"
+                xmlns:c="http://java.sun.com/jsp/jstl/core">
 
 	<ui:define name="title">Home</ui:define>
 	<ui:define name="body">
@@ -22,36 +23,69 @@
 
 		<!-- 			</p:layoutUnit> -->
 		<!-- 	</p:layout> -->
+		<h:form>
+			<p:panelGrid columns="2">
 
-		<p:panelGrid columns="2">
-
-			<p:outputLabel for="selectMenu" value="Servicio " />
-			<p:selectOneMenu id="selectMenu" autoupdate="true"
-				value="#{itineraryBean.nombreServicioSelec}" effect="fade">
-				<f:selectItem itemLabel="Selecione un servicio" itemValue="" />
-				<f:selectItems value="#{itineraryBean.serviceList}"
-					var="Service" itemLabel="#{Service}"
-					itemValue="#{Service}" />
-			</p:selectOneMenu>
-
+				<p:outputLabel for="selectMenu" value="Servicio " />
+				<p:selectOneMenu id="selectMenu" autoupdate="true"
+					value="#{itineraryBean.nombreServicioSelec}" effect="fade">
+					<f:selectItem itemLabel="Seleccione un servicio" itemValue="" />
+					<f:selectItems value="#{itineraryBean.serviceList}" var="Service"
+						itemLabel="#{Service}" itemValue="#{Service}" />
+				</p:selectOneMenu>
 
 
-			<p:outputLabel for="selectSituation" value="Situación " />
-			<p:selectOneMenu id="selectSituation" autoupdate="true"
-				value="#{itineraryBean.nombreSituacionSelec}" effect="fade">
-				<f:selectItem itemLabel="Selecione una situación" itemValue="" />
-				<f:selectItems value="#{itineraryBean.situationList}"
-					var="Situation" itemLabel="#{Situation}"
-					itemValue="#{Situation}" />
-			</p:selectOneMenu>
-			
-			<h:outputLabel value="Itinerario" />
-		<p:spacer width="5" ></p:spacer>
-		</p:panelGrid>
-		
-		
+
+				<p:outputLabel for="selectSituation" value="Situación " />
+				<p:selectOneMenu id="selectSituation" autoupdate="true"
+					value="#{itineraryBean.nombreSituacionSelec}" effect="fade">
+					<f:selectItem itemLabel="Seleccione una situación" itemValue="" />
+					<f:selectItems value="#{itineraryBean.situationList}"
+						var="Situation" itemLabel="#{Situation}" itemValue="#{Situation}" />
+				</p:selectOneMenu>
+
+				<h:outputLabel value="Itinerario" />
+				<p:selectOneMenu id="selectAdaptType" autoupdate="true"
+					value="#{itineraryBean.adaptSelec}" effect="fade">
+					<f:selectItem itemLabel="Seleccione adaptación a crear"
+						itemValue="" />
+					<f:selectItem itemLabel="Filter" itemValue="FILTER" />
+					<f:selectItem itemLabel="Delay" itemValue="DELAY" />
+					<f:selectItem itemLabel="Enrich" itemValue="ENRICH" />
+
+				</p:selectOneMenu>
+
+			</p:panelGrid>
+			<p:spacer width="5"></p:spacer>
+			<h:panelGrid columns="2">
+				<p:spacer width="5"></p:spacer>
+
+				<p:growl id="growl" life="2000" />
+				<p:commandButton value="Agregar" id="ajax"
+					update="growl adaptaciones"
+					actionListener="#{itineraryBean.agregarAdaptacion}"
+					styleClass="ui-priority-primary" />
+
+			</h:panelGrid>
 
 
+			<p:panelGrid id="adaptaciones" styleClass="centerContent">
+				<c:forEach items="#{itineraryBean.adaptations}" var="adap">
+					<p:row >
+						<p:column>
+							<h:outputText value="#{adap.id}" />
+						</p:column>
+						<p:column>
+							<h:outputText value="#{adap.adaptationType}" />
+						</p:column>
+						
+						<p:column>
+							<h:outputText value="#{adap.extraData}" />
+						</p:column>
+					</p:row>
+				</c:forEach>
+			</p:panelGrid>
+		</h:form>
 	</ui:define>
 	<ui:define name="menuIzq">
 		<ui:include src="/menuPrincipalSuperAdmin.xhtml" />
