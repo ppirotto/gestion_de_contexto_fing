@@ -101,8 +101,8 @@ public class DroolsMessageComposerBean implements DroolsMessageComposer {
 			System.out.println("key= "+key);
 			System.out.println("value= "+objectAsMap.get(key) + "\n");
 		}
-//		return droolsFeederService.receiveMessage(data);
-		return null;
+		return droolsFeederService.receiveMessage(data);
+//		return null;
 	}
 	
     public static class MapEntryConverter implements Converter {

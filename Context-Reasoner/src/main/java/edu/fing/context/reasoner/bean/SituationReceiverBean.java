@@ -16,6 +16,7 @@ import org.switchyard.remote.RemoteMessage;
 import org.switchyard.remote.http.HttpInvoker;
 
 import edu.fing.commons.dto.ContextReasonerData;
+import edu.fing.commons.dto.SituationDetectedTO;
 import edu.fing.context.reasoner.model.Adaptation;
 import edu.fing.context.reasoner.util.HibernateUtils;
 
@@ -25,13 +26,13 @@ public class SituationReceiverBean implements SituationReceiver {
 	private static final QName SERVICE = new QName("urn:edu.fing.switchyard:Adaptation-Gateway:1.0", "ItineraryService");
 
 	@Override
-	public String receiveSituationFromCEP(HashMap<String, Object> input) {
+	public String receiveSituationFromCEP(SituationDetectedTO situation) {
 
-		System.out.println("input:" + input.toString());
-
-		String userId = (String) input.get("userId");
-		String situationName = (String) input.get("situationName");
-		HashMap<String, String> contextualData = (HashMap<String, String>) input.get("contextualData");
+//		System.out.println("input:" + input.toString());
+//
+//		String userId = (String) input.get("userId");
+//		String situationName = (String) input.get("situationName");
+//		HashMap<String, String> contextualData = (HashMap<String, String>) input.get("contextualData");
 
 		SessionFactory sessionFactory = HibernateUtils.getSessionFactory();
 		Session session = sessionFactory.openSession();

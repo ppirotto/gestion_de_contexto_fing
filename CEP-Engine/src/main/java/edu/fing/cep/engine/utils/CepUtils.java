@@ -9,16 +9,15 @@ import org.switchyard.remote.RemoteInvoker;
 import org.switchyard.remote.RemoteMessage;
 import org.switchyard.remote.http.HttpInvoker;
 
+import edu.fing.commons.dto.SituationDetectedTO;
+
 public class CepUtils {
-//	public static void probar(){
-//		System.out.println("LLEGUEEEEEEEEEEEEEEEEEEEe");
-//		
-//	}
+
 	private static final QName SERVICE = new QName(
 			"urn:edu.fing.switchyard:Context-Reasoner:1.0", "SituationReceiver");
 
-	public static void notifyContextReasoner(HashMap<String, Object> msg){
-		System.err.println("BBBBBBBBBBBBBBBBBBBB");
+	public static void notifyContextReasoner(SituationDetectedTO situation){
+		
 		String response = null;
 		String port = System.getProperty(
 				"org.switchyard.component.sca.client.port", "8080");
@@ -26,7 +25,7 @@ public class CepUtils {
 		
 		// Create the request message
 		RemoteMessage message = new RemoteMessage();
-		message.setService(SERVICE).setOperation("receiveSituationFromCEP").setContent(msg);
+		message.setService(SERVICE).setOperation("receiveSituationFromCEP").setContent(situation);
 
 		// Invoke the service
 		RemoteMessage reply;
