@@ -10,20 +10,8 @@
 
 	<ui:define name="title">Home</ui:define>
 	<ui:define name="body">
-		<!-- 	<p:layout> -->
-		<!-- 		 	<p:layoutUnit position="north"  size="80"> -->
-
-		<!-- 		    </p:layoutUnit> -->
-		<!-- 		    <p:layoutUnit position="west" size="100" > -->
-
-		<!-- 		    </p:layoutUnit> -->
-
-		<!-- 		    <p:layoutUnit position="center"  > -->
-
-
-		<!-- 			</p:layoutUnit> -->
-		<!-- 	</p:layout> -->
-		<h:form>
+	
+		<h:form enctype="multipart/form-data">
 			<p:panelGrid columns="2">
 
 				<p:outputLabel for="selectMenu" value="Servicio " />
@@ -70,7 +58,7 @@
 
 
 			<p:panelGrid id="adaptaciones" styleClass="centerContent">
-				<c:forEach items="#{itineraryBean.adaptations}" var="adap">
+				<c:forEach items="#{itineraryBean.adaptations}" var="adap" varStatus="status">
 					<p:row >
 						<p:column>
 							<h:outputText value="#{adap.id}" />
@@ -80,11 +68,15 @@
 						</p:column>
 						
 						<p:column>
-							<h:outputText value="#{adap.extraData}" />
+							<p:fileUpload value="#{adap.data}" mode="simple" skinSimple="true"/>
+ 
+ 
+
 						</p:column>
 					</p:row>
 				</c:forEach>
 			</p:panelGrid>
+			   <p:commandButton value="Crear Itinerario" ajax="false" actionListener="#{itineraryBean.upload}" />
 		</h:form>
 	</ui:define>
 	<ui:define name="menuIzq">

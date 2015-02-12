@@ -11,6 +11,8 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
+import org.primefaces.model.UploadedFile;
+
 @ManagedBean
 @ViewScoped
 public class ItineraryBean {
@@ -27,7 +29,8 @@ public class ItineraryBean {
 
 	private List<String> situationList;
 	private String nombreServicioSelec;
-	private String nombreSituacionSelec;;
+	private String nombreSituacionSelec;
+	private List<UploadedFile> files = new LinkedList<UploadedFile>();
 
 	private List<AdaptationDto> adaptations = new LinkedList<AdaptationDto>();
 
@@ -41,12 +44,14 @@ public class ItineraryBean {
 
 	}
 
-	public String crearEvento() {
-		System.out.println("Crear el evento");
-		String mensaje = "Evento creado con éxito";
+	public String crearItinerario() {
+		System.out.println("Crear itinerario");
+		String mensaje = "Itinerario creado con éxito";
 		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(mensaje, null));
-		return "homeAdminApp";
 
+		// servicio de context reasoner
+		// (url servicio, situación, lista de adaptaciones con su data)
+		return mensaje;
 	}
 
 	public List<AdaptationDto> getAdaptations() {
@@ -126,6 +131,24 @@ public class ItineraryBean {
 
 	public void setSituationList(List<String> situationList) {
 		this.situationList = situationList;
+	}
+
+	public void upload() {
+		System.out.println(this.getFiles().size());
+
+		// if (!this.files.isEmpty()) {
+		// FacesMessage message = new FacesMessage("Succesful",
+		// this.files.getFileName() + " is uploaded.");
+		// FacesContext.getCurrentInstance().addMessage(null, message);
+		// }
+	}
+
+	public List<UploadedFile> getFiles() {
+		return files;
+	}
+
+	public void setFiles(List<UploadedFile> files) {
+		this.files = files;
 	}
 
 }

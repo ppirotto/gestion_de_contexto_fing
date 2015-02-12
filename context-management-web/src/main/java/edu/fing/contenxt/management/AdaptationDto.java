@@ -1,11 +1,13 @@
 package edu.fing.contenxt.management;
 
+import org.primefaces.model.UploadedFile;
+
 import edu.fing.contenxt.management.ItineraryBean.AdaptationType;
 
 public class AdaptationDto {
 	private int id;
 	private AdaptationType adaptationType;
-	private Byte[] data;
+	private UploadedFile data;
 	private String extraData;
 
 	public AdaptationDto(int id, AdaptationType adaptationType) {
@@ -16,10 +18,6 @@ public class AdaptationDto {
 
 	public AdaptationType getAdaptationType() {
 		return this.adaptationType;
-	}
-
-	public Byte[] getData() {
-		return this.data;
 	}
 
 	public String getExtraData() {
@@ -34,16 +32,20 @@ public class AdaptationDto {
 		this.adaptationType = adaptationType;
 	}
 
-	public void setData(Byte[] data) {
-		this.data = data;
-	}
-
 	public void setExtraData(String extraData) {
 		this.extraData = extraData;
 	}
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public UploadedFile getData() {
+		return data;
+	}
+
+	public void setData(UploadedFile data) {
+		this.data = data;
 	}
 
 }
