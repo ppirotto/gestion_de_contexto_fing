@@ -6,77 +6,93 @@
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:pe="http://primefaces.org/ui/extensions"
 	template="/masterTemplate.xhtml"
-                xmlns:c="http://java.sun.com/jsp/jstl/core">
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
 
 	<ui:define name="title">Home</ui:define>
 	<ui:define name="body">
-	
+
 		<h:form enctype="multipart/form-data">
-			<p:panelGrid columns="2">
-
-				<p:outputLabel for="selectMenu" value="Servicio " />
-				<p:selectOneMenu id="selectMenu" autoupdate="true"
-					value="#{itineraryBean.nombreServicioSelec}" effect="fade">
-					<f:selectItem itemLabel="Seleccione un servicio" itemValue="" />
-					<f:selectItems value="#{itineraryBean.serviceList}" var="Service"
-						itemLabel="#{Service}" itemValue="#{Service}" />
-				</p:selectOneMenu>
-
-
-
-				<p:outputLabel for="selectSituation" value="Situación " />
-				<p:selectOneMenu id="selectSituation" autoupdate="true"
-					value="#{itineraryBean.nombreSituacionSelec}" effect="fade">
-					<f:selectItem itemLabel="Seleccione una situación" itemValue="" />
-					<f:selectItems value="#{itineraryBean.situationList}"
-						var="Situation" itemLabel="#{Situation}" itemValue="#{Situation}" />
-				</p:selectOneMenu>
-
-				<h:outputLabel value="Itinerario" />
-				<p:selectOneMenu id="selectAdaptType" autoupdate="true"
-					value="#{itineraryBean.adaptSelec}" effect="fade">
-					<f:selectItem itemLabel="Seleccione adaptación a crear"
-						itemValue="" />
-					<f:selectItem itemLabel="Filter" itemValue="FILTER" />
-					<f:selectItem itemLabel="Delay" itemValue="DELAY" />
-					<f:selectItem itemLabel="Enrich" itemValue="ENRICH" />
-
-				</p:selectOneMenu>
-
-			</p:panelGrid>
-			<p:spacer width="5"></p:spacer>
 			<h:panelGrid columns="2">
-				<p:spacer width="5"></p:spacer>
+				<p:panelGrid columns="2">
 
-				<p:growl id="growl" life="2000" />
-				<p:commandButton value="Agregar" id="ajax"
-					update="growl adaptaciones"
-					actionListener="#{itineraryBean.agregarAdaptacion}"
-					styleClass="ui-priority-primary" />
+					<p:outputLabel for="selectMenu" value="Servicio " />
+					<p:selectOneMenu id="selectMenu" autoupdate="true"
+						styleClass="span4" value="#{itineraryBean.nombreServicioSelec}"
+						effect="fade">
+						<f:selectItem itemLabel="Seleccione un servicio" itemValue="" />
+						<f:selectItems value="#{itineraryBean.serviceList}" var="Service"
+							itemLabel="#{Service}" itemValue="#{Service}" />
+					</p:selectOneMenu>
+
+
+
+					<p:outputLabel for="selectSituation" value="Situación " />
+					<p:selectOneMenu id="selectSituation" autoupdate="true"
+						styleClass="span4" value="#{itineraryBean.nombreSituacionSelec}"
+						effect="fade">
+						<f:selectItem itemLabel="Seleccione una situación" itemValue="" />
+						<f:selectItems value="#{itineraryBean.situationList}"
+							var="Situation" itemLabel="#{Situation}" itemValue="#{Situation}" />
+					</p:selectOneMenu>
+
+					<h:outputLabel value="Adaptación" />
+					<p:selectOneMenu id="selectAdaptType" autoupdate="true"
+						styleClass="span4" value="#{itineraryBean.adaptSelec}"
+						effect="fade">
+						<f:selectItem itemLabel="Seleccione adaptación a crear"
+							itemValue="" />
+						<f:selectItem itemLabel="Filter" itemValue="FILTER" />
+						<f:selectItem itemLabel="Delay" itemValue="DELAY" />
+						<f:selectItem itemLabel="Enrich" itemValue="ENRICH" />
+
+					</p:selectOneMenu>
+
+				</p:panelGrid>
+
+				<h:panelGrid columns="2">
+
+					<p:growl id="growl" life="2000" />
+					<p:commandButton value="Agregar" id="ajax"
+						update="growl adaptaciones"
+						actionListener="#{itineraryBean.agregarAdaptacion}" />
+
+				</h:panelGrid>
 
 			</h:panelGrid>
-
-
+			
+			<h2>
+				<h:outputText value="Itinerario:" />
+			</h2>
+			
 			<p:panelGrid id="adaptaciones" styleClass="centerContent">
-				<c:forEach items="#{itineraryBean.adaptations}" var="adap" varStatus="status">
-					<p:row >
+				<c:forEach items="#{itineraryBean.adaptations}" var="adap"
+					varStatus="status">
+					<p:row>
 						<p:column>
 							<h:outputText value="#{adap.id}" />
 						</p:column>
 						<p:column>
 							<h:outputText value="#{adap.adaptationType}" />
 						</p:column>
-						
-						<p:column>
-							<p:fileUpload value="#{adap.data}" mode="simple" skinSimple="true"/>
- 
- 
 
+						<p:column rendered="#{adap.adaptationType != 'DELAY'}">
+							<p:fileUpload value="#{adap.data}" mode="simple"
+								dragDropSupport="true" />
+						</p:column>
+						<p:column rendered="#{adap.adaptationType == 'DELAY'}">
+							<p:inputText value="#{adap.extraData}" />
 						</p:column>
 					</p:row>
 				</c:forEach>
 			</p:panelGrid>
-			   <p:commandButton value="Crear Itinerario" ajax="false" actionListener="#{itineraryBean.upload}" />
+		
+			
+			<p:growl id="growl2" life="2000" />
+			<p:commandButton value="Crear Itinerario"
+				actionListener="#{itineraryBean.upload}" update="growl2"
+				styleClass="ui-priority-primary " style="margin-top: 10px;"/>
+
+			<p:growl id="messages" showDetail="true" />
 		</h:form>
 	</ui:define>
 	<ui:define name="menuIzq">

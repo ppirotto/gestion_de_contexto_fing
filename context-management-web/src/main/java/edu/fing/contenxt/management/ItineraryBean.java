@@ -39,7 +39,7 @@ public class ItineraryBean {
 
 	public void agregarAdaptacion() {
 
-		AdaptationDto a = new AdaptationDto(this.adaptations.size(), this.getAdaptSelec());
+		AdaptationDto a = new AdaptationDto(this.adaptations.size() + 1, this.getAdaptSelec());
 		this.adaptations.add(a);
 
 	}
@@ -64,6 +64,10 @@ public class ItineraryBean {
 
 	public String getDescripcion() {
 		return this.descripcion;
+	}
+
+	public List<UploadedFile> getFiles() {
+		return this.files;
 	}
 
 	public String getNombreServicioSelec() {
@@ -113,6 +117,10 @@ public class ItineraryBean {
 		this.descripcion = descripcion;
 	}
 
+	public void setFiles(List<UploadedFile> files) {
+		this.files = files;
+	}
+
 	public void setNombreServicioSelec(String nombreServicioSelec) {
 		this.nombreServicioSelec = nombreServicioSelec;
 	}
@@ -135,20 +143,14 @@ public class ItineraryBean {
 
 	public void upload() {
 		System.out.println(this.getFiles().size());
+		FacesMessage message = null;
+		if (!this.adaptations.isEmpty()) {
+			message = new FacesMessage("Succesful", " is uploaded.");
 
-		// if (!this.files.isEmpty()) {
-		// FacesMessage message = new FacesMessage("Succesful",
-		// this.files.getFileName() + " is uploaded.");
-		// FacesContext.getCurrentInstance().addMessage(null, message);
-		// }
-	}
-
-	public List<UploadedFile> getFiles() {
-		return files;
-	}
-
-	public void setFiles(List<UploadedFile> files) {
-		this.files = files;
+		} else {
+			message = new FacesMessage("Error", " is uploaded.");
+		}
+		FacesContext.getCurrentInstance() .addMessage("growl2", message);
 	}
 
 }
