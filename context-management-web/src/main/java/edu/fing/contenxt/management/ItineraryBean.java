@@ -23,7 +23,8 @@ public class ItineraryBean {
 
 	private AdaptationType adaptSelec;
 
-	private String descripcion;
+	private String description;
+	private int priority;
 
 	private List<String> serviceList;
 
@@ -34,8 +35,8 @@ public class ItineraryBean {
 
 	private List<AdaptationDto> adaptations = new LinkedList<AdaptationDto>();
 
-	@ManagedProperty(value = "#{sesionBean}")
-	private SesionBean sesion;
+	@ManagedProperty(value = "#{sessionBean}")
+	private SessionBean session;
 
 	public void agregarAdaptacion() {
 
@@ -62,8 +63,8 @@ public class ItineraryBean {
 		return this.adaptSelec;
 	}
 
-	public String getDescripcion() {
-		return this.descripcion;
+	public String getDescription() {
+		return this.description;
 	}
 
 	public List<UploadedFile> getFiles() {
@@ -78,12 +79,16 @@ public class ItineraryBean {
 		return this.nombreSituacionSelec;
 	}
 
+	public int getPriority() {
+		return this.priority;
+	}
+
 	public List<String> getServiceList() {
 		return this.serviceList;
 	}
 
-	public SesionBean getSesion() {
-		return this.sesion;
+	public SessionBean getSession() {
+		return this.session;
 	}
 
 	public List<String> getSituationList() {
@@ -113,8 +118,8 @@ public class ItineraryBean {
 		this.adaptSelec = adaptSelec;
 	}
 
-	public void setDescripcion(String descripcion) {
-		this.descripcion = descripcion;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public void setFiles(List<UploadedFile> files) {
@@ -129,12 +134,16 @@ public class ItineraryBean {
 		this.nombreSituacionSelec = nombreSituacionSelec;
 	}
 
+	public void setPriority(int priority) {
+		this.priority = priority;
+	}
+
 	public void setServiceList(List<String> serviceList) {
 		this.serviceList = serviceList;
 	}
 
-	public void setSesion(SesionBean sesion) {
-		this.sesion = sesion;
+	public void setSession(SessionBean session) {
+		this.session = session;
 	}
 
 	public void setSituationList(List<String> situationList) {
@@ -150,7 +159,7 @@ public class ItineraryBean {
 		} else {
 			message = new FacesMessage("Error", " is uploaded.");
 		}
-		FacesContext.getCurrentInstance() .addMessage("growl2", message);
+		FacesContext.getCurrentInstance().addMessage("growl2", message);
 	}
 
 }

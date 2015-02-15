@@ -10,11 +10,12 @@ import javax.faces.context.FacesContext;
 @ViewScoped
 public class SituationBean {
 
-	private String descripcion;
+	private String description;
 	private String name;
+	private int duration;
 
-	@ManagedProperty(value = "#{sesionBean}")
-	private SesionBean sesion;
+	@ManagedProperty(value = "#{sessionBean}")
+	private SessionBean session;
 
 	public String crearSituacion() {
 		System.out.println("Crear situación");
@@ -27,19 +28,43 @@ public class SituationBean {
 	}
 
 	public String getDescripcion() {
-		return this.descripcion;
+		return this.getDescription();
 	}
 
-	public SesionBean getSesion() {
-		return this.sesion;
+	public int getDuration() {
+		return this.duration;
+	}
+
+	public String getName() {
+		return this.name;
 	}
 
 	public void setDescripcion(String descripcion) {
-		this.descripcion = descripcion;
+		this.setDescription(descripcion);
 	}
 
-	public void setSesion(SesionBean sesion) {
-		this.sesion = sesion;
+	public void setDuration(int duration) {
+		this.duration = duration;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public SessionBean getSession() {
+		return session;
+	}
+
+	public void setSession(SessionBean session) {
+		this.session = session;
 	}
 
 }

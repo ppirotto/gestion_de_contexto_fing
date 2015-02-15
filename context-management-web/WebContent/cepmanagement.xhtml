@@ -10,11 +10,12 @@
 	<ui:define name="title">Home</ui:define>
 	<ui:define name="body">
 		<p:layout>
-			<p:layoutUnit position="north" size="70">
+			<p:layoutUnit position="north" size="55" style="border: 0px;">
 				<h:form>
-					<h:panelGrid columns="8" style="margin-bottom:10px" cellpadding="5">
-						<p:outputLabel for="versionSelectOneMenu"
-							value="Seleccionar version base:" />
+					<p:panelGrid columns="8" cellpadding="3" style="border: 0px;">
+						<p:outputLabel for="versionSelectOneMenu">
+							<b>Seleccionar version base:</b>
+						</p:outputLabel>
 						<p:selectOneMenu id="versionSelectOneMenu"
 							value="#{rulesBean.selectedVersion}" converter="versionConverter"
 							style="width:125px">
@@ -24,10 +25,14 @@
 							<f:selectItems value="#{rulesBean.res.versions}" var="version"
 								itemLabel="#{version.versionNumber}" itemValue="#{version}" />
 						</p:selectOneMenu>
-						<p:outputLabel value="Version activa: " />
+						<p:outputLabel>
+							<b>Version activa: </b>
+						</p:outputLabel>
 						<p:outputLabel value="#{rulesBean.activeVersion}" />
-						<p:spacer width="100" height="10" />
-						<p:outputLabel for="deploySelectOneMenu" value="Deployar version:" />
+
+						<p:outputLabel for="deploySelectOneMenu">
+							<b>Deployar version:</b>
+						</p:outputLabel>
 						<p:selectOneMenu id="deploySelectOneMenu"
 							value="#{rulesBean.versionToDeploy}" converter="versionConverter"
 							style="width:125px">
@@ -37,14 +42,14 @@
 						<p:commandButton value="Deploy!!!" icon="ui-icon-check"
 							actionListener="#{rulesBean.deployVersion}"
 							title="Deployar version seleccionada" />
-					</h:panelGrid>
+					</p:panelGrid>
 				</h:form>
 			</p:layoutUnit>
-			<p:layoutUnit position="west" size="270">
+			<p:layoutUnit position="west" size="230">
 				<h:form id="ruleForm">
 					<p:selectOneListbox id="ruleSelectOneListbox"
 						value="#{rulesBean.selectedRule}" converter="ruleConverter"
-						style="width:250px">
+						style="width:210px">
 						<f:ajax listener="#{rulesBean.selectedRuleChanged}"
 							render=":codeMirrorForm:codeMirror" />
 						<f:selectItems value="#{rulesBean.selectedVersion.rules}"
@@ -52,26 +57,16 @@
 					</p:selectOneListbox>
 				</h:form>
 			</p:layoutUnit>
+			<h:form id="codeMirrorForm">
+				<p:layoutUnit position="center">
 
-			<p:layoutUnit position="center">
 
-				<h:form id="codeMirrorForm">
 					<pe:codeMirror id="codeMirror"
 						style="min-width:400px;min-height:400px;" mode="javascript"
 						theme="eclipse" value="#{rulesBean.selectedRule.rule}"
 						lineNumbers="true" matchBrackets="true" lineWrapping="true" />
 
-					<p:columnGroup>
 
-						<p:commandButton value="Guardar regla" style="float:bottom"
-							title="Guarda regla en la sesion" icon="ui-icon-check"
-							actionListener="#{rulesBean.saveRuleAction}" />
-
-						<p:commandButton value="Crear nueva version!" update="display"
-							oncomplete="PF('dlg').show()" icon="ui-icon-check"
-							actionListener="#{rulesBean.saveRuleAction}"
-							title="Crea una nueva version con las reglas nuevas versiones de las reglas" />
-					</p:columnGroup>
 					<p:dialog header="Creando nueva version..." modal="false"
 						showEffect="bounce" widgetVar="dlg" resizable="false">
 						<p:panelGrid columns="2" id="display" style="margin-bottom:10px"
@@ -84,8 +79,24 @@
 								oncomplete="PF('dlg').hide()" title="Crear nueva version!" />
 						</p:panelGrid>
 					</p:dialog>
-				</h:form>
-			</p:layoutUnit>
+
+					<p:columnGroup>
+
+
+					</p:columnGroup>
+
+				</p:layoutUnit>
+				<p:layoutUnit position="south" size="100">
+					<p:commandButton value="Guardar regla" style="float:bottom"
+						title="Guarda regla en la sesion" icon="ui-icon-check"
+						actionListener="#{rulesBean.saveRuleAction}" />
+
+					<p:commandButton value="Crear nueva version!" update="display"
+						oncomplete="PF('dlg').show()" icon="ui-icon-check"
+						actionListener="#{rulesBean.saveRuleAction}"
+						title="Crea una nueva version con las reglas nuevas versiones de las reglas" />
+				</p:layoutUnit>
+			</h:form>
 		</p:layout>
 	</ui:define>
 	<ui:define name="menuIzq">

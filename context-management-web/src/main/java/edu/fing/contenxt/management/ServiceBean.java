@@ -18,7 +18,7 @@ import com.predic8.wsdl.WSDLParser;
 @ViewScoped
 public class ServiceBean {
 
-	private String descripcion;
+	private String description;
 
 	private List<String> operations = new ArrayList<String>();
 	private String selectedOperation;
@@ -28,8 +28,8 @@ public class ServiceBean {
 	private String serviceURL;
 	private String virtualService;
 
-	@ManagedProperty(value = "#{sesionBean}")
-	private SesionBean sesion;
+	@ManagedProperty(value = "#{sessionBean}")
+	private SessionBean session;
 
 	public String crearServicio() {
 		System.out.println("Crear servicio");
@@ -39,10 +39,6 @@ public class ServiceBean {
 		// servicio de context reasoner
 		// (url servicio, situación, lista de adaptaciones con su data)
 		return "inicio";
-	}
-
-	public String getDescripcion() {
-		return this.descripcion;
 	}
 
 	public List<String> getOperations() {
@@ -89,20 +85,12 @@ public class ServiceBean {
 		return this.serviceURL;
 	}
 
-	public SesionBean getSesion() {
-		return this.sesion;
-	}
-
 	public List<String> getSituationList() {
 		return this.situationList;
 	}
 
 	public String getVirtualService() {
 		return this.virtualService;
-	}
-
-	public void setDescripcion(String descripcion) {
-		this.descripcion = descripcion;
 	}
 
 	public void setOperations(List<String> operations) {
@@ -121,16 +109,28 @@ public class ServiceBean {
 		this.serviceURL = serviceURL;
 	}
 
-	public void setSesion(SesionBean sesion) {
-		this.sesion = sesion;
-	}
-
 	public void setSituationList(List<String> situationList) {
 		this.situationList = situationList;
 	}
 
 	public void setVirtualService(String virtualService) {
 		this.virtualService = virtualService;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public SessionBean getSession() {
+		return session;
+	}
+
+	public void setSession(SessionBean session) {
+		this.session = session;
 	}
 
 }

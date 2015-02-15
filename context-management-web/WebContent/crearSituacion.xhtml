@@ -10,7 +10,7 @@
 
 	<ui:define name="title">Home</ui:define>
 	<ui:define name="body">
-	<p:messages autoUpdate="true" id="messagesGeneral" />
+		<p:messages autoUpdate="true" id="messagesGeneral" />
 		<h1>
 			<h:outputText value="Crear Situacion" />
 		</h1>
@@ -19,43 +19,30 @@
 			<h:panelGrid columns="2">
 				<p:panelGrid columns="2">
 					<p:outputLabel>
-						<b>Nombre del servicio</b>
+						<b>Nombre de la situación</b>
 					</p:outputLabel>
-					<p:inputText size="50" value="#{serviceBean.serviceName}" />
+					<p:inputText size="50" value="#{situationBean.name}" required="true" label="Nombre de la situación"/>
 					<p:outputLabel>
-						<b>Url del servicio</b>
+						<b>Descripción</b>
 					</p:outputLabel>
-					<p:inputText size="50" value="#{serviceBean.serviceURL}" />
+					<p:inputText size="50" value="#{situationBean.description}" required="true" label="Descripción" />
+
 
 
 					<p:outputLabel>
-						<b>Seleccione operación</b>
+						<b>Duración en minutos</b>
 					</p:outputLabel>
-					<p:dataTable id="operaciones" var="op" style="width:380px"
-						value="#{serviceBean.operations}"
-						selection="#{serviceBean.selectedOperation}" rowKey="#{op}">
-
-						<p:column selectionMode="single"
-							style="width:16px;text-align:center" />
-						<p:column headerText="Nombre">
-							<h:outputText value="#{op}" />
-						</p:column>
-
-					</p:dataTable>
-						<p:outputLabel>
-						<b>Servicio virtual</b>
-					</p:outputLabel>
-					<p:inputText size="50" value="#{serviceBean.virtualService}" />
-					
+					<p:inputText id="duration" size="50" value="#{situationBean.duration}" label="Duración">
+						<f:convertNumber integerOnly="true" type="number" />
+					</p:inputText>
+					 <p:message for="duration" display="icon" />
 
 				</p:panelGrid>
-				<p:commandButton value="Cargar Operaciones"
-					actionListener="#{serviceBean.getOperationsForService()}"
-					update="operaciones" style="margin-top: 30px;" />
+		
 			</h:panelGrid>
-			<p:growl id="grwol" life="2000"/>
+			<p:growl id="grwol" life="2000" />
 			<p:commandButton value="Crear Servicio"
-				action="#{serviceBean.crearServicio()}" 
+				action="#{serviceBean.crearServicio()}"
 				styleClass="ui-priority-primary " style="margin-top: 10px;" />
 		</h:form>
 	</ui:define>

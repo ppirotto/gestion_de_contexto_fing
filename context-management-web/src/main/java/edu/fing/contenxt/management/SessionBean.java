@@ -5,7 +5,7 @@ import javax.faces.bean.SessionScoped;
 
 @ManagedBean
 @SessionScoped
-public class SesionBean {
+public class SessionBean {
 
 	private String tokenId;
 	private String mail;

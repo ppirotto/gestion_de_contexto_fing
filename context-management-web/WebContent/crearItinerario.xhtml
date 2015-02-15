@@ -50,7 +50,14 @@
 
 					</p:selectOneMenu>
 
-					<p:outputLabel for="selectSituation" value="Prioridad " />
+					<p:outputLabel>
+						<b>Prioridad</b>
+					</p:outputLabel>
+					<p:inputText id="prioridad" size="50"
+						value="#{itineraryBean.priority}" label="Prioridad">
+						<f:convertNumber integerOnly="true" type="number" />
+					</p:inputText>
+					<p:message for="prioridad" display="icon" />
 				</p:panelGrid>
 
 				<h:panelGrid columns="2">

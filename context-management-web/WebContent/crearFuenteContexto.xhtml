@@ -14,88 +14,43 @@
 			<h:outputText value="Crear Fuente de Contexto" />
 		</h1>
 
-		<h:form enctype="multipart/form-data">
-			<h:panelGrid columns="2">
-				<p:panelGrid columns="2">
+		<h:form>
 
-					<p:outputLabel for="selectMenu" value="Servicio " />
-					<p:selectOneMenu id="selectMenu" autoupdate="true"
-						styleClass="span4" value="#{itineraryBean.nombreServicioSelec}"
-						effect="fade">
-						<f:selectItem itemLabel="Seleccione un servicio" itemValue="" />
-						<f:selectItems value="#{itineraryBean.serviceList}" var="Service"
-							itemLabel="#{Service}" itemValue="#{Service}" />
-					</p:selectOneMenu>
+			<p:panelGrid columns="2">
+
+				<p:outputLabel>
+					<b>Nombre del evento</b>
+				</p:outputLabel>
+				<p:inputText size="40" value="#{contextSourceBean.eventName}"
+					required="true" label="Nombre" />
 
 
+				<p:outputLabel for="selectEventType" value="Tipo del evento " />
+				<p:selectOneMenu id="selectEventType" autoupdate="true"
+					styleClass="span4" value="#{contextSourceBean.modeConverter}"
+					effect="fade">
+					<f:selectItem itemLabel="Seleccione un tipo" itemValue="" />
+					<f:selectItem itemLabel="JSON" itemValue="JSON" />
+					<f:selectItem itemLabel="XML" itemValue="XML" />
 
-					<p:outputLabel for="selectSituation" value="Situación " />
-					<p:selectOneMenu id="selectSituation" autoupdate="true"
-						styleClass="span4" value="#{itineraryBean.nombreSituacionSelec}"
-						effect="fade">
-						<f:selectItem itemLabel="Seleccione una situación" itemValue="" />
-						<f:selectItems value="#{itineraryBean.situationList}"
-							var="Situation" itemLabel="#{Situation}" itemValue="#{Situation}" />
-					</p:selectOneMenu>
+				</p:selectOneMenu>
 
-					<h:outputLabel value="Adaptación" />
-					<p:selectOneMenu id="selectAdaptType" autoupdate="true"
-						styleClass="span4" value="#{itineraryBean.adaptSelec}"
-						effect="fade">
-						<f:selectItem itemLabel="Seleccione adaptación a crear"
-							itemValue="" />
-						<f:selectItem itemLabel="Filter" itemValue="FILTER" />
-						<f:selectItem itemLabel="Delay" itemValue="DELAY" />
-						<f:selectItem itemLabel="Enrich" itemValue="ENRICH" />
+				<p:outputLabel value="Modo de entrada" />
+				<p:selectOneMenu id="selectAdaptType" autoupdate="true"
+					styleClass="span4" value="#{contextSourceBean.receiveMode}"
+					effect="fade">
+					<f:selectItem itemLabel="Seleccione modo" itemValue="" />
+					<f:selectItem itemLabel="Polling" itemValue="POLLING" />
+					<f:selectItem itemLabel="Listener" itemValue="LISTENER" />
 
-					</p:selectOneMenu>
 
-				</p:panelGrid>
+				</p:selectOneMenu>
 
-				<h:panelGrid columns="2">
-
-					<p:growl id="growl" life="2000" />
-					<p:commandButton value="Agregar" id="ajax"
-						update="growl adaptaciones"
-						actionListener="#{itineraryBean.agregarAdaptacion}" />
-
-				</h:panelGrid>
-
-			</h:panelGrid>
-
-			<h2>
-				<h:outputText value="Itinerario:" />
-			</h2>
-
-			<p:panelGrid id="adaptaciones" styleClass="centerContent">
-				<c:forEach items="#{itineraryBean.adaptations}" var="adap"
-					varStatus="status">
-					<p:row>
-						<p:column>
-							<h:outputText value="#{adap.id}" />
-						</p:column>
-						<p:column>
-							<h:outputText value="#{adap.adaptationType}" />
-						</p:column>
-
-						<p:column rendered="#{adap.adaptationType != 'DELAY'}">
-							<p:fileUpload value="#{adap.data}" mode="simple"
-								dragDropSupport="true" />
-						</p:column>
-						<p:column rendered="#{adap.adaptationType == 'DELAY'}">
-							<p:inputText value="#{adap.extraData}" />
-						</p:column>
-					</p:row>
-				</c:forEach>
 			</p:panelGrid>
 
-
-			<p:growl id="growl2" life="2000" />
-			<p:commandButton value="Crear Itinerario"
-				actionListener="#{itineraryBean.upload}" update="growl2"
-				styleClass="ui-priority-primary " style="margin-top: 10px;" />
-
-			<p:growl id="messages" showDetail="true" />
+			<p:commandButton value="Crear Fuente de Contexto"
+				action="#{contextSourceBean.crearFuenteContexto()}"
+				styleClass="ui-priority-primary" style="margin-top: 10px;" />
 		</h:form>
 	</ui:define>
 	<ui:define name="menuIzq">
