@@ -7,9 +7,9 @@ public class AdaptedMessage {
 	private String message;
 	private String itinerary;
 	private String service;
-	private List<Adaptation> adaptations;
+	private List<AdaptationTO> adaptations;
 
-	public List<Adaptation> getAdaptations() {
+	public List<AdaptationTO> getAdaptations() {
 		return this.adaptations;
 	}
 
@@ -17,7 +17,7 @@ public class AdaptedMessage {
 		return this.message;
 	}
 
-	public void setAdaptations(List<Adaptation> adaptations) {
+	public void setAdaptations(List<AdaptationTO> adaptations) {
 		this.adaptations = adaptations;
 	}
 

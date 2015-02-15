@@ -1,115 +1,119 @@
 package edu.fing.context.reasoner.bean;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
-import javax.xml.namespace.QName;
+import javax.inject.Inject;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.switchyard.component.bean.Service;
-import org.switchyard.remote.RemoteInvoker;
-import org.switchyard.remote.RemoteMessage;
-import org.switchyard.remote.http.HttpInvoker;
+import org.switchyard.component.bean.Reference;
 
+import edu.fing.commons.dto.AdaptationTO;
 import edu.fing.commons.dto.ContextReasonerData;
 import edu.fing.commons.dto.SituationDetectedTO;
 import edu.fing.context.reasoner.model.Adaptation;
+import edu.fing.context.reasoner.model.Service;
+import edu.fing.context.reasoner.model.ServiceSituationPriority;
+import edu.fing.context.reasoner.model.Situation;
 import edu.fing.context.reasoner.util.HibernateUtils;
 
-@Service(SituationReceiver.class)
+@org.switchyard.component.bean.Service(SituationReceiver.class)
 public class SituationReceiverBean implements SituationReceiver {
 
-	private static final QName SERVICE = new QName("urn:edu.fing.switchyard:Adaptation-Gateway:1.0", "ItineraryService");
+	@Inject
+	@Reference
+	private AdaptationGatewayService adaptationGatewayService;
 
 	@Override
-	public String receiveSituationFromCEP(SituationDetectedTO situation) {
-
-//		System.out.println("input:" + input.toString());
-//
-//		String userId = (String) input.get("userId");
-//		String situationName = (String) input.get("situationName");
-//		HashMap<String, String> contextualData = (HashMap<String, String>) input.get("contextualData");
+	public String receiveSituationFromCEP(SituationDetectedTO cepSituation) {
 
 		SessionFactory sessionFactory = HibernateUtils.getSessionFactory();
 		Session session = sessionFactory.openSession();
 		session.beginTransaction();
 
 		StringBuilder queryString = new StringBuilder();
+		queryString.append("SELECT ser ");
+		queryString.append("FROM Service ser ");
+		queryString.append("inner join fetch ser.adaptations a ");
+		queryString.append("inner join fetch a.situation s ");
+		queryString.append("WHERE s.name = :situationName ");
 
-		queryString.append("SELECT A.* ");
-		queryString.append("FROM SITUATION S JOIN ADAPTATION A ON A.SITUATION_ID = S.ID JOIN SERVICE ser ON (ser.service_id = a.id) ");
-		queryString.append("WHERE S.name = :situationName ");
-
-		Query query = session.createSQLQuery(queryString.toString());
-		query.setParameter("situationName", "InCityRaining");
-
-		@SuppressWarnings("unchecked")
-		List<Adaptation> adaptations = query.list();
-
-		session.getTransaction().commit();
-
-		session.close();
-		sessionFactory.close();
-
-		return "OK";
-
-	}
-
-	@Override
-	public String receiveSituationFromCEP2() {
-
-		SessionFactory sessionFactory = HibernateUtils.getSessionFactory();
-		Session session = sessionFactory.openSession();
-
-		session.beginTransaction();
-
-		StringBuilder queryString = new StringBuilder();
-
-		queryString.append("SELECT A.* ");
-		queryString.append("FROM SITUATION S JOIN ADAPTATION A ON A.SITUATION_ID = S.ID JOIN SERVICE SER ON a.SERVICE_ID = SER.ID ");
-		queryString.append("WHERE S.name = :situationName ");
-
-		Query query = session.createSQLQuery(queryString.toString()).addEntity(Adaptation.class);
-		query.setParameter("situationName", "InCityRaining");
+		Query query = session.createQuery(queryString.toString());
+		query.setParameter("situationName", cepSituation.getSituationName());
 
 		@SuppressWarnings("unchecked")
-		List<Adaptation> adaptations = query.list();
-		String serviceName = adaptations.get(0).getService().getServiceName();
-		System.out.println(serviceName);
+		List<Service> servicesAffectedBySituation = query.list();
 
 		session.getTransaction().commit();
 		session.close();
-		sessionFactory.close();
 
 		List<ContextReasonerData> list = new ArrayList<ContextReasonerData>();
-		ContextReasonerData contextReasonerData = new ContextReasonerData();
-		contextReasonerData.setUser("Mati");
-		contextReasonerData.setService(serviceName);
-		list.add(contextReasonerData);
 
-		String port = System.getProperty("org.switchyard.component.sca.client.port", "8080");
-		RemoteInvoker invoker = new HttpInvoker("http://localhost:" + port + "/switchyard-remote");
+		for (Service service : servicesAffectedBySituation) {
 
-		RemoteMessage message = new RemoteMessage();
-		message.setService(SERVICE).setOperation("receiveAdaptations").setContent(list);
+			ContextReasonerData contextReasonerData = new ContextReasonerData();
+			contextReasonerData.setUser(cepSituation.getUserId());
+			contextReasonerData.setService(service.getServiceName());
+			contextReasonerData.setOperation(service.getOperationName());
+			contextReasonerData.setServiceUrl(service.getUrl());
 
-		// Invoke the service
-		RemoteMessage reply;
-		try {
-			reply = invoker.invoke(message);
-			if (reply.isFault()) {
-				System.err.println("Oops ... something bad happened.  " + reply.getContent());
+			int priority = this.findPriorityForSituation(cepSituation.getSituationName(), service.getId());
+			contextReasonerData.setPriority(priority);
+
+			Iterator<Adaptation> iterator = service.getAdaptations().iterator();
+			Situation situation = iterator.next().getSituation();
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(new Date());
+			cal.add(Calendar.MINUTE, situation.getMinuteDuration().intValue());
+			contextReasonerData.setExpirationDate(cal.getTime());
+
+			List<AdaptationTO> adaptations = new ArrayList<AdaptationTO>();
+			for (Adaptation adaptation : service.getAdaptations()) {
+				AdaptationTO adaptationTO = new AdaptationTO();
+				adaptationTO.setName(adaptation.getName());
+				adaptationTO.setUri(adaptation.getAdaptationReference().getUri());
+				adaptationTO.setData(adaptation.getData());
+				adaptations.add(adaptationTO);
 			}
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+
+			list.add(contextReasonerData);
 		}
 
+		adaptationGatewayService.receiveAdaptations(list);
+
 		return "OK";
+	}
+
+	private int findPriorityForSituation(String situationName, Long serviceId) {
+
+		SessionFactory sessionFactory = HibernateUtils.getSessionFactory();
+		Session session = sessionFactory.openSession();
+		session.beginTransaction();
+
+		StringBuilder queryString = new StringBuilder();
+
+		queryString.append("SELECT ssp ");
+		queryString.append("FROM Service ser ");
+		queryString.append("join ser.priorities ssp ");
+		queryString.append("join ssp.situation sit ");
+		queryString.append("WHERE sit.name = :situationName and ser.id = :serviceId");
+
+		Query query = session.createQuery(queryString.toString());
+		query.setParameter("situationName", situationName);
+		query.setParameter("serviceId", serviceId);
+
+		ServiceSituationPriority priority = (ServiceSituationPriority) query.uniqueResult();
+
+		session.getTransaction().commit();
+		session.close();
+
+		return priority.getPriority();
 
 	}
+
 }

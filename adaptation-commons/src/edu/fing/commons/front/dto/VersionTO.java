@@ -2,7 +2,6 @@ package edu.fing.commons.front.dto;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 public class VersionTO {
 

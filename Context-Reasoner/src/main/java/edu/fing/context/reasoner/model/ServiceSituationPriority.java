@@ -13,33 +13,33 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "SERVICE_SITUATION_PRIORITY")
 public class ServiceSituationPriority {
-	
+
 	private Long id;
 	private int priority;
 	private Situation situation;
-	
+
 	@Id
 	@GeneratedValue
 	@Column(name = "ID", nullable = false)
 	public Long getId() {
 		return id;
 	}
-	
+
 	@Column(name = "PRIORITY", nullable = false)
 	public int getPriority() {
 		return priority;
 	}
-	
+
 	@ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL)
-    @JoinColumn(name = "SITUTAION_ID", nullable = false)
+	@JoinColumn(name = "SITUATION_ID", nullable = false)
 	public Situation getSituation() {
 		return situation;
 	}
-	
+
 	public void setId(Long id) {
 		this.id = id;
 	}
-	
+
 	public void setPriority(int priority) {
 		this.priority = priority;
 	}
@@ -47,5 +47,5 @@ public class ServiceSituationPriority {
 	public void setSituation(Situation situation) {
 		this.situation = situation;
 	}
-	
+
 }

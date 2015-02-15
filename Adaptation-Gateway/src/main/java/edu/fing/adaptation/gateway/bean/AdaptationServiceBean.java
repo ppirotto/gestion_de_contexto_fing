@@ -1,13 +1,19 @@
 package edu.fing.adaptation.gateway.bean;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.inject.Inject;
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.switchyard.component.bean.Reference;
 import org.switchyard.component.bean.Service;
+import org.xml.sax.SAXException;
 
-import edu.fing.commons.dto.Adaptation;
+import edu.fing.commons.dto.AdaptationTO;
 import edu.fing.commons.dto.AdaptedMessage;
 
 @Service(AdaptationService.class)
@@ -25,12 +31,12 @@ public class AdaptationServiceBean implements AdaptationService {
 		adaptedMessage.setMessage(message);
 		adaptedMessage.setItinerary("switchyard://DelayService,switchyard://ExternalInvocationService,switchyard://FilterService");
 		adaptedMessage.setService("http://localhost:8080/attractions-provider/AttractionsService");
-		ArrayList<Adaptation> adaptations = new ArrayList<Adaptation>();
-		Adaptation adapt = new Adaptation();
+		ArrayList<AdaptationTO> adaptations = new ArrayList<AdaptationTO>();
+		AdaptationTO adapt = new AdaptationTO();
 		adapt.setData("5000");
 		adapt.setName("delay");
 		adaptations.add(adapt);
-		Adaptation adapt2 = new Adaptation();
+		AdaptationTO adapt2 = new AdaptationTO();
 		adapt2.setData("/getAttractionsResponse/attraction[outside='false']");
 		adapt2.setName("filter");
 		adaptations.add(adapt2);
@@ -39,6 +45,20 @@ public class AdaptationServiceBean implements AdaptationService {
 		// adapt3.setName("delay");
 		// adaptations.add(adapt3);
 		adaptedMessage.setAdaptations(adaptations);
+
+		Map<String, Object> root = new HashMap<String, Object>();
+		try {
+			root.put("doc", freemarker.ext.dom.NodeModel.parse(new File("/getAttractions.xml")));
+		} catch (SAXException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ParserConfigurationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		return this.adaptationManager.submit(adaptedMessage);
 	}

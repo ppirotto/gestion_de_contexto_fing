@@ -5,8 +5,6 @@ import java.io.Serializable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -15,28 +13,20 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-
 @Entity
 @Table(name = "ADAPTATION")
 public class Adaptation implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
-	enum DataType{
-		INTEGER, STRING, XSLT
-	}
-	
-	
 	private Long id;
 	private String name;
 	private String description;
+	private int order;
 	private Service service;
 	private Situation situation;
-	private DataType dataType;
-	private String data;
+	private AdaptationReference adaptationReference;
+	private byte[] data;
 
 	@Id
 	@GeneratedValue
@@ -55,28 +45,33 @@ public class Adaptation implements Serializable {
 		return description;
 	}
 
+	@Column(name = "ORDER")
+	public int getOrder() {
+		return order;
+	}
+
 	@ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL)
-    @JoinColumn(name = "SERVICE_ID", nullable = false)
+	@JoinColumn(name = "SERVICE_ID", nullable = false)
 	public Service getService() {
 		return service;
 	}
-	
+
 	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "SITUATION_ID", nullable = false)
-    public Situation getSituation() {
-        return this.situation;
-    }
+	@JoinColumn(name = "SITUATION_ID", nullable = false)
+	public Situation getSituation() {
+		return this.situation;
+	}
 
 	@Lob
 	@Column(name = "DATA", columnDefinition = "MEDIUMTEXT")
-	public String getData() {
+	public byte[] getData() {
 		return data;
 	}
-	
-	@Enumerated(EnumType.STRING)
-	@Column(name = "DATA_TYPE")
-	public DataType getDataType() {
-		return dataType;
+
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "ADAPTATION_REFERENCE_ID", nullable = false)
+	public AdaptationReference getAdaptationReference() {
+		return adaptationReference;
 	}
 
 	public void setId(Long id) {
@@ -99,12 +94,16 @@ public class Adaptation implements Serializable {
 		this.situation = situation;
 	}
 
-	public void setData(String data) {
+	public void setData(byte[] data) {
 		this.data = data;
 	}
 
-	public void setDataType(DataType dataType) {
-		this.dataType = dataType;
+	public void setAdaptationReference(AdaptationReference adaptationReference) {
+		this.adaptationReference = adaptationReference;
 	}
-	
+
+	public void setOrder(int order) {
+		this.order = order;
+	}
+
 }

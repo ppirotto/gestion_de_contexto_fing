@@ -8,9 +8,10 @@ public class ContextReasonerData {
 	private String user;
 	private String service;
 	private String operation;
+	private String serviceUrl;
 	private int priority;
 	private Date expirationDate;
-	private List<Adaptation> adaptations;
+	private List<AdaptationTO> adaptations;
 
 	public String getUser() {
 		return user;
@@ -24,7 +25,7 @@ public class ContextReasonerData {
 		return operation;
 	}
 
-	public List<Adaptation> getAdaptations() {
+	public List<AdaptationTO> getAdaptations() {
 		return adaptations;
 	}
 
@@ -40,7 +41,7 @@ public class ContextReasonerData {
 		this.operation = operation;
 	}
 
-	public void setAdaptations(List<Adaptation> adaptations) {
+	public void setAdaptations(List<AdaptationTO> adaptations) {
 		this.adaptations = adaptations;
 	}
 
@@ -58,6 +59,14 @@ public class ContextReasonerData {
 
 	public void setExpirationDate(Date expirationDate) {
 		this.expirationDate = expirationDate;
+	}
+
+	public String getServiceUrl() {
+		return serviceUrl;
+	}
+
+	public void setServiceUrl(String serviceUrl) {
+		this.serviceUrl = serviceUrl;
 	}
 
 }
