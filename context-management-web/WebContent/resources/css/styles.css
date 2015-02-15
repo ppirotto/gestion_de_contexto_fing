@@ -111,4 +111,6 @@ font-family: 'Tangerine', serif;
 .offset1 {
   margin-left: 100px;
 }
-
+.backgroundcolorheader .ui-layout-unit-content{
+   background: #f5f5f5;
+}

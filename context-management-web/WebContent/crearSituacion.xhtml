@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	template="/masterTemplate.xhtml"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<ui:define name="title">Home</ui:define>
+	<ui:define name="body">
+	<p:messages autoUpdate="true" id="messagesGeneral" />
+		<h1>
+			<h:outputText value="Crear Situacion" />
+		</h1>
+
+		<h:form enctype="multipart/form-data">
+			<h:panelGrid columns="2">
+				<p:panelGrid columns="2">
+					<p:outputLabel>
+						<b>Nombre del servicio</b>
+					</p:outputLabel>
+					<p:inputText size="50" value="#{serviceBean.serviceName}" />
+					<p:outputLabel>
+						<b>Url del servicio</b>
+					</p:outputLabel>
+					<p:inputText size="50" value="#{serviceBean.serviceURL}" />
+
+
+					<p:outputLabel>
+						<b>Seleccione operación</b>
+					</p:outputLabel>
+					<p:dataTable id="operaciones" var="op" style="width:380px"
+						value="#{serviceBean.operations}"
+						selection="#{serviceBean.selectedOperation}" rowKey="#{op}">
+
+						<p:column selectionMode="single"
+							style="width:16px;text-align:center" />
+						<p:column headerText="Nombre">
+							<h:outputText value="#{op}" />
+						</p:column>
+
+					</p:dataTable>
+						<p:outputLabel>
+						<b>Servicio virtual</b>
+					</p:outputLabel>
+					<p:inputText size="50" value="#{serviceBean.virtualService}" />
+					
+
+				</p:panelGrid>
+				<p:commandButton value="Cargar Operaciones"
+					actionListener="#{serviceBean.getOperationsForService()}"
+					update="operaciones" style="margin-top: 30px;" />
+			</h:panelGrid>
+			<p:growl id="grwol" life="2000"/>
+			<p:commandButton value="Crear Servicio"
+				action="#{serviceBean.crearServicio()}" 
+				styleClass="ui-priority-primary " style="margin-top: 10px;" />
+		</h:form>
+	</ui:define>
+	<ui:define name="menuIzq">
+		<ui:include src="/menu.xhtml" />
+	</ui:define>
+</ui:composition>

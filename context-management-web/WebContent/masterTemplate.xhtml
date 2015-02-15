@@ -13,19 +13,20 @@
 
 	<title><ui:insert name="title">Proyecto</ui:insert></title>
 
-	<h:outputStylesheet library="css" name="styles.css" /> 
+	<h:outputStylesheet library="css" name="styles.css" />
 
 </h:head>
 <h:body>
 
 	<p:layout fullPage="true">
 
-		<p:layoutUnit position="north" size="80">
-			<ui:insert name="headerGeneral">
-
-				<h1
-					style="font-size: 40px; margin: 7px; font-family: 'Tangerine', serif;">Gestión
-					de Contexto en Plataformas de Integración</h1>
+		<p:layoutUnit position="north" size="80"
+			 styleClass="backgroundcolorheader">
+			<ui:insert name="header" >
+			
+				<h1 style="font-size: 40px; margin: 7px; font-family: 'Tangerine', serif; background-color: #f5f5f5;" >
+				Gestión de Contexto en Plataformas de Integración
+				</h1>
 			</ui:insert>
 		</p:layoutUnit>
 
