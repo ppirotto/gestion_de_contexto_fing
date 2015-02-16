@@ -58,6 +58,7 @@ public class SituationReceiverBean implements SituationReceiver {
 
 			ContextReasonerData contextReasonerData = new ContextReasonerData();
 			contextReasonerData.setUser(cepSituation.getUserId());
+			contextReasonerData.setSituationName(cepSituation.getSituationName());
 			contextReasonerData.setService(service.getServiceName());
 			contextReasonerData.setOperation(service.getOperationName());
 			contextReasonerData.setServiceUrl(service.getUrl());

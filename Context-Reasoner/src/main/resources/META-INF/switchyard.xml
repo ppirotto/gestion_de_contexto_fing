@@ -22,5 +22,15 @@
       <sca:interface.java interface="edu.fing.context.reasoner.bean.AdaptationGatewayService"/>
       <sca:binding.sca sy:targetNamespace="urn:edu.fing.context.management:adaptation-gateway:1.0" sy:target="ItineraryService" name="sca2"/>
     </sca:reference>
+    <sca:component name="ConfigurationServiceBean">
+      <bean:implementation.bean class="edu.fing.context.reasoner.bean.ConfigurationServiceBean"/>
+      <sca:service name="ConfigurationService">
+        <sca:interface.java interface="edu.fing.context.reasoner.bean.ConfigurationService"/>
+      </sca:service>
+    </sca:component>
+    <sca:service name="ConfigurationService" promote="ConfigurationServiceBean/ConfigurationService">
+      <sca:interface.java interface="edu.fing.context.reasoner.bean.ConfigurationService"/>
+      <sca:binding.sca name="sca3"/>
+    </sca:service>
   </sca:composite>
 </sy:switchyard>

@@ -9,6 +9,7 @@ public class ContextReasonerData {
 	private String service;
 	private String operation;
 	private String serviceUrl;
+	private String situationName;
 	private int priority;
 	private Date expirationDate;
 	private List<AdaptationTO> adaptations;
@@ -67,6 +68,14 @@ public class ContextReasonerData {
 
 	public void setServiceUrl(String serviceUrl) {
 		this.serviceUrl = serviceUrl;
+	}
+
+	public String getSituationName() {
+		return situationName;
+	}
+
+	public void setSituationName(String situationName) {
+		this.situationName = situationName;
 	}
 
 }

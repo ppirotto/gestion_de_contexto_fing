@@ -74,23 +74,16 @@
 			<artifactId>switchyard-component-bean</artifactId>
 			<version>${switchyard.version}</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-entitymanager</artifactId>
 			<version>4.2.0.Final</version>
 		</dependency>
-
 		<dependency>
 			<groupId>edu.fing.context.management</groupId>
 			<artifactId>adaptation-commons</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
-		 <dependency>
-		<groupId>org.freemarker</groupId>
-		<artifactId>freemarker</artifactId>
-		<version>2.3.19</version>
-	</dependency>
 	</dependencies>
 	<build>
 		<plugins>
