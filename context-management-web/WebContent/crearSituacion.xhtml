@@ -33,7 +33,7 @@
 						<b>Duración en minutos</b>
 					</p:outputLabel>
 					<p:inputText id="duration" size="16" value="#{situationBean.duration}" label="Duración">
-						<f:convertNumber integerOnly="true" type="number" />
+					
 					</p:inputText>
 					 <p:message for="duration" display="icon" />
 
@@ -42,7 +42,7 @@
 			</h:panelGrid>
 			<p:growl id="grwol" life="2000" />
 			<p:commandButton value="Crear Servicio"
-				action="#{serviceBean.crearServicio()}"
+				action="#{situationBean.crearSituacion()}"
 				styleClass="ui-priority-primary " style="margin-top: 10px;" />
 		</h:form>
 	</ui:define>

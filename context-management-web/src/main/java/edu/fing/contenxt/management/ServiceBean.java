@@ -14,6 +14,8 @@ import com.predic8.wsdl.BindingOperation;
 import com.predic8.wsdl.Definitions;
 import com.predic8.wsdl.WSDLParser;
 
+import edu.fing.commons.front.dto.ServiceTO;
+
 @ManagedBean
 @ViewScoped
 public class ServiceBean {
@@ -34,7 +36,12 @@ public class ServiceBean {
 	public String crearServicio() {
 		System.out.println("Crear servicio");
 
-		Boolean result = RemoteInvokerUtils.invoke(RemoteInvokerUtils.ContextReasonerConfigService, "createService", ServiceT.class, Boolean.class, "192.168.0.101", "8080");
+		ServiceTO serv = new ServiceTO();
+		serv.setOperationName(this.selectedOperation);
+		serv.setServiceName(this.serviceName);
+		serv.setUrl(this.serviceURL);
+		serv.setDescription(this.description);
+		Boolean result = (Boolean) RemoteInvokerUtils.invoke(RemoteInvokerUtils.ContextReasonerConfigService, "createService", serv, "192.168.0.101", "8080");
 		if (result) {
 
 			String mensaje = "Servicio creado con éxito";

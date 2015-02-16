@@ -34,7 +34,7 @@ public class RulesBean {
 
 	@PostConstruct
 	public void charge() {
-		this.res = RemoteInvokerUtils.invoke(RemoteInvokerUtils.DroolsConfigService, "getAvailableRules", null, AvailableRulesTO.class);
+		this.res = (AvailableRulesTO) RemoteInvokerUtils.invoke(RemoteInvokerUtils.DroolsConfigService, "getAvailableRules", null);
 		if (this.res == null) {
 
 			this.res = new AvailableRulesTO();
@@ -79,13 +79,13 @@ public class RulesBean {
 		System.out.println("createVersion");
 		this.selectedVersion.setVersionNumber(this.newVersionName);
 		this.selectedVersion.setId(null);
-		Boolean success = RemoteInvokerUtils.invoke(RemoteInvokerUtils.DroolsConfigService, "createNewVersion", this.selectedVersion, Boolean.class);
+		Boolean success = (Boolean) RemoteInvokerUtils.invoke(RemoteInvokerUtils.DroolsConfigService, "createNewVersion", this.selectedVersion);
 		System.out.println(success);
 	}
 
 	public void deployVersion() {
 		System.out.println("deployVersion");
-		Boolean success = RemoteInvokerUtils.invoke(RemoteInvokerUtils.DroolsConfigService, "deployVersion", this.versionToDeploy.getVersionNumber(), Boolean.class);
+		Boolean success = (Boolean) RemoteInvokerUtils.invoke(RemoteInvokerUtils.DroolsConfigService, "deployVersion", this.versionToDeploy.getVersionNumber());
 		System.out.println(success);
 	}
 

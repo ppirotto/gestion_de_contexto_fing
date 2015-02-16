@@ -14,7 +14,7 @@ public class SituationBean {
 
 	private String description;
 	private String name;
-	private int duration;
+	private long duration;
 
 	@ManagedProperty(value = "#{sessionBean}")
 	private SessionBean session;
@@ -22,7 +22,12 @@ public class SituationBean {
 	public String crearSituacion() {
 		System.out.println("Crear situación");
 
-		Boolean result = RemoteInvokerUtils.invoke(RemoteInvokerUtils.ContextReasonerConfigService, "createSituation", SituationTO.class, Boolean.class, "192.168.0.101", "8080");
+		SituationTO sit = new SituationTO();
+		sit.setName(this.name);
+		sit.setDescription(this.description);
+		sit.setMinuteDuration(this.duration);
+
+		Boolean result = (Boolean) RemoteInvokerUtils.invoke(RemoteInvokerUtils.ContextReasonerConfigService, "createSituation", sit, "192.168.0.101", "8080");
 		if (result) {
 			String mensaje = "Servicio creado con éxito";
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(null, mensaje));
@@ -41,7 +46,7 @@ public class SituationBean {
 		return this.description;
 	}
 
-	public int getDuration() {
+	public long getDuration() {
 		return this.duration;
 	}
 
@@ -61,7 +66,7 @@ public class SituationBean {
 		this.description = description;
 	}
 
-	public void setDuration(int duration) {
+	public void setDuration(long duration) {
 		this.duration = duration;
 	}
 

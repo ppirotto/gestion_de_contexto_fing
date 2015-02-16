@@ -1,10 +1,8 @@
 package edu.fing.contenxt.management;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -13,12 +11,15 @@ import javax.faces.context.FacesContext;
 
 import org.primefaces.model.UploadedFile;
 
+import edu.fing.commons.front.dto.ServiceTO;
+import edu.fing.commons.front.dto.SituationTO;
+
 @ManagedBean
 @ViewScoped
 public class ItineraryBean {
 
 	public enum AdaptationType {
-		FILTER, ENRICH, DELAY
+		FILTER, ENRICH, DELAY, SERVICE_INVOCATION
 	}
 
 	private AdaptationType adaptSelec;
@@ -26,11 +27,11 @@ public class ItineraryBean {
 	private String description;
 	private int priority;
 
-	private List<String> serviceList;
+	private List<ServiceTO> serviceList;
 
-	private List<String> situationList;
-	private String nombreServicioSelec;
-	private String nombreSituacionSelec;
+	private List<SituationTO> situationList;
+	private ServiceTO selectedService;
+	private SituationTO selectedSituation;
 	private List<UploadedFile> files = new LinkedList<UploadedFile>();
 
 	private List<AdaptationDto> adaptations = new LinkedList<AdaptationDto>();
@@ -71,19 +72,21 @@ public class ItineraryBean {
 		return this.files;
 	}
 
-	public String getNombreServicioSelec() {
-		return this.nombreServicioSelec;
-	}
-
-	public String getNombreSituacionSelec() {
-		return this.nombreSituacionSelec;
-	}
-
 	public int getPriority() {
 		return this.priority;
 	}
 
-	public List<String> getServiceList() {
+	public ServiceTO getSelectedService() {
+		return this.selectedService;
+	}
+
+	public SituationTO getSelectedSituation() {
+		return this.selectedSituation;
+	}
+
+	public List<ServiceTO> getServiceList() {
+		List<ServiceTO> results = (List<ServiceTO>) RemoteInvokerUtils.invoke(RemoteInvokerUtils.ContextReasonerConfigService, "getServices", null, "192.168.0.101", "8080");
+		this.serviceList = results;
 		return this.serviceList;
 	}
 
@@ -91,23 +94,10 @@ public class ItineraryBean {
 		return this.session;
 	}
 
-	public List<String> getSituationList() {
+	public List<SituationTO> getSituationList() {
+		List<SituationTO> results = (List<SituationTO>) RemoteInvokerUtils.invoke(RemoteInvokerUtils.ContextReasonerConfigService, "getSituations", null, "192.168.0.101", "8080");
+		this.situationList = results;
 		return this.situationList;
-	}
-
-	@PostConstruct
-	public void mocker() {
-
-		this.serviceList = new ArrayList<String>();
-		this.serviceList.add("url-servicio1");
-		this.serviceList.add("url-servicio2");
-		this.serviceList.add("url-servicio3");
-
-		this.situationList = new ArrayList<String>();
-		this.situationList.add("InCityRaining");
-		this.situationList.add("InCity");
-		this.situationList.add("WithCar");
-
 	}
 
 	public void setAdaptations(List<AdaptationDto> adaptations) {
@@ -126,19 +116,19 @@ public class ItineraryBean {
 		this.files = files;
 	}
 
-	public void setNombreServicioSelec(String nombreServicioSelec) {
-		this.nombreServicioSelec = nombreServicioSelec;
-	}
-
-	public void setNombreSituacionSelec(String nombreSituacionSelec) {
-		this.nombreSituacionSelec = nombreSituacionSelec;
-	}
-
 	public void setPriority(int priority) {
 		this.priority = priority;
 	}
 
-	public void setServiceList(List<String> serviceList) {
+	public void setSelectedService(ServiceTO selectedService) {
+		this.selectedService = selectedService;
+	}
+
+	public void setSelectedSituation(SituationTO selectedSituation) {
+		this.selectedSituation = selectedSituation;
+	}
+
+	public void setServiceList(List<ServiceTO> serviceList) {
 		this.serviceList = serviceList;
 	}
 
@@ -146,20 +136,8 @@ public class ItineraryBean {
 		this.session = session;
 	}
 
-	public void setSituationList(List<String> situationList) {
+	public void setSituationList(List<SituationTO> situationList) {
 		this.situationList = situationList;
-	}
-
-	public void upload() {
-		System.out.println(this.getFiles().size());
-		FacesMessage message = null;
-		if (!this.adaptations.isEmpty()) {
-			message = new FacesMessage("Succesful", " is uploaded.");
-
-		} else {
-			message = new FacesMessage("Error", " is uploaded.");
-		}
-		FacesContext.getCurrentInstance().addMessage("growl2", message);
 	}
 
 }
