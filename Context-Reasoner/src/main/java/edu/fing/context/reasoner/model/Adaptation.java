@@ -22,7 +22,7 @@ public class Adaptation implements Serializable {
 	private Long id;
 	private String name;
 	private String description;
-	private int order;
+	private int adaptationOrder;
 	private Service service;
 	private Situation situation;
 	private AdaptationReference adaptationReference;
@@ -45,9 +45,9 @@ public class Adaptation implements Serializable {
 		return description;
 	}
 
-	@Column(name = "ORDER")
-	public int getOrder() {
-		return order;
+	@Column(name = "ADAPTATION_ORDER")
+	public int getAdaptationOrder() {
+		return adaptationOrder;
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL)
@@ -102,8 +102,8 @@ public class Adaptation implements Serializable {
 		this.adaptationReference = adaptationReference;
 	}
 
-	public void setOrder(int order) {
-		this.order = order;
+	public void setAdaptationOrder(int adaptationOrder) {
+		this.adaptationOrder = adaptationOrder;
 	}
 
 }

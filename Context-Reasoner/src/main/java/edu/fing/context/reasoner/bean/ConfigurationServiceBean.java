@@ -15,6 +15,7 @@ import edu.fing.commons.front.dto.ItineraryTO;
 import edu.fing.commons.front.dto.ServiceTO;
 import edu.fing.commons.front.dto.SituationTO;
 import edu.fing.context.reasoner.model.Adaptation;
+import edu.fing.context.reasoner.model.AdaptationReference;
 import edu.fing.context.reasoner.model.Service;
 import edu.fing.context.reasoner.model.Situation;
 import edu.fing.context.reasoner.util.HibernateUtils;
@@ -36,10 +37,7 @@ public class ConfigurationServiceBean implements ConfigurationService {
 
 		session.save(situation);
 
-		session.getTransaction().commit();
-		session.close();
-
-		return Boolean.TRUE;
+		return HibernateUtils.commit(session);
 	}
 
 	@Override
@@ -57,10 +55,7 @@ public class ConfigurationServiceBean implements ConfigurationService {
 
 		session.save(service);
 
-		session.getTransaction().commit();
-		session.close();
-
-		return Boolean.TRUE;
+		return HibernateUtils.commit(session);
 	}
 
 	@Override
@@ -68,7 +63,6 @@ public class ConfigurationServiceBean implements ConfigurationService {
 
 		SessionFactory sessionFactory = HibernateUtils.getSessionFactory();
 		Session session = sessionFactory.openSession();
-		session.beginTransaction();
 
 		StringBuilder queryString = new StringBuilder();
 		queryString.append("SELECT ser ");
@@ -79,7 +73,6 @@ public class ConfigurationServiceBean implements ConfigurationService {
 		@SuppressWarnings("unchecked")
 		List<Service> services = query.list();
 
-		session.getTransaction().commit();
 		session.close();
 
 		List<ServiceTO> list = new ArrayList<ServiceTO>();
@@ -100,7 +93,6 @@ public class ConfigurationServiceBean implements ConfigurationService {
 
 		SessionFactory sessionFactory = HibernateUtils.getSessionFactory();
 		Session session = sessionFactory.openSession();
-		session.beginTransaction();
 
 		StringBuilder queryString = new StringBuilder();
 		queryString.append("SELECT s ");
@@ -111,7 +103,6 @@ public class ConfigurationServiceBean implements ConfigurationService {
 		@SuppressWarnings("unchecked")
 		List<Situation> situations = query.list();
 
-		session.getTransaction().commit();
 		session.close();
 
 		List<SituationTO> list = new ArrayList<SituationTO>();
@@ -132,18 +123,33 @@ public class ConfigurationServiceBean implements ConfigurationService {
 		Session session = sessionFactory.openSession();
 		session.beginTransaction();
 
+		Service service = this.findServiceById(itineraryTO.getService().getId(), session);
+		Situation situation = this.findSituationByName(itineraryTO.getSituationName(), session);
+
 		for (AdaptationTO adaptationTO : itineraryTO.getAdaptations()) {
 			Adaptation adaptation = new Adaptation();
 			adaptation.setName(adaptationTO.getName());
-			adaptation.setOrder(adaptationTO.getOrder());
+			adaptation.setAdaptationOrder(adaptationTO.getOrder());
 			adaptation.setDescription(adaptationTO.getDescription());
+			adaptation.setData(this.getDataByType(adaptationTO.getData(), adaptationTO.getAdaptationType()));
+			adaptation.setService(service);
+			adaptation.setSituation(situation);
+			adaptation.setAdaptationReference(this.findAdaptationReferenceByAdaptationType(session, adaptationTO.getAdaptationType()));
+			session.save(adaptation);
+		}
 
-			byte[] data = null;
-			Object adaptationData = adaptationTO.getData();
-			AdaptationType adaptationType = adaptationTO.getAdaptationType();
-			DataType dataType = adaptationType.getDataType();
+		return HibernateUtils.commit(session);
+	}
+
+	private byte[] getDataByType(Object adaptationData, AdaptationType adaptationType) {
+		byte[] data = null;
+		DataType dataType = adaptationType.getDataType();
+		if (dataType != null) {
 			switch (dataType) {
 			case INT:
+				// ByteBuffer bb = ByteBuffer.allocate(4);
+				// bb.putInt((Integer) adaptationData);
+				// data = bb.array();
 				data = BigInteger.valueOf((Integer) adaptationData).toByteArray();
 				break;
 			case STRING:
@@ -155,20 +161,45 @@ public class ConfigurationServiceBean implements ConfigurationService {
 			default:
 				break;
 			}
-			adaptation.setData(data);
-
-			// adaptation.setAdaptationReference(adaptationReference);
-			// adaptation.setService(service);
-			// adaptation.setSituation(situation);
-			//
-			session.save(adaptation);
 		}
+		return data;
+	}
 
-		session.getTransaction().commit();
-		session.close();
+	private AdaptationReference findAdaptationReferenceByAdaptationType(Session session, AdaptationType adaptationType) {
+		StringBuilder queryString = new StringBuilder();
+		queryString.append("SELECT ar ");
+		queryString.append("FROM AdaptationReference ar ");
+		queryString.append("WHERE ar.adaptationType = :adaptationType ");
 
-		return Boolean.TRUE;
+		Query query = session.createQuery(queryString.toString());
+		query.setParameter("adaptationType", adaptationType.name());
 
+		return (AdaptationReference) query.uniqueResult();
+	}
+
+	private Situation findSituationByName(String situationName, Session session) {
+		StringBuilder queryStringSituation = new StringBuilder();
+		queryStringSituation.append("SELECT sit ");
+		queryStringSituation.append("FROM Situation sit ");
+		queryStringSituation.append("WHERE sit.name = :situationName ");
+
+		Query querySituation = session.createQuery(queryStringSituation.toString());
+		querySituation.setParameter("situationName", situationName);
+
+		return (Situation) querySituation.uniqueResult();
+	}
+
+	private Service findServiceById(Long serviceId, Session session) {
+
+		StringBuilder queryStringService = new StringBuilder();
+		queryStringService.append("SELECT ser ");
+		queryStringService.append("FROM Service ser ");
+		queryStringService.append("WHERE ser.id = :serviceId ");
+
+		Query queryService = session.createQuery(queryStringService.toString());
+		queryService.setParameter("serviceId", serviceId);
+
+		return (Service) queryService.uniqueResult();
 	}
 
 }
