@@ -4,9 +4,13 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+import edu.fing.commons.constant.AdaptationType;
 
 @Entity
 @Table(name = "ADAPTATION_REFERENCE")
@@ -15,7 +19,7 @@ public class AdaptationReference implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private Long id;
-	private String adaptationType;
+	private AdaptationType adaptationType;
 	private String uri;
 
 	@Id
@@ -25,8 +29,9 @@ public class AdaptationReference implements Serializable {
 		return id;
 	}
 
+	@Enumerated(EnumType.STRING)
 	@Column(name = "ADAPTATION_TYPE")
-	public String getAdaptationType() {
+	public AdaptationType getAdaptationType() {
 		return adaptationType;
 	}
 
@@ -39,7 +44,7 @@ public class AdaptationReference implements Serializable {
 		this.id = id;
 	}
 
-	public void setAdaptationType(String adaptationType) {
+	public void setAdaptationType(AdaptationType adaptationType) {
 		this.adaptationType = adaptationType;
 	}
 

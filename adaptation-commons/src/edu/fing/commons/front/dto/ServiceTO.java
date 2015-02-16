@@ -2,10 +2,19 @@ package edu.fing.commons.front.dto;
 
 public class ServiceTO {
 
+	private Long id;
 	private String serviceName;
 	private String operationName;
 	private String description;
 	private String url;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
 
 	public String getServiceName() {
 		return serviceName;
