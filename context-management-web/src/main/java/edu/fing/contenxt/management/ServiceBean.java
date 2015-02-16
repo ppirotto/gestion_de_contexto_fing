@@ -33,12 +33,19 @@ public class ServiceBean {
 
 	public String crearServicio() {
 		System.out.println("Crear servicio");
-		String mensaje = "Servicio creado con éxito";
-		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(null, mensaje));
 
-		// servicio de context reasoner
-		// (url servicio, situación, lista de adaptaciones con su data)
+		Boolean result = RemoteInvokerUtils.invoke(RemoteInvokerUtils.ContextReasonerConfigService, "createService", ServiceT.class, Boolean.class, "192.168.0.101", "8080");
+		if (result) {
+
+			String mensaje = "Servicio creado con éxito";
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(null, mensaje));
+
+		}
 		return "inicio";
+	}
+
+	public String getDescription() {
+		return this.description;
 	}
 
 	public List<String> getOperations() {
@@ -85,12 +92,20 @@ public class ServiceBean {
 		return this.serviceURL;
 	}
 
+	public SessionBean getSession() {
+		return this.session;
+	}
+
 	public List<String> getSituationList() {
 		return this.situationList;
 	}
 
 	public String getVirtualService() {
 		return this.virtualService;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public void setOperations(List<String> operations) {
@@ -109,28 +124,16 @@ public class ServiceBean {
 		this.serviceURL = serviceURL;
 	}
 
+	public void setSession(SessionBean session) {
+		this.session = session;
+	}
+
 	public void setSituationList(List<String> situationList) {
 		this.situationList = situationList;
 	}
 
 	public void setVirtualService(String virtualService) {
 		this.virtualService = virtualService;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public SessionBean getSession() {
-		return session;
-	}
-
-	public void setSession(SessionBean session) {
-		this.session = session;
 	}
 
 }

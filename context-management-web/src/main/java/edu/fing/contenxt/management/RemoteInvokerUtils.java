@@ -1,24 +1,29 @@
 package edu.fing.contenxt.management;
 
-import java.io.IOException;
-
 import javax.xml.namespace.QName;
 
 import org.switchyard.remote.RemoteInvoker;
 import org.switchyard.remote.RemoteMessage;
 import org.switchyard.remote.http.HttpInvoker;
 
-
 public class RemoteInvokerUtils {
 
 	public static final QName DroolsConfigService = new QName("urn:edu.fing.switchyard:CEP-Engine:1.0", "DroolsConfigService");
+	public static final QName ContextReasonerConfigService = new QName("urn:edu.fing.switchyard:context-reasoner:1.0", "ConfigurationService");
 
-	@SuppressWarnings("unchecked")
 	public static <T> T invoke(QName service, String operationName, Object msg, Class<T> responseClass) {
 
+		return invoke(service, operationName, msg, responseClass, "localhost", "8080");
+	}
+
+	@SuppressWarnings("unchecked")
+	public static <T> T invoke(QName service, String operationName, Object msg, Class<T> responseClass, String ip, String port) {
+
 		T response = null;
-		String port = System.getProperty("org.switchyard.component.sca.client.port", "8080");
-		RemoteInvoker invoker = new HttpInvoker("http://localhost:" + port + "/switchyard-remote");
+		// String port =
+		// System.getProperty("org.switchyard.component.sca.client.port",
+		// "8080");
+		RemoteInvoker invoker = new HttpInvoker("http://" + ip + ":" + port + "/switchyard-remote");
 
 		// Create the request message
 		RemoteMessage message = new RemoteMessage();
