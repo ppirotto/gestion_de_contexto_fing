@@ -14,10 +14,7 @@
 		<url-pattern>/faces/*</url-pattern>
 	</servlet-mapping>
 	
-	<servlet-mapping>
-        <servlet-name>Faces Servlet</servlet-name>
-        <url-pattern>*.xhtml</url-pattern>
-    </servlet-mapping>
+
 	<context-param>
 		<description>State saving method: 'client' or 'server' (=default). See JSF Specification 2.5.2</description>
 		<param-name>javax.faces.STATE_SAVING_METHOD</param-name>
@@ -37,18 +34,16 @@
 	</listener>
   <display-name>Proyecto Grado</display-name>
   <welcome-file-list>
-    <welcome-file>faces/inicio.xhtml</welcome-file>
+    <welcome-file>/faces/inicio.xhtml</welcome-file>
   </welcome-file-list>
   <context-param>
-		<param-name>primefaces.UPLOADER</param-name>
-		<param-value>auto</param-value>
-	</context-param>
-    <filter>
-    <filter-name>PrimeFaces FileUpload Filter</filter-name>
-    <filter-class>
-		org.primefaces.webapp.filter.FileUploadFilter
-		</filter-class>
-  </filter>
+	<param-name>primefaces.UPLOADER</param-name>
+	<param-value>auto</param-value>
+</context-param>
+	<filter>
+		<filter-name>PrimeFaces FileUpload Filter</filter-name>
+		<filter-class>org.primefaces.webapp.filter.FileUploadFilter</filter-class>
+	</filter>
   <filter-mapping>
     <filter-name>PrimeFaces FileUpload Filter</filter-name>
     <servlet-name>Faces Servlet</servlet-name>

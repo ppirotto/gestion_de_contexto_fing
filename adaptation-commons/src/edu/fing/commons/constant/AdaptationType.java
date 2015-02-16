@@ -14,7 +14,17 @@ public enum AdaptationType {
 	}
 
 	public DataType getDataType() {
-		return dataType;
+		return this.dataType;
+	}
+
+	public boolean renderFileUpload() {
+		return (this.dataType != null) && (this.dataType.equals(DataType.FILE));
+
+	}
+
+	public boolean renderStringInput() {
+		return (this.dataType != null) && (this.dataType.equals(DataType.STRING) || this.dataType.equals(DataType.INT));
+
 	}
 
 	public void setDataType(DataType dataType) {

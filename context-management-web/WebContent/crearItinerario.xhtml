@@ -24,28 +24,26 @@
 						effect="fade">
 						<f:selectItem itemLabel="Seleccione un servicio" itemValue="" />
 						<f:selectItems value="#{itineraryBean.serviceList}" var="Service"
-							itemLabel="#{Service.serviceName}/#{Service.operationName}" itemValue="#{Service}" />
+							itemLabel="#{Service.serviceName}/#{Service.operationName}" itemValue="#{Service.id}" />
 					</p:selectOneMenu>
 
 					<p:outputLabel for="selectSituation"  ><b>Situación</b> </p:outputLabel>
 					<p:selectOneMenu id="selectSituation" autoupdate="true"
-						styleClass="span4" value="#{itineraryBean.selectedSituation}"
+						styleClass="span4" value="#{itineraryBean.selectedSituation}" 
 						effect="fade">
 						<f:selectItem itemLabel="Seleccione una situación" itemValue="" />
 						<f:selectItems value="#{itineraryBean.situationList}"
-							var="Situation" itemLabel="#{Situation.name}" itemValue="#{Situation}" />
+							var="Situation" itemLabel="#{Situation.name}" itemValue="#{Situation.name}" />
 					</p:selectOneMenu>
 
 					<h:outputLabel ><b>Paso del itinerario</b></h:outputLabel>
 					<p:selectOneMenu id="selectAdaptType" autoupdate="true"
 						styleClass="span4" value="#{itineraryBean.adaptSelec}"
-						effect="fade">
+						effect="fade">adaptationTypeList
 						<f:selectItem itemLabel="Seleccione adaptación a crear"
 							itemValue="" />
-						<f:selectItem itemLabel="Filter" itemValue="FILTER" />
-						<f:selectItem itemLabel="Delay" itemValue="DELAY" />
-						<f:selectItem itemLabel="Enrich" itemValue="ENRICH" />
-						<f:selectItem itemLabel="Service" itemValue="SERVICE_INVOCATION" />
+						<f:selectItems value="#{itineraryBean.adaptationTypeList}"
+							var="adapType" itemLabel="#{adapType}" itemValue="#{adapType}" />
 
 					</p:selectOneMenu>
 
@@ -76,7 +74,7 @@
 
 			<p:panelGrid id="adaptaciones" styleClass="centerContent">
 				<c:forEach items="#{itineraryBean.adaptations}" var="adap"
-					varStatus="status">
+					>
 					<p:row>
 						<p:column>
 							<h:outputText value="#{adap.id}" />
@@ -85,12 +83,13 @@
 							<h:outputText value="#{adap.adaptationType}" />
 						</p:column>
 
-						<p:column rendered="#{adap.adaptationType != 'DELAY'}">
-							<p:fileUpload value="#{adap.data}" mode="simple"
+						<p:column rendered="#{adap.adaptationType.renderFileUpload()}">
+							<p:fileUpload value="#{adap.data}" mode="simple" 
 								dragDropSupport="true" />
 						</p:column>
-						<p:column rendered="#{adap.adaptationType == 'DELAY'}">
-							<p:inputText value="#{adap.extraData}" />
+						<p:column rendered="#{adap.adaptationType.renderStringInput()}">
+							<p:inputText value="#{adap.extraData}" >
+								</p:inputText>
 						</p:column>
 					</p:row>
 				</c:forEach>
@@ -98,8 +97,8 @@
 
 
 			<p:growl id="growl2" life="2000" />
-			<p:commandButton value="Crear Itinerario"
-				actionListener="#{itineraryBean.crearItinerario()}" update="growl2"
+			<p:commandButton value="Crear Itinerario" ajax="false"
+				action="#{itineraryBean.crearItinerario}" update="growl2"
 				styleClass="ui-priority-primary " style="margin-top: 10px;" />
 
 			<p:growl id="messages" showDetail="true" />

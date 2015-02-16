@@ -2,7 +2,7 @@ package edu.fing.contenxt.management;
 
 import org.primefaces.model.UploadedFile;
 
-import edu.fing.contenxt.management.ItineraryBean.AdaptationType;
+import edu.fing.commons.constant.AdaptationType;
 
 public class AdaptationDto {
 	private int id;
@@ -20,6 +20,10 @@ public class AdaptationDto {
 		return this.adaptationType;
 	}
 
+	public UploadedFile getData() {
+		return this.data;
+	}
+
 	public String getExtraData() {
 		return this.extraData;
 	}
@@ -32,20 +36,16 @@ public class AdaptationDto {
 		this.adaptationType = adaptationType;
 	}
 
+	public void setData(UploadedFile data) {
+		this.data = data;
+	}
+
 	public void setExtraData(String extraData) {
 		this.extraData = extraData;
 	}
 
 	public void setId(int id) {
 		this.id = id;
-	}
-
-	public UploadedFile getData() {
-		return data;
-	}
-
-	public void setData(UploadedFile data) {
-		this.data = data;
 	}
 
 }
