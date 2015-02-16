@@ -18,7 +18,7 @@
 			<h:panelGrid columns="2">
 				<p:panelGrid columns="2">
 
-					<p:outputLabel for="selectMenu" value="Servicio " />
+					<p:outputLabel for="selectMenu"><b>Servicio</b></p:outputLabel>
 					<p:selectOneMenu id="selectMenu" autoupdate="true"
 						styleClass="span4" value="#{itineraryBean.nombreServicioSelec}"
 						effect="fade">
@@ -29,7 +29,7 @@
 
 
 
-					<p:outputLabel for="selectSituation" value="Situación " />
+					<p:outputLabel for="selectSituation"  ><b>Situación</b> </p:outputLabel>
 					<p:selectOneMenu id="selectSituation" autoupdate="true"
 						styleClass="span4" value="#{itineraryBean.nombreSituacionSelec}"
 						effect="fade">
@@ -38,7 +38,7 @@
 							var="Situation" itemLabel="#{Situation}" itemValue="#{Situation}" />
 					</p:selectOneMenu>
 
-					<h:outputLabel value="Adaptación" />
+					<h:outputLabel ><b>Adaptación</b></h:outputLabel>
 					<p:selectOneMenu id="selectAdaptType" autoupdate="true"
 						styleClass="span4" value="#{itineraryBean.adaptSelec}"
 						effect="fade">
@@ -53,11 +53,11 @@
 					<p:outputLabel>
 						<b>Prioridad</b>
 					</p:outputLabel>
-					<p:inputText id="prioridad" size="50"
+					<p:inputText id="prioridad" size="10"
 						value="#{itineraryBean.priority}" label="Prioridad">
 						<f:convertNumber integerOnly="true" type="number" />
 					</p:inputText>
-					<p:message for="prioridad" display="icon" />
+					
 				</p:panelGrid>
 
 				<h:panelGrid columns="2">

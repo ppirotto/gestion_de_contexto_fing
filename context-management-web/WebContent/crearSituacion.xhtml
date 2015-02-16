@@ -21,18 +21,18 @@
 					<p:outputLabel>
 						<b>Nombre de la situación</b>
 					</p:outputLabel>
-					<p:inputText size="50" value="#{situationBean.name}" required="true" label="Nombre de la situación"/>
+					<p:inputText size="40" value="#{situationBean.name}" required="true" label="Nombre de la situación"/>
 					<p:outputLabel>
 						<b>Descripción</b>
 					</p:outputLabel>
-					<p:inputText size="50" value="#{situationBean.description}" required="true" label="Descripción" />
+					<p:inputText size="40" value="#{situationBean.description}" required="true" label="Descripción" />
 
 
 
 					<p:outputLabel>
 						<b>Duración en minutos</b>
 					</p:outputLabel>
-					<p:inputText id="duration" size="50" value="#{situationBean.duration}" label="Duración">
+					<p:inputText id="duration" size="16" value="#{situationBean.duration}" label="Duración">
 						<f:convertNumber integerOnly="true" type="number" />
 					</p:inputText>
 					 <p:message for="duration" display="icon" />
