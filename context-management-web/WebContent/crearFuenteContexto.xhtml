@@ -21,11 +21,11 @@
 				<p:outputLabel>
 					<b>Nombre del evento</b>
 				</p:outputLabel>
-				<p:inputText size="40" value="#{contextSourceBean.eventName}"
+				<p:inputText size="38" value="#{contextSourceBean.eventName}"
 					required="true" label="Nombre" />
 
 
-				<p:outputLabel for="selectEventType" value="Tipo del evento " />
+				<p:outputLabel for="selectEventType" ><b>Tipo del evento</b>  </p:outputLabel>
 				<p:selectOneMenu id="selectEventType" autoupdate="true"
 					styleClass="span4" value="#{contextSourceBean.modeConverter}"
 					effect="fade">
@@ -35,8 +35,8 @@
 
 				</p:selectOneMenu>
 
-				<p:outputLabel value="Modo de entrada" />
-				<p:selectOneMenu id="selectAdaptType" autoupdate="true"
+				<p:outputLabel ><b>Modo de entrada</b></p:outputLabel> 
+				<p:selectOneMenu id="selectAdaptType" autoupdate="true" required="true"
 					styleClass="span4" value="#{contextSourceBean.receiveMode}"
 					effect="fade">
 					<f:selectItem itemLabel="Seleccione modo" itemValue="" />
@@ -45,6 +45,12 @@
 
 
 				</p:selectOneMenu>
+				
+				<p:outputLabel>
+					<b>URL</b>
+				</p:outputLabel>
+				<p:inputText size="38" value="#{contextSourceBean.url}"
+					required="true" label="URL" />
 
 			</p:panelGrid>
 

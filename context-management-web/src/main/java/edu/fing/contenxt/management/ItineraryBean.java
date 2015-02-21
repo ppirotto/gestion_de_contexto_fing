@@ -41,10 +41,11 @@ public class ItineraryBean {
 
 	public void agregarAdaptacion() {
 
-		AdaptationDto a = new AdaptationDto(this.adaptations.size() + 1, this.adaptSelec);
+		AdaptationDto a = new AdaptationDto(this.adaptations.size() + 1, this.adaptSelec, this.description);
 
 		this.adaptations.add(a);
 
+		this.description = null;
 	}
 
 	public String crearItinerario() {
@@ -59,6 +60,7 @@ public class ItineraryBean {
 			a.setAdaptationType(adapt.getAdaptationType());
 			a.setOrder(adapt.getId());
 			a.setName("");
+			a.setDescription(adapt.getDescription());
 
 			Object data = null;
 			if (adapt.getAdaptationType().getDataType() != null) {

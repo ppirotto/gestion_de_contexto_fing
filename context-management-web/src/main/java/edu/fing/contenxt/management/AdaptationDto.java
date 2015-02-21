@@ -7,12 +7,14 @@ import edu.fing.commons.constant.AdaptationType;
 public class AdaptationDto {
 	private int id;
 	private AdaptationType adaptationType;
+	private String description;
 	private UploadedFile data;
 	private String extraData;
 
-	public AdaptationDto(int id, AdaptationType adaptationType) {
+	public AdaptationDto(int id, AdaptationType adaptationType, String desc) {
 		super();
 		this.id = id;
+		this.description = desc;
 		this.adaptationType = adaptationType;
 	}
 
@@ -22,6 +24,10 @@ public class AdaptationDto {
 
 	public UploadedFile getData() {
 		return this.data;
+	}
+
+	public String getDescription() {
+		return this.description;
 	}
 
 	public String getExtraData() {
@@ -38,6 +44,10 @@ public class AdaptationDto {
 
 	public void setData(UploadedFile data) {
 		this.data = data;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public void setExtraData(String extraData) {

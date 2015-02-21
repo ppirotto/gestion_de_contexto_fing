@@ -15,36 +15,31 @@
 		</h1>
 
 		<h:form enctype="multipart/form-data">
-			<h:panelGrid columns="2">
+			<h:panelGrid columns="1">
 				<p:panelGrid columns="2">
 
-					<p:outputLabel for="selectMenu"><b>Servicio</b></p:outputLabel>
+					<p:outputLabel for="selectMenu">
+						<b>Servicio</b>
+					</p:outputLabel>
 					<p:selectOneMenu id="selectMenu" autoupdate="true"
 						styleClass="span4" value="#{itineraryBean.selectedService}"
 						effect="fade">
 						<f:selectItem itemLabel="Seleccione un servicio" itemValue="" />
 						<f:selectItems value="#{itineraryBean.serviceList}" var="Service"
-							itemLabel="#{Service.serviceName}/#{Service.operationName}" itemValue="#{Service.id}" />
+							itemLabel="#{Service.serviceName}/#{Service.operationName}"
+							itemValue="#{Service.id}" />
 					</p:selectOneMenu>
 
-					<p:outputLabel for="selectSituation"  ><b>Situación</b> </p:outputLabel>
+					<p:outputLabel for="selectSituation">
+						<b>Situación</b>
+					</p:outputLabel>
 					<p:selectOneMenu id="selectSituation" autoupdate="true"
-						styleClass="span4" value="#{itineraryBean.selectedSituation}" 
+						styleClass="span4" value="#{itineraryBean.selectedSituation}"
 						effect="fade">
 						<f:selectItem itemLabel="Seleccione una situación" itemValue="" />
 						<f:selectItems value="#{itineraryBean.situationList}"
-							var="Situation" itemLabel="#{Situation.name}" itemValue="#{Situation.name}" />
-					</p:selectOneMenu>
-
-					<h:outputLabel ><b>Paso del itinerario</b></h:outputLabel>
-					<p:selectOneMenu id="selectAdaptType" autoupdate="true"
-						styleClass="span4" value="#{itineraryBean.adaptSelec}"
-						effect="fade">adaptationTypeList
-						<f:selectItem itemLabel="Seleccione adaptación a crear"
-							itemValue="" />
-						<f:selectItems value="#{itineraryBean.adaptationTypeList}"
-							var="adapType" itemLabel="#{adapType}" itemValue="#{adapType}" />
-
+							var="Situation" itemLabel="#{Situation.name}"
+							itemValue="#{Situation.name}" />
 					</p:selectOneMenu>
 
 					<p:outputLabel>
@@ -54,17 +49,39 @@
 						value="#{itineraryBean.priority}" label="Prioridad">
 						<f:convertNumber integerOnly="true" type="number" />
 					</p:inputText>
-					
+
+
+
 				</p:panelGrid>
 
-				<h:panelGrid columns="2">
 
-					<p:growl id="growl" life="2000" />
-					<p:commandButton value="Agregar" id="ajax"
-						update="growl adaptaciones"
+				<h3>
+					<b>Agregue los pasos del itinerario</b>
+				</h3>
+				<p:panelGrid columns="3">
+					<h:outputLabel>
+						<b>Paso del itinerario</b>
+					</h:outputLabel>
+					<p:selectOneMenu id="selectAdaptType" autoupdate="true"
+						styleClass="span4" value="#{itineraryBean.adaptSelec}"
+						effect="fade">adaptationTypeList
+						<f:selectItem itemLabel="Seleccione adaptación a crear"
+							itemValue="" />
+						<f:selectItems value="#{itineraryBean.adaptationTypeList}"
+							var="adapType" itemLabel="#{adapType}" itemValue="#{adapType}" />
+
+					</p:selectOneMenu>
+					<p:commandButton value="Agregar" id="ajax" update="adaptaciones descrpition"
 						actionListener="#{itineraryBean.agregarAdaptacion}" />
+					<p:outputLabel>
+						<b>Descripción</b>
+					</p:outputLabel>
+					<p:inputText id="descrpition" size="38"
+						value="#{itineraryBean.description}" label="Descripción">
+					</p:inputText>
 
-				</h:panelGrid>
+
+				</p:panelGrid>
 
 			</h:panelGrid>
 
@@ -73,8 +90,7 @@
 			</h2>
 
 			<p:panelGrid id="adaptaciones" styleClass="centerContent">
-				<c:forEach items="#{itineraryBean.adaptations}" var="adap"
-					>
+				<c:forEach items="#{itineraryBean.adaptations}" var="adap">
 					<p:row>
 						<p:column>
 							<h:outputText value="#{adap.id}" />
@@ -82,14 +98,18 @@
 						<p:column>
 							<h:outputText value="#{adap.adaptationType}" />
 						</p:column>
+						
+						<p:column>
+							<h:outputText value="#{adap.description}" />
+						</p:column>
 
 						<p:column rendered="#{adap.adaptationType.renderFileUpload()}">
-							<p:fileUpload value="#{adap.data}" mode="simple" 
+							<p:fileUpload value="#{adap.data}" mode="simple"
 								dragDropSupport="true" />
 						</p:column>
 						<p:column rendered="#{adap.adaptationType.renderStringInput()}">
-							<p:inputText value="#{adap.extraData}" >
-								</p:inputText>
+							<p:inputText value="#{adap.extraData}">
+							</p:inputText>
 						</p:column>
 					</p:row>
 				</c:forEach>
