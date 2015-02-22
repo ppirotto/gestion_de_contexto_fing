@@ -10,6 +10,7 @@
 
 	<ui:define name="title">Home</ui:define>
 	<ui:define name="body">
+
 		<h1>
 			<h:outputText value="Crear Fuente de Contexto" />
 		</h1>
@@ -22,11 +23,14 @@
 					<b>Nombre del evento</b>
 				</p:outputLabel>
 				<p:inputText size="38" value="#{contextSourceBean.eventName}"
-					required="true" label="Nombre" />
+					required="true" label="Nombre" requiredMessage="Ingrese nombre" />
 
 
-				<p:outputLabel for="selectEventType" ><b>Tipo del evento</b>  </p:outputLabel>
+				<p:outputLabel for="selectEventType">
+					<b>Tipo del evento</b>
+				</p:outputLabel>
 				<p:selectOneMenu id="selectEventType" autoupdate="true"
+					required="true" requiredMessage="Seleccione un tipo de evento"
 					styleClass="span4" value="#{contextSourceBean.modeConverter}"
 					effect="fade">
 					<f:selectItem itemLabel="Seleccione un tipo" itemValue="" />
@@ -35,8 +39,11 @@
 
 				</p:selectOneMenu>
 
-				<p:outputLabel ><b>Modo de entrada</b></p:outputLabel> 
-				<p:selectOneMenu id="selectAdaptType" autoupdate="true" required="true"
+				<p:outputLabel>
+					<b>Modo de entrada</b>
+				</p:outputLabel>
+				<p:selectOneMenu id="selectAdaptType" autoupdate="true"
+					required="true" requiredMessage="Seleccione un modo"
 					styleClass="span4" value="#{contextSourceBean.receiveMode}"
 					effect="fade">
 					<f:selectItem itemLabel="Seleccione modo" itemValue="" />
@@ -45,17 +52,17 @@
 
 
 				</p:selectOneMenu>
-				
+
 				<p:outputLabel>
 					<b>URL</b>
 				</p:outputLabel>
 				<p:inputText size="38" value="#{contextSourceBean.url}"
-					required="true" label="URL" />
+					requiredMessage="Ingrese una URL" required="true" label="URL" />
 
 			</p:panelGrid>
-
+			<p:growl id="growl2" life="2000" severity="s" />
 			<p:commandButton value="Crear Fuente de Contexto"
-				action="#{contextSourceBean.crearFuenteContexto()}"
+				action="#{contextSourceBean.crearFuenteContexto()}" update="growl2"
 				styleClass="ui-priority-primary" style="margin-top: 10px;" />
 		</h:form>
 	</ui:define>

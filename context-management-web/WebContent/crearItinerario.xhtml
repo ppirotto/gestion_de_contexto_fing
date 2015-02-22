@@ -21,7 +21,7 @@
 					<p:outputLabel for="selectMenu">
 						<b>Servicio</b>
 					</p:outputLabel>
-					<p:selectOneMenu id="selectMenu" autoupdate="true"
+					<p:selectOneMenu id="selectMenu" autoupdate="true" required="true" requiredMessage="Seleccione un servicio"
 						styleClass="span4" value="#{itineraryBean.selectedService}"
 						effect="fade">
 						<f:selectItem itemLabel="Seleccione un servicio" itemValue="" />
@@ -33,7 +33,7 @@
 					<p:outputLabel for="selectSituation">
 						<b>Situación</b>
 					</p:outputLabel>
-					<p:selectOneMenu id="selectSituation" autoupdate="true"
+					<p:selectOneMenu id="selectSituation" autoupdate="true" required="true" requiredMessage="Seleccione una situación"
 						styleClass="span4" value="#{itineraryBean.selectedSituation}"
 						effect="fade">
 						<f:selectItem itemLabel="Seleccione una situación" itemValue="" />
@@ -45,9 +45,10 @@
 					<p:outputLabel>
 						<b>Prioridad</b>
 					</p:outputLabel>
-					<p:inputText id="prioridad" size="10"
+					<p:inputText id="prioridad" size="10" required="true" requiredMessage="Ingrese prioridad" validatorMessage="Proiridad mayor a 0"
 						value="#{itineraryBean.priority}" label="Prioridad">
 						<f:convertNumber integerOnly="true" type="number" />
+						<f:validateDoubleRange minimum="1"/>  
 					</p:inputText>
 
 

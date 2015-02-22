@@ -25,7 +25,9 @@
 					<p:outputLabel>
 						<b>Descripción</b>
 					</p:outputLabel>
-					<p:inputText size="40" value="#{situationBean.description}" required="true" label="Descripción" />
+					<p:inputText size="40" value="#{situationBean.description}" required="true" label="Descripción" validatorMessage="Duración mayor a 0" > 
+					<f:validateDoubleRange minimum="1"/>  
+					</p:inputText>
 
 
 

@@ -21,19 +21,19 @@
 					<p:outputLabel>
 						<b>Nombre del servicio</b>
 					</p:outputLabel>
-					<p:inputText size="50" value="#{serviceBean.serviceName}" />
+					<p:inputText size="50" value="#{serviceBean.serviceName}"  required="true" requiredMessage="Ingrese nombre"/>
 					<p:outputLabel>
 						<b>Url del servicio</b>
 					</p:outputLabel>
-					<p:inputText size="50" value="#{serviceBean.serviceURL}" />
+					<p:inputText size="50" value="#{serviceBean.serviceURL}" required="true" requiredMessage="Ingrese URL"/>
 
 
 					<p:outputLabel>
 						<b>Seleccione operación</b>
 					</p:outputLabel>
-					<p:dataTable id="operaciones" var="op" style="width:380px"
+					<p:dataTable id="operaciones" var="op" style="width:380px" 
 						value="#{serviceBean.operations}"
-						selection="#{serviceBean.selectedOperation}" rowKey="#{op}">
+						selection="#{serviceBean.selectedOperation}" rowKey="#{op}" >
 
 						<p:column selectionMode="single"
 							style="width:16px;text-align:center" />
@@ -45,7 +45,7 @@
 						<p:outputLabel>
 						<b>Servicio virtual</b>
 					</p:outputLabel>
-					<p:inputText size="50" value="#{serviceBean.virtualService}" />
+					<p:inputText size="50" value="#{serviceBean.virtualService}" required="true" requiredMessage="Ingrese Servicio Virtual" />
 					
 
 				</p:panelGrid>
