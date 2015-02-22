@@ -17,6 +17,7 @@ import edu.fing.commons.front.dto.SituationTO;
 import edu.fing.context.reasoner.model.Adaptation;
 import edu.fing.context.reasoner.model.AdaptationReference;
 import edu.fing.context.reasoner.model.Service;
+import edu.fing.context.reasoner.model.ServiceSituationPriority;
 import edu.fing.context.reasoner.model.Situation;
 import edu.fing.context.reasoner.util.HibernateUtils;
 
@@ -63,6 +64,7 @@ public class ConfigurationServiceBean implements ConfigurationService {
 
 		SessionFactory sessionFactory = HibernateUtils.getSessionFactory();
 		Session session = sessionFactory.openSession();
+		session.beginTransaction();
 
 		StringBuilder queryString = new StringBuilder();
 		queryString.append("SELECT ser ");
@@ -73,6 +75,7 @@ public class ConfigurationServiceBean implements ConfigurationService {
 		@SuppressWarnings("unchecked")
 		List<Service> services = query.list();
 
+		session.getTransaction().commit();
 		session.close();
 
 		List<ServiceTO> list = new ArrayList<ServiceTO>();
@@ -138,6 +141,13 @@ public class ConfigurationServiceBean implements ConfigurationService {
 			session.save(adaptation);
 		}
 
+		ServiceSituationPriority serviceSituationPriority = new ServiceSituationPriority();
+		serviceSituationPriority.setPriority(itineraryTO.getPriority());
+		serviceSituationPriority.setSituation(situation);
+		service.getPriorities().add(serviceSituationPriority);
+		session.save(serviceSituationPriority);
+		session.save(service);
+
 		return HibernateUtils.commit(session);
 	}
 
@@ -147,9 +157,6 @@ public class ConfigurationServiceBean implements ConfigurationService {
 		if (dataType != null) {
 			switch (dataType) {
 			case INT:
-				// ByteBuffer bb = ByteBuffer.allocate(4);
-				// bb.putInt((Integer) adaptationData);
-				// data = bb.array();
 				data = BigInteger.valueOf((Integer) adaptationData).toByteArray();
 				break;
 			case STRING:

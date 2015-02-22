@@ -12,9 +12,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "ADAPTATION")
+@Table(name = "ADAPTATION", uniqueConstraints = { @UniqueConstraint(columnNames = { "SITUATION_ID", "SERVICE_ID" }) })
 public class Adaptation implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -56,7 +57,7 @@ public class Adaptation implements Serializable {
 		return service;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "SITUATION_ID", nullable = false)
 	public Situation getSituation() {
 		return this.situation;

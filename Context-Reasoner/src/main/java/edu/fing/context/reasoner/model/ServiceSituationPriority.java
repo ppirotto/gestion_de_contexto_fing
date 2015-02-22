@@ -9,9 +9,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "SERVICE_SITUATION_PRIORITY")
+@Table(name = "SERVICE_SITUATION_PRIORITY", uniqueConstraints = { @UniqueConstraint(columnNames = { "SITUATION_ID", "SERVICE_ID" }) })
 public class ServiceSituationPriority {
 
 	private Long id;
