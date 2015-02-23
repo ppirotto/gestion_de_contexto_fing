@@ -1,6 +1,6 @@
 package edu.fing.commons.front.dto;
 
-import java.util.Set;
+import java.util.List;
 
 public class ServiceTO {
 
@@ -9,7 +9,7 @@ public class ServiceTO {
 	private String operationName;
 	private String description;
 	private String url;
-	private Set<SituationTO> situations;
+	private List<SituationTO> situations;
 
 	public String getDescription() {
 		return this.description;
@@ -51,11 +51,11 @@ public class ServiceTO {
 		this.url = url;
 	}
 
-	public Set<SituationTO> getSituations() {
+	public List<SituationTO> getSituations() {
 		return situations;
 	}
 
-	public void setSituations(Set<SituationTO> situations) {
+	public void setSituations(List<SituationTO> situations) {
 		this.situations = situations;
 	}
 

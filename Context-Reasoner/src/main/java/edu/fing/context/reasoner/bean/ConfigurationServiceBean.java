@@ -2,9 +2,7 @@ package edu.fing.context.reasoner.bean;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -46,14 +44,14 @@ public class ConfigurationServiceBean implements ConfigurationService {
 		for (Service service : services) {
 
 			ServiceTO serviceTO = this.mapService(service);
-			Set<SituationTO> situationList = new HashSet<SituationTO>();
+			List<SituationTO> situationList = new ArrayList<SituationTO>();
 
 			List<Situation> situations = this.findSituationsByServiceId(service.getId(), session);
 
 			for (Situation situation : situations) {
 
 				SituationTO situationTO = this.mapSituation(situation);
-				Set<AdaptationTO> adaptationList = new HashSet<AdaptationTO>();
+				List<AdaptationTO> adaptationList = new ArrayList<AdaptationTO>();
 				List<Adaptation> adaptations = this.findAdaptationsBySituationAndService(situation.getName(), service.getId(), session);
 
 				for (Adaptation adaptation : adaptations) {
