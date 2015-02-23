@@ -8,13 +8,15 @@ import edu.fing.commons.front.dto.SituationTO;
 
 public interface ConfigurationService {
 
-	Boolean createSituation(SituationTO situationTO);
-
-	Boolean createService(ServiceTO serviceTO);
+	List<ServiceTO> getServicesWithSituationsAndAdaptations();
 
 	List<ServiceTO> getServices();
 
 	List<SituationTO> getSituations();
+
+	Boolean createSituation(SituationTO situationTO);
+
+	Boolean createService(ServiceTO serviceTO);
 
 	Boolean createItinerary(ItineraryTO itineraryTO);
 

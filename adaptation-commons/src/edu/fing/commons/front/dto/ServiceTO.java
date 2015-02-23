@@ -2,8 +2,6 @@ package edu.fing.commons.front.dto;
 
 import java.util.Set;
 
-import edu.fing.commons.dto.AdaptationTO;
-
 public class ServiceTO {
 
 	private Long id;
@@ -11,8 +9,7 @@ public class ServiceTO {
 	private String operationName;
 	private String description;
 	private String url;
-
-	private Set<AdaptationTO> adaptations;
+	private Set<SituationTO> situations;
 
 	public String getDescription() {
 		return this.description;
@@ -54,12 +51,12 @@ public class ServiceTO {
 		this.url = url;
 	}
 
-	public Set<AdaptationTO> getAdaptations() {
-		return adaptations;
+	public Set<SituationTO> getSituations() {
+		return situations;
 	}
 
-	public void setAdaptations(Set<AdaptationTO> adaptations) {
-		this.adaptations = adaptations;
+	public void setSituations(Set<SituationTO> situations) {
+		this.situations = situations;
 	}
 
 }

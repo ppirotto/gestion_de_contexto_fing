@@ -1,7 +1,6 @@
 package edu.fing.commons.dto;
 
 import edu.fing.commons.constant.AdaptationType;
-import edu.fing.commons.front.dto.SituationTO;
 
 public class AdaptationTO {
 
@@ -11,7 +10,6 @@ public class AdaptationTO {
 	private int order;
 	private AdaptationType adaptationType;
 	private Object data;
-	private SituationTO situationTO;
 
 	public AdaptationType getAdaptationType() {
 		return this.adaptationType;
@@ -31,10 +29,6 @@ public class AdaptationTO {
 
 	public int getOrder() {
 		return this.order;
-	}
-
-	public SituationTO getSituationTO() {
-		return this.situationTO;
 	}
 
 	public String getUri() {
@@ -59,10 +53,6 @@ public class AdaptationTO {
 
 	public void setOrder(int order) {
 		this.order = order;
-	}
-
-	public void setSituationTO(SituationTO situationTO) {
-		this.situationTO = situationTO;
 	}
 
 	public void setUri(String uri) {

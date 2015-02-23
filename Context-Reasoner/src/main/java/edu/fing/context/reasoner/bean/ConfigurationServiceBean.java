@@ -2,7 +2,9 @@ package edu.fing.context.reasoner.bean;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -23,6 +25,102 @@ import edu.fing.context.reasoner.util.HibernateUtils;
 
 @org.switchyard.component.bean.Service(ConfigurationService.class)
 public class ConfigurationServiceBean implements ConfigurationService {
+
+	@Override
+	public List<ServiceTO> getServicesWithSituationsAndAdaptations() {
+
+		SessionFactory sessionFactory = HibernateUtils.getSessionFactory();
+		Session session = sessionFactory.openSession();
+
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append("SELECT ser ");
+		queryStr.append("FROM Service ser ");
+
+		Query query = session.createQuery(queryStr.toString());
+
+		@SuppressWarnings("unchecked")
+		List<Service> services = query.list();
+
+		List<ServiceTO> serviceList = new ArrayList<ServiceTO>();
+
+		for (Service service : services) {
+
+			ServiceTO serviceTO = this.mapService(service);
+			Set<SituationTO> situationList = new HashSet<SituationTO>();
+
+			List<Situation> situations = this.findSituationsByServiceId(service.getId(), session);
+
+			for (Situation situation : situations) {
+
+				SituationTO situationTO = this.mapSituation(situation);
+				Set<AdaptationTO> adaptationList = new HashSet<AdaptationTO>();
+				List<Adaptation> adaptations = this.findAdaptationsBySituationAndService(situation.getName(), service.getId(), session);
+
+				for (Adaptation adaptation : adaptations) {
+					adaptationList.add(this.mapAdaptation(adaptation));
+				}
+				situationTO.setAdaptations(adaptationList);
+				situationList.add(situationTO);
+			}
+			serviceTO.setSituations(situationList);
+			serviceList.add(serviceTO);
+		}
+		return serviceList;
+	}
+
+	@Override
+	public List<ServiceTO> getServices() {
+
+		SessionFactory sessionFactory = HibernateUtils.getSessionFactory();
+		Session session = sessionFactory.openSession();
+		session.beginTransaction();
+
+		StringBuilder queryString = new StringBuilder();
+		queryString.append("SELECT ser ");
+		queryString.append("FROM Service ser ");
+
+		Query query = session.createQuery(queryString.toString());
+
+		@SuppressWarnings("unchecked")
+		List<Service> services = query.list();
+
+		session.getTransaction().commit();
+		session.close();
+
+		List<ServiceTO> list = new ArrayList<ServiceTO>();
+		for (Service service : services) {
+			list.add(this.mapService(service));
+		}
+		return list;
+	}
+
+	@Override
+	public List<SituationTO> getSituations() {
+
+		SessionFactory sessionFactory = HibernateUtils.getSessionFactory();
+		Session session = sessionFactory.openSession();
+
+		StringBuilder queryString = new StringBuilder();
+		queryString.append("SELECT s ");
+		queryString.append("FROM Situation s ");
+
+		Query query = session.createQuery(queryString.toString());
+
+		@SuppressWarnings("unchecked")
+		List<Situation> situations = query.list();
+
+		session.close();
+
+		List<SituationTO> list = new ArrayList<SituationTO>();
+		for (Situation situation : situations) {
+			SituationTO situationTO = new SituationTO();
+			situationTO.setName(situation.getName());
+			situationTO.setDescription(situation.getDescription());
+			situationTO.setMinuteDuration(situation.getMinuteDuration());
+			list.add(situationTO);
+		}
+		return list;
+	}
 
 	@Override
 	public Boolean createSituation(SituationTO situationTO) {
@@ -57,66 +155,6 @@ public class ConfigurationServiceBean implements ConfigurationService {
 		session.save(service);
 
 		return HibernateUtils.commit(session);
-	}
-
-	@Override
-	public List<ServiceTO> getServices() {
-
-		SessionFactory sessionFactory = HibernateUtils.getSessionFactory();
-		Session session = sessionFactory.openSession();
-		session.beginTransaction();
-
-		StringBuilder queryString = new StringBuilder();
-		queryString.append("SELECT ser ");
-		queryString.append("FROM Service ser ");
-
-		Query query = session.createQuery(queryString.toString());
-
-		@SuppressWarnings("unchecked")
-		List<Service> services = query.list();
-
-		session.getTransaction().commit();
-		session.close();
-
-		List<ServiceTO> list = new ArrayList<ServiceTO>();
-		for (Service service : services) {
-			ServiceTO serviceTO = new ServiceTO();
-			serviceTO.setId(service.getId());
-			serviceTO.setServiceName(service.getServiceName());
-			serviceTO.setOperationName(service.getOperationName());
-			serviceTO.setDescription(service.getDescription());
-			serviceTO.setUrl(service.getUrl());
-			list.add(serviceTO);
-		}
-		return list;
-	}
-
-	@Override
-	public List<SituationTO> getSituations() {
-
-		SessionFactory sessionFactory = HibernateUtils.getSessionFactory();
-		Session session = sessionFactory.openSession();
-
-		StringBuilder queryString = new StringBuilder();
-		queryString.append("SELECT s ");
-		queryString.append("FROM Situation s ");
-
-		Query query = session.createQuery(queryString.toString());
-
-		@SuppressWarnings("unchecked")
-		List<Situation> situations = query.list();
-
-		session.close();
-
-		List<SituationTO> list = new ArrayList<SituationTO>();
-		for (Situation situation : situations) {
-			SituationTO situationTO = new SituationTO();
-			situationTO.setName(situation.getName());
-			situationTO.setDescription(situation.getDescription());
-			situationTO.setMinuteDuration(situation.getMinuteDuration());
-			list.add(situationTO);
-		}
-		return list;
 	}
 
 	@Override
@@ -209,4 +247,68 @@ public class ConfigurationServiceBean implements ConfigurationService {
 		return (Service) queryService.uniqueResult();
 	}
 
+	@SuppressWarnings("unchecked")
+	private List<Situation> findSituationsByServiceId(Long serviceId, Session session) {
+
+		StringBuilder querySituation = new StringBuilder();
+		querySituation.append("SELECT distinct sit ");
+		querySituation.append("FROM Situation sit ");
+		querySituation.append("JOIN sit.adaptations adapts ");
+		querySituation.append("WHERE adapts.service.id = :serviceId ");
+
+		Query querySit = session.createQuery(querySituation.toString());
+		querySit.setParameter("serviceId", serviceId);
+
+		return querySit.list();
+	}
+
+	@SuppressWarnings("unchecked")
+	private List<Adaptation> findAdaptationsBySituationAndService(String situationName, Long serviceId, Session session) {
+
+		StringBuilder queryString = new StringBuilder();
+
+		queryString.append("SELECT a ");
+		queryString.append("FROM Adaptation a ");
+		queryString.append("join a.service ser ");
+		queryString.append("join a.situation sit ");
+		queryString.append("WHERE sit.name = :situationName and ser.id = :serviceId");
+
+		Query query = session.createQuery(queryString.toString());
+		query.setParameter("situationName", situationName);
+		query.setParameter("serviceId", serviceId);
+
+		return query.list();
+
+	}
+
+	private ServiceTO mapService(Service service) {
+		ServiceTO serviceTO = new ServiceTO();
+		serviceTO.setId(service.getId());
+		serviceTO.setServiceName(service.getServiceName());
+		serviceTO.setOperationName(service.getOperationName());
+		serviceTO.setDescription(service.getDescription());
+		serviceTO.setUrl(service.getUrl());
+
+		return serviceTO;
+	}
+
+	private SituationTO mapSituation(Situation situation) {
+		SituationTO situationTO = new SituationTO();
+		situationTO.setName(situation.getName());
+		situationTO.setDescription(situation.getDescription());
+		situationTO.setMinuteDuration(situation.getMinuteDuration());
+
+		return situationTO;
+	}
+
+	private AdaptationTO mapAdaptation(Adaptation adaptation) {
+		AdaptationTO adaptationTO = new AdaptationTO();
+		adaptationTO.setName(adaptation.getName());
+		adaptationTO.setDescription(adaptation.getDescription());
+		adaptationTO.setOrder(adaptation.getAdaptationOrder());
+		adaptationTO.setUri(adaptation.getAdaptationReference().getUri());
+		adaptationTO.setData(new String(adaptation.getData()));
+
+		return adaptationTO;
+	}
 }

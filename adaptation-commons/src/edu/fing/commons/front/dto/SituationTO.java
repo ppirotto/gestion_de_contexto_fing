@@ -1,10 +1,15 @@
 package edu.fing.commons.front.dto;
 
+import java.util.Set;
+
+import edu.fing.commons.dto.AdaptationTO;
+
 public class SituationTO {
 
 	private String name;
 	private String description;
 	private Long minuteDuration;
+	private Set<AdaptationTO> adaptations;
 
 	public String getDescription() {
 		return this.description;
@@ -28,6 +33,14 @@ public class SituationTO {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public Set<AdaptationTO> getAdaptations() {
+		return adaptations;
+	}
+
+	public void setAdaptations(Set<AdaptationTO> adaptations) {
+		this.adaptations = adaptations;
 	}
 
 }
