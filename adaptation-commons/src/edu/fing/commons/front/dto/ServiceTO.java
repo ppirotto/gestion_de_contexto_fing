@@ -1,5 +1,9 @@
 package edu.fing.commons.front.dto;
 
+import java.util.Set;
+
+import edu.fing.commons.dto.AdaptationTO;
+
 public class ServiceTO {
 
 	private Long id;
@@ -8,44 +12,54 @@ public class ServiceTO {
 	private String description;
 	private String url;
 
+	private Set<AdaptationTO> adaptations;
+
+	public String getDescription() {
+		return this.description;
+	}
+
 	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getServiceName() {
-		return serviceName;
+		return this.id;
 	}
 
 	public String getOperationName() {
-		return operationName;
+		return this.operationName;
 	}
 
-	public String getDescription() {
-		return description;
+	public String getServiceName() {
+		return this.serviceName;
 	}
 
 	public String getUrl() {
-		return url;
-	}
-
-	public void setServiceName(String serviceName) {
-		this.serviceName = serviceName;
-	}
-
-	public void setOperationName(String operationName) {
-		this.operationName = operationName;
+		return this.url;
 	}
 
 	public void setDescription(String description) {
 		this.description = description;
 	}
 
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public void setOperationName(String operationName) {
+		this.operationName = operationName;
+	}
+
+	public void setServiceName(String serviceName) {
+		this.serviceName = serviceName;
+	}
+
 	public void setUrl(String url) {
 		this.url = url;
+	}
+
+	public Set<AdaptationTO> getAdaptations() {
+		return adaptations;
+	}
+
+	public void setAdaptations(Set<AdaptationTO> adaptations) {
+		this.adaptations = adaptations;
 	}
 
 }

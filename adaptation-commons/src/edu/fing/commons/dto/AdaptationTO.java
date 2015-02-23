@@ -1,6 +1,7 @@
 package edu.fing.commons.dto;
 
 import edu.fing.commons.constant.AdaptationType;
+import edu.fing.commons.front.dto.SituationTO;
 
 public class AdaptationTO {
 
@@ -10,53 +11,62 @@ public class AdaptationTO {
 	private int order;
 	private AdaptationType adaptationType;
 	private Object data;
+	private SituationTO situationTO;
 
-	public String getName() {
-		return name;
+	public AdaptationType getAdaptationType() {
+		return this.adaptationType;
 	}
 
 	public Object getData() {
-		return data;
+		return this.data;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public String getDescription() {
+		return this.description;
+	}
+
+	public String getName() {
+		return this.name;
+	}
+
+	public int getOrder() {
+		return this.order;
+	}
+
+	public SituationTO getSituationTO() {
+		return this.situationTO;
+	}
+
+	public String getUri() {
+		return this.uri;
+	}
+
+	public void setAdaptationType(AdaptationType adaptationType) {
+		this.adaptationType = adaptationType;
 	}
 
 	public void setData(Object data) {
 		this.data = data;
 	}
 
-	public String getUri() {
-		return uri;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
-	public void setUri(String uri) {
-		this.uri = uri;
-	}
-
-	public int getOrder() {
-		return order;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public void setOrder(int order) {
 		this.order = order;
 	}
 
-	public String getDescription() {
-		return description;
+	public void setSituationTO(SituationTO situationTO) {
+		this.situationTO = situationTO;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public AdaptationType getAdaptationType() {
-		return adaptationType;
-	}
-
-	public void setAdaptationType(AdaptationType adaptationType) {
-		this.adaptationType = adaptationType;
+	public void setUri(String uri) {
+		this.uri = uri;
 	}
 
 }

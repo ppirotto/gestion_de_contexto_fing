@@ -6,20 +6,16 @@ public class SituationTO {
 	private String description;
 	private Long minuteDuration;
 
-	public String getName() {
-		return name;
-	}
-
 	public String getDescription() {
-		return description;
+		return this.description;
 	}
 
 	public Long getMinuteDuration() {
-		return minuteDuration;
+		return this.minuteDuration;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public String getName() {
+		return this.name;
 	}
 
 	public void setDescription(String description) {
@@ -28,6 +24,10 @@ public class SituationTO {
 
 	public void setMinuteDuration(Long minuteDuration) {
 		this.minuteDuration = minuteDuration;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 }
