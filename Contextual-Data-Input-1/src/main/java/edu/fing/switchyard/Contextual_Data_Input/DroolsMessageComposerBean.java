@@ -1,4 +1,4 @@
-package edu.fing.switchyard.Contextual_Data_Input_1;
+package edu.fing.switchyard.Contextual_Data_Input;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -44,6 +44,8 @@ public class DroolsMessageComposerBean implements DroolsMessageComposer {
 
 	private ContextualDataModeConverter mode;
 
+	private String eventName;
+	
 	@PostConstruct
 	void init() {
 		Properties prop = new Properties();
@@ -61,6 +63,7 @@ public class DroolsMessageComposerBean implements DroolsMessageComposer {
 			System.out.println("ERROR trying to load '" + propFileName + "'.");
 		}
 		mode = Enum.valueOf(ContextualDataModeConverter.class, (String) prop.get("modeConverter"));
+		eventName = (String) prop.getProperty("eventName");
 	}
 
 	@SuppressWarnings("unchecked")
@@ -76,16 +79,9 @@ public class DroolsMessageComposerBean implements DroolsMessageComposer {
 			try {
 				objectAsMap = objectMapper.readValue(input, Map.class);
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		} else if (mode.equals(ContextualDataModeConverter.XML)) {
-//			try {
-//				objectAsMap = convertNodesFromXml(input);
-//			} catch (Exception e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
 		    XStream xStream = new XStream(new DomDriver());
 		    xStream.alias("map", java.util.Map.class);
 		    xStream.registerConverter(new MapEntryConverter());
@@ -95,14 +91,15 @@ public class DroolsMessageComposerBean implements DroolsMessageComposer {
 		}
 
 		ContextualDataTO data = new ContextualDataTO();
-		data.setType("USER_LOCATION");
+		
+		data.setEventName(eventName);
 		data.setInfo(objectAsMap);
 		for(String key : objectAsMap.keySet()){
 			System.out.println("key= "+key);
 			System.out.println("value= "+objectAsMap.get(key) + "\n");
 		}
-		return droolsFeederService.receiveMessage(data);
-//		return null;
+		String res = droolsFeederService.receiveMessage(data); 
+		return res;
 	}
 	
     public static class MapEntryConverter implements Converter {

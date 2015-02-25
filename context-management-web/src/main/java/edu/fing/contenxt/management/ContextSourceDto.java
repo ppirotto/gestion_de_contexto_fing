@@ -5,6 +5,7 @@ public class ContextSourceDto {
 	private String eventName;
 	private String receiveMode;
 	private String url;
+	private String cron;
 
 	public String getEventName() {
 		return this.eventName;
@@ -23,19 +24,27 @@ public class ContextSourceDto {
 	}
 
 	public void setEventName(String eventName) {
-		this.eventName = eventName;
+		this.eventName = eventName.trim();
 	}
 
 	public void setModeConverter(String modeConverter) {
-		this.modeConverter = modeConverter;
+		this.modeConverter = modeConverter.trim();
 	}
 
 	public void setReceiveMode(String receiveMode) {
-		this.receiveMode = receiveMode;
+		this.receiveMode = receiveMode.trim();
 	}
 
 	public void setUrl(String url) {
-		this.url = url;
+		this.url = url.trim();
+	}
+
+	public String getCron() {
+		return cron;
+	}
+
+	public void setCron(String cron) {
+		this.cron = cron;
 	}
 
 }

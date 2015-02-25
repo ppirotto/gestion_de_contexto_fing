@@ -1,10 +1,14 @@
 package edu.fing.contenxt.management;
 
+import java.io.IOException;
+
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+
+import edu.fing.context.management.jar.creation.JarCreationService;
 
 @ManagedBean
 @ViewScoped
@@ -14,13 +18,14 @@ public class ContextSourceBean {
 	private String eventName;
 	private String receiveMode;
 	private String url;
+	private String cron;
 
 	@ManagedProperty(value = "#{sessionBean}")
 	private SessionBean session;
 
 	public String crearFuenteContexto() {
 		System.out.println("Fuente creada");
-		String mensaje = "Fuente de contexto creada con éxito";
+		String mensaje = "Fuente de contexto creada con ï¿½xito";
 		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(null, mensaje));
 
 		ContextSourceDto cS = new ContextSourceDto();
@@ -28,8 +33,15 @@ public class ContextSourceBean {
 		cS.setModeConverter(this.modeConverter);
 		cS.setReceiveMode(this.receiveMode);
 		cS.setUrl(this.url);
+		cS.setCron(this.cron);
+		try {
+			JarCreationService.createContextSource(cS);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		// servicio de context reasoner
-		// (url servicio, situación, lista de adaptaciones con su data)
+		// (url servicio, situaciï¿½n, lista de adaptaciones con su data)
 		return "inicio";
 	}
 
@@ -71,6 +83,14 @@ public class ContextSourceBean {
 
 	public void setUrl(String url) {
 		this.url = url;
+	}
+
+	public String getCron() {
+		return cron;
+	}
+
+	public void setCron(String cron) {
+		this.cron = cron;
 	}
 
 }

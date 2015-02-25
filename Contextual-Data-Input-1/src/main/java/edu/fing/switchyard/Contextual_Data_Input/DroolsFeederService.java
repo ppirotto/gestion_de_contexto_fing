@@ -1,4 +1,4 @@
-package edu.fing.switchyard.Contextual_Data_Input_1;
+package edu.fing.switchyard.Contextual_Data_Input;
 import edu.fing.commons.dto.ContextualDataTO;
 
 public interface DroolsFeederService {
