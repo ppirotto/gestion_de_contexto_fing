@@ -5,6 +5,12 @@
     position: relative;
 }
 
+.CodeMirror-scroll .codeModif {
+    height: auto;
+    outline: 0 none;
+    overflow: auto;
+    position: relative;
+}
 .ui-layout-unit {
     visibility: visible !important;
 }
