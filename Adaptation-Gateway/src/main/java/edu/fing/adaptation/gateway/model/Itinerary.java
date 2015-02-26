@@ -3,11 +3,13 @@ package edu.fing.adaptation.gateway.model;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -21,6 +23,7 @@ public class Itinerary {
 	private String user;
 	private String service;
 	private String operation;
+	private String situation;
 	private int priority;
 	private Date expirationDate;
 	private List<ContextAwareAdaptation> adaptationDirective;
@@ -47,6 +50,11 @@ public class Itinerary {
 		return operation;
 	}
 
+	@Column(name = "SITUATION")
+	public String getSituation() {
+		return situation;
+	}
+
 	@Column(name = "PRIORITY")
 	public int getPriority() {
 		return priority;
@@ -58,7 +66,8 @@ public class Itinerary {
 		return expirationDate;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "itinerary")
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "ITINERARY_ID", nullable = false)
 	public List<ContextAwareAdaptation> getAdaptationDirective() {
 		return adaptationDirective;
 	}
@@ -89,6 +98,10 @@ public class Itinerary {
 
 	public void setAdaptationDirective(List<ContextAwareAdaptation> adaptationDirective) {
 		this.adaptationDirective = adaptationDirective;
+	}
+
+	public void setSituation(String situation) {
+		this.situation = situation;
 	}
 
 }

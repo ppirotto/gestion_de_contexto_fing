@@ -2,11 +2,15 @@ package edu.fing.adaptation.gateway.bean;
 
 import java.util.List;
 
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.switchyard.component.bean.Service;
 
+import edu.fing.adaptation.gateway.model.ContextAwareAdaptation;
+import edu.fing.adaptation.gateway.model.Itinerary;
 import edu.fing.adaptation.gateway.util.HibernateUtils;
+import edu.fing.commons.dto.AdaptationTO;
 import edu.fing.commons.dto.ContextReasonerData;
 
 @Service(ItineraryService.class)
@@ -14,40 +18,58 @@ public class ItineraryServiceBean implements ItineraryService {
 
 	@Override
 	public void receiveAdaptations(List<ContextReasonerData> contextReasonerData) {
-		for (ContextReasonerData data : contextReasonerData) {
-			System.out.println("data recibida del context reasoner: user:"+data.getUser() +" service:" + data.getService());
-		}
 
-		
 		SessionFactory sessionFactory = HibernateUtils.getSessionFactory();
 		Session session = sessionFactory.openSession();
-		
-	
 		session.beginTransaction();
-		
-		StringBuilder queryString = new StringBuilder();
-		
-//		String hql = "INSERT INTO Employee(firstName, lastName, salary)"  + 
-//	             "SELECT firstName, lastName, salary FROM old_employee";
-//		Query query = session.createQuery(hql);
-//		int result = query.executeUpdate();
-//
-//		queryString.append("INSERT INTO Itinerary ");
-//		queryString.append("FROM SITUATION S JOIN ADAPTATION A ON A.SITUATION_ID = S.ID JOIN SERVICE SER ON a.SERVICE_ID = SER.ID ");
-//		queryString.append("WHERE S.name = :situationName ");
 
-//		Query query = session.createSQLQuery(queryString.toString()).addEntity(Adaptation.class);
-//		query.setParameter("situationName", "InCityRaining");
-//
-//		@SuppressWarnings("unchecked")
-//		List<Adaptation> adaptations = query.list();
-//		String serviceName = adaptations.get(0).getService().getServiceName();
-//		System.out.println(serviceName);
-		
-		session.getTransaction().commit();
-		session.close();
-		sessionFactory.close();
-	
+		for (ContextReasonerData data : contextReasonerData) {
+			Itinerary itinerary = this.findSameItinerary(data, session);
+			if (itinerary == null) {
+				itinerary = new Itinerary();
+				itinerary.setUser(data.getUser());
+				itinerary.setService(data.getService());
+				itinerary.setOperation(data.getOperation());
+				itinerary.setSituation(data.getSituationName());
+				itinerary.setPriority(data.getPriority());
+			} else {
+				// borro las adaptaciones anteriores
+				itinerary.getAdaptationDirective().clear();
+			}
+			itinerary.setExpirationDate(data.getExpirationDate());
+
+			for (AdaptationTO adaptationTO : data.getAdaptations()) {
+				ContextAwareAdaptation contextAwareAdaptation = new ContextAwareAdaptation();
+				contextAwareAdaptation.setName(adaptationTO.getName());
+				contextAwareAdaptation.setUri(adaptationTO.getUri());
+				contextAwareAdaptation.setData((String) adaptationTO.getData());
+				session.save(contextAwareAdaptation);
+				itinerary.getAdaptationDirective().add(contextAwareAdaptation);
+			}
+			session.save(itinerary);
+		}
+		HibernateUtils.commit(session);
+
 	}
 
+	private Itinerary findSameItinerary(ContextReasonerData contextReasonerData, Session session) {
+
+		StringBuilder queryString = new StringBuilder();
+		queryString.append("Select itinerary ");
+		queryString.append("FROM Itinerary itinerary ");
+		queryString.append("WHERE itinerary.user = :user ");
+		queryString.append("and itinerary.service = :service ");
+		queryString.append("and itinerary.operation = :operation ");
+		queryString.append("and itinerary.situation = :situation ");
+		queryString.append("and itinerary.priority = :priority;");
+
+		Query query = session.createQuery(queryString.toString());
+		query.setParameter("user", contextReasonerData.getUser());
+		query.setParameter("service", contextReasonerData.getService());
+		query.setParameter("operation", contextReasonerData.getOperation());
+		query.setParameter("situation", contextReasonerData.getSituationName());
+		query.setParameter("priority", contextReasonerData.getPriority());
+
+		return (Itinerary) query.uniqueResult();
+	}
 }
