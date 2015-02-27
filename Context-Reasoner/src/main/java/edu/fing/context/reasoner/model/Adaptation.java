@@ -29,32 +29,44 @@ public class Adaptation implements Serializable {
 	private AdaptationReference adaptationReference;
 	private byte[] data;
 
-	@Id
-	@GeneratedValue
-	@Column(name = "ID", nullable = false)
-	public Long getId() {
-		return id;
+	@Column(name = "ADAPTATION_ORDER")
+	public int getAdaptationOrder() {
+		return this.adaptationOrder;
 	}
 
-	@Column(name = "NAME")
-	public String getName() {
-		return name;
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "ADAPTATION_REFERENCE_ID", nullable = false)
+	public AdaptationReference getAdaptationReference() {
+		return this.adaptationReference;
+	}
+
+	@Lob
+	@Column(name = "DATA", columnDefinition = "MEDIUMTEXT")
+	public byte[] getData() {
+		return this.data;
 	}
 
 	@Column(name = "DESCRIPTION")
 	public String getDescription() {
-		return description;
+		return this.description;
 	}
 
-	@Column(name = "ADAPTATION_ORDER")
-	public int getAdaptationOrder() {
-		return adaptationOrder;
+	@Id
+	@GeneratedValue
+	@Column(name = "ID", nullable = false)
+	public Long getId() {
+		return this.id;
+	}
+
+	@Column(name = "NAME")
+	public String getName() {
+		return this.name;
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL)
 	@JoinColumn(name = "SERVICE_ID", nullable = false)
 	public Service getService() {
-		return service;
+		return this.service;
 	}
 
 	@ManyToOne(fetch = FetchType.EAGER)
@@ -63,16 +75,20 @@ public class Adaptation implements Serializable {
 		return this.situation;
 	}
 
-	@Lob
-	@Column(name = "DATA", columnDefinition = "MEDIUMTEXT")
-	public byte[] getData() {
-		return data;
+	public void setAdaptationOrder(int adaptationOrder) {
+		this.adaptationOrder = adaptationOrder;
 	}
 
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "ADAPTATION_REFERENCE_ID", nullable = false)
-	public AdaptationReference getAdaptationReference() {
-		return adaptationReference;
+	public void setAdaptationReference(AdaptationReference adaptationReference) {
+		this.adaptationReference = adaptationReference;
+	}
+
+	public void setData(byte[] data) {
+		this.data = data;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public void setId(Long id) {
@@ -83,28 +99,12 @@ public class Adaptation implements Serializable {
 		this.name = name;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
 	public void setService(Service service) {
 		this.service = service;
 	}
 
 	public void setSituation(Situation situation) {
 		this.situation = situation;
-	}
-
-	public void setData(byte[] data) {
-		this.data = data;
-	}
-
-	public void setAdaptationReference(AdaptationReference adaptationReference) {
-		this.adaptationReference = adaptationReference;
-	}
-
-	public void setAdaptationOrder(int adaptationOrder) {
-		this.adaptationOrder = adaptationOrder;
 	}
 
 }

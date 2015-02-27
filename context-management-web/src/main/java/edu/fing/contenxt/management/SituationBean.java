@@ -27,7 +27,7 @@ public class SituationBean {
 		sit.setDescription(this.description);
 		sit.setMinuteDuration(this.duration);
 
-		Boolean result = (Boolean) RemoteInvokerUtils.invoke(RemoteInvokerUtils.ContextReasonerConfigService, "createSituation", sit, "192.168.0.101", "8080");
+		Boolean result = (Boolean) RemoteInvokerUtils.invoke(RemoteInvokerUtils.ContextReasonerConfigService, "createSituation", sit, "localhost", "8080");
 		if (result) {
 			String mensaje = "Servicio creado con éxito";
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(null, mensaje));

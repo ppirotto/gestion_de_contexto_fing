@@ -34,18 +34,19 @@ public class ConfigurationBean {
 	@PostConstruct
 	public void construct() {
 
-		this.services = (List<ServiceTO>) RemoteInvokerUtils.invoke(RemoteInvokerUtils.ContextReasonerConfigService, "getServicesWithSituationsAndAdaptations", null, "192.168.0.103", "8080");
+		this.services = (List<ServiceTO>) RemoteInvokerUtils.invoke(RemoteInvokerUtils.ContextReasonerConfigService, "getServicesWithSituationsAndAdaptations", null, "localhost", "8080");
 
 		this.root = new DefaultTreeNode("Root", null);
+		if (this.services != null) {
+			for (ServiceTO serviceTO : this.services) {
+				TreeNode node0 = new DefaultTreeNode(new InfoTreeNode(serviceTO.getServiceName() + "/" + serviceTO.getOperationName(), serviceTO.getUrl(), "Servicio"), this.root);
+				for (SituationTO situationTO : serviceTO.getSituations()) {
+					TreeNode node00 = new DefaultTreeNode(new InfoTreeNode(situationTO.getName(), situationTO.getDescription(), "Situación"), node0);
+					for (AdaptationTO adaptationTO : situationTO.getAdaptations()) {
+						TreeNode node000 = new DefaultTreeNode(new InfoTreeNode(adaptationTO.getName(), (String) adaptationTO.getData(), "Adaptación"), node00);
+					}
 
-		for (ServiceTO serviceTO : this.services) {
-			TreeNode node0 = new DefaultTreeNode(new InfoTreeNode(serviceTO.getServiceName() + "/" + serviceTO.getOperationName(), serviceTO.getUrl(), "Servicio"), this.root);
-			for (SituationTO situationTO : serviceTO.getSituations()) {
-				TreeNode node00 = new DefaultTreeNode(new InfoTreeNode(situationTO.getName(), situationTO.getDescription(), "Situación"), node0);
-				for (AdaptationTO adaptationTO : situationTO.getAdaptations()) {
-					TreeNode node000 = new DefaultTreeNode(new InfoTreeNode(adaptationTO.getName(), (String) adaptationTO.getData(), "Adaptación"), node00);
 				}
-
 			}
 		}
 

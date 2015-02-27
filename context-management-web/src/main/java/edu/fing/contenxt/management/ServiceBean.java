@@ -41,7 +41,7 @@ public class ServiceBean {
 		serv.setServiceName(this.serviceName);
 		serv.setUrl(this.serviceURL);
 		serv.setDescription(this.description);
-		Boolean result = (Boolean) RemoteInvokerUtils.invoke(RemoteInvokerUtils.ContextReasonerConfigService, "createService", serv, "192.168.0.101", "8080");
+		Boolean result = (Boolean) RemoteInvokerUtils.invoke(RemoteInvokerUtils.ContextReasonerConfigService, "createService", serv, "localhost", "8080");
 		if (result) {
 
 			String mensaje = "Servicio creado con éxito";

@@ -89,7 +89,7 @@ public class ItineraryBean {
 		ServiceTO serviceTO = new ServiceTO();
 		serviceTO.setId(this.selectedService);
 		itinerary.setService(serviceTO);
-		Boolean result = (Boolean) RemoteInvokerUtils.invoke(RemoteInvokerUtils.ContextReasonerConfigService, "createItinerary", itinerary, "192.168.0.101", "8080");
+		Boolean result = (Boolean) RemoteInvokerUtils.invoke(RemoteInvokerUtils.ContextReasonerConfigService, "createItinerary", itinerary, "localhost", "8080");
 		if (result) {
 
 			String mensaje = "Itinerario creado con éxito";
@@ -133,7 +133,7 @@ public class ItineraryBean {
 	}
 
 	public List<ServiceTO> getServiceList() {
-		List<ServiceTO> results = (List<ServiceTO>) RemoteInvokerUtils.invoke(RemoteInvokerUtils.ContextReasonerConfigService, "getServices", null, "192.168.0.101", "8080");
+		List<ServiceTO> results = (List<ServiceTO>) RemoteInvokerUtils.invoke(RemoteInvokerUtils.ContextReasonerConfigService, "getServices", null, "localhost", "8080");
 		this.serviceList = results;
 		return this.serviceList;
 	}
@@ -143,7 +143,7 @@ public class ItineraryBean {
 	}
 
 	public List<SituationTO> getSituationList() {
-		List<SituationTO> results = (List<SituationTO>) RemoteInvokerUtils.invoke(RemoteInvokerUtils.ContextReasonerConfigService, "getSituations", null, "192.168.0.101", "8080");
+		List<SituationTO> results = (List<SituationTO>) RemoteInvokerUtils.invoke(RemoteInvokerUtils.ContextReasonerConfigService, "getSituations", null, "localhost", "8080");
 		this.situationList = results;
 		return this.situationList;
 	}
