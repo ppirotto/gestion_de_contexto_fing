@@ -1,7 +1,8 @@
 package edu.fing.adaptation.gateway.model;
 
 import java.util.Date;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -26,7 +27,7 @@ public class Itinerary {
 	private String situation;
 	private int priority;
 	private Date expirationDate;
-	private List<ContextAwareAdaptation> adaptationDirective;
+	private Set<ContextAwareAdaptation> adaptationDirective = new HashSet<ContextAwareAdaptation>();
 
 	@Id
 	@GeneratedValue
@@ -45,7 +46,7 @@ public class Itinerary {
 		return service;
 	}
 
-	@Column(name = "OPERTAION")
+	@Column(name = "OPERATION")
 	public String getOperation() {
 		return operation;
 	}
@@ -68,7 +69,7 @@ public class Itinerary {
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "ITINERARY_ID", nullable = false)
-	public List<ContextAwareAdaptation> getAdaptationDirective() {
+	public Set<ContextAwareAdaptation> getAdaptationDirective() {
 		return adaptationDirective;
 	}
 
@@ -96,7 +97,7 @@ public class Itinerary {
 		this.expirationDate = expirationDate;
 	}
 
-	public void setAdaptationDirective(List<ContextAwareAdaptation> adaptationDirective) {
+	public void setAdaptationDirective(Set<ContextAwareAdaptation> adaptationDirective) {
 		this.adaptationDirective = adaptationDirective;
 	}
 

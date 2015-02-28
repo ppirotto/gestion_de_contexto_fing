@@ -14,6 +14,7 @@ public class ContextAwareAdaptation {
 	private Long id;
 	private String name;
 	private String uri;
+	private int order;
 	private String data;
 
 	@Id
@@ -33,10 +34,19 @@ public class ContextAwareAdaptation {
 		return uri;
 	}
 
+	@Column(name = "ADAPTATION_ORDER")
+	public int getOrder() {
+		return order;
+	}
+
 	@Lob
 	@Column(name = "DATA", columnDefinition = "MEDIUMTEXT")
 	public String getData() {
 		return data;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public void setName(String name) {
@@ -49,6 +59,10 @@ public class ContextAwareAdaptation {
 
 	public void setData(String data) {
 		this.data = data;
+	}
+
+	public void setOrder(int order) {
+		this.order = order;
 	}
 
 }

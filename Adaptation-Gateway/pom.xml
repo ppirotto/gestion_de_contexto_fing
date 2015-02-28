@@ -16,17 +16,11 @@
 			<artifactId>switchyard-api</artifactId>
 			<version>${switchyard.version}</version>
 		</dependency>
-<!-- 		<dependency> -->
-<!-- 			<groupId>org.switchyard</groupId> -->
-<!-- 			<artifactId>switchyard-transform</artifactId> -->
-<!-- 			<version>${switchyard.version}</version> -->
-<!-- 			<exclusions> -->
-<!-- 		      	<exclusion> -->
-<!-- 		          	<groupId>org.freemarker</groupId> -->
-<!-- 					<artifactId>freemarker</artifactId> -->
-<!-- 		        </exclusion> -->
-<!-- 		      </exclusions> -->
-<!-- 		</dependency> -->
+		<dependency>
+			<groupId>org.switchyard</groupId>
+			<artifactId>switchyard-transform</artifactId>
+			<version>${switchyard.version}</version>
+		</dependency>
 		<dependency>
 			<groupId>org.switchyard</groupId>
 			<artifactId>switchyard-validate</artifactId>

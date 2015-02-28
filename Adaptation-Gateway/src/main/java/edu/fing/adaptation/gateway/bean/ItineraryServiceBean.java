@@ -16,11 +16,12 @@ import edu.fing.commons.dto.ContextReasonerData;
 @Service(ItineraryService.class)
 public class ItineraryServiceBean implements ItineraryService {
 
+	private SessionFactory sessionFactory = HibernateUtils.getSessionFactory();
+
 	@Override
 	public void receiveAdaptations(List<ContextReasonerData> contextReasonerData) {
 
-		SessionFactory sessionFactory = HibernateUtils.getSessionFactory();
-		Session session = sessionFactory.openSession();
+		Session session = this.sessionFactory.openSession();
 		session.beginTransaction();
 
 		for (ContextReasonerData data : contextReasonerData) {
@@ -37,16 +38,21 @@ public class ItineraryServiceBean implements ItineraryService {
 				itinerary.getAdaptationDirective().clear();
 			}
 			itinerary.setExpirationDate(data.getExpirationDate());
+			session.save(itinerary);
 
 			for (AdaptationTO adaptationTO : data.getAdaptations()) {
 				ContextAwareAdaptation contextAwareAdaptation = new ContextAwareAdaptation();
 				contextAwareAdaptation.setName(adaptationTO.getName());
 				contextAwareAdaptation.setUri(adaptationTO.getUri());
-				contextAwareAdaptation.setData((String) adaptationTO.getData());
-				session.save(contextAwareAdaptation);
+				contextAwareAdaptation.setOrder(adaptationTO.getOrder());
+				if (adaptationTO.getData() instanceof Integer) {
+					contextAwareAdaptation.setData(Integer.toString((Integer) adaptationTO.getData()));
+				} else {
+					contextAwareAdaptation.setData((String) adaptationTO.getData());
+				}
 				itinerary.getAdaptationDirective().add(contextAwareAdaptation);
+				session.save(contextAwareAdaptation);
 			}
-			session.save(itinerary);
 		}
 		HibernateUtils.commit(session);
 
@@ -61,7 +67,7 @@ public class ItineraryServiceBean implements ItineraryService {
 		queryString.append("and itinerary.service = :service ");
 		queryString.append("and itinerary.operation = :operation ");
 		queryString.append("and itinerary.situation = :situation ");
-		queryString.append("and itinerary.priority = :priority;");
+		queryString.append("and itinerary.priority = :priority ");
 
 		Query query = session.createQuery(queryString.toString());
 		query.setParameter("user", contextReasonerData.getUser());

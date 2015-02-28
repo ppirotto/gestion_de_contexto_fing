@@ -42,6 +42,8 @@ public class SituationReceiverBean implements SituationReceiver {
 	@Reference
 	private AdaptationGatewayService adaptationGatewayService;
 
+	private SessionFactory sessionFactory = HibernateUtils.getSessionFactory();
+
 	@Override
 	public String receiveSituationFromCEP(/* SituationDetectedTO cepSituation */) {
 
@@ -52,8 +54,7 @@ public class SituationReceiverBean implements SituationReceiver {
 		contextualData.put("city", "Montevideo");
 		cepSituation.setContextualData(contextualData);
 
-		SessionFactory sessionFactory = HibernateUtils.getSessionFactory();
-		Session session = sessionFactory.openSession();
+		Session session = this.sessionFactory.openSession();
 
 		StringBuilder queryString = new StringBuilder();
 		queryString.append("Select distinct service ");
@@ -68,8 +69,6 @@ public class SituationReceiverBean implements SituationReceiver {
 		@SuppressWarnings("unchecked")
 		List<Service> servicesAffectedBySituation = query.list();
 
-		session.close();
-
 		List<ContextReasonerData> list = new ArrayList<ContextReasonerData>();
 
 		for (Service service : servicesAffectedBySituation) {
@@ -81,10 +80,10 @@ public class SituationReceiverBean implements SituationReceiver {
 			contextReasonerData.setOperation(service.getOperationName());
 			contextReasonerData.setServiceUrl(service.getUrl());
 
-			int priority = this.findPriorityBySituationAndService(cepSituation.getSituationName(), service.getId());
+			int priority = this.findPriorityBySituationAndService(cepSituation.getSituationName(), service.getId(), session);
 			contextReasonerData.setPriority(priority);
 
-			List<Adaptation> adaptationsBySituationAndService = this.findAdaptationsBySituationAndService(cepSituation.getSituationName(), service.getId());
+			List<Adaptation> adaptationsBySituationAndService = this.findAdaptationsBySituationAndService(cepSituation.getSituationName(), service.getId(), session);
 
 			Iterator<Adaptation> iterator = adaptationsBySituationAndService.iterator();
 			Situation situation = iterator.next().getSituation();
@@ -106,15 +105,14 @@ public class SituationReceiverBean implements SituationReceiver {
 			list.add(contextReasonerData);
 		}
 
+		session.close();
+
 		adaptationGatewayService.receiveAdaptations(list);
 
 		return "OK";
 	}
 
-	private List<Adaptation> findAdaptationsBySituationAndService(String situationName, Long serviceId) {
-
-		SessionFactory sessionFactory = HibernateUtils.getSessionFactory();
-		Session session = sessionFactory.openSession();
+	private List<Adaptation> findAdaptationsBySituationAndService(String situationName, Long serviceId, Session session) {
 
 		StringBuilder queryString = new StringBuilder();
 
@@ -131,15 +129,10 @@ public class SituationReceiverBean implements SituationReceiver {
 		@SuppressWarnings("unchecked")
 		List<Adaptation> adaptations = query.list();
 
-		session.close();
-
 		return adaptations;
 	}
 
-	private int findPriorityBySituationAndService(String situationName, Long serviceId) {
-
-		SessionFactory sessionFactory = HibernateUtils.getSessionFactory();
-		Session session = sessionFactory.openSession();
+	private int findPriorityBySituationAndService(String situationName, Long serviceId, Session session) {
 
 		StringBuilder queryString = new StringBuilder();
 
@@ -154,8 +147,6 @@ public class SituationReceiverBean implements SituationReceiver {
 		query.setParameter("serviceId", serviceId);
 
 		ServiceSituationPriority priority = (ServiceSituationPriority) query.uniqueResult();
-
-		session.close();
 
 		return priority.getPriority();
 
