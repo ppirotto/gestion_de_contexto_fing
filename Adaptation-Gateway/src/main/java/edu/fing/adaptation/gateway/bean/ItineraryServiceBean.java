@@ -1,6 +1,9 @@
 package edu.fing.adaptation.gateway.bean;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -12,6 +15,7 @@ import edu.fing.adaptation.gateway.model.Itinerary;
 import edu.fing.adaptation.gateway.util.HibernateUtils;
 import edu.fing.commons.dto.AdaptationTO;
 import edu.fing.commons.dto.ContextReasonerData;
+import edu.fing.commons.front.dto.ConfiguredItineraryTO;
 
 @Service(ItineraryService.class)
 public class ItineraryServiceBean implements ItineraryService {
@@ -20,6 +24,7 @@ public class ItineraryServiceBean implements ItineraryService {
 
 	@Override
 	public void receiveAdaptations(List<ContextReasonerData> contextReasonerData) {
+		this.getItineraries();
 
 		Session session = this.sessionFactory.openSession();
 		session.beginTransaction();
@@ -77,5 +82,46 @@ public class ItineraryServiceBean implements ItineraryService {
 		query.setParameter("priority", contextReasonerData.getPriority());
 
 		return (Itinerary) query.uniqueResult();
+	}
+
+	@Override
+	public List<ConfiguredItineraryTO> getItineraries() {
+
+		Session session = this.sessionFactory.openSession();
+
+		StringBuilder queryString = new StringBuilder();
+		queryString.append("Select distinct itinerary ");
+		queryString.append("FROM Itinerary itinerary ");
+		queryString.append("join fetch itinerary.adaptationDirective ");
+		Query query = session.createQuery(queryString.toString());
+
+		@SuppressWarnings("unchecked")
+		List<Itinerary> itineraries = query.list();
+
+		Map<Long, ConfiguredItineraryTO> configuredItineraryTOs = new HashMap<Long, ConfiguredItineraryTO>();
+		for (Itinerary itinerary : itineraries) {
+			if (!configuredItineraryTOs.containsKey(itinerary.getId())) {
+
+				ConfiguredItineraryTO itineraryTO = new ConfiguredItineraryTO();
+				itineraryTO.setUser(itinerary.getUser());
+				itineraryTO.setService(itinerary.getService());
+				itineraryTO.setOperation(itinerary.getOperation());
+				itineraryTO.setSituation(itinerary.getSituation());
+				itineraryTO.setPriority(itinerary.getPriority());
+				itineraryTO.setExpirationDate(itinerary.getExpirationDate());
+
+				List<AdaptationTO> adaptationDirective = new ArrayList<AdaptationTO>();
+				for (ContextAwareAdaptation contextAwareAdaptation : itinerary.getAdaptationDirective()) {
+					AdaptationTO adaptationTO = new AdaptationTO();
+					adaptationTO.setName(contextAwareAdaptation.getName());
+					adaptationTO.setOrder(contextAwareAdaptation.getOrder());
+					adaptationTO.setData(contextAwareAdaptation.getData());
+					adaptationDirective.add(adaptationTO);
+				}
+				itineraryTO.setAdaptationDirective(adaptationDirective);
+				configuredItineraryTOs.put(itinerary.getId(), itineraryTO);
+			}
+		}
+		return new ArrayList<ConfiguredItineraryTO>(configuredItineraryTOs.values());
 	}
 }
