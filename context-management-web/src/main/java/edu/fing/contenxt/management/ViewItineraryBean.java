@@ -1,77 +1,57 @@
 package edu.fing.contenxt.management;
 
-import javax.faces.application.FacesMessage;
+import java.io.Serializable;
+import java.util.List;
+
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.FacesContext;
 
-import edu.fing.commons.front.dto.SituationTO;
+import edu.fing.commons.front.dto.ConfiguredItineraryTO;
 
 @ManagedBean
 @ViewScoped
-public class ViewItineraryBean {
+public class ViewItineraryBean implements Serializable {
 
-	private String description;
-	private String name;
-	private long duration;
+	private static final long serialVersionUID = 1L;
+
+	private ConfiguredItineraryTO selectedItinerary;
+
+	private List<ConfiguredItineraryTO> itineraryList = (List<ConfiguredItineraryTO>) RemoteInvokerUtils.invoke(RemoteInvokerUtils.AdaptationGatewayConfigService, "getItineraries", null,
+			"192.168.0.103", "8080");
+
+	private List<ConfiguredItineraryTO> filteredItineraryList;
 
 	@ManagedProperty(value = "#{sessionBean}")
 	private SessionBean session;
 
-	public String crearSituacion() {
-		System.out.println("Crear situación");
-
-		SituationTO sit = new SituationTO();
-		sit.setName(this.name);
-		sit.setDescription(this.description);
-		sit.setMinuteDuration(this.duration);
-
-		Boolean result = (Boolean) RemoteInvokerUtils.invoke(RemoteInvokerUtils.ContextReasonerConfigService, "createSituation", sit, "localhost", "8080");
-		if (result) {
-			String mensaje = "Servicio creado con éxito";
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(null, mensaje));
-			// servicio de context reasoner
-			// (url servicio, situación, lista de adaptaciones con su data)
-
-		}
-		return "inicio";
+	public List<ConfiguredItineraryTO> getFilteredItineraryList() {
+		return this.filteredItineraryList;
 	}
 
-	public String getDescripcion() {
-		return this.getDescription();
+	public List<ConfiguredItineraryTO> getItineraryList() {
+		return this.itineraryList;
 	}
 
-	public String getDescription() {
-		return this.description;
-	}
+	public ConfiguredItineraryTO getSelectedItinerary() {
 
-	public long getDuration() {
-		return this.duration;
-	}
-
-	public String getName() {
-		return this.name;
+		return this.selectedItinerary;
 	}
 
 	public SessionBean getSession() {
 		return this.session;
 	}
 
-	public void setDescripcion(String descripcion) {
-		this.setDescription(descripcion);
+	public void setFilteredItineraryList(List<ConfiguredItineraryTO> filteredItineraryList) {
+		this.filteredItineraryList = filteredItineraryList;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
+	public void setItineraryList(List<ConfiguredItineraryTO> itineraryList) {
+		this.itineraryList = itineraryList;
 	}
 
-	public void setDuration(long duration) {
-		this.duration = duration;
-	}
-
-	public void setName(String name) {
-		this.name = name;
+	public void setSelectedItinerary(ConfiguredItineraryTO selectedItinerary) {
+		this.selectedItinerary = selectedItinerary;
 	}
 
 	public void setSession(SessionBean session) {

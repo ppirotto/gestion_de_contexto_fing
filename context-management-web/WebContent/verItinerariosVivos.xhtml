@@ -15,39 +15,78 @@
 			<h:outputText value="Ver Itinerarios" />
 		</h1>
 
-		<h:form>
-			<p:dataTable var="car" value="#{tableBean.carsSmall}"
-				emptyMessage="No cars found with given criteria">
+		<h:form id="form">
+			<p:dataTable var="itineray"
+				value="#{viewItineraryBean.itineraryList}" style="width:80%;"
+				widgetVar="itinerayTable" emptyMessage="No hay itinerario"
+				filteredValue="#{viewItineraryBean.filteredItineraryList}">
 
 				<f:facet name="header">
 					<p:outputPanel>
-						<h:outputText value="Search all fields:" />
-						<p:inputText id="globalFilter" onkeyup="carsTable.filter()"
-							style="width:150px" />
+						<h:outputText value="Buscar por todos los campos:" />
+						<p:inputText id="globalFilter"
+							onkeyup="PF('itinerayTable').filter()" style="width:150px"
+							placeholder="Escriba aquí" />
 					</p:outputPanel>
 				</f:facet>
-
-				<p:column filterBy="#{car.model}" headerText="Model"
-					footerText="contains" filterMatchMode="contains">
-					<h:outputText value="#{car.model}" />
+				<p:column filterBy="#{itineray.priority}" headerText="Prioridad"
+					filterMatchMode="contains">
+					<h:outputText value="#{itineray.priority}" />
+				</p:column>
+				<p:column filterBy="#{itineray.service}" headerText="Servicio"
+					filterMatchMode="contains">
+					<h:outputText value="#{itineray.service}" />
 				</p:column>
 
-				<p:column filterBy="#{car.year}" headerText="Year"
-					footerText="startsWith">
-					<h:outputText value="#{car.year}" />
+				<p:column filterBy="#{itineray.situation}" headerText="Situación"
+					filterMatchMode="contains">
+					<h:outputText value="#{itineray.situation}" />
 				</p:column>
 
-				<p:column filterBy="#{car.manufacturer}" headerText="Manufacturer"
-					footerText="exact" filterOptions="#{tableBean.manufacturerOptions}"
-					filterMatchMode="exact">
-					<h:outputText value="#{car.manufacturer}" />
+				<p:column filterBy="#{itineray.user}" headerText="Usuario"
+					filterMatchMode="contains">
+					<h:outputText value="#{itineray.user}" />
 				</p:column>
 
-				<p:column filterBy="#{car.color}" headerText="Color"
-					footerText="endsWith" filterMatchMode="endsWith">
-					<h:outputText value="#{car.color}" />
+				<p:column filterBy="#{itineray.situation}" headerText="Adaptaciones"
+					filterMatchMode="contains">
+					<h:outputText value="#{itineray.situation}" />
 				</p:column>
+
+				<p:column style="width:32px;text-align: center">
+					<p:commandButton update=":form:itDetail"
+						oncomplete="PF('itDialog').show()" icon="ui-icon-search"
+						title="View">
+						<f:setPropertyActionListener value="#{itineray}"
+							target="#{viewItineraryBean.selectedItinerary}" />
+					</p:commandButton>
+				</p:column>
+
+
 			</p:dataTable>
+
+			<p:dialog header="Directiva de adaptación" widgetVar="itDialog" modal="true" width="60%"
+				showEffect="fade" appendTo="@(body)" hideEffect="fade"
+				resizable="false">
+				<p:outputPanel id="itDetail" style="text-align:center;">
+					<p:panelGrid columns="1"
+						rendered="#{not empty viewItineraryBean.selectedItinerary}">
+
+						<p:dataTable var="adapt"
+							value="#{viewItineraryBean.selectedItinerary.adaptationDirective}">
+							<p:column headerText="Nombre" width="auto">
+								<h:outputText value="#{adapt.name}" />
+							</p:column>
+
+							<p:column headerText="Data" >
+								<h:outputText value="#{adapt.data}" />
+							</p:column>
+
+						</p:dataTable>
+
+					</p:panelGrid>
+				</p:outputPanel>
+			</p:dialog>
 		</h:form>
 	</ui:define>
 	<ui:define name="menuIzq">

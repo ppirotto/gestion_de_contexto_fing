@@ -9,7 +9,8 @@ import org.switchyard.remote.http.HttpInvoker;
 public class RemoteInvokerUtils {
 
 	public static final QName DroolsConfigService = new QName("urn:edu.fing.switchyard:CEP-Engine:1.0", "DroolsConfigService");
-	public static final QName ContextReasonerConfigService = new QName("urn:edu.fing.switchyard:context-reasoner:1.0", "ConfigurationService");
+	public static final QName ContextReasonerConfigService = new QName("urn:edu.fing.context.management:context-reasoner:1.0", "ConfigurationService");
+	public static final QName AdaptationGatewayConfigService = new QName("urn:edu.fing.context.management:adaptation-gateway:1.0", "ItineraryService");
 
 	public static Object invoke(QName service, String operationName, Object msg) {
 

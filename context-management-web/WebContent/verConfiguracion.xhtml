@@ -38,8 +38,8 @@
 				</p:column>
 			</p:treeTable>
 
-			<p:dialog id="dialog" header="Detalle" showEffect="fade" position="center" dynamic="true" style="width:50% important!"
-				widgetVar="documentDialog" modal="false" resizable="false" draggable="false">
+			<p:dialog id="dialog" header="Detalle" showEffect="fade" position="center" appendTo="@(body)" dynamic="true" style="width:50% important!"
+				widgetVar="documentDialog" modal="true" resizable="false" draggable="false">
 				<p:outputPanel id="documentPanel">
 					<p:panelGrid columns="2" columnClasses="label,value"
 						rendered="#{not empty configurationBean.selectedNode}">
