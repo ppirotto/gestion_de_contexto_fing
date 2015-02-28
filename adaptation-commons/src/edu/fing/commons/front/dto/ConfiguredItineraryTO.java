@@ -15,6 +15,7 @@ public class ConfiguredItineraryTO {
 	private int priority;
 	private Date expirationDate;
 	private List<AdaptationTO> adaptationDirective = new ArrayList<AdaptationTO>();
+	private String adaptationNames;
 
 	public List<AdaptationTO> getAdaptationDirective() {
 		return this.adaptationDirective;
@@ -70,6 +71,14 @@ public class ConfiguredItineraryTO {
 
 	public void setUser(String user) {
 		this.user = user;
+	}
+
+	public String getAdaptationNames() {
+		return adaptationNames;
+	}
+
+	public void setAdaptationNames(String adaptationNames) {
+		this.adaptationNames = adaptationNames;
 	}
 
 }

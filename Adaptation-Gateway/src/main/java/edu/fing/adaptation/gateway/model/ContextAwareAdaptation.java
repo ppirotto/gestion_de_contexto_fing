@@ -1,5 +1,7 @@
 package edu.fing.adaptation.gateway.model;
 
+import java.util.Comparator;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,6 +12,14 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "CONTEXT_AWARE_ADAPTATION")
 public class ContextAwareAdaptation {
+
+	public static final Comparator<ContextAwareAdaptation> ORDER_COMPARATOR = new Comparator<ContextAwareAdaptation>() {
+
+		@Override
+		public int compare(ContextAwareAdaptation adap1, ContextAwareAdaptation adap2) {
+			return adap1.getOrder() - adap2.getOrder();
+		}
+	};
 
 	private Long id;
 	private String name;

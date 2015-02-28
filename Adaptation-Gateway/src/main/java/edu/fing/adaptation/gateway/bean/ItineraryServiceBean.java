@@ -1,10 +1,13 @@
 package edu.fing.adaptation.gateway.bean;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -111,13 +114,19 @@ public class ItineraryServiceBean implements ItineraryService {
 				itineraryTO.setExpirationDate(itinerary.getExpirationDate());
 
 				List<AdaptationTO> adaptationDirective = new ArrayList<AdaptationTO>();
-				for (ContextAwareAdaptation contextAwareAdaptation : itinerary.getAdaptationDirective()) {
+				Set<ContextAwareAdaptation> adaptationDirectiveSet = itinerary.getAdaptationDirective();
+				List<ContextAwareAdaptation> adaptationDirectiveList = new ArrayList<ContextAwareAdaptation>(adaptationDirectiveSet);
+				Collections.sort(adaptationDirectiveList, ContextAwareAdaptation.ORDER_COMPARATOR);
+				List<String> adaptationNames = new ArrayList<String>();
+				for (ContextAwareAdaptation contextAwareAdaptation : adaptationDirectiveList) {
+					adaptationNames.add(contextAwareAdaptation.getName());
 					AdaptationTO adaptationTO = new AdaptationTO();
 					adaptationTO.setName(contextAwareAdaptation.getName());
 					adaptationTO.setOrder(contextAwareAdaptation.getOrder());
 					adaptationTO.setData(contextAwareAdaptation.getData());
 					adaptationDirective.add(adaptationTO);
 				}
+				itineraryTO.setAdaptationNames(StringUtils.join(adaptationNames, " - "));
 				itineraryTO.setAdaptationDirective(adaptationDirective);
 				configuredItineraryTOs.put(itinerary.getId(), itineraryTO);
 			}
