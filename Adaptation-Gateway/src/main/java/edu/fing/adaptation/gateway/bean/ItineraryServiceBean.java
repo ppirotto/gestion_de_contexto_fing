@@ -43,11 +43,16 @@ public class ItineraryServiceBean implements ItineraryService {
 				itinerary.setPriority(data.getPriority());
 			} else {
 				// borro las adaptaciones anteriores
-				itinerary.getAdaptationDirective().clear();
+				Set<ContextAwareAdaptation> adaptationDirective = itinerary.getAdaptationDirective();
+				for (ContextAwareAdaptation contextAwareAdaptation : adaptationDirective) {
+					session.delete(contextAwareAdaptation);
+				}
+				adaptationDirective.clear();
 			}
 			itinerary.setExpirationDate(data.getExpirationDate());
 			session.save(itinerary);
-
+			session.getTransaction().commit();
+			session.beginTransaction();
 			for (AdaptationTO adaptationTO : data.getAdaptations()) {
 				ContextAwareAdaptation contextAwareAdaptation = new ContextAwareAdaptation();
 				contextAwareAdaptation.setName(adaptationTO.getName());

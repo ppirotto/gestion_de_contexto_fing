@@ -10,6 +10,7 @@ import javax.xml.xpath.XPathFactory;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 import org.apache.camel.builder.RouteBuilder;
+import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
 import edu.fing.commons.dto.AdaptedMessage;
@@ -31,10 +32,16 @@ public class Filter extends RouteBuilder {
 				XPathFactory xpathFactory = XPathFactory.newInstance();
 				XPath xpath = xpathFactory.newXPath();
 				XPathExpression expr = xpath.compile((String) adaptedMessage.getAdaptations().get(0).getData());
-				String message = (String) expr.evaluate(new InputSource(new StringReader(adaptedMessage.getMessage())), XPathConstants.STRING);
-				adaptedMessage.setMessage(message);
+				NodeList message = (NodeList) expr.evaluate(new InputSource(new StringReader(adaptedMessage.getMessage())), XPathConstants.NODESET);
+				for (int i = 0; i < message.getLength(); i++) {
+					System.out.println(message.item(i).getNodeValue());
+				}
+
+				// adaptedMessage.setMessage(message);
 				adaptedMessage.getAdaptations().remove(0);
+				exchange.getIn().setHeader("adaptedMessage", adaptedMessage);
+				// exchange.getIn().setBody(adaptedMessage.getMessage());
 			}
-		}).log("Filter body :${header[filter]} ${body}");
+		}).filter().xpath("/getAttractionsResponse/attraction[outside='false']").log("Filter body :${header[filter]} ${body}");
 	}
 }

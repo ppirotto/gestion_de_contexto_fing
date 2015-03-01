@@ -25,7 +25,9 @@ public class InvokerServiceBean implements InvokerService {
 
 	public AdaptedMessage submit(AdaptedMessage adaptedMessage) {
 
-		adaptedMessage.getAdaptations().remove(0);
+		if (adaptedMessage.getAdaptations() != null) {
+			adaptedMessage.getAdaptations().remove(0);
+		}
 		String message = adaptedMessage.getMessage();
 		String response = null;
 

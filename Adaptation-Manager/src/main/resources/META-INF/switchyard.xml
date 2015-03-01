@@ -17,6 +17,9 @@
       <sca:reference name="FilterService">
         <sca:interface.java interface="edu.fing.adaptation.manager.FilterService"/>
       </sca:reference>
+      <sca:reference name="EnrichService">
+        <sca:interface.java interface="edu.fing.adaptation.manager.EnrichService"/>
+      </sca:reference>
     </sca:component>
     <sca:component name="Delay">
       <camel:implementation.camel>
@@ -51,6 +54,14 @@
       </camel:implementation.camel>
       <sca:service name="FilterService">
         <sca:interface.java interface="edu.fing.adaptation.manager.FilterService"/>
+      </sca:service>
+    </sca:component>
+    <sca:component name="Enrich">
+      <camel:implementation.camel>
+        <camel:java class="edu.fing.adaptation.manager.Enrich"/>
+      </camel:implementation.camel>
+      <sca:service name="EnrichService">
+        <sca:interface.java interface="edu.fing.adaptation.manager.EnrichService"/>
       </sca:service>
     </sca:component>
   </sca:composite>

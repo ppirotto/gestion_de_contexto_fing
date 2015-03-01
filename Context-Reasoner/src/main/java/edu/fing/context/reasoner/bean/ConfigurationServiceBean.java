@@ -24,11 +24,12 @@ import edu.fing.context.reasoner.util.HibernateUtils;
 @org.switchyard.component.bean.Service(ConfigurationService.class)
 public class ConfigurationServiceBean implements ConfigurationService {
 
+	private SessionFactory sessionFactory = HibernateUtils.getSessionFactory();
+
 	@Override
 	public List<ServiceTO> getServicesWithSituationsAndAdaptations() {
 
-		SessionFactory sessionFactory = HibernateUtils.getSessionFactory();
-		Session session = sessionFactory.openSession();
+		Session session = this.sessionFactory.openSession();
 
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append("SELECT ser ");
@@ -69,8 +70,7 @@ public class ConfigurationServiceBean implements ConfigurationService {
 	@Override
 	public List<ServiceTO> getServices() {
 
-		SessionFactory sessionFactory = HibernateUtils.getSessionFactory();
-		Session session = sessionFactory.openSession();
+		Session session = this.sessionFactory.openSession();
 		session.beginTransaction();
 
 		StringBuilder queryString = new StringBuilder();
@@ -95,8 +95,7 @@ public class ConfigurationServiceBean implements ConfigurationService {
 	@Override
 	public List<SituationTO> getSituations() {
 
-		SessionFactory sessionFactory = HibernateUtils.getSessionFactory();
-		Session session = sessionFactory.openSession();
+		Session session = this.sessionFactory.openSession();
 
 		StringBuilder queryString = new StringBuilder();
 		queryString.append("SELECT s ");
@@ -128,8 +127,7 @@ public class ConfigurationServiceBean implements ConfigurationService {
 		situation.setDescription(situationTO.getDescription());
 		situation.setMinuteDuration(situationTO.getMinuteDuration());
 
-		SessionFactory sessionFactory = HibernateUtils.getSessionFactory();
-		Session session = sessionFactory.openSession();
+		Session session = this.sessionFactory.openSession();
 		session.beginTransaction();
 
 		session.save(situation);
@@ -140,17 +138,18 @@ public class ConfigurationServiceBean implements ConfigurationService {
 	@Override
 	public Boolean createService(ServiceTO serviceTO) {
 
-		Service service = new Service();
-		service.setServiceName(serviceTO.getServiceName());
-		service.setOperationName(serviceTO.getOperationName());
-		service.setDescription(serviceTO.getDescription());
-		service.setUrl(serviceTO.getUrl());
-
-		SessionFactory sessionFactory = HibernateUtils.getSessionFactory();
-		Session session = sessionFactory.openSession();
+		Session session = this.sessionFactory.openSession();
 		session.beginTransaction();
 
-		session.save(service);
+		List<String> operationNames = serviceTO.getOperationNames();
+		for (String operationName : operationNames) {
+			Service service = new Service();
+			service.setServiceName(serviceTO.getServiceName());
+			service.setOperationName(operationName);
+			service.setDescription(serviceTO.getDescription());
+			service.setUrl(serviceTO.getUrl());
+			session.save(service);
+		}
 
 		return HibernateUtils.commit(session);
 	}
@@ -158,8 +157,7 @@ public class ConfigurationServiceBean implements ConfigurationService {
 	@Override
 	public Boolean createItinerary(ItineraryTO itineraryTO) {
 
-		SessionFactory sessionFactory = HibernateUtils.getSessionFactory();
-		Session session = sessionFactory.openSession();
+		Session session = this.sessionFactory.openSession();
 		session.beginTransaction();
 
 		Service service = this.findServiceById(itineraryTO.getService().getId(), session);
