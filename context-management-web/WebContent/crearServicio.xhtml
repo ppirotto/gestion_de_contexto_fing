@@ -38,9 +38,9 @@
 
 
 				</p:panelGrid>
-				<p:commandButton value="Cargar Operaciones"
+				<p:commandButton value="Cargar Operaciones del Servicio"
 					actionListener="#{serviceBean.getOperationsForService()}"
-					update="operaciones" style="margin-top: 30px;" />
+					update="operaciones" style="margin-top: 5px;" />
 			</h:panelGrid>
 
 			<p:spacer height="20" />
@@ -49,10 +49,10 @@
 					<b>Seleccione operación</b>
 				</p:outputLabel>
 				<p:dataTable id="operaciones" var="op" style="width:380px"
-					value="#{serviceBean.operations}"
-					selection="#{serviceBean.selectedOperation}" rowKey="#{op}">
+				 value="#{serviceBean.operations}"
+					selection="#{serviceBean.selectedOperations}" rowKey="#{op}">
 
-					<p:column selectionMode="single"
+					<p:column selectionMode="multiple" 
 						style="width:16px;text-align:center" />
 					<p:column headerText="Nombre">
 						<h:outputText value="#{op}" />

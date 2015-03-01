@@ -1,5 +1,6 @@
 package edu.fing.contenxt.management;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +19,7 @@ import edu.fing.commons.front.dto.ServiceTO;
 
 @ManagedBean
 @ViewScoped
-public class ServiceBean {
+public class ServiceBean implements Serializable {
 
 	private String description;
 
@@ -41,6 +42,9 @@ public class ServiceBean {
 		serv.setServiceName(this.serviceName);
 		serv.setUrl(this.serviceURL);
 		serv.setDescription(this.description);
+		// llamar servicio para crear virtual service
+
+		// //////////////////
 		Boolean result = (Boolean) RemoteInvokerUtils.invoke(RemoteInvokerUtils.ContextReasonerConfigService, "createService", serv, "localhost", "8080");
 		if (result) {
 
