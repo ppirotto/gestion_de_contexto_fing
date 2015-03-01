@@ -16,8 +16,8 @@
 		</h1>
 
 		<h:form id="form">
-			<p:dataTable var="itineray"
-				value="#{viewItineraryBean.itineraryList}" style="width:80%;"
+			<p:dataTable var="itineray" 
+				value="#{viewItineraryBean.itineraryList}" style="width:90%;"
 				widgetVar="itinerayTable" emptyMessage="No hay itinerario"
 				filteredValue="#{viewItineraryBean.filteredItineraryList}">
 
@@ -29,13 +29,13 @@
 							placeholder="Escriba aquí" />
 					</p:outputPanel>
 				</f:facet>
-				<p:column filterBy="#{itineray.priority}" headerText="Prioridad"
+				<p:column filterBy="#{itineray.priority}" headerText="Prioridad" width="90"
 					filterMatchMode="contains">
 					<h:outputText value="#{itineray.priority}" />
 				</p:column>
-				<p:column filterBy="#{itineray.service}" headerText="Servicio"
+				<p:column filterBy="#{itineray.service}/#{itineray.operation}" headerText="Servicio/Operación" width="250"
 					filterMatchMode="contains">
-					<h:outputText value="#{itineray.service}" />
+					<h:outputText value="#{itineray.service}/#{itineray.operation}" />
 				</p:column>
 
 				<p:column filterBy="#{itineray.situation}" headerText="Situación"

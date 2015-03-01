@@ -10,7 +10,7 @@
 
 	<ui:define name="title">Crear Servicio</ui:define>
 	<ui:define name="body">
-	<p:messages autoUpdate="true" id="messagesGeneral" />
+		<p:messages autoUpdate="true" id="messagesGeneral" />
 		<h1>
 			<h:outputText value="Crear Servicio" />
 		</h1>
@@ -21,41 +21,48 @@
 					<p:outputLabel>
 						<b>Nombre del servicio</b>
 					</p:outputLabel>
-					<p:inputText size="50" value="#{serviceBean.serviceName}"  required="true" requiredMessage="Ingrese nombre"/>
+					<p:inputText size="50" value="#{serviceBean.serviceName}"
+						required="true" requiredMessage="Ingrese nombre" />
 					<p:outputLabel>
 						<b>Url del servicio</b>
 					</p:outputLabel>
-					<p:inputText size="50" value="#{serviceBean.serviceURL}" required="true" requiredMessage="Ingrese URL"/>
+					<p:inputText size="50" value="#{serviceBean.serviceURL}"
+						required="true" requiredMessage="Ingrese URL" />
 
 
 					<p:outputLabel>
-						<b>Seleccione operación</b>
-					</p:outputLabel>
-					<p:dataTable id="operaciones" var="op" style="width:380px" 
-						value="#{serviceBean.operations}"
-						selection="#{serviceBean.selectedOperation}" rowKey="#{op}" >
-
-						<p:column selectionMode="single"
-							style="width:16px;text-align:center" />
-						<p:column headerText="Nombre">
-							<h:outputText value="#{op}" />
-						</p:column>
-
-					</p:dataTable>
-						<p:outputLabel>
 						<b>Servicio virtual</b>
 					</p:outputLabel>
-					<p:inputText size="50" value="#{serviceBean.virtualService}" required="true" requiredMessage="Ingrese Servicio Virtual" />
-					
+					<p:inputText size="50" value="#{serviceBean.virtualService}"
+						required="true" requiredMessage="Ingrese Servicio Virtual" />
+
 
 				</p:panelGrid>
 				<p:commandButton value="Cargar Operaciones"
 					actionListener="#{serviceBean.getOperationsForService()}"
 					update="operaciones" style="margin-top: 30px;" />
 			</h:panelGrid>
-			<p:growl id="grwol" life="2000"/>
+
+			<p:spacer height="20" />
+			<p:panelGrid columns="2">
+				<p:outputLabel>
+					<b>Seleccione operación</b>
+				</p:outputLabel>
+				<p:dataTable id="operaciones" var="op" style="width:380px"
+					value="#{serviceBean.operations}"
+					selection="#{serviceBean.selectedOperation}" rowKey="#{op}">
+
+					<p:column selectionMode="single"
+						style="width:16px;text-align:center" />
+					<p:column headerText="Nombre">
+						<h:outputText value="#{op}" />
+					</p:column>
+
+				</p:dataTable>
+			</p:panelGrid>
+			<p:growl id="grwol" life="2000" />
 			<p:commandButton value="Crear Servicio"
-				action="#{serviceBean.crearServicio()}" 
+				action="#{serviceBean.crearServicio()}"
 				styleClass="ui-priority-primary " style="margin-top: 10px;" />
 		</h:form>
 	</ui:define>

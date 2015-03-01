@@ -23,7 +23,7 @@ public class ServiceBean {
 	private String description;
 
 	private List<String> operations = new ArrayList<String>();
-	private String selectedOperation;
+	private List<String> selectedOperations;
 
 	private List<String> situationList;
 	private String serviceName;
@@ -37,7 +37,7 @@ public class ServiceBean {
 		System.out.println("Crear servicio");
 
 		ServiceTO serv = new ServiceTO();
-		serv.setOperationName(this.selectedOperation);
+		serv.setOperationNames(this.selectedOperations);
 		serv.setServiceName(this.serviceName);
 		serv.setUrl(this.serviceURL);
 		serv.setDescription(this.description);
@@ -87,8 +87,8 @@ public class ServiceBean {
 		// FacesContext.getCurrentInstance().addMessage("growl2", message);
 	}
 
-	public String getSelectedOperation() {
-		return this.selectedOperation;
+	public List<String> getSelectedOperations() {
+		return this.selectedOperations;
 	}
 
 	public String getServiceName() {
@@ -119,8 +119,8 @@ public class ServiceBean {
 		this.operations = operations;
 	}
 
-	public void setSelectedOperation(String selectedOperation) {
-		this.selectedOperation = selectedOperation;
+	public void setSelectedOperations(List<String> selectedOperations) {
+		this.selectedOperations = selectedOperations;
 	}
 
 	public void setServiceName(String serviceName) {
