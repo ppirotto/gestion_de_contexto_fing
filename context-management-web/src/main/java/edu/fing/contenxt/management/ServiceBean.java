@@ -1,6 +1,8 @@
 package edu.fing.contenxt.management;
 
 import java.io.Serializable;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +24,7 @@ import edu.fing.commons.front.dto.ServiceTO;
 public class ServiceBean implements Serializable {
 
 	private String description;
-
+	private String ip;
 	private List<String> operations = new ArrayList<String>();
 	private List<String> selectedOperations;
 
@@ -57,6 +59,21 @@ public class ServiceBean implements Serializable {
 
 	public String getDescription() {
 		return this.description;
+	}
+
+	public String getIp() {
+		if (this.ip == null) {
+			InetAddress IP = null;
+			try {
+				IP = InetAddress.getLocalHost();
+			} catch (UnknownHostException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			this.ip = IP.getHostAddress();
+		}
+		return this.ip;
 	}
 
 	public List<String> getOperations() {
@@ -117,6 +134,10 @@ public class ServiceBean implements Serializable {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public void setIp(String ip) {
+		this.ip = ip;
 	}
 
 	public void setOperations(List<String> operations) {
