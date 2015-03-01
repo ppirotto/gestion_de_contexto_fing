@@ -49,7 +49,7 @@ public class ServiceTO {
 	}
 
 	public void setOperationName(String operationName) {
-		this.operationName = operationName;
+		this.operationName = operationName.trim();
 	}
 
 	public void setOperationNames(List<String> operationNames) {
@@ -57,7 +57,7 @@ public class ServiceTO {
 	}
 
 	public void setServiceName(String serviceName) {
-		this.serviceName = serviceName;
+		this.serviceName = serviceName.trim();
 	}
 
 	public void setSituations(List<SituationTO> situations) {
@@ -65,7 +65,7 @@ public class ServiceTO {
 	}
 
 	public void setUrl(String url) {
-		this.url = url;
+		this.url = url.trim();
 	}
 
 }

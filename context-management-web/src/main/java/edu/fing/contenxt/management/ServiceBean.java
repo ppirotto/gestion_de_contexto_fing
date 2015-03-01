@@ -1,5 +1,6 @@
 package edu.fing.contenxt.management;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -18,6 +19,7 @@ import com.predic8.wsdl.Definitions;
 import com.predic8.wsdl.WSDLParser;
 
 import edu.fing.commons.front.dto.ServiceTO;
+import edu.fing.context.management.jar.creation.JarCreationService;
 
 @ManagedBean
 @ViewScoped
@@ -39,18 +41,31 @@ public class ServiceBean implements Serializable {
 	public String crearServicio() {
 		System.out.println("Crear servicio");
 
+		// llamar servicio para crear virtual service
+		VirtualServiceDto vS = new VirtualServiceDto();
+		vS.setServiceName(this.serviceName);
+		vS.setServiceURL(this.serviceURL);
+		vS.setVirtualService(this.virtualService);
+		
+		try {
+			JarCreationService.createVirtualService(vS);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
 		ServiceTO serv = new ServiceTO();
 		serv.setOperationNames(this.selectedOperations);
 		serv.setServiceName(this.serviceName);
 		serv.setUrl(this.serviceURL);
 		serv.setDescription(this.description);
-		// llamar servicio para crear virtual service
 
 		// //////////////////
 		Boolean result = (Boolean) RemoteInvokerUtils.invoke(RemoteInvokerUtils.ContextReasonerConfigService, "createService", serv, "localhost", "8080");
 		if (result) {
 
-			String mensaje = "Servicio creado con éxito";
+			String mensaje = "Servicio creado con exito";
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(null, mensaje));
 
 		}

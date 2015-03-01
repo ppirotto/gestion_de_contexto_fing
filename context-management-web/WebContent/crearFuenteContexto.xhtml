@@ -59,6 +59,11 @@
 				<p:inputText size="38" value="#{contextSourceBean.url}"
 					requiredMessage="Ingrese una URL" required="true" label="URL" />
 
+				<p:outputLabel>
+					<b>Cron</b>
+				</p:outputLabel>
+				<p:inputText size="38" value="#{contextSourceBean.cron}"
+					requiredMessage="Ingrese una cron" required="true" label="CRON" />
 			</p:panelGrid>
 			<p:growl id="growl2" life="2000" severity="s" />
 			<p:commandButton value="Crear Fuente de Contexto"
