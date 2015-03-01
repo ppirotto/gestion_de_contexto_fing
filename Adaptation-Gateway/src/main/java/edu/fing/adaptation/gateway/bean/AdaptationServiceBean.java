@@ -2,6 +2,7 @@ package edu.fing.adaptation.gateway.bean;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -11,6 +12,7 @@ import org.apache.commons.lang.StringUtils;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.switchyard.Context;
 import org.switchyard.component.bean.Reference;
 import org.switchyard.component.bean.Service;
 
@@ -27,6 +29,9 @@ public class AdaptationServiceBean implements AdaptationService {
 	@Reference
 	private AdaptationManager adaptationManager;
 
+	@Inject
+	private Context context;
+
 	private SessionFactory sessionFactory = HibernateUtils.getSessionFactory();
 
 	@Override
@@ -34,9 +39,12 @@ public class AdaptationServiceBean implements AdaptationService {
 
 		AdaptedMessage adaptedMessage = new AdaptedMessage();
 		adaptedMessage.setMessage(message);
+		String serviceName = this.context.getPropertyValue("serviceName");
+		String serviceUrl = this.context.getPropertyValue("serviceUrl");
+		adaptedMessage.setService(serviceUrl);
 
 		String itineraryUris = null;
-		Itinerary itinerary = this.findItineraryByUserAndService("Mati", "AttractionsService", "getAttractions");
+		Itinerary itinerary = this.findItineraryByUserAndService("Vane", serviceName, "getAttractions");
 		if (itinerary != null) {
 			ArrayList<AdaptationTO> adaptations = new ArrayList<AdaptationTO>();
 			Set<ContextAwareAdaptation> adaptationDirective = itinerary.getAdaptationDirective();
@@ -46,8 +54,8 @@ public class AdaptationServiceBean implements AdaptationService {
 			for (ContextAwareAdaptation contextAwareAdaptation : adaptationDirectiveList) {
 				adaptationUris.add(contextAwareAdaptation.getUri());
 				AdaptationTO adapt = new AdaptationTO();
-				adapt.setName(adapt.getName());
-				adapt.setData(adapt.getData());
+				adapt.setName(contextAwareAdaptation.getName());
+				adapt.setData(contextAwareAdaptation.getData());
 				adaptations.add(adapt);
 			}
 			itineraryUris = StringUtils.join(adaptationUris, ",");
@@ -56,10 +64,7 @@ public class AdaptationServiceBean implements AdaptationService {
 		} else {
 			itineraryUris = "switchyard://ExternalInvocationService";
 		}
-
 		adaptedMessage.setItinerary(itineraryUris);
-
-		adaptedMessage.setService("http://localhost:8080/attractions-provider/AttractionsService");
 
 		return this.adaptationManager.submit(adaptedMessage);
 	}
@@ -85,19 +90,21 @@ public class AdaptationServiceBean implements AdaptationService {
 		if (itineraries != null) {
 			int maxPriority = Integer.MAX_VALUE;
 			for (Itinerary itinerary : itineraries) {
-				int priority = itinerary.getPriority();
-				if (priority < maxPriority) {
-					maxPriority = priority;
-					itineraryMaxPriority = itinerary;
+				// Sino esta vencido el itinerario
+				if (itinerary.getExpirationDate().after(new Date())) {
+					int priority = itinerary.getPriority();
+					if (priority < maxPriority) {
+						maxPriority = priority;
+						itineraryMaxPriority = itinerary;
+					}
 				}
-
 			}
 		}
 		if (itineraryMaxPriority != null) {
 			StringBuilder queryStr = new StringBuilder();
 			queryStr.append("Select i ");
 			queryStr.append("from Itinerary i ");
-			queryStr.append("join fetch i.contextAwareAdaptation ");
+			queryStr.append("join fetch i.adaptationDirective ");
 			queryStr.append("WHERE i.id = :itineraryId ");
 
 			Query q = session.createQuery(queryStr.toString());

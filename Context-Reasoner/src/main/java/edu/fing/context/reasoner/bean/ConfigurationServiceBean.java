@@ -170,7 +170,11 @@ public class ConfigurationServiceBean implements ConfigurationService {
 			adaptation.setName(adaptationTO.getAdaptationType().name());
 			adaptation.setAdaptationOrder(adaptationTO.getOrder());
 			adaptation.setDescription(adaptationTO.getDescription());
-			adaptation.setData(this.getDataByType(adaptationTO.getData(), adaptationTO.getAdaptationType()));
+			if (AdaptationType.SERVICE_INVOCATION.equals(adaptationTO.getAdaptationType())) {
+				adaptation.setData(service.getUrl().getBytes());
+			} else {
+				adaptation.setData(this.getDataByType(adaptationTO.getData(), adaptationTO.getAdaptationType()));
+			}
 			adaptation.setService(service);
 			adaptation.setSituation(situation);
 			adaptation.setAdaptationReference(this.findAdaptationReferenceByAdaptationType(session, adaptationTO.getAdaptationType()));

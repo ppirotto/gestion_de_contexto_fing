@@ -2,8 +2,11 @@
 <routes xmlns="http://camel.apache.org/schema/spring">
     <route>
         <from uri="switchyard://InvokeService"/>
-        <setHeader headerName="service">
+        <setHeader headerName="serviceUrl">
             <simple>http://localhost:8080/attractions-provider/AttractionsService</simple>
+        </setHeader>
+        <setHeader headerName="serviceName">
+            <simple>AttractionsService</simple>
         </setHeader>
         <log message="Virtual Service - message received: ${body}"/>
         <to uri="switchyard://AdaptationGatewayService"/>
