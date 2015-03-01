@@ -48,11 +48,10 @@
 					<h:outputText value="#{itineray.user}" />
 				</p:column>
 
-				<p:column filterBy="#{itineray.situation}" headerText="Adaptaciones"
-					filterMatchMode="contains">
-					<h:outputText value="#{itineray.situation}" />
+				<p:column filterBy="#{itineray.adaptationNames}"
+					headerText="Adaptaciones" filterMatchMode="contains">
+					<h:outputText value="#{itineray.adaptationNames}" />
 				</p:column>
-
 				<p:column style="width:32px;text-align: center">
 					<p:commandButton update=":form:itDetail"
 						oncomplete="PF('itDialog').show()" icon="ui-icon-search"
@@ -65,21 +64,24 @@
 
 			</p:dataTable>
 
-			<p:dialog header="Directiva de adaptación" widgetVar="itDialog" modal="true" width="60%"
-				showEffect="fade" appendTo="@(body)" hideEffect="fade"
-				resizable="false">
+			<p:dialog header="Directiva de adaptación" widgetVar="itDialog"
+				modal="true" width="50%" showEffect="fade" appendTo="@(body)"
+				hideEffect="fade" resizable="false">
 				<p:outputPanel id="itDetail" style="text-align:center;">
 					<p:panelGrid columns="1"
 						rendered="#{not empty viewItineraryBean.selectedItinerary}">
 
 						<p:dataTable var="adapt"
 							value="#{viewItineraryBean.selectedItinerary.adaptationDirective}">
-							<p:column headerText="Nombre" width="auto">
+							<p:column headerText="Nombre" width="60">
 								<h:outputText value="#{adapt.name}" />
 							</p:column>
 
-							<p:column headerText="Data" >
-								<h:outputText value="#{adapt.data}" />
+							<p:column headerText="Data">
+								<pe:codeMirror id="codeMirror" mode="xml" readOnly="true"
+									smartIndent="true" theme="eclipse"
+									value="#{adapt.data}"
+									matchBrackets="true" lineWrapping="true" />
 							</p:column>
 
 						</p:dataTable>

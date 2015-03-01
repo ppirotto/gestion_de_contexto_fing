@@ -37,12 +37,13 @@
 					<p:inputText id="duration" size="16" value="#{situationBean.duration}" label="Duración">
 					
 					</p:inputText>
-					 <p:message for="duration" display="icon" />
+					
 
 				</p:panelGrid>
 		
 			</h:panelGrid>
-			<p:growl id="grwol" life="2000" />
+			
+			
 			<p:commandButton value="Crear Servicio"
 				action="#{situationBean.crearSituacion()}"
 				styleClass="ui-priority-primary " style="margin-top: 10px;" />
