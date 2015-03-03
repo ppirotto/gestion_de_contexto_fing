@@ -22,13 +22,17 @@ import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
 import org.switchyard.component.bean.Service;
 
+import com.sun.tools.internal.xjc.reader.dtd.bindinfo.BIUserConversion;
+
 import edu.fing.cep.engine.model.ActiveConfiguration;
 import edu.fing.cep.engine.model.Rule;
 import edu.fing.cep.engine.model.Version;
+import edu.fing.cep.engine.utils.DroolsCompilingException;
 import edu.fing.cep.engine.utils.DroolsUtils;
 import edu.fing.cep.engine.utils.HibernateUtils;
 import edu.fing.commons.dto.ContextualDataTO;
 import edu.fing.commons.front.dto.AvailableRulesTO;
+import edu.fing.commons.front.dto.CreateRulesVersionResponseTO;
 import edu.fing.commons.front.dto.RuleTO;
 import edu.fing.commons.front.dto.VersionTO;
 
@@ -41,6 +45,7 @@ public class DroolsManagerServiceBean implements DroolsManagerService {
 	private KieBaseConfiguration streamModeConfig;
 
 	private static ReentrantReadWriteLock  lock = new ReentrantReadWriteLock();
+	
 	@PostConstruct
 	void intializeDroolsContext() {
 		try {
@@ -136,20 +141,25 @@ public class DroolsManagerServiceBean implements DroolsManagerService {
 	}
 
 	@Override
-	public void deployVersion(String versionNumber) {
+	public CreateRulesVersionResponseTO deployVersion(String versionNumber) {
 		
 		Version desiredVersion = getVersion(versionNumber);
 		
 		ReleaseId newReleaseId = kServices.newReleaseId("edu.fing.cep.engine", "drools-context-rules", desiredVersion.getVersionNumber());
 
 		List<String> stringRules = getStringRules(desiredVersion);
-		KieModule kieModule = DroolsUtils.createAndDeployJar(kServices, newReleaseId, stringRules);
+		KieModule kieModule;
+		try {
+			kieModule = DroolsUtils.createAndDeployJar(kServices, newReleaseId, stringRules);
+		} catch (DroolsCompilingException e) {
+			return buildRulesVersionResponseTO(e);
+		}
 
 		kContainer = kServices.newKieContainer( kieModule.getReleaseId() );
 		KieBase kBase = kContainer.newKieBase(streamModeConfig);
 		
 		startSession(kieModule);
-		
+		return buildRulesVersionResponseTO(null);
 	}
 
 
@@ -267,12 +277,12 @@ public class DroolsManagerServiceBean implements DroolsManagerService {
 
 
 	@Override
-	public Boolean createNewVersion(VersionTO versionTO) {
+	public CreateRulesVersionResponseTO createNewVersion(VersionTO versionTO) {
 		SessionFactory sessionFactory = HibernateUtils.getSessionFactory();
 		Session session = sessionFactory.openSession();
 		session.beginTransaction();
-
-		
+		CreateRulesVersionResponseTO res = new CreateRulesVersionResponseTO();
+		res.setSuccess(true);
 		Query queryNewVersion = session.createSQLQuery("SELECT * FROM VERSION WHERE VERSION_NUMBER = :version ").addEntity(Version.class);
 		queryNewVersion.setParameter("version", versionTO.getVersionNumber());
 		
@@ -280,7 +290,12 @@ public class DroolsManagerServiceBean implements DroolsManagerService {
 		Version savedVersion = (Version) queryNewVersion.uniqueResult();
 		
 		if (savedVersion!=null){
-			return Boolean.FALSE;
+			res.setErrorCode("VERSION_ALREADY_EXISTS");
+			res.setSuccess(false);
+			res.setErrorMessage("The version with versionNumber = '"+versionTO.getVersionNumber()+"' already exists.");
+			return res;
+		} else if ((res = testDroolsCompiling(versionTO))!=null){
+			return res;
 		}
 		Version newVersion = this.mapToEntity(versionTO);
 		session.save(newVersion);
@@ -288,10 +303,42 @@ public class DroolsManagerServiceBean implements DroolsManagerService {
 		session.getTransaction().commit();
 		session.close();
 		
-		return Boolean.TRUE;
+		return res;
+	}
+
+	/**
+	 * Verifica compilacion de las reglas, retorna null si compilan correctamente
+	 * */
+	private CreateRulesVersionResponseTO testDroolsCompiling(VersionTO versionTO) {
+		try{
+			
+			Version versionToTest = this.mapToEntity(versionTO);
+			
+			ReleaseId newReleaseId = kServices.newReleaseId("edu.fing.cep.engine", "drools-context-rules", versionToTest.getVersionNumber());
+	
+			List<String> stringRules = getStringRules(versionToTest);
+			KieModule kieModule = DroolsUtils.createAndDeployJar(kServices, newReleaseId, stringRules);
+	
+		} catch(DroolsCompilingException e){
+			return buildRulesVersionResponseTO(e);
+		}
+		return null;
+		
 	}
 
 
+
+	private CreateRulesVersionResponseTO buildRulesVersionResponseTO(DroolsCompilingException e) {
+		CreateRulesVersionResponseTO res = new CreateRulesVersionResponseTO();
+		if (e==null){
+			res.setSuccess(true);
+		} else {
+			res.setErrorCode("COMPILING_ERROR");
+			res.setSuccess(false);
+			res.setErrorMessage(e.getMessage());
+		}
+		return res;
+	}
 
 	private Version mapToEntity(VersionTO versionTO) {
 		Version res = new Version();

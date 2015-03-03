@@ -9,6 +9,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
 import edu.fing.commons.front.dto.AvailableRulesTO;
+import edu.fing.commons.front.dto.CreateRulesVersionResponseTO;
 import edu.fing.commons.front.dto.RuleTO;
 import edu.fing.commons.front.dto.VersionTO;
 
@@ -17,15 +18,10 @@ import edu.fing.commons.front.dto.VersionTO;
 public class RulesBean {
 
 	private AvailableRulesTO res;
-
 	private VersionTO selectedVersion;
-
 	private RuleTO selectedRule;
-
 	private String activeVersion;
-
 	private String newVersionName;
-
 	private VersionTO versionToDeploy;
 
 	public RulesBean() {
@@ -79,14 +75,14 @@ public class RulesBean {
 		System.out.println("createVersion");
 		this.selectedVersion.setVersionNumber(this.newVersionName);
 		this.selectedVersion.setId(null);
-		Boolean success = (Boolean) RemoteInvokerUtils.invoke(RemoteInvokerUtils.DroolsConfigService, "createNewVersion", this.selectedVersion);
-		System.out.println(success);
+		CreateRulesVersionResponseTO response = (CreateRulesVersionResponseTO) RemoteInvokerUtils.invoke(RemoteInvokerUtils.DroolsConfigService, "createNewVersion", this.selectedVersion);
+		System.out.println("createNewVersion... responseCode: "+response.toString());
 	}
 
 	public void deployVersion() {
 		System.out.println("deployVersion");
-		Boolean success = (Boolean) RemoteInvokerUtils.invoke(RemoteInvokerUtils.DroolsConfigService, "deployVersion", this.versionToDeploy.getVersionNumber());
-		System.out.println(success);
+		CreateRulesVersionResponseTO response = (CreateRulesVersionResponseTO) RemoteInvokerUtils.invoke(RemoteInvokerUtils.DroolsConfigService, "deployVersion", this.versionToDeploy.getVersionNumber());
+		System.out.println("deployVersion... responseCode: "+response.toString());
 	}
 
 	public String getActiveVersion() {

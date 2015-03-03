@@ -21,9 +21,6 @@ public class RemoteInvokerUtils {
 	public static Object invoke(QName service, String operationName, Object msg, String ip, String port) {
 
 		Object response = null;
-		// String port =
-		// System.getProperty("org.switchyard.component.sca.client.port",
-		// "8080");
 		RemoteInvoker invoker = new HttpInvoker("http://" + ip + ":" + port + "/switchyard-remote");
 
 		// Create the request message

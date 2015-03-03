@@ -15,12 +15,12 @@ import org.kie.api.io.Resource;
 
 public class DroolsUtils {
 
-	public static KieModule createAndDeployJar(KieServices ks, ReleaseId releaseId, List<String> drls) {
+	public static KieModule createAndDeployJar(KieServices ks, ReleaseId releaseId, List<String> drls) throws DroolsCompilingException {
 		byte[] jar = createKJar(ks, releaseId, null, drls);
 		return deployJar(ks, jar);
 	}
 
-	public static byte[] createKJar(KieServices ks, ReleaseId releaseId, String pom, List<String> drls) {
+	public static byte[] createKJar(KieServices ks, ReleaseId releaseId, String pom, List<String> drls) throws DroolsCompilingException {
 		KieFileSystem kfs = ks.newKieFileSystem();
 		if (pom != null) {
 			kfs.write("pom.xml", pom);
@@ -34,10 +34,12 @@ public class DroolsUtils {
 		}
 		KieBuilder kb = ks.newKieBuilder(kfs).buildAll();
 		if (kb.getResults().hasMessages(org.kie.api.builder.Message.Level.ERROR)) {
+			String exceptionMessage = "";
 			for (org.kie.api.builder.Message result : kb.getResults().getMessages()) {
+				exceptionMessage+=result.getText()+"\n";
 				System.out.println(result.getText());
 			}
-			return null;
+			throw new DroolsCompilingException(exceptionMessage);
 		}
 		InternalKieModule kieModule = (InternalKieModule) ks.getRepository().getKieModule(releaseId);
 		byte[] jar = kieModule.getBytes();
