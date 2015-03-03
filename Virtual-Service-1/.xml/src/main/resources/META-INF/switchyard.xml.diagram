@@ -3,6 +3,7 @@
   <graphicsAlgorithm xsi:type="al:Rectangle" background="//@colors.1" foreground="//@colors.0" lineWidth="1" transparency="0.0" width="1000" height="1000"/>
   <link>
     <businessObjects href="../../../../../src/main/resources/META-INF/switchyard.xml#/"/>
+    <businessObjects href="../../../../../src/main/resources/META-INF/switchyard.xml#/"/>
   </link>
   <children xsi:type="pi:ContainerShape" visible="true" active="true">
     <properties key="sca-type" value="composite"/>

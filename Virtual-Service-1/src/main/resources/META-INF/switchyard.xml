@@ -15,7 +15,7 @@
     <sca:service name="VirtualService" promote="InvokeAG/InvokeService">
       <sy:interface.esb inputType="java.lang.String" outputType="java.lang.String"/>
       <soap:binding.soap name="soap1">
-        <soap:contextMapper soapHeadersType="VALUE"/>
+        <soap:contextMapper soapHeadersType="XML" class="edu.fing.virtual.service.SoapHeadersContextMapper"/>
         <soap:wsdl>http://localhost:8080/attractions-provider/AttractionsService?wsdl</soap:wsdl>
         <soap:contextPath>Virtual-Service-1</soap:contextPath>
       </soap:binding.soap>

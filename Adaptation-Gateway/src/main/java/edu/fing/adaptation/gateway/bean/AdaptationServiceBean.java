@@ -1,12 +1,21 @@
 package edu.fing.adaptation.gateway.bean;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.inject.Inject;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Query;
@@ -15,6 +24,10 @@ import org.hibernate.SessionFactory;
 import org.switchyard.Context;
 import org.switchyard.component.bean.Reference;
 import org.switchyard.component.bean.Service;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 import edu.fing.adaptation.gateway.model.ContextAwareAdaptation;
 import edu.fing.adaptation.gateway.model.Itinerary;
@@ -42,31 +55,90 @@ public class AdaptationServiceBean implements AdaptationService {
 		String serviceName = this.context.getPropertyValue("serviceName");
 		String serviceUrl = this.context.getPropertyValue("serviceUrl");
 		adaptedMessage.setService(serviceUrl);
-
+		String operationName = this.getOperationName(message);
+		String userName = this.getWSSecurityUsername();
 		String itineraryUris = null;
-		Itinerary itinerary = this.findItineraryByUserAndService("Vane", serviceName, "getAttractions");
-		if (itinerary != null) {
-			ArrayList<AdaptationTO> adaptations = new ArrayList<AdaptationTO>();
-			Set<ContextAwareAdaptation> adaptationDirective = itinerary.getAdaptationDirective();
-			List<ContextAwareAdaptation> adaptationDirectiveList = new ArrayList<ContextAwareAdaptation>(adaptationDirective);
-			Collections.sort(adaptationDirectiveList, ContextAwareAdaptation.ORDER_COMPARATOR);
-			List<String> adaptationUris = new ArrayList<String>();
-			for (ContextAwareAdaptation contextAwareAdaptation : adaptationDirectiveList) {
-				adaptationUris.add(contextAwareAdaptation.getUri());
-				AdaptationTO adapt = new AdaptationTO();
-				adapt.setName(contextAwareAdaptation.getName());
-				adapt.setData(contextAwareAdaptation.getData());
-				adaptations.add(adapt);
+		if (userName != null && operationName != null) {
+			Itinerary itinerary = this.findItineraryByUserAndService(userName, serviceName, operationName);
+			if (itinerary != null) {
+				ArrayList<AdaptationTO> adaptations = new ArrayList<AdaptationTO>();
+				Set<ContextAwareAdaptation> adaptationDirective = itinerary.getAdaptationDirective();
+				List<ContextAwareAdaptation> adaptationDirectiveList = new ArrayList<ContextAwareAdaptation>(adaptationDirective);
+				Collections.sort(adaptationDirectiveList, ContextAwareAdaptation.ORDER_COMPARATOR);
+				List<String> adaptationUris = new ArrayList<String>();
+				for (ContextAwareAdaptation contextAwareAdaptation : adaptationDirectiveList) {
+					adaptationUris.add(contextAwareAdaptation.getUri());
+					AdaptationTO adapt = new AdaptationTO();
+					adapt.setName(contextAwareAdaptation.getName());
+					adapt.setData(contextAwareAdaptation.getData());
+					adaptations.add(adapt);
+				}
+				itineraryUris = StringUtils.join(adaptationUris, ",");
+				adaptedMessage.setAdaptations(adaptations);
+			} else {
+				itineraryUris = "switchyard://ExternalInvocationService";
 			}
-			itineraryUris = StringUtils.join(adaptationUris, ",");
-			adaptedMessage.setAdaptations(adaptations);
-
 		} else {
 			itineraryUris = "switchyard://ExternalInvocationService";
 		}
 		adaptedMessage.setItinerary(itineraryUris);
 
 		return this.adaptationManager.submit(adaptedMessage);
+	}
+
+	public String getWSSecurityUsername() {
+
+		String securityHeader = this.context.getPropertyValue("wsse");
+		Pattern p = Pattern.compile("<wsse:Username>(\\w*?)</wsse:Username>");
+		Matcher m = p.matcher(securityHeader);
+
+		if (m.find()) {
+			return m.group(1);
+		}
+		return null;
+	}
+
+	private String getOperationName(String message) {
+		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+		try {
+			// Using factory get an instance of document builder
+			DocumentBuilder db = dbf.newDocumentBuilder();
+
+			// parse using builder to get DOM representation of the XML file
+			Document dom = db.parse(new ByteArrayInputStream(message.getBytes()));
+			return dom.getDocumentElement().getNodeName();
+
+		} catch (ParserConfigurationException pce) {
+			pce.printStackTrace();
+		} catch (SAXException se) {
+			se.printStackTrace();
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
+		}
+		return null;
+	}
+
+	public static Map<String, Object> createMap(Node node) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		NodeList nodeList = node.getChildNodes();
+		for (int i = 0; i < nodeList.getLength(); i++) {
+			Node currentNode = nodeList.item(i);
+			// if (currentNode.hasAttributes()) {
+			// for (int j = 0; j < currentNode.getAttributes().getLength(); j++)
+			// {
+			// Node item = currentNode.getAttributes().item(i);
+			// map.put(item.getNodeName(), item.getTextContent());
+			// }
+			// }
+			if (node.getFirstChild() != null && node.getFirstChild().getNodeType() == Node.ELEMENT_NODE) {
+				map.putAll(createMap(currentNode));
+			} else if (node.getFirstChild().getNodeType() == Node.TEXT_NODE && currentNode.getLocalName() != null) {
+				System.out.println(currentNode);
+				map.put(currentNode.getLocalName(), currentNode.getTextContent());
+
+			}
+		}
+		return map;
 	}
 
 	private Itinerary findItineraryByUserAndService(String user, String service, String operation) {
