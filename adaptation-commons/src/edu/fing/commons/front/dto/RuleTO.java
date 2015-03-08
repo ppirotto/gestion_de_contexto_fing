@@ -5,6 +5,7 @@ public class RuleTO {
 	private long id;
 	private String name;
 	private String rule;
+	
 	public long getId() {
 		return id;
 	}

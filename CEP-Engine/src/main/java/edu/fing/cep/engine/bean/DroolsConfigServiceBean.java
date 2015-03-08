@@ -17,11 +17,11 @@ public class DroolsConfigServiceBean implements DroolsConfigService {
 	private DroolsManagerService droolsManager;
 	
 	@Override
-	public Boolean deployVersion(String versionNumber) {
+	public Boolean deployVersion(VersionTO version) {
 		// TODO Auto-generated method stub
 		try {
-			droolsManager.deployVersion(versionNumber);
-			droolsManager.updateActiveVersion(versionNumber);
+			droolsManager.deployVersion(version);
+			droolsManager.updateActiveVersion(version.getVersionNumber());
 			return Boolean.TRUE;
 		} catch (Exception e){
 			return Boolean.FALSE;
@@ -46,7 +46,5 @@ public class DroolsConfigServiceBean implements DroolsConfigService {
 		// TODO Auto-generated method stub
 		return droolsManager.createNewVersion(version);
 	}
-	
-	
 
 }
