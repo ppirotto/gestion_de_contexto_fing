@@ -39,7 +39,7 @@ public class SituationBean {
 		SituationTO sit = new SituationTO();
 		sit.setName(this.name);
 		sit.setDescription(this.getDescription());
-		sit.setMinuteDuration(this.duration);
+		sit.setDuration(this.duration);
 
 		Boolean result = (Boolean) RemoteInvokerUtils.invoke(RemoteInvokerUtils.ContextReasonerConfigService, "createSituation", sit, ServiceIp.ContextReasonerIp);
 		if (result) {
