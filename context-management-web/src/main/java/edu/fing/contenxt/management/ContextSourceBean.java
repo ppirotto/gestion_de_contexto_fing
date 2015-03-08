@@ -8,6 +8,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
+import edu.fing.commons.front.dto.ContextSourceTO;
 import edu.fing.context.management.jar.creation.JarCreationService;
 
 @ManagedBean
@@ -28,7 +29,7 @@ public class ContextSourceBean {
 		String mensaje = "Fuente de contexto creada con �xito";
 		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(null, mensaje));
 
-		ContextSourceDto cS = new ContextSourceDto();
+		ContextSourceTO cS = new ContextSourceTO();
 		cS.setEventName(this.eventName);
 		cS.setModeConverter(this.modeConverter);
 		cS.setReceiveMode(this.receiveMode);
@@ -43,6 +44,10 @@ public class ContextSourceBean {
 		// servicio de context reasoner
 		// (url servicio, situaci�n, lista de adaptaciones con su data)
 		return "inicio";
+	}
+
+	public String getCron() {
+		return this.cron;
 	}
 
 	public String getEventName() {
@@ -65,6 +70,10 @@ public class ContextSourceBean {
 		return this.url;
 	}
 
+	public void setCron(String cron) {
+		this.cron = cron;
+	}
+
 	public void setEventName(String eventName) {
 		this.eventName = eventName;
 	}
@@ -83,14 +92,6 @@ public class ContextSourceBean {
 
 	public void setUrl(String url) {
 		this.url = url;
-	}
-
-	public String getCron() {
-		return cron;
-	}
-
-	public void setCron(String cron) {
-		this.cron = cron;
 	}
 
 }

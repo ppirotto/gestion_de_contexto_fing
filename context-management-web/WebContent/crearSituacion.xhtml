@@ -11,39 +11,78 @@
 	<ui:define name="title">Crear Situación</ui:define>
 	<ui:define name="body">
 		<p:messages autoUpdate="true" id="messagesGeneral" />
-		<h1>
+		<h2>
 			<h:outputText value="Crear Situacion" />
-		</h1>
+		</h2>
 
-		<h:form enctype="multipart/form-data">
+		<h:form>
 			<h:panelGrid columns="2">
 				<p:panelGrid columns="2">
 					<p:outputLabel>
 						<b>Nombre de la situación</b>
 					</p:outputLabel>
-					<p:inputText size="40" value="#{situationBean.name}" required="true" label="Nombre de la situación"/>
+					<p:inputText size="25" value="#{situationBean.name}"
+						required="true" label="Nombre de la situación" />
 					<p:outputLabel>
 						<b>Descripción</b>
 					</p:outputLabel>
-					<p:inputText size="40" value="#{situationBean.description}" required="true" label="Descripción" validatorMessage="Duración mayor a 0" > 
-					<f:validateDoubleRange minimum="1"/>  
-					</p:inputText>
-
-
+					<p:inputTextarea scrollHeight="2" autoResize="false"
+						style="width:225px" value="#{situationBean.description}"
+						required="true" validatorMessage="Falta descripción"
+						label="Descripción" />
 
 					<p:outputLabel>
-						<b>Duración en minutos</b>
+						<b>Duración (milisegundos)</b>
 					</p:outputLabel>
-					<p:inputText id="duration" size="16" value="#{situationBean.duration}" label="Duración">
-					
+					<p:inputText id="duration" size="16"
+						value="#{situationBean.duration}" label="Duración"
+						validatorMessage="Duración mayor a 0">
+						<f:validateDoubleRange minimum="1" />
 					</p:inputText>
-					
 
 				</p:panelGrid>
-		
+
 			</h:panelGrid>
-			
-			
+
+			<p:outputLabel>
+
+				<b>Input </b>
+
+			</p:outputLabel>
+
+
+			<h:panelGrid columns="2">
+				<h:panelGrid columns="2" cellpadding="4	">
+					<p:outputLabel>
+						<b>Fuente de contexto </b>
+					</p:outputLabel>
+					<p:selectOneMenu id="selectSituation" autoupdate="true"
+						required="true" requiredMessage="Seleccione fuente de conexto"
+						styleClass="span4" value="#{situationBean.selectedContextSource}"
+						effect="fade">
+						<f:selectItem itemLabel="Seleccione fuente de contexto"
+							itemValue="" />
+						<f:selectItems value="#{situationBean.contextSources}"
+							var="contSource" itemLabel="#{contSource}"
+							itemValue="#{contSource}" />
+					</p:selectOneMenu>
+				</h:panelGrid>
+				<p:dataTable id="dataTable" var="dat" style="width:380px"
+					value="#{situationBean.contextSources}"
+					selection="#{situationBean.selectedContextSource}" rowKey="#{dat}">
+					<f:facet name="header">
+            					ContextData
+       				</f:facet>
+					<p:column selectionMode="multiple"
+						style="width:16px;text-align:center" />
+					<p:column headerText="Nombre">
+						<h:outputText value="#{dat}" />
+					</p:column>
+
+				</p:dataTable>
+			</h:panelGrid>
+
+
 			<p:commandButton value="Crear Servicio"
 				action="#{situationBean.crearSituacion()}"
 				styleClass="ui-priority-primary " style="margin-top: 10px;" />
