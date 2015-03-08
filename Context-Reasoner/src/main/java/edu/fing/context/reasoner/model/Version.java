@@ -1,11 +1,14 @@
 package edu.fing.context.reasoner.model;
 
 import java.util.Date;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -17,6 +20,7 @@ public class Version {
 	private Long id;
 	private String versionNumber;
 	private Date creationDate;
+	private Set<RuleVersion> ruleVersions;
 
 	@Id
 	@GeneratedValue
@@ -36,6 +40,11 @@ public class Version {
 		return creationDate;
 	}
 
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "version")
+	public Set<RuleVersion> getRuleVersions() {
+		return ruleVersions;
+	}
+
 	public void setId(Long id) {
 		this.id = id;
 	}
@@ -46,6 +55,10 @@ public class Version {
 
 	public void setCreationDate(Date creationDate) {
 		this.creationDate = creationDate;
+	}
+
+	public void setRuleVersions(Set<RuleVersion> ruleVersions) {
+		this.ruleVersions = ruleVersions;
 	}
 
 }
