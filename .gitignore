@@ -9,3 +9,4 @@ org.eclipse.*
 pom.properties
 .classpath
 /target/classes/META-INF/*
+*.attach_pid*
