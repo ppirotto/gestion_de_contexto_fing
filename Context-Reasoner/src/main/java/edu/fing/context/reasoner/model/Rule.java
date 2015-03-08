@@ -2,11 +2,13 @@ package edu.fing.context.reasoner.model;
 
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -30,7 +32,8 @@ public class Rule {
 		return name;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "rule")
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "RULE_ID", nullable = false)
 	public Set<RuleVersion> getRuleVersions() {
 		return ruleVersions;
 	}

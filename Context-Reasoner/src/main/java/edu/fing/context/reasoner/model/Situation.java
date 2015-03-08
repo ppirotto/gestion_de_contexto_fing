@@ -57,19 +57,20 @@ public class Situation implements Serializable {
 		return adaptations;
 	}
 
-	@OneToOne(fetch = FetchType.LAZY, mappedBy = "situation")
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "RULE_ID", nullable = true)
 	public Rule getRule() {
 		return rule;
 	}
 
 	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "SITUATION_CONTEXT_DATUM", joinColumns = { @JoinColumn(name = "SITUATION_ID") }, inverseJoinColumns = { @JoinColumn(name = "INPUT_CONTEXT_DATUM_ID") })
+	@JoinTable(name = "SITUATION_INPUT_CONTEXT_DATUM", joinColumns = { @JoinColumn(name = "SITUATION_ID") }, inverseJoinColumns = { @JoinColumn(name = "CONTEXT_DATUM_ID") })
 	public Set<ContextDatum> getInputContextData() {
 		return inputContextData;
 	}
 
 	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "SITUATION_CONTEXT_DATUM", joinColumns = { @JoinColumn(name = "SITUATION_ID") }, inverseJoinColumns = { @JoinColumn(name = "OUTPUT_CONTEXT_DATUM_ID") })
+	@JoinTable(name = "SITUATION_OUTPUT_CONTEXT_DATUM", joinColumns = { @JoinColumn(name = "SITUATION_ID") }, inverseJoinColumns = { @JoinColumn(name = "_CONTEXT_DATUM_ID") })
 	public Set<ContextDatum> getOutputContextData() {
 		return outputContextData;
 	}

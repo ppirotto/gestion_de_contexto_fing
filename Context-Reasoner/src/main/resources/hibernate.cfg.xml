@@ -17,5 +17,11 @@
 		<mapping class="edu.fing.context.reasoner.model.Situation"/>
 		<mapping class="edu.fing.context.reasoner.model.ServiceSituationPriority"/>
 		<mapping class="edu.fing.context.reasoner.model.AdaptationReference"/>
+		<mapping class="edu.fing.context.reasoner.model.ActiveConfiguration"/>
+		<mapping class="edu.fing.context.reasoner.model.ContextDatum"/>
+		<mapping class="edu.fing.context.reasoner.model.ContextSource"/>
+		<mapping class="edu.fing.context.reasoner.model.Rule"/>
+		<mapping class="edu.fing.context.reasoner.model.RuleVersion"/>
+		<mapping class="edu.fing.context.reasoner.model.Version"/>
     </session-factory>
 </hibernate-configuration>
