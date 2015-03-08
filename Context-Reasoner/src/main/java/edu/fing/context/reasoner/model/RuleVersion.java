@@ -16,6 +16,7 @@ public class RuleVersion {
 	private Long id;
 	private String drl;
 	private Version version;
+	private Rule rule;
 
 	@Id
 	@GeneratedValue
@@ -35,6 +36,12 @@ public class RuleVersion {
 		return version;
 	}
 
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "RULE_ID", nullable = false)
+	public Rule getRule() {
+		return rule;
+	}
+
 	public void setId(Long id) {
 		this.id = id;
 	}
@@ -45,5 +52,9 @@ public class RuleVersion {
 
 	public void setVersion(Version version) {
 		this.version = version;
+	}
+
+	public void setRule(Rule rule) {
+		this.rule = rule;
 	}
 }
