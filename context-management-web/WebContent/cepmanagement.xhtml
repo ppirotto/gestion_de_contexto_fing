@@ -9,6 +9,7 @@
 
 	<ui:define name="title">Manejo de CEP</ui:define>
 	<ui:define name="body">
+
 		<p:layout>
 			<p:layoutUnit position="north" size="55" style="border: 0px;">
 				<h:form>
@@ -46,6 +47,8 @@
 				</h:form>
 			</p:layoutUnit>
 			<p:layoutUnit position="west" size="230">
+				<p:growl autoUpdate="true" sticky="true" showDetail="true"
+					escape="true" showSummary="true" />
 				<h:form id="ruleForm">
 					<p:selectOneListbox id="ruleSelectOneListbox"
 						value="#{rulesBean.selectedRule}" converter="ruleConverter"
@@ -80,6 +83,18 @@
 						</p:panelGrid>
 					</p:dialog>
 
+					<p:dialog header="Crear regla" modal="false" showEffect="bounce"
+						widgetVar="createRuleDialog" resizable="false">
+						<p:panelGrid columns="2" id="display2" style="margin-bottom:10px"
+							cellpadding="5">
+							<h:outputText value="Nombre" />
+							<h:inputText value="#{rulesBean.newRuleName}" />
+							<p:commandButton value="Crear regla!" icon="ui-icon-check"
+								actionListener="#{rulesBean.addRule()}" update=":ruleForm:ruleSelectOneListbox"
+								oncomplete="PF('createRuleDialog').hide()" title="Crear Regla!" />
+						</p:panelGrid>
+					</p:dialog>
+
 					<p:columnGroup>
 
 
@@ -90,6 +105,10 @@
 					<p:commandButton value="Guardar regla" style="float:bottom"
 						title="Guarda regla en la sesion" icon="ui-icon-check"
 						actionListener="#{rulesBean.saveRuleAction}" />
+					
+					<p:commandButton value="Agregar regla" update="display"
+						onclick="PF('createRuleDialog').show()" icon="ui-icon-check"
+						title="Crea regla vacía" />
 
 					<p:commandButton value="Crear nueva version!" update="display"
 						oncomplete="PF('dlg').show()" icon="ui-icon-check"

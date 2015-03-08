@@ -16,6 +16,7 @@ import org.primefaces.model.TreeNode;
 import edu.fing.commons.dto.AdaptationTO;
 import edu.fing.commons.front.dto.ServiceTO;
 import edu.fing.commons.front.dto.SituationTO;
+import edu.fing.contenxt.management.RemoteInvokerUtils.ServiceIp;
 
 @ManagedBean
 @ViewScoped
@@ -34,7 +35,7 @@ public class ConfigurationBean {
 	@PostConstruct
 	public void construct() {
 
-		this.services = (List<ServiceTO>) RemoteInvokerUtils.invoke(RemoteInvokerUtils.ContextReasonerConfigService, "getServicesWithSituationsAndAdaptations", null, "localhost", "8080");
+		this.services = (List<ServiceTO>) RemoteInvokerUtils.invoke(RemoteInvokerUtils.ContextReasonerConfigService, "getServicesWithSituationsAndAdaptations", null, ServiceIp.ContextReasonerIp);
 
 		this.root = new DefaultTreeNode("Root", null);
 		if (this.services != null) {

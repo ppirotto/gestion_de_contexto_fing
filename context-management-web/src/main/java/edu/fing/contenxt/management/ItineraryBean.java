@@ -17,6 +17,7 @@ import edu.fing.commons.dto.AdaptationTO;
 import edu.fing.commons.front.dto.ItineraryTO;
 import edu.fing.commons.front.dto.ServiceTO;
 import edu.fing.commons.front.dto.SituationTO;
+import edu.fing.contenxt.management.RemoteInvokerUtils.ServiceIp;
 
 @ManagedBean
 @ViewScoped
@@ -89,7 +90,7 @@ public class ItineraryBean {
 		ServiceTO serviceTO = new ServiceTO();
 		serviceTO.setId(this.selectedService);
 		itinerary.setService(serviceTO);
-		Boolean result = (Boolean) RemoteInvokerUtils.invoke(RemoteInvokerUtils.ContextReasonerConfigService, "createItinerary", itinerary, "localhost", "8080");
+		Boolean result = (Boolean) RemoteInvokerUtils.invoke(RemoteInvokerUtils.ContextReasonerConfigService, "createItinerary", itinerary, ServiceIp.ContextReasonerIp);
 		if (result) {
 
 			String mensaje = "Itinerario creado con éxito";
@@ -133,7 +134,7 @@ public class ItineraryBean {
 	}
 
 	public List<ServiceTO> getServiceList() {
-		List<ServiceTO> results = (List<ServiceTO>) RemoteInvokerUtils.invoke(RemoteInvokerUtils.ContextReasonerConfigService, "getServices", null, "localhost", "8080");
+		List<ServiceTO> results = (List<ServiceTO>) RemoteInvokerUtils.invoke(RemoteInvokerUtils.ContextReasonerConfigService, "getServices", null, ServiceIp.ContextReasonerIp);
 		this.serviceList = results;
 		return this.serviceList;
 	}
@@ -143,7 +144,7 @@ public class ItineraryBean {
 	}
 
 	public List<SituationTO> getSituationList() {
-		List<SituationTO> results = (List<SituationTO>) RemoteInvokerUtils.invoke(RemoteInvokerUtils.ContextReasonerConfigService, "getSituations", null, "localhost", "8080");
+		List<SituationTO> results = (List<SituationTO>) RemoteInvokerUtils.invoke(RemoteInvokerUtils.ContextReasonerConfigService, "getSituations", null, ServiceIp.ContextReasonerIp);
 		this.situationList = results;
 		return this.situationList;
 	}

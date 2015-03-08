@@ -19,6 +19,7 @@ import com.predic8.wsdl.Definitions;
 import com.predic8.wsdl.WSDLParser;
 
 import edu.fing.commons.front.dto.ServiceTO;
+import edu.fing.contenxt.management.RemoteInvokerUtils.ServiceIp;
 import edu.fing.context.management.jar.creation.JarCreationService;
 
 @ManagedBean
@@ -46,15 +47,14 @@ public class ServiceBean implements Serializable {
 		vS.setServiceName(this.serviceName);
 		vS.setServiceURL(this.serviceURL);
 		vS.setVirtualService(this.virtualService);
-		
+
 		try {
 			JarCreationService.createVirtualService(vS);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
+
 		ServiceTO serv = new ServiceTO();
 		serv.setOperationNames(this.selectedOperations);
 		serv.setServiceName(this.serviceName);
@@ -62,7 +62,7 @@ public class ServiceBean implements Serializable {
 		serv.setDescription(this.description);
 
 		// //////////////////
-		Boolean result = (Boolean) RemoteInvokerUtils.invoke(RemoteInvokerUtils.ContextReasonerConfigService, "createService", serv, "localhost", "8080");
+		Boolean result = (Boolean) RemoteInvokerUtils.invoke(RemoteInvokerUtils.ContextReasonerConfigService, "createService", serv, ServiceIp.ContextReasonerIp);
 		if (result) {
 
 			String mensaje = "Servicio creado con exito";

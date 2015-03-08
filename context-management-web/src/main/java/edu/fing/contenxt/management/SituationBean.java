@@ -7,6 +7,7 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
 import edu.fing.commons.front.dto.SituationTO;
+import edu.fing.contenxt.management.RemoteInvokerUtils.ServiceIp;
 
 @ManagedBean
 @ViewScoped
@@ -27,7 +28,7 @@ public class SituationBean {
 		sit.setDescription(this.description);
 		sit.setMinuteDuration(this.duration);
 
-		Boolean result = (Boolean) RemoteInvokerUtils.invoke(RemoteInvokerUtils.ContextReasonerConfigService, "createSituation", sit, "localhost", "8080");
+		Boolean result = (Boolean) RemoteInvokerUtils.invoke(RemoteInvokerUtils.ContextReasonerConfigService, "createSituation", sit, ServiceIp.ContextReasonerIp);
 		if (result) {
 			String mensaje = "Servicio creado con éxito";
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(null, mensaje));

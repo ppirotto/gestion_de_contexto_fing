@@ -8,6 +8,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
 import edu.fing.commons.front.dto.ConfiguredItineraryTO;
+import edu.fing.contenxt.management.RemoteInvokerUtils.ServiceIp;
 
 @ManagedBean
 @ViewScoped
@@ -18,7 +19,7 @@ public class ViewItineraryBean implements Serializable {
 	private ConfiguredItineraryTO selectedItinerary;
 
 	private List<ConfiguredItineraryTO> itineraryList = (List<ConfiguredItineraryTO>) RemoteInvokerUtils.invoke(RemoteInvokerUtils.AdaptationGatewayConfigService, "getItineraries", null,
-			"192.168.0.103", "8080");
+			ServiceIp.AdaptationGatewayIp);
 
 	private List<ConfiguredItineraryTO> filteredItineraryList;
 
