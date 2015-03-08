@@ -8,7 +8,11 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -20,8 +24,11 @@ public class Situation implements Serializable {
 	private Long id;
 	private String name;
 	private String description;
-	private Long minuteDuration;
+	private Long duration;
 	private Set<Adaptation> adaptations;
+	private Rule rule;
+	private Set<ContextDatum> inputContextData;
+	private Set<ContextDatum> outputContextData;
 
 	@Id
 	@GeneratedValue
@@ -40,9 +47,9 @@ public class Situation implements Serializable {
 		return description;
 	}
 
-	@Column(name = "MINUTE_DURATION", nullable = true)
-	public Long getMinuteDuration() {
-		return minuteDuration;
+	@Column(name = "DURATION", nullable = true)
+	public Long getDuration() {
+		return duration;
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "situation")
@@ -50,16 +57,21 @@ public class Situation implements Serializable {
 		return adaptations;
 	}
 
-	public void setSituationId(String situationId) {
-		this.setName(situationId);
+	@OneToOne(fetch = FetchType.LAZY, mappedBy = "situation")
+	public Rule getRule() {
+		return rule;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "SITUATION_CONTEXT_DATUM", joinColumns = { @JoinColumn(name = "SITUATION_ID") }, inverseJoinColumns = { @JoinColumn(name = "INPUT_CONTEXT_DATUM_ID") })
+	public Set<ContextDatum> getInputContextData() {
+		return inputContextData;
 	}
 
-	public void setAdaptations(Set<Adaptation> adaptations) {
-		this.adaptations = adaptations;
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "SITUATION_CONTEXT_DATUM", joinColumns = { @JoinColumn(name = "SITUATION_ID") }, inverseJoinColumns = { @JoinColumn(name = "OUTPUT_CONTEXT_DATUM_ID") })
+	public Set<ContextDatum> getOutputContextData() {
+		return outputContextData;
 	}
 
 	public void setId(Long id) {
@@ -70,8 +82,28 @@ public class Situation implements Serializable {
 		this.name = name;
 	}
 
-	public void setMinuteDuration(Long minuteDuration) {
-		this.minuteDuration = minuteDuration;
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public void setDuration(Long duration) {
+		this.duration = duration;
+	}
+
+	public void setAdaptations(Set<Adaptation> adaptations) {
+		this.adaptations = adaptations;
+	}
+
+	public void setRule(Rule rule) {
+		this.rule = rule;
+	}
+
+	public void setInputContextData(Set<ContextDatum> inputContextData) {
+		this.inputContextData = inputContextData;
+	}
+
+	public void setOutputContextData(Set<ContextDatum> outputContextData) {
+		this.outputContextData = outputContextData;
 	}
 
 }

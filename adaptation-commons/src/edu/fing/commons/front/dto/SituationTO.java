@@ -8,15 +8,15 @@ public class SituationTO {
 
 	private String name;
 	private String description;
-	private Long minuteDuration;
+	private Long duration;
 	private List<AdaptationTO> adaptations;
 
 	public String getDescription() {
 		return this.description;
 	}
 
-	public Long getMinuteDuration() {
-		return this.minuteDuration;
+	public Long getDuration() {
+		return this.duration;
 	}
 
 	public String getName() {
@@ -27,8 +27,8 @@ public class SituationTO {
 		this.description = description;
 	}
 
-	public void setMinuteDuration(Long minuteDuration) {
-		this.minuteDuration = minuteDuration;
+	public void setDuration(Long duration) {
+		this.duration = duration;
 	}
 
 	public void setName(String name) {

@@ -7,7 +7,6 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -87,10 +86,9 @@ public class SituationReceiverBean implements SituationReceiver {
 
 			Iterator<Adaptation> iterator = adaptationsBySituationAndService.iterator();
 			Situation situation = iterator.next().getSituation();
-			Calendar cal = Calendar.getInstance();
-			cal.setTime(new Date());
-			cal.add(Calendar.MINUTE, situation.getMinuteDuration().intValue());
-			contextReasonerData.setExpirationDate(cal.getTime());
+
+			Date expireDate = new Date(System.currentTimeMillis() + situation.getDuration());
+			contextReasonerData.setExpirationDate(expireDate);
 
 			List<AdaptationTO> adaptations = new ArrayList<AdaptationTO>();
 			for (Adaptation adaptation : adaptationsBySituationAndService) {

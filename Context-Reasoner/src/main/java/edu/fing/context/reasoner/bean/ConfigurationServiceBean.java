@@ -113,7 +113,7 @@ public class ConfigurationServiceBean implements ConfigurationService {
 			SituationTO situationTO = new SituationTO();
 			situationTO.setName(situation.getName());
 			situationTO.setDescription(situation.getDescription());
-			situationTO.setMinuteDuration(situation.getMinuteDuration());
+			situationTO.setDuration(situation.getDuration());
 			list.add(situationTO);
 		}
 		return list;
@@ -125,7 +125,7 @@ public class ConfigurationServiceBean implements ConfigurationService {
 		Situation situation = new Situation();
 		situation.setName(situationTO.getName());
 		situation.setDescription(situationTO.getDescription());
-		situation.setMinuteDuration(situationTO.getMinuteDuration());
+		situation.setDuration(situationTO.getDuration());
 
 		Session session = this.sessionFactory.openSession();
 		session.beginTransaction();
@@ -296,7 +296,7 @@ public class ConfigurationServiceBean implements ConfigurationService {
 		SituationTO situationTO = new SituationTO();
 		situationTO.setName(situation.getName());
 		situationTO.setDescription(situation.getDescription());
-		situationTO.setMinuteDuration(situation.getMinuteDuration());
+		situationTO.setDuration(situation.getDuration());
 
 		return situationTO;
 	}
