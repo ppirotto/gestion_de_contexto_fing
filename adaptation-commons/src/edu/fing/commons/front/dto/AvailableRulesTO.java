@@ -7,6 +7,8 @@ public class AvailableRulesTO {
 
 	private long activeVersionId;
 	private Date lastDeployDate;
+	private long lastVersionId;
+	
 	private List<VersionTO> versions;
 
 	public long getActiveVersionId() {
@@ -31,6 +33,14 @@ public class AvailableRulesTO {
 
 	public void setVersions(List<VersionTO> versions) {
 		this.versions = versions;
+	}
+
+	public long getLastVersionId() {
+		return lastVersionId;
+	}
+
+	public void setLastVersionId(long lastVersionId) {
+		this.lastVersionId = lastVersionId;
 	}
 
 }

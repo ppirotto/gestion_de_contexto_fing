@@ -1,14 +1,17 @@
-package edu.fing.cep.engine.bean;
+package edu.fing.context.reasoner.bean;
 
 import edu.fing.commons.front.dto.AvailableRulesTO;
 import edu.fing.commons.front.dto.CreateRulesVersionResponseTO;
 import edu.fing.commons.front.dto.VersionTO;
 
-public interface DroolsConfigService {
-	
+public interface CEPService {
+
+	void updateActiveVersion(String versionNumber);
+
 	AvailableRulesTO getAvailableRules();
-	
+
 	CreateRulesVersionResponseTO createNewVersion(VersionTO version);
 
-	Boolean deployVersion(VersionTO version);
+	VersionTO getActiveVersion();
+
 }

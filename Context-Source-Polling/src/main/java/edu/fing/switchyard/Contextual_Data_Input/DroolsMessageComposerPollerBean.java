@@ -116,7 +116,6 @@ public class DroolsMessageComposerPollerBean implements DroolsMessageComposerPol
 			return "ERROR";
 		}
 		ObjectMapper objectMapper = new ObjectMapper();
-
 		@SuppressWarnings("unchecked")
 		Map<String, Object> objectAsMap = null;
 

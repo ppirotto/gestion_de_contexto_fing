@@ -15,31 +15,20 @@
       <sca:service name="DroolsManagerService">
         <sca:interface.java interface="edu.fing.cep.engine.bean.DroolsManagerService"/>
       </sca:service>
+      <sca:reference name="CEPService">
+        <sca:interface.java interface="edu.fing.cep.engine.bean.CEPService"/>
+      </sca:reference>
     </sca:component>
     <sca:service name="ESBServiceDrools" promote="DroolsFeederServiceBean/DroolsFeederService">
       <sca:interface.java interface="edu.fing.cep.engine.bean.DroolsFeederService"/>
       <sca:binding.sca name="CEP-SCA"/>
     </sca:service>
-    <sca:component name="DroolsConfigServiceBean">
-      <bean:implementation.bean class="edu.fing.cep.engine.bean.DroolsConfigServiceBean"/>
-      <sca:service name="DroolsConfigService">
-        <sca:interface.java interface="edu.fing.cep.engine.bean.DroolsConfigService"/>
-      </sca:service>
-      <sca:reference name="DroolsManagerService">
-        <sca:interface.java interface="edu.fing.cep.engine.bean.DroolsManagerService"/>
-      </sca:reference>
-    </sca:component>
-    <sca:service name="DroolsConfigService" promote="DroolsConfigServiceBean/DroolsConfigService">
-      <sca:interface.java interface="edu.fing.cep.engine.bean.DroolsConfigService"/>
-      <http:binding.http name="http1">
-        <sy:operationSelector operationName="deployVersion"/>
-        <http:contextPath>drools-config/deployVersion</http:contextPath>
-      </http:binding.http>
-      <http:binding.http name="http2">
-        <sy:operationSelector operationName="updateActiveVersion"/>
-        <http:contextPath>drools-config/updateActiveVersion</http:contextPath>
-      </http:binding.http>
-      <sca:binding.sca name="sca123"/>
+    <sca:reference name="CEPService" multiplicity="0..1" promote="DroolsManagerServiceBean/CEPService">
+      <sca:interface.java interface="edu.fing.cep.engine.bean.CEPService"/>
+    </sca:reference>
+    <sca:service name="DroolsManagerService" promote="DroolsManagerServiceBean/DroolsManagerService">
+      <sca:interface.java interface="edu.fing.cep.engine.bean.DroolsManagerService"/>
+      <sca:binding.sca name="sca"/>
     </sca:service>
   </sca:composite>
 </sy:switchyard>

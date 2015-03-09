@@ -1,4 +1,4 @@
-package edu.fing.cep.engine.bean;
+package edu.fing.context.reasoner.bean;
 
 import edu.fing.commons.dto.ContextualDataTO;
 import edu.fing.commons.front.dto.AvailableRulesTO;
@@ -10,6 +10,12 @@ public interface DroolsManagerService {
 	String insert(ContextualDataTO data);
 
 	CreateRulesVersionResponseTO deployVersion(VersionTO desiredVersion);
+
+	void updateActiveVersion(String versionNumber);
+
+	AvailableRulesTO getAvailableRules();
+
+	CreateRulesVersionResponseTO createNewVersion(VersionTO version);
 
 	CreateRulesVersionResponseTO testDroolsCompiling(VersionTO versionTO);
 

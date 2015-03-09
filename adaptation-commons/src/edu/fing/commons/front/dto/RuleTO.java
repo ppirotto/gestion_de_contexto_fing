@@ -4,7 +4,7 @@ public class RuleTO {
 
 	private long id;
 	private String name;
-	private String rule;
+	private String drl;
 	
 	public long getId() {
 		return id;
@@ -18,11 +18,10 @@ public class RuleTO {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getRule() {
-		return rule;
+	public String getDrl() {
+		return drl;
 	}
-	public void setRule(String rule) {
-		this.rule = rule;
+	public void setDrl(String drl) {
+		this.drl = drl;
 	}
-
 }

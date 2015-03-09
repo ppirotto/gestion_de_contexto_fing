@@ -32,5 +32,21 @@
       <sca:interface.java interface="edu.fing.context.reasoner.bean.ConfigurationService"/>
       <sca:binding.sca name="sca3"/>
     </sca:service>
+    <sca:component name="CEPServiceBean">
+      <bean:implementation.bean class="edu.fing.context.reasoner.bean.CEPServiceBean"/>
+      <sca:service name="CEPService">
+        <sca:interface.java interface="edu.fing.context.reasoner.bean.CEPService"/>
+      </sca:service>
+      <sca:reference name="DroolsManagerService">
+        <sca:interface.java interface="edu.fing.context.reasoner.bean.DroolsManagerService"/>
+      </sca:reference>
+    </sca:component>
+    <sca:service name="CEPService" promote="CEPServiceBean/CEPService">
+      <sca:interface.java interface="edu.fing.context.reasoner.bean.CEPService"/>
+      <sca:binding.sca name="sca"/>
+    </sca:service>
+    <sca:reference name="DroolsManagerService" multiplicity="0..1" promote="CEPServiceBean/DroolsManagerService">
+      <sca:interface.java interface="edu.fing.context.reasoner.bean.DroolsManagerService"/>
+    </sca:reference>
   </sca:composite>
 </sy:switchyard>

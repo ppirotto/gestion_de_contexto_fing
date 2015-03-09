@@ -1,53 +1,39 @@
-package edu.fing.cep.engine.bean;
+package edu.fing.context.reasoner.bean;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.kie.api.KieBase;
-import org.kie.api.KieBaseConfiguration;
-import org.kie.api.KieServices;
-import org.kie.api.builder.KieModule;
-import org.kie.api.builder.ReleaseId;
-import org.kie.api.conf.EventProcessingOption;
-import org.kie.api.runtime.KieContainer;
-import org.kie.api.runtime.KieSession;
 import org.switchyard.component.bean.Reference;
 import org.switchyard.component.bean.Service;
 
-import com.sun.tools.internal.xjc.reader.dtd.bindinfo.BIUserConversion;
-
-import edu.fing.cep.engine.model.ActiveConfiguration;
-import edu.fing.cep.engine.model.Rule;
-import edu.fing.cep.engine.model.Version;
-import edu.fing.cep.engine.utils.DroolsCompilingException;
-import edu.fing.cep.engine.utils.DroolsUtils;
-import edu.fing.cep.engine.utils.HibernateUtils;
-import edu.fing.commons.dto.ContextualDataTO;
 import edu.fing.commons.front.dto.AvailableRulesTO;
 import edu.fing.commons.front.dto.CreateRulesVersionResponseTO;
 import edu.fing.commons.front.dto.RuleTO;
 import edu.fing.commons.front.dto.VersionTO;
+import edu.fing.context.reasoner.model.ActiveConfiguration;
+import edu.fing.context.reasoner.model.Rule;
+import edu.fing.context.reasoner.model.RuleVersion;
+import edu.fing.context.reasoner.model.Version;
+import edu.fing.context.reasoner.util.HibernateUtils;
 
-@Service(DroolsManagerService.class)
+@Service(CEPService.class)
 public class CEPServiceBean implements CEPService {
 
 	@Inject
 	@Reference	
 	private DroolsManagerService droolsManager;
 	
+	private SessionFactory sessionFactory = HibernateUtils.getSessionFactory();
+	
 	@Override
 	public CreateRulesVersionResponseTO createNewVersion(VersionTO versionTO) {
-		SessionFactory sessionFactory = HibernateUtils.getSessionFactory();
 		Session session = sessionFactory.openSession();
 		session.beginTransaction();
 		CreateRulesVersionResponseTO res = new CreateRulesVersionResponseTO();
@@ -66,7 +52,7 @@ public class CEPServiceBean implements CEPService {
 		} else if ((res = droolsManager.testDroolsCompiling(versionTO))!=null){
 			return res;
 		}
-		Version newVersion = this.mapToEntity(versionTO);
+		Version newVersion = this.mapToVersion(versionTO);
 		session.save(newVersion);
 		
 		session.getTransaction().commit();
@@ -81,7 +67,6 @@ public class CEPServiceBean implements CEPService {
 		// TODO Auto-generated method stub
 		AvailableRulesTO res = new AvailableRulesTO();
 		
-		SessionFactory sessionFactory = HibernateUtils.getSessionFactory();
 		Session session = sessionFactory.openSession();
 		session.beginTransaction();
 		
@@ -90,7 +75,8 @@ public class CEPServiceBean implements CEPService {
 		@SuppressWarnings("unchecked")
 		ActiveConfiguration activeConfig = (ActiveConfiguration) activeConfigurationQuery.uniqueResult();
 		
-		res.setActiveVersionId(activeConfig.getVersion().getId());
+		res.setActiveVersionId(activeConfig.getActiveVersion().getId());
+		res.setLastVersionId(activeConfig.getLastVersion().getId());
 		res.setLastDeployDate(activeConfig.getLastDeployDate());
 		List<VersionTO> versions = new ArrayList<VersionTO>();
 		res.setVersions(versions);
@@ -106,11 +92,11 @@ public class CEPServiceBean implements CEPService {
 			newVersionTO.setId(version.getId());
 			newVersionTO.setVersionNumber(version.getVersionNumber());
 			List<RuleTO> rulesTO = new ArrayList<RuleTO>();
-			for (Rule rule : version.getRules()) {
+			for (RuleVersion rV : version.getRuleVersions()) {
 				RuleTO ruleTO = new RuleTO();
-				ruleTO.setId(rule.getId());
-				ruleTO.setName(rule.getName());
-				ruleTO.setRule(rule.getRule());
+				ruleTO.setId(rV.getId());
+				ruleTO.setName(rV.getRule().getName());
+				ruleTO.setDrl(rV.getDrl());
 				rulesTO.add(ruleTO);
 			}
 			newVersionTO.setRules(rulesTO);
@@ -123,7 +109,6 @@ public class CEPServiceBean implements CEPService {
 	
 	@Override
 	public void updateActiveVersion(String versionNumber) {
-		SessionFactory sessionFactory = HibernateUtils.getSessionFactory();
 		Session session = sessionFactory.openSession();
 		session.beginTransaction();
 
@@ -138,16 +123,20 @@ public class CEPServiceBean implements CEPService {
 		@SuppressWarnings("unchecked")
 		Version newVersion = (Version) queryNewVersion.uniqueResult();
 		
-		activeConfig.setVersion(newVersion);
-		System.out.println("Updating to versionNumber: "+activeConfig.getVersion().getVersionNumber());
-		session.update(activeConfig);
-		
-		session.getTransaction().commit();
+		VersionTO desiredVersion = mapToVersionTO(newVersion);
+		CreateRulesVersionResponseTO deployResponseTO = droolsManager.deployVersion(desiredVersion);
+		System.out.println("droolsManager.deployVersion(desiredVersion) response:"+deployResponseTO.toString());
+		if (deployResponseTO.isSuccess()){
+			activeConfig.setActiveVersion(newVersion);
+			System.out.println("Updating to versionNumber: "+activeConfig.getActiveVersion().getVersionNumber());
+			session.update(activeConfig);
+			session.getTransaction().commit();
+		}
 		session.close();
 	}
 
-	private VersionTO getActiveVersion() {
-		SessionFactory sessionFactory = HibernateUtils.getSessionFactory();
+	@Override
+	public VersionTO getActiveVersion() {
 		Session session = sessionFactory.openSession();
 		
 		session.beginTransaction();
@@ -164,17 +153,16 @@ public class CEPServiceBean implements CEPService {
 		if (config==null){
 			return null;
 		}
-		Version activeVersion = config.getVersion();
+		Version activeVersion = config.getActiveVersion();
 		System.out.println("versionNumber: "+activeVersion.getVersionNumber());
 		
 		session.getTransaction().commit();
 		session.close();
-		return mapToDTO(activeVersion);
+		return mapToVersionTO(activeVersion);
 	}
 	
 	
 	private VersionTO getVersion(String version) {
-		SessionFactory sessionFactory = HibernateUtils.getSessionFactory();
 		Session session = sessionFactory.openSession();
 		
 		session.beginTransaction();
@@ -197,59 +185,66 @@ public class CEPServiceBean implements CEPService {
 		
 		session.getTransaction().commit();
 		session.close();
-		return mapToDTO(desiredVersion);
+		return mapToVersionTO(desiredVersion);
 	}
 	
 	
 	private List<String> getStringRules(VersionTO desiredVersion) {
-		//Obtengo las reglas asociadas a la version
 		List<RuleTO> rules = desiredVersion.getRules();
 		List<String> stringRules = new ArrayList<String>();
 		for(RuleTO rule : rules){
-			stringRules.add(rule.getRule());
+			stringRules.add(rule.getDrl());
 		}
 		return stringRules;
 	}
 	
 	
-	private Version mapToEntity(VersionTO versionTO) {
+	private Version mapToVersion(VersionTO versionTO) {
 		Version res = new Version();
 		res.setCreationDate(new Date());
 		res.setVersionNumber(versionTO.getVersionNumber());
-		res.setRules(new HashSet<Rule>());
+		res.setRuleVersions(new HashSet<RuleVersion>());
 		for (RuleTO r : versionTO.getRules()) {
-			res.getRules().add(mapToEntity(r,res));
-		}
+			res.getRuleVersions().add(mapToRuleVersion(r, res));
+		}		
 		return res;
 	}
 
 
 
-	private Rule mapToEntity(RuleTO r, Version v) {
+	private RuleVersion mapToRuleVersion(RuleTO r, Version version) {
+		RuleVersion res = new RuleVersion();
+		res.setVersion(version);
+		res.setDrl(r.getDrl());
+		res.setRule(mapToRule(r, version));
+		return res;
+	}
+
+
+	private Rule mapToRule(RuleTO r, Version v) {
 		Rule res = new Rule();
 		res.setName(r.getName());
-		res.setRule(r.getRule());
-		res.setVersion(v);
 		return res;
 	}
 	
-	private VersionTO mapToDTO(Version version) {
+	private VersionTO mapToVersionTO(Version version) {
 		VersionTO res = new VersionTO();
 		res.setCreationDate(version.getCreationDate());
 		res.setVersionNumber(version.getVersionNumber());
 		res.setRules(new ArrayList<RuleTO>());
-		for (Rule r : version.getRules()) {
-			res.getRules().add(mapToDTO(r,res));
+		for (RuleVersion r : version.getRuleVersions()) {
+			res.getRules().add(mapToRuleTO(r,res));
 		}
+		res.setId(version.getId());
 		return res;
 	}
 
 
 
-	private RuleTO mapToDTO(Rule r, VersionTO v) {
+	private RuleTO mapToRuleTO(RuleVersion r, VersionTO v) {
 		RuleTO res = new RuleTO();
-		res.setName(r.getName());
-		res.setRule(r.getRule());
+		res.setName(r.getRule().getName());
+		res.setDrl(r.getDrl());
 		res.setId(r.getId());
 		return res;
 	}
