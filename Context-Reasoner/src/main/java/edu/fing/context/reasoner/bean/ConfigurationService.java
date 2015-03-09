@@ -2,6 +2,7 @@ package edu.fing.context.reasoner.bean;
 
 import java.util.List;
 
+import edu.fing.commons.front.dto.ContextSourceTO;
 import edu.fing.commons.front.dto.ItineraryTO;
 import edu.fing.commons.front.dto.ServiceTO;
 import edu.fing.commons.front.dto.SituationTO;
@@ -14,10 +15,18 @@ public interface ConfigurationService {
 
 	List<SituationTO> getSituations();
 
+	List<String> getContextData();
+
+	List<String> getContextSources();
+
 	Boolean createSituation(SituationTO situationTO);
 
 	Boolean createService(ServiceTO serviceTO);
 
 	Boolean createItinerary(ItineraryTO itineraryTO);
+
+	Boolean createContextDatum(String contextDatumName);
+
+	Boolean createContextSource(ContextSourceTO contextSourceTO);
 
 }

@@ -19,6 +19,7 @@ public class ContextSource {
 	private Long id;
 	private String name;
 	private String description;
+	private String properties;
 	private Set<ContextDatum> contextData;
 
 	@Id
@@ -36,6 +37,11 @@ public class ContextSource {
 	@Column(name = "DESCRIPTION")
 	public String getDescription() {
 		return description;
+	}
+
+	@Column(name = "PROPERTIES", columnDefinition = "MEDIUMTEXT", nullable = true)
+	public String getProperties() {
+		return properties;
 	}
 
 	@ManyToMany(fetch = FetchType.LAZY)
@@ -58,6 +64,10 @@ public class ContextSource {
 
 	public void setContextData(Set<ContextDatum> contextData) {
 		this.contextData = contextData;
+	}
+
+	public void setProperties(String properties) {
+		this.properties = properties;
 	}
 
 }

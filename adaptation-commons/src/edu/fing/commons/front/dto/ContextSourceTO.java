@@ -6,8 +6,9 @@ public class ContextSourceTO {
 
 	private List<String> contextData;
 
-	private String modeConverter;
 	private String eventName;
+	private String description;
+	private String modeConverter;
 	private String receiveMode;
 	private String url;
 	private String cron;
@@ -58,6 +59,14 @@ public class ContextSourceTO {
 
 	public void setUrl(String url) {
 		this.url = url;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 }

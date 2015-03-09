@@ -10,6 +10,8 @@ public class SituationTO {
 	private String description;
 	private Long duration;
 	private List<AdaptationTO> adaptations;
+	private List<ContextSourceTO> contextSources;
+	private List<String> outputContextData;
 
 	public String getDescription() {
 		return this.description;
@@ -41,6 +43,22 @@ public class SituationTO {
 
 	public void setAdaptations(List<AdaptationTO> adaptations) {
 		this.adaptations = adaptations;
+	}
+
+	public List<ContextSourceTO> getContextSources() {
+		return contextSources;
+	}
+
+	public void setContextSources(List<ContextSourceTO> contextSources) {
+		this.contextSources = contextSources;
+	}
+
+	public List<String> getOutputContextData() {
+		return outputContextData;
+	}
+
+	public void setOutputContextData(List<String> outputContextData) {
+		this.outputContextData = outputContextData;
 	}
 
 }

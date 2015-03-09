@@ -2,8 +2,11 @@ package edu.fing.context.reasoner.bean;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import org.codehaus.jackson.map.ObjectMapper;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -11,11 +14,14 @@ import org.hibernate.SessionFactory;
 import edu.fing.commons.constant.AdaptationType;
 import edu.fing.commons.constant.DataType;
 import edu.fing.commons.dto.AdaptationTO;
+import edu.fing.commons.front.dto.ContextSourceTO;
 import edu.fing.commons.front.dto.ItineraryTO;
 import edu.fing.commons.front.dto.ServiceTO;
 import edu.fing.commons.front.dto.SituationTO;
 import edu.fing.context.reasoner.model.Adaptation;
 import edu.fing.context.reasoner.model.AdaptationReference;
+import edu.fing.context.reasoner.model.ContextDatum;
+import edu.fing.context.reasoner.model.ContextSource;
 import edu.fing.context.reasoner.model.Service;
 import edu.fing.context.reasoner.model.ServiceSituationPriority;
 import edu.fing.context.reasoner.model.Situation;
@@ -120,18 +126,83 @@ public class ConfigurationServiceBean implements ConfigurationService {
 	}
 
 	@Override
+	public List<String> getContextData() {
+		Session session = this.sessionFactory.openSession();
+
+		StringBuilder queryString = new StringBuilder();
+		queryString.append("FROM ContextDatum ");
+
+		Query query = session.createQuery(queryString.toString());
+
+		@SuppressWarnings("unchecked")
+		List<ContextDatum> contextData = query.list();
+
+		session.close();
+
+		List<String> list = new ArrayList<String>();
+		for (ContextDatum contextDatum : contextData) {
+			list.add(contextDatum.getName());
+		}
+		return list;
+	}
+
+	@Override
+	public List<String> getContextSources() {
+		Session session = this.sessionFactory.openSession();
+
+		StringBuilder queryString = new StringBuilder();
+		queryString.append("FROM ContextSource ");
+
+		Query query = session.createQuery(queryString.toString());
+
+		@SuppressWarnings("unchecked")
+		List<ContextSource> contextSources = query.list();
+
+		session.close();
+
+		List<String> list = new ArrayList<String>();
+		for (ContextSource contextSource : contextSources) {
+			list.add(contextSource.getName());
+		}
+		return list;
+	}
+
+	@Override
 	public Boolean createSituation(SituationTO situationTO) {
+
+		Session session = this.sessionFactory.openSession();
+		session.beginTransaction();
 
 		Situation situation = new Situation();
 		situation.setName(situationTO.getName());
 		situation.setDescription(situationTO.getDescription());
 		situation.setDuration(situationTO.getDuration());
 
-		Session session = this.sessionFactory.openSession();
-		session.beginTransaction();
+		Set<ContextDatum> inputContextData = new HashSet<ContextDatum>();
+		List<ContextSourceTO> contextSources = situationTO.getContextSources();
+		for (ContextSourceTO contextSourceTO : contextSources) {
+			ContextSource contextSource = this.findContextSourceByName(contextSourceTO.getEventName(), session);
+			List<String> contextData = contextSourceTO.getContextData();
+			for (String contextDatumName : contextData) {
+				ContextDatum contextDatum = this.findContextDatumByName(contextDatumName, session);
+				contextSource.getContextData().add(contextDatum);
+				inputContextData.add(contextDatum);
+			}
+		}
+		situation.setInputContextData(inputContextData);
+
+		Set<ContextDatum> outputContextData = new HashSet<ContextDatum>();
+		List<String> contextData = situationTO.getOutputContextData();
+		for (String contextDatumName : contextData) {
+			ContextDatum contextDatum = this.findContextDatumByName(contextDatumName, session);
+			outputContextData.add(contextDatum);
+		}
+		situation.setOutputContextData(outputContextData);
+
+		// TODO pegarle al servicio de pirotto para crear la regla
+		// situation.setRule(rule);
 
 		session.save(situation);
-
 		return HibernateUtils.commit(session);
 	}
 
@@ -150,6 +221,40 @@ public class ConfigurationServiceBean implements ConfigurationService {
 			service.setUrl(serviceTO.getUrl());
 			session.save(service);
 		}
+
+		return HibernateUtils.commit(session);
+	}
+
+	@Override
+	public Boolean createContextDatum(String contextDatumName) {
+
+		ContextDatum contextDatum = new ContextDatum();
+		contextDatum.setName(contextDatumName);
+
+		Session session = this.sessionFactory.openSession();
+		session.beginTransaction();
+		session.save(contextDatum);
+
+		return HibernateUtils.commit(session);
+	}
+
+	@Override
+	public Boolean createContextSource(ContextSourceTO contextSourceTO) {
+
+		ContextSource contextSource = new ContextSource();
+		contextSource.setName(contextSourceTO.getEventName());
+		contextSource.setDescription(contextSourceTO.getDescription());
+
+		ObjectMapper objectMapper = new ObjectMapper();
+		try {
+			String properties = objectMapper.writeValueAsString(contextSourceTO);
+			contextSource.setProperties(properties);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		Session session = this.sessionFactory.openSession();
+		session.beginTransaction();
+		session.save(contextSource);
 
 		return HibernateUtils.commit(session);
 	}
@@ -281,6 +386,33 @@ public class ConfigurationServiceBean implements ConfigurationService {
 
 	}
 
+	private ContextSource findContextSourceByName(String name, Session session) {
+
+		StringBuilder queryStringService = new StringBuilder();
+		queryStringService.append("SELECT cs ");
+		queryStringService.append("FROM ContextSource cs ");
+		queryStringService.append("join fetch cs.contextData ");
+		queryStringService.append("WHERE cs.name = :name ");
+
+		Query queryService = session.createQuery(queryStringService.toString());
+		queryService.setParameter("name", name);
+
+		return (ContextSource) queryService.uniqueResult();
+	}
+
+	private ContextDatum findContextDatumByName(String name, Session session) {
+
+		StringBuilder queryStringService = new StringBuilder();
+		queryStringService.append("SELECT cd ");
+		queryStringService.append("FROM ContextDatum cd ");
+		queryStringService.append("WHERE cd.name = :name ");
+
+		Query queryService = session.createQuery(queryStringService.toString());
+		queryService.setParameter("name", name);
+
+		return (ContextDatum) queryService.uniqueResult();
+	}
+
 	private ServiceTO mapService(Service service) {
 		ServiceTO serviceTO = new ServiceTO();
 		serviceTO.setId(service.getId());
@@ -313,4 +445,5 @@ public class ConfigurationServiceBean implements ConfigurationService {
 
 		return adaptationTO;
 	}
+
 }
