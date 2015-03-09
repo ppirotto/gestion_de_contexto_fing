@@ -11,20 +11,18 @@
 	<ui:define name="title">Crear Situación</ui:define>
 	<ui:define name="body">
 		<p:messages autoUpdate="true" id="messagesGeneral" />
-		<h2>
-			<h:outputText value="Crear Situacion" />
-		</h2>
+		<p:panel>
+			<f:facet name="header">Crear Situación</f:facet>
 
-		<h:form>
-			<h:panelGrid columns="2">
+			<h:form>
 				<p:panelGrid columns="2">
 					<p:outputLabel>
-						<b>Nombre de la situación</b>
+						Nombre de la situación
 					</p:outputLabel>
 					<p:inputText size="25" value="#{situationBean.name}"
 						required="true" label="Nombre de la situación" />
 					<p:outputLabel>
-						<b>Descripción</b>
+						Descripción
 					</p:outputLabel>
 					<p:inputTextarea scrollHeight="2" autoResize="false"
 						style="width:225px" value="#{situationBean.description}"
@@ -32,7 +30,7 @@
 						label="Descripción" />
 
 					<p:outputLabel>
-						<b>Duración (milisegundos)</b>
+						Duración (milisegundos)
 					</p:outputLabel>
 					<p:inputText id="duration" size="16"
 						value="#{situationBean.duration}" label="Duración"
@@ -42,51 +40,64 @@
 
 				</p:panelGrid>
 
-			</h:panelGrid>
-
-			<p:outputLabel>
-
-				<b>Input </b>
-
-			</p:outputLabel>
 
 
-			<h:panelGrid columns="2">
-				<h:panelGrid columns="2" cellpadding="4	">
-					<p:outputLabel>
-						<b>Fuente de contexto </b>
-					</p:outputLabel>
-					<p:selectOneMenu id="selectSituation" autoupdate="true"
-						required="true" requiredMessage="Seleccione fuente de conexto"
-						styleClass="span4" value="#{situationBean.selectedContextSource}"
-						effect="fade">
-						<f:selectItem itemLabel="Seleccione fuente de contexto"
-							itemValue="" />
-						<f:selectItems value="#{situationBean.contextSources}"
-							var="contSource" itemLabel="#{contSource}"
-							itemValue="#{contSource}" />
-					</p:selectOneMenu>
-				</h:panelGrid>
-				<p:dataTable id="dataTable" var="dat" style="width:380px"
-					value="#{situationBean.contextSources}"
-					selection="#{situationBean.selectedContextSource}" rowKey="#{dat}">
-					<f:facet name="header">
-            					ContextData
-       				</f:facet>
-					<p:column selectionMode="multiple"
-						style="width:16px;text-align:center" />
-					<p:column headerText="Nombre">
-						<h:outputText value="#{dat}" />
-					</p:column>
-
-				</p:dataTable>
-			</h:panelGrid>
+				<p:panel>
+					<f:facet name="header">Input</f:facet>
 
 
-			<p:commandButton value="Crear Servicio"
-				action="#{situationBean.crearSituacion()}"
-				styleClass="ui-priority-primary " style="margin-top: 10px;" />
-		</h:form>
+					<h:panelGrid columns="3">
+						<h:panelGrid columns="2">
+							<p:outputLabel value="Fuente de contexto" />
+
+							<p:selectOneMenu id="selectSituation" autoupdate="true"
+								required="true" requiredMessage="Seleccione fuente de conexto"
+								styleClass="span2"
+								value="#{situationBean.selectedContextSource}" effect="fade">
+								<f:selectItem itemLabel="Seleccione una" itemValue="" />
+								<f:selectItems value="#{situationBean.contextSources}"
+									var="contSource" itemLabel="#{contSource}"
+									itemValue="#{contSource}" />
+							</p:selectOneMenu>
+						</h:panelGrid>
+						<p:dataTable id="dataTable" var="dat" style="width:180px"
+							value="#{situationBean.contextDataList}" scrollable="true"
+							scrollHeight="150"
+							selection="#{situationBean.selectedInputDatum}" rowKey="#{dat}">
+
+							<p:column selectionMode="multiple"
+								style="width:16px;text-align:center" />
+							<p:column headerText="ContextData">
+								<h:outputText value="#{dat}" />
+							</p:column>
+
+						</p:dataTable>
+						<p:panel>
+						
+						<f:facet name="header">Seleccionados	</f:facet>
+						
+									<p:tree id="tree" value="#{situationBean.root}" var="node" dynamic="true" style="width:200px;height:130px;overflow: auto;">
+							
+							<p:treeNode>
+								<h:outputText value="#{node}" />
+							</p:treeNode>
+						</p:tree>
+						</p:panel>
+			
+
+					</h:panelGrid>
+					<f:facet name="footer">
+						<p:commandButton value="Asignar" update="tree"
+							action="#{situationBean.createDatumForInput()}" />
+					</f:facet>
+
+				</p:panel>
+				<p:commandButton value="Crear Servicio"
+					action="#{situationBean.crearSituacion()}"
+					styleClass="ui-priority-primary" style="margin-top: 10px;" />
+			</h:form>
+
+		</p:panel>
 	</ui:define>
 	<ui:define name="menuIzq">
 		<ui:include src="/menu.xhtml" />

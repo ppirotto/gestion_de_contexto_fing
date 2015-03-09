@@ -1,13 +1,18 @@
 package edu.fing.contenxt.management;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+
+import org.primefaces.model.DefaultTreeNode;
+import org.primefaces.model.TreeNode;
 
 import edu.fing.commons.front.dto.ContextSourceTO;
 import edu.fing.commons.front.dto.SituationTO;
@@ -28,7 +33,9 @@ public class SituationBean {
 	private List<String> selectedInputDatum;
 	private List<String> selectedOutputDatum;
 
-	private List<ContextSourceTO> mappedContextData = new ArrayList<ContextSourceTO>();
+	private TreeNode root = new DefaultTreeNode("Fuente de contexto", null);
+
+	private Map<String, ContextSourceTO> mappedContextData = new HashMap<String, ContextSourceTO>();
 
 	@ManagedProperty(value = "#{sessionBean}")
 	private SessionBean session;
@@ -54,8 +61,34 @@ public class SituationBean {
 
 	public void createDatumForInput() {
 		ContextSourceTO csTo = new ContextSourceTO();
+
+		csTo.setEventName(this.selectedContextSource);
 		csTo.setContextData(this.selectedInputDatum);
-		this.getMappedContextData().add(csTo);
+
+		if (this.getMappedContextData().get(this.selectedContextSource) == null) {
+			this.getMappedContextData().put(this.selectedContextSource, csTo);
+
+			// Solo para vista
+			TreeNode node0 = new DefaultTreeNode(this.selectedContextSource, this.root);
+
+			for (String data : this.selectedInputDatum) {
+				TreeNode node01 = new DefaultTreeNode(data, node0);
+
+			}
+		}
+	}
+
+	public List<String> getContextDataList() {
+
+		List<String> list = null;
+		if (list != null) {
+			this.contextDataList = list;
+
+		} else {
+			this.contextDataList = mocker();
+
+		}
+		return this.contextDataList;
 	}
 
 	public List<String> getContextSources() {
@@ -63,14 +96,9 @@ public class SituationBean {
 		// List<String> list = (List<String>)
 		// RemoteInvokerUtils.invoke(RemoteInvokerUtils.ContextReasonerConfigService,
 		// "getDatum", null, ServiceIp.ContextReasonerIp);
-		List<String> list = null;
-		if (list != null) {
-			this.contextSources = list;
+		this.contextSources = new ArrayList<String>();
+		this.contextSources.add("InCity");
 
-		} else {
-			this.contextSources = mocker();
-
-		}
 		return this.contextSources;
 	}
 
@@ -86,12 +114,16 @@ public class SituationBean {
 		return this.duration;
 	}
 
-	public List<ContextSourceTO> getMappedContextData() {
+	public Map<String, ContextSourceTO> getMappedContextData() {
 		return this.mappedContextData;
 	}
 
 	public String getName() {
 		return this.name;
+	}
+
+	public TreeNode getRoot() {
+		return this.root;
 	}
 
 	public String getSelectedContextSource() {
@@ -116,7 +148,19 @@ public class SituationBean {
 		list.add("latitud");
 		list.add("longitud");
 		list.add("user");
+		list.add("city");
+		list.add("latitud");
+		list.add("longitud");
+		list.add("user");
+		list.add("city");
+		list.add("latitud");
+		list.add("longitud");
+		list.add("user");
 		return list;
+	}
+
+	public void setContextDataList(List<String> contextDataList) {
+		this.contextDataList = contextDataList;
 	}
 
 	public void setContextSources(List<String> contextSources) {
@@ -131,12 +175,16 @@ public class SituationBean {
 		this.duration = duration;
 	}
 
-	public void setMappedContextData(List<ContextSourceTO> mappedContextData) {
+	public void setMappedContextData(Map<String, ContextSourceTO> mappedContextData) {
 		this.mappedContextData = mappedContextData;
 	}
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public void setRoot(TreeNode root) {
+		this.root = root;
 	}
 
 	public void setSelectedContextSource(String selectedContextSource) {
