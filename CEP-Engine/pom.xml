@@ -3,10 +3,10 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
 	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>edu.fing.switchyard</groupId>
-	<artifactId>CEP-Engine</artifactId>
+	<groupId>edu.fing.context.management</groupId>
+	<artifactId>cep-engine</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>edu.fing.switchyard:CEP-Engine</name>
+	<name>edu.fing.context.management:cep-engine</name>
 	<properties>
 		<switchyard.version>1.1.0.Final</switchyard.version>
 		<droolsVersion>6.0.0.Final</droolsVersion>

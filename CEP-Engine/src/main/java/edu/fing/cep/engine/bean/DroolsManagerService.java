@@ -13,4 +13,6 @@ public interface DroolsManagerService {
 
 	CreateRulesVersionResponseTO testDroolsCompiling(VersionTO versionTO);
 
+	void intializeDroolsContext();
+
 }

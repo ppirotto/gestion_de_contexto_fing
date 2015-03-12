@@ -47,6 +47,7 @@
     </sca:service>
     <sca:reference name="DroolsManagerService" multiplicity="0..1" promote="CEPServiceBean/DroolsManagerService">
       <sca:interface.java interface="edu.fing.context.reasoner.bean.DroolsManagerService"/>
+      <sca:binding.sca sy:targetNamespace="urn:edu.fing.context.management:cep-engine:1.0" sy:target="DroolsManagerService" name="sca3"/>
     </sca:reference>
   </sca:composite>
 </sy:switchyard>

@@ -39,8 +39,8 @@ public class DroolsManagerServiceBean implements DroolsManagerService {
 	
 	private static ReentrantReadWriteLock  lock = new ReentrantReadWriteLock();
 	
-	@PostConstruct
-	void intializeDroolsContext() {
+	@Override
+	public void intializeDroolsContext() {
 		try {
 			//inicializo fields para Drools
 			kServices = KieServices.Factory.get();			
