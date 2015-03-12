@@ -16,7 +16,7 @@ import edu.fing.contenxt.management.RemoteInvokerUtils.ServiceIp;
 public class ContextDatumBean {
 
 	private String atributeName;
-	private List<String> contextualDatumList;
+	private List<String> contextualDatumList = (List<String>) RemoteInvokerUtils.invoke(RemoteInvokerUtils.ContextReasonerConfigService, "getContextData", null, ServiceIp.ContextReasonerIp);;
 	@ManagedProperty(value = "#{sessionBean}")
 	private SessionBean session;
 
@@ -26,10 +26,14 @@ public class ContextDatumBean {
 		Boolean result = (Boolean) RemoteInvokerUtils.invoke(RemoteInvokerUtils.ContextReasonerConfigService, "createContextDatum", this.atributeName, ServiceIp.ContextReasonerIp);
 		if (result) {
 			String mensaje = "Servicio creado con éxito";
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(null, mensaje));
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Éxito", mensaje));
 			// servicio de context reasoner
 			// (url servicio, situación, lista de adaptaciones con su data)
 
+		} else {
+
+			String mensaje = "Error al definir la nueva data contextual";
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERROR", mensaje));
 		}
 		return "inicio";
 	}
@@ -39,13 +43,8 @@ public class ContextDatumBean {
 	}
 
 	public List<String> getContextualDatumList() {
+		return this.contextualDatumList;
 
-		List<String> list = (List<String>) RemoteInvokerUtils.invoke(RemoteInvokerUtils.ContextReasonerConfigService, "getDatum", null, ServiceIp.ContextReasonerIp);
-		if (list != null) {
-			return this.contextualDatumList;
-		} else {
-			return mocker();
-		}
 	}
 
 	public SessionBean getSession() {

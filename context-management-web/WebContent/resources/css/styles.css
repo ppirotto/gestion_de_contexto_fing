@@ -5,6 +5,9 @@
     position: relative;
 }
 
+.topAligned {
+    vertical-align: top;
+}
 .CodeMirror-scroll {
     height: auto !important;
     outline: 0 none;

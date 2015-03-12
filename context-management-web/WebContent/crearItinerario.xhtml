@@ -117,9 +117,10 @@
 			</p:panelGrid>
 
 
-			<p:growl id="growl2" life="2000" />
+					<p:growl autoUpdate="true" sticky="true" showDetail="true"
+					escape="true" showSummary="true" />
 			<p:commandButton value="Crear Itinerario" ajax="false"
-				action="#{itineraryBean.crearItinerario}" update="growl2"
+				action="#{itineraryBean.crearItinerario}"
 				styleClass="ui-priority-primary " style="margin-top: 10px;" />
 
 			<p:growl id="messages" showDetail="true" />

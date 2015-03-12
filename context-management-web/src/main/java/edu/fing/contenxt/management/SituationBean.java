@@ -11,6 +11,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
+import org.primefaces.event.FlowEvent;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
 
@@ -27,9 +28,9 @@ public class SituationBean {
 	private long duration;
 	private String selectedContextSource;
 
-	private List<String> contextSources;
+	private List<String> contextSources = (List<String>) RemoteInvokerUtils.invoke(RemoteInvokerUtils.ContextReasonerConfigService, "getContextSources", null, ServiceIp.ContextReasonerIp);
 
-	private List<String> contextDataList;
+	private List<String> contextDataList = (List<String>) RemoteInvokerUtils.invoke(RemoteInvokerUtils.ContextReasonerConfigService, "getContextData", null, ServiceIp.ContextReasonerIp);
 	private List<String> selectedInputDatum;
 	private List<String> selectedOutputDatum;
 
@@ -48,12 +49,12 @@ public class SituationBean {
 		sit.setDescription(this.getDescription());
 		sit.setDuration(this.duration);
 
+		sit.setContextSources(new ArrayList(this.mappedContextData.values()));
+
 		Boolean result = (Boolean) RemoteInvokerUtils.invoke(RemoteInvokerUtils.ContextReasonerConfigService, "createSituation", sit, ServiceIp.ContextReasonerIp);
 		if (result) {
 			String mensaje = "Servicio creado con éxito";
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(null, mensaje));
-			// servicio de context reasoner
-			// (url servicio, situación, lista de adaptaciones con su data)
 
 		}
 		return "inicio";
@@ -80,24 +81,10 @@ public class SituationBean {
 
 	public List<String> getContextDataList() {
 
-		List<String> list = null;
-		if (list != null) {
-			this.contextDataList = list;
-
-		} else {
-			this.contextDataList = mocker();
-
-		}
 		return this.contextDataList;
 	}
 
 	public List<String> getContextSources() {
-
-		// List<String> list = (List<String>)
-		// RemoteInvokerUtils.invoke(RemoteInvokerUtils.ContextReasonerConfigService,
-		// "getDatum", null, ServiceIp.ContextReasonerIp);
-		this.contextSources = new ArrayList<String>();
-		this.contextSources.add("InCity");
 
 		return this.contextSources;
 	}
@@ -142,21 +129,10 @@ public class SituationBean {
 		return this.session;
 	}
 
-	private List<String> mocker() {
-		List<String> list = new ArrayList<String>();
-		list.add("city");
-		list.add("latitud");
-		list.add("longitud");
-		list.add("user");
-		list.add("city");
-		list.add("latitud");
-		list.add("longitud");
-		list.add("user");
-		list.add("city");
-		list.add("latitud");
-		list.add("longitud");
-		list.add("user");
-		return list;
+	public String onFlowProcess(FlowEvent event) {
+
+		return event.getNewStep();
+
 	}
 
 	public void setContextDataList(List<String> contextDataList) {

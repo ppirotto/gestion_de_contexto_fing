@@ -9,6 +9,7 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
 import edu.fing.commons.front.dto.ContextSourceTO;
+import edu.fing.contenxt.management.RemoteInvokerUtils.ServiceIp;
 import edu.fing.context.management.jar.creation.JarCreationService;
 
 @ManagedBean
@@ -26,8 +27,6 @@ public class ContextSourceBean {
 
 	public String crearFuenteContexto() {
 		System.out.println("Fuente creada");
-		String mensaje = "Fuente de contexto creada con ï¿½xito";
-		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(null, mensaje));
 
 		ContextSourceTO cS = new ContextSourceTO();
 		cS.setEventName(this.eventName);
@@ -41,8 +40,16 @@ public class ContextSourceBean {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		// servicio de context reasoner
-		// (url servicio, situaciï¿½n, lista de adaptaciones con su data)
+		boolean res = (Boolean) RemoteInvokerUtils.invoke(RemoteInvokerUtils.ContextReasonerConfigService, "createContextSource", cS, ServiceIp.ContextReasonerIp);
+
+		if (res) {
+			String mensaje = "Fuente de contexto creada con éxito";
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", mensaje));
+		} else {
+			String mensaje = "Error al crear fuente de contexto";
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERROR", mensaje));
+		}
+
 		return "inicio";
 	}
 

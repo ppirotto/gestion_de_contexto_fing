@@ -10,7 +10,7 @@
 
 	<ui:define name="title">Crear Situación</ui:define>
 	<ui:define name="body">
-		<p:messages autoUpdate="true" id="messagesGeneral" />
+		
 		<h1>
 			<h:outputText value="Definir data contextual" />
 		</h1>
@@ -20,7 +20,7 @@
 
 				<p:dataTable var="datum" emptyMessage="No hay data definida" style="width:500px" rows="10"
                          paginator="true"	paginatorPosition="bottom"
-					value="#{contextualDatumBean.contextualDatumList}">
+					value="#{contextDatumBean.contextualDatumList}">
 					<f:facet name="header">
             			Data contextual definida
         			</f:facet>
@@ -34,15 +34,16 @@
 					<p:outputLabel>
 						<b>Nombre del atributo</b>
 					</p:outputLabel>
-					<p:inputText size="35" value="#{contextualDatumBean.atributeName}"
+					<p:inputText size="35" value="#{contextDatumBean.atributeName}"
 						required="true" label="Nombre de la situación" />
 				</p:panelGrid>
 
 			</h:panelGrid>
 
-
+		<p:growl autoUpdate="true" sticky="true" showDetail="true"
+					escape="true" showSummary="true" />
 			<p:commandButton value="Agregar"
-				action="#{contextualDatumBean.crearDatum()}"
+				action="#{contextDatumBean.crearDatum()}"
 				styleClass="ui-priority-primary " style="margin-top: 10px;" />
 		</h:form>
 	</ui:define>

@@ -119,7 +119,7 @@ public class RulesBean {
 		RuleTO r = new RuleTO();
 		r.setId(1);
 		r.setName("REGLA POSTA");
-		r.setRule("gggggggggggggggggggggggggggg");
+		r.setDrl("gggggggggggggggggggggggggggg");
 		rules.add(r);
 		v1.setRules(rules);
 		a.add(v1);

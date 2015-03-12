@@ -65,9 +65,10 @@
 				<p:inputText size="38" value="#{contextSourceBean.cron}"
 					requiredMessage="Ingrese una cron" required="true" label="CRON" />
 			</p:panelGrid>
-			<p:growl id="growl2" life="2000" severity="s" />
+			<p:growl autoUpdate="true" sticky="true" showDetail="true"
+					escape="true" showSummary="true" />
 			<p:commandButton value="Crear Fuente de Contexto"
-				action="#{contextSourceBean.crearFuenteContexto()}" update="growl2"
+				action="#{contextSourceBean.crearFuenteContexto()}"
 				styleClass="ui-priority-primary" style="margin-top: 10px;" />
 		</h:form>
 	</ui:define>

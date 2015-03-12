@@ -15,86 +15,119 @@
 			<f:facet name="header">Crear Situación</f:facet>
 
 			<h:form>
-				<p:panelGrid columns="2">
-					<p:outputLabel>
+				<p:tab id="tab1" title="Definición de datos de la situación">
+					<p:wizard flowListener="#{userWizard.onFlowProcess}">
+						<p:panelGrid columns="2">
+							<p:outputLabel>
 						Nombre de la situación
 					</p:outputLabel>
-					<p:inputText size="25" value="#{situationBean.name}"
-						required="true" label="Nombre de la situación" />
-					<p:outputLabel>
+							<p:inputText size="25" value="#{situationBean.name}"
+								required="true" label="Nombre de la situación" />
+							<p:outputLabel>
 						Descripción
 					</p:outputLabel>
-					<p:inputTextarea scrollHeight="2" autoResize="false"
-						style="width:225px" value="#{situationBean.description}"
-						required="true" validatorMessage="Falta descripción"
-						label="Descripción" />
+							<p:inputTextarea scrollHeight="2" autoResize="false"
+								style="width:225px" value="#{situationBean.description}"
+								required="true" validatorMessage="Falta descripción"
+								label="Descripción" />
 
-					<p:outputLabel>
+							<p:outputLabel>
 						Duración (milisegundos)
 					</p:outputLabel>
-					<p:inputText id="duration" size="16"
-						value="#{situationBean.duration}" label="Duración"
-						validatorMessage="Duración mayor a 0">
-						<f:validateDoubleRange minimum="1" />
-					</p:inputText>
+							<p:inputText id="duration" size="16"
+								value="#{situationBean.duration}" label="Duración"
+								validatorMessage="Duración mayor a 0">
+								<f:validateDoubleRange minimum="1" />
+							</p:inputText>
 
-				</p:panelGrid>
-
-
-
-				<p:panel>
-					<f:facet name="header">Input</f:facet>
+						</p:panelGrid>
 
 
-					<h:panelGrid columns="3">
-						<h:panelGrid columns="2">
-							<p:outputLabel value="Fuente de contexto" />
+						<h:panelGrid columns="2" columnClasses="topAligned">
+							<p:panel>
+								<f:facet name="header">Input</f:facet>
 
-							<p:selectOneMenu id="selectSituation" autoupdate="true"
-								required="true" requiredMessage="Seleccione fuente de conexto"
-								styleClass="span2"
-								value="#{situationBean.selectedContextSource}" effect="fade">
-								<f:selectItem itemLabel="Seleccione una" itemValue="" />
-								<f:selectItems value="#{situationBean.contextSources}"
-									var="contSource" itemLabel="#{contSource}"
-									itemValue="#{contSource}" />
-							</p:selectOneMenu>
+
+								<h:panelGrid columns="2">
+									<h:panelGrid columns="1">
+										<p:outputLabel value="Fuente de contexto" />
+
+										<p:selectOneMenu id="selectSituation" autoupdate="true"
+											required="true"
+											requiredMessage="Seleccione fuente de conexto"
+											style="width:180px"
+											value="#{situationBean.selectedContextSource}" effect="fade">
+											<f:selectItem itemLabel="Seleccione una" itemValue="" />
+											<f:selectItems value="#{situationBean.contextSources}"
+												var="contSource" itemLabel="#{contSource}"
+												itemValue="#{contSource}" />
+										</p:selectOneMenu>
+
+										<p:dataTable id="dataTable" var="dat" style="width:180px"
+											value="#{situationBean.contextDataList}" scrollable="true"
+											scrollHeight="130"
+											selection="#{situationBean.selectedInputDatum}"
+											rowKey="#{dat}">
+
+											<p:column selectionMode="multiple"
+												style="width:16px;text-align:center" />
+											<p:column headerText="ContextData">
+												<h:outputText value="#{dat}" />
+											</p:column>
+
+										</p:dataTable>
+
+									</h:panelGrid>
+									<p:panel>
+										<f:facet name="header">Seleccionados	</f:facet>
+
+										<p:tree id="tree" value="#{situationBean.root}" var="node"
+											dynamic="true"
+											style="width:190px;height:160px;overflow: auto;">
+
+											<p:treeNode>
+												<h:outputText value="#{node}" />
+											</p:treeNode>
+										</p:tree>
+									</p:panel>
+
+
+								</h:panelGrid>
+								<f:facet name="footer">
+									<p:commandButton value="Asignar" update="tree"
+										action="#{situationBean.createDatumForInput()}" />
+								</f:facet>
+
+							</p:panel>
+
+							<p:panel>
+								<f:facet name="header">Output</f:facet>
+								<p:dataTable id="dataTableOutput" var="dat" style="width:220px"
+									value="#{situationBean.contextDataList}" scrollable="true"
+									scrollHeight="260"
+									selection="#{situationBean.selectedOutputDatum}"
+									rowKey="#{dat}">
+
+									<p:column selectionMode="multiple"
+										style="width:16px;text-align:center" />
+									<p:column headerText="ContextData">
+										<h:outputText value="#{dat}" />
+									</p:column>
+
+								</p:dataTable>
+
+							</p:panel>
 						</h:panelGrid>
-						<p:dataTable id="dataTable" var="dat" style="width:180px"
-							value="#{situationBean.contextDataList}" scrollable="true"
-							scrollHeight="150"
-							selection="#{situationBean.selectedInputDatum}" rowKey="#{dat}">
+						<p:growl autoUpdate="true" sticky="true" showDetail="true"
+							escape="true" showSummary="true" />
+						<p:commandButton value="Crear Situación"
+							action="#{situationBean.crearSituacion()}"
+							styleClass="ui-priority-primary" style="margin-top: 10px;" />
 
-							<p:column selectionMode="multiple"
-								style="width:16px;text-align:center" />
-							<p:column headerText="ContextData">
-								<h:outputText value="#{dat}" />
-							</p:column>
 
-						</p:dataTable>
-						<p:panel>
-						
-						<f:facet name="header">Seleccionados	</f:facet>
-						
-									<p:tree id="tree" value="#{situationBean.root}" var="node" dynamic="true" style="width:200px;height:130px;overflow: auto;">
-							
-							<p:treeNode>
-								<h:outputText value="#{node}" />
-							</p:treeNode>
-						</p:tree>
-						</p:panel>
-			
+					</p:wizard>
 
-					</h:panelGrid>
-					<f:facet name="footer">
-						<p:commandButton value="Asignar" update="tree"
-							action="#{situationBean.createDatumForInput()}" />
-					</f:facet>
-
-				</p:panel>
-				<p:commandButton value="Crear Servicio"
-					action="#{situationBean.crearSituacion()}"
-					styleClass="ui-priority-primary" style="margin-top: 10px;" />
+				</p:tab>
 			</h:form>
 
 		</p:panel>
