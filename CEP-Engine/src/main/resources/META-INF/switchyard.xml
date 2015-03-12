@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<sy:switchyard xmlns:bean="urn:switchyard-component-bean:config:1.1" xmlns:http="urn:switchyard-component-http:config:1.1" xmlns:sca="http://docs.oasis-open.org/ns/opencsa/sca/200912" xmlns:sy="urn:switchyard-config:switchyard:1.1" name="CEP-Engine" targetNamespace="urn:edu.fing.switchyard:CEP-Engine:1.0">
-  <sca:composite name="CEP-Engine" targetNamespace="urn:edu.fing.switchyard:CEP-Engine:1.0">
+<sy:switchyard xmlns:bean="urn:switchyard-component-bean:config:1.1" xmlns:http="urn:switchyard-component-http:config:1.1" xmlns:sca="http://docs.oasis-open.org/ns/opencsa/sca/200912" xmlns:sy="urn:switchyard-config:switchyard:1.1" name="CEP-Engine" targetNamespace="urn:edu.fing.context.management:cep-engine:1.0">
+  <sca:composite name="CEP-Engine" targetNamespace="urn:edu.fing.context.management:cep-engine:1.0">
     <sca:component name="DroolsFeederServiceBean">
       <bean:implementation.bean class="edu.fing.cep.engine.bean.DroolsFeederServiceBean"/>
       <sca:service name="DroolsFeederService">
@@ -25,10 +25,15 @@
     </sca:service>
     <sca:reference name="CEPService" multiplicity="0..1" promote="DroolsManagerServiceBean/CEPService">
       <sca:interface.java interface="edu.fing.cep.engine.bean.CEPService"/>
+      <sca:binding.sca sy:targetNamespace="urn:edu.fing.context.management:context-reasoner:1.0" sy:target="CEPService" name="scacep"/>
     </sca:reference>
     <sca:service name="DroolsManagerService" promote="DroolsManagerServiceBean/DroolsManagerService">
       <sca:interface.java interface="edu.fing.cep.engine.bean.DroolsManagerService"/>
       <sca:binding.sca name="sca"/>
+      <http:binding.http name="http1">
+        <sy:operationSelector operationName="intializeDroolsContext"/>
+        <http:contextPath>cep</http:contextPath>
+      </http:binding.http>
     </sca:service>
   </sca:composite>
 </sy:switchyard>
