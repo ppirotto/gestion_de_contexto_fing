@@ -10,124 +10,142 @@
 
 	<ui:define name="title">Crear Situación</ui:define>
 	<ui:define name="body">
-		<p:messages autoUpdate="true" id="messagesGeneral" />
 		<p:panel>
-			<f:facet name="header">Crear Situación</f:facet>
+			<!-- 			<f:facet name="header">Crear Situación</f:facet> -->
 
 			<h:form>
-				<p:tab id="tab1" title="Definición de datos de la situación">
-					<p:wizard flowListener="#{userWizard.onFlowProcess}">
-						<p:panelGrid columns="2">
-							<p:outputLabel>
+				<p:growl autoUpdate="true" life="6000" showDetail="true"
+					escape="true" showSummary="true" />
+				<p:wizard flowListener="#{situationBean.onFlowProcess}">
+					<p:tab id="situationTab" title="Situación">
+						<p:panel>
+							<f:facet name="header">Crear Situación</f:facet>
+							<p:panelGrid columns="2">
+								<p:outputLabel>
 						Nombre de la situación
 					</p:outputLabel>
-							<p:inputText size="25" value="#{situationBean.name}"
-								required="true" label="Nombre de la situación" />
-							<p:outputLabel>
+								<p:inputText size="25" value="#{situationBean.name}"
+									required="true" label="Nombre de la situación" />
+								<p:outputLabel>
 						Descripción
 					</p:outputLabel>
-							<p:inputTextarea scrollHeight="2" autoResize="false"
-								style="width:225px" value="#{situationBean.description}"
-								required="true" validatorMessage="Falta descripción"
-								label="Descripción" />
+								<p:inputTextarea scrollHeight="2" autoResize="false"
+									style="width:225px" value="#{situationBean.description}"
+									required="true" validatorMessage="Falta descripción"
+									label="Descripción" />
 
-							<p:outputLabel>
+								<p:outputLabel>
 						Duración (milisegundos)
 					</p:outputLabel>
-							<p:inputText id="duration" size="16"
-								value="#{situationBean.duration}" label="Duración"
-								validatorMessage="Duración mayor a 0">
-								<f:validateDoubleRange minimum="1" />
-							</p:inputText>
+								<p:inputText id="duration" size="16"
+									value="#{situationBean.duration}" label="Duración"
+									validatorMessage="Duración mayor a 0">
+									<f:validateDoubleRange minimum="1" />
+								</p:inputText>
 
-						</p:panelGrid>
+							</p:panelGrid>
+						</p:panel>
+					</p:tab>
+					<p:tab id="contextTab" title="Contexto">
+						<p:panel>
+							<f:facet name="header">Definición de data contextual</f:facet>
+							<h:panelGrid columns="2" columnClasses="topAligned">
+								<p:panel>
+									<f:facet name="header">Input</f:facet>
 
 
-						<h:panelGrid columns="2" columnClasses="topAligned">
-							<p:panel>
-								<f:facet name="header">Input</f:facet>
+									<h:panelGrid columns="2">
+										<h:panelGrid columns="1">
+											<p:outputLabel value="Fuente de contexto" />
 
+											<p:selectOneMenu id="selectSituation" autoupdate="true"
+												required="true"
+												requiredMessage="Seleccione fuente de conexto"
+												style="width:180px"
+												value="#{situationBean.selectedContextSource}" effect="fade">
+												<f:selectItem itemLabel="Seleccione una" itemValue="" />
+												<f:selectItems value="#{situationBean.contextSources}"
+													var="contSource" itemLabel="#{contSource}"
+													itemValue="#{contSource}" />
+											</p:selectOneMenu>
 
-								<h:panelGrid columns="2">
-									<h:panelGrid columns="1">
-										<p:outputLabel value="Fuente de contexto" />
+											<p:dataTable id="dataTable" var="dat" style="width:180px"
+												value="#{situationBean.contextDataList}" scrollable="true"
+												scrollHeight="130"
+												selection="#{situationBean.selectedInputDatum}"
+												rowKey="#{dat}">
 
-										<p:selectOneMenu id="selectSituation" autoupdate="true"
-											required="true"
-											requiredMessage="Seleccione fuente de conexto"
-											style="width:180px"
-											value="#{situationBean.selectedContextSource}" effect="fade">
-											<f:selectItem itemLabel="Seleccione una" itemValue="" />
-											<f:selectItems value="#{situationBean.contextSources}"
-												var="contSource" itemLabel="#{contSource}"
-												itemValue="#{contSource}" />
-										</p:selectOneMenu>
+												<p:column selectionMode="multiple"
+													style="width:16px;text-align:center" />
+												<p:column headerText="ContextData">
+													<h:outputText value="#{dat}" />
+												</p:column>
 
-										<p:dataTable id="dataTable" var="dat" style="width:180px"
-											value="#{situationBean.contextDataList}" scrollable="true"
-											scrollHeight="130"
-											selection="#{situationBean.selectedInputDatum}"
-											rowKey="#{dat}">
+											</p:dataTable>
 
-											<p:column selectionMode="multiple"
-												style="width:16px;text-align:center" />
-											<p:column headerText="ContextData">
-												<h:outputText value="#{dat}" />
-											</p:column>
+										</h:panelGrid>
+										<p:panel>
+											<f:facet name="header">Seleccionados	</f:facet>
 
-										</p:dataTable>
+											<p:tree id="tree" value="#{situationBean.root}" var="node"
+												dynamic="true"
+												style="width:190px;height:160px;overflow: auto;">
+
+												<p:treeNode>
+													<h:outputText value="#{node}" />
+												</p:treeNode>
+											</p:tree>
+										</p:panel>
+
 
 									</h:panelGrid>
-									<p:panel>
-										<f:facet name="header">Seleccionados	</f:facet>
+									<f:facet name="footer">
+										<p:commandButton value="Asignar" update="tree"
+											action="#{situationBean.createDatumForInput()}" />
+									</f:facet>
 
-										<p:tree id="tree" value="#{situationBean.root}" var="node"
-											dynamic="true"
-											style="width:190px;height:160px;overflow: auto;">
+								</p:panel>
 
-											<p:treeNode>
-												<h:outputText value="#{node}" />
-											</p:treeNode>
-										</p:tree>
-									</p:panel>
+								<p:panel>
+									<f:facet name="header">Output</f:facet>
+									<p:dataTable id="dataTableOutput" var="dat" style="width:220px"
+										value="#{situationBean.contextDataList}" scrollable="true"
+										scrollHeight="260"
+										selection="#{situationBean.selectedOutputDatum}"
+										rowKey="#{dat}">
+
+										<p:column selectionMode="multiple"
+											style="width:16px;text-align:center" />
+										<p:column headerText="ContextData">
+											<h:outputText value="#{dat}" />
+										</p:column>
+
+									</p:dataTable>
+
+								</p:panel>
+							</h:panelGrid>
 
 
-								</h:panelGrid>
-								<f:facet name="footer">
-									<p:commandButton value="Asignar" update="tree"
-										action="#{situationBean.createDatumForInput()}" />
-								</f:facet>
+						</p:panel>
+					</p:tab>
 
-							</p:panel>
 
-							<p:panel>
-								<f:facet name="header">Output</f:facet>
-								<p:dataTable id="dataTableOutput" var="dat" style="width:220px"
-									value="#{situationBean.contextDataList}" scrollable="true"
-									scrollHeight="260"
-									selection="#{situationBean.selectedOutputDatum}"
-									rowKey="#{dat}">
+					<p:tab id="ruleTab" title="Regla">
+						<p:panel header="Definir la regla">
+							<pe:codeMirror id="codeMirror"
+								style="min-width:400px;min-height:400px;" mode="javascript"
+								theme="eclipse" value="#{situationBean.rule}" lineNumbers="true"
+								matchBrackets="true" lineWrapping="true" />
+						</p:panel>
 
-									<p:column selectionMode="multiple"
-										style="width:16px;text-align:center" />
-									<p:column headerText="ContextData">
-										<h:outputText value="#{dat}" />
-									</p:column>
-
-								</p:dataTable>
-
-							</p:panel>
-						</h:panelGrid>
-						<p:growl autoUpdate="true" sticky="true" showDetail="true"
-							escape="true" showSummary="true" />
 						<p:commandButton value="Crear Situación"
 							action="#{situationBean.crearSituacion()}"
-							styleClass="ui-priority-primary" style="margin-top: 10px;" />
+							styleClass="ui-priority-primary"
+							style="margin-top: 10px; float:right;" />
+					</p:tab>
+				</p:wizard>
 
 
-					</p:wizard>
-
-				</p:tab>
 			</h:form>
 
 		</p:panel>

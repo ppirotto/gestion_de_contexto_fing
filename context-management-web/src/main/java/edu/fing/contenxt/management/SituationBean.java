@@ -38,6 +38,8 @@ public class SituationBean {
 
 	private Map<String, ContextSourceTO> mappedContextData = new HashMap<String, ContextSourceTO>();
 
+	private String rule;
+
 	@ManagedProperty(value = "#{sessionBean}")
 	private SessionBean session;
 
@@ -113,6 +115,10 @@ public class SituationBean {
 		return this.root;
 	}
 
+	public String getRule() {
+		return this.rule;
+	}
+
 	public String getSelectedContextSource() {
 		return this.selectedContextSource;
 	}
@@ -130,6 +136,11 @@ public class SituationBean {
 	}
 
 	public String onFlowProcess(FlowEvent event) {
+		if (event.getNewStep().equals("ruleTab")) {
+
+			// llamar servicio de
+			this.rule = "llamar servicio que crea el template";
+		}
 
 		return event.getNewStep();
 
@@ -161,6 +172,10 @@ public class SituationBean {
 
 	public void setRoot(TreeNode root) {
 		this.root = root;
+	}
+
+	public void setRule(String rule) {
+		this.rule = rule;
 	}
 
 	public void setSelectedContextSource(String selectedContextSource) {

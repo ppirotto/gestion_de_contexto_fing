@@ -10,121 +10,130 @@
 
 	<ui:define name="title">Crear Itinerario</ui:define>
 	<ui:define name="body">
-		<h1>
-			<h:outputText value="Crear Itinerario" />
-		</h1>
+
 
 		<h:form enctype="multipart/form-data">
-			<h:panelGrid columns="1">
-				<p:panelGrid columns="2">
 
-					<p:outputLabel for="selectMenu">
-						<b>Servicio</b>
-					</p:outputLabel>
-					<p:selectOneMenu id="selectMenu" autoupdate="true" required="true" requiredMessage="Seleccione un servicio"
-						styleClass="span4" value="#{itineraryBean.selectedService}"
-						effect="fade">
-						<f:selectItem itemLabel="Seleccione un servicio" itemValue="" />
-						<f:selectItems value="#{itineraryBean.serviceList}" var="Service"
-							itemLabel="#{Service.serviceName}/#{Service.operationName}"
-							itemValue="#{Service.id}" />
-					</p:selectOneMenu>
+			<p:panel>
+				<f:facet name="header">Crear Itinerario</f:facet>
+				<h:panelGrid columns="1">
+					<p:panelGrid columns="2">
+						<f:facet name="header">Itinerario</f:facet>
+						<p:outputLabel for="selectMenu">
+							<b>Servicio</b>
+						</p:outputLabel>
+						<p:selectOneMenu id="selectMenu" autoupdate="true" required="true"
+							requiredMessage="Seleccione un servicio" styleClass="span4"
+							value="#{itineraryBean.selectedService}" effect="fade">
+							<f:selectItem itemLabel="Seleccione un servicio" itemValue="" />
+							<f:selectItems value="#{itineraryBean.serviceList}" var="Service"
+								itemLabel="#{Service.serviceName}/#{Service.operationName}"
+								itemValue="#{Service.id}" />
+						</p:selectOneMenu>
 
-					<p:outputLabel for="selectSituation">
-						<b>Situación</b>
-					</p:outputLabel>
-					<p:selectOneMenu id="selectSituation" autoupdate="true" required="true" requiredMessage="Seleccione una situación"
-						styleClass="span4" value="#{itineraryBean.selectedSituation}"
-						effect="fade">
-						<f:selectItem itemLabel="Seleccione una situación" itemValue="" />
-						<f:selectItems value="#{itineraryBean.situationList}"
-							var="Situation" itemLabel="#{Situation.name}"
-							itemValue="#{Situation.name}" />
-					</p:selectOneMenu>
+						<p:outputLabel for="selectSituation">
+							<b>Situación</b>
+						</p:outputLabel>
+						<p:selectOneMenu id="selectSituation" autoupdate="true"
+							required="true" requiredMessage="Seleccione una situación"
+							styleClass="span4" value="#{itineraryBean.selectedSituation}"
+							effect="fade">
+							<f:selectItem itemLabel="Seleccione una situación" itemValue="" />
+							<f:selectItems value="#{itineraryBean.situationList}"
+								var="Situation" itemLabel="#{Situation.name}"
+								itemValue="#{Situation.name}" />
+						</p:selectOneMenu>
 
-					<p:outputLabel>
-						<b>Prioridad</b>
-					</p:outputLabel>
-					<p:inputText id="prioridad" size="10" required="true" requiredMessage="Ingrese prioridad" validatorMessage="Proiridad mayor a 0"
-						value="#{itineraryBean.priority}" label="Prioridad">
-						<f:convertNumber integerOnly="true" type="number" />
-						<f:validateDoubleRange minimum="1"/>  
-					</p:inputText>
+						<p:outputLabel>
+							<b>Prioridad</b>
+						</p:outputLabel>
+						<p:inputText id="prioridad" size="10" required="true"
+							requiredMessage="Ingrese prioridad"
+							validatorMessage="Proiridad mayor a 0"
+							value="#{itineraryBean.priority}" label="Prioridad">
+							<f:convertNumber integerOnly="true" type="number" />
+							<f:validateDoubleRange minimum="1" />
+						</p:inputText>
 
 
 
-				</p:panelGrid>
+					</p:panelGrid>
 
 
-				<h3>
-					<b>Agregue los pasos del itinerario</b>
-				</h3>
-				<p:panelGrid columns="3">
-					<h:outputLabel>
-						<b>Paso del itinerario</b>
-					</h:outputLabel>
-					<p:selectOneMenu id="selectAdaptType" autoupdate="true"
-						styleClass="span4" value="#{itineraryBean.adaptSelec}"
-						effect="fade">adaptationTypeList
+					<p:panelGrid columns="2">
+						<f:facet name="header">Agregue los pasos del itinerario</f:facet>
+						<h:outputLabel>
+							<b>Paso del itinerario</b>
+						</h:outputLabel>
+						<p:selectOneMenu id="selectAdaptType" autoupdate="true"
+							styleClass="span3" value="#{itineraryBean.adaptSelec}"
+							effect="fade">adaptationTypeList
 						<f:selectItem itemLabel="Seleccione adaptación a crear"
-							itemValue="" />
-						<f:selectItems value="#{itineraryBean.adaptationTypeList}"
-							var="adapType" itemLabel="#{adapType}" itemValue="#{adapType}" />
+								itemValue="" />
+							<f:selectItems value="#{itineraryBean.adaptationTypeList}"
+								var="adapType" itemLabel="#{adapType}" itemValue="#{adapType}" />
 
-					</p:selectOneMenu>
-					<p:commandButton value="Agregar" id="ajax" update="adaptaciones descrpition"
-						actionListener="#{itineraryBean.agregarAdaptacion}" />
-					<p:outputLabel>
-						<b>Descripción</b>
-					</p:outputLabel>
-					<p:inputText id="descrpition" size="38"
-						value="#{itineraryBean.description}" label="Descripción">
-					</p:inputText>
+						</p:selectOneMenu>
+
+						<p:outputLabel>
+							<b>Descripción</b>
+						</p:outputLabel>
+						<p:inputTextarea id="descrpition" scrollHeight="2"  cols="30" rows="2"
+							value="#{itineraryBean.description}" label="Descripción">
+						</p:inputTextarea>
+						<f:facet name="footer">
+
+							<p:commandButton value="Agregar" id="ajax" style="float:right;"
+								update="adaptaciones descrpition"
+								actionListener="#{itineraryBean.agregarAdaptacion}" />
+						</f:facet>
 
 
+					</p:panelGrid>
+
+				</h:panelGrid>
+
+
+				<p:panelGrid id="adaptaciones" styleClass="centerContent"
+					columns="1">
+					<f:facet name="header">Itinerario</f:facet>
+
+					<c:forEach items="#{itineraryBean.adaptations}" var="adap">
+						<p:row>
+							<p:column>
+								<h:outputText value="#{adap.id}" />
+							</p:column>
+							<p:column>
+								<h:outputText value="#{adap.adaptationType}" />
+							</p:column>
+
+							<p:column>
+								<h:outputText value="#{adap.description}" />
+							</p:column>
+
+							<p:column rendered="#{adap.adaptationType.renderFileUpload()}">
+								<p:fileUpload value="#{adap.data}" mode="simple"
+									dragDropSupport="true" />
+							</p:column>
+							<p:column rendered="#{adap.adaptationType.renderStringInput()}">
+								<p:inputText value="#{adap.extraData}">
+								</p:inputText>
+							</p:column>
+						</p:row>
+					</c:forEach>
 				</p:panelGrid>
 
-			</h:panelGrid>
 
-			<h2>
-				<h:outputText value="Itinerario:" />
-			</h2>
-
-			<p:panelGrid id="adaptaciones" styleClass="centerContent">
-				<c:forEach items="#{itineraryBean.adaptations}" var="adap">
-					<p:row>
-						<p:column>
-							<h:outputText value="#{adap.id}" />
-						</p:column>
-						<p:column>
-							<h:outputText value="#{adap.adaptationType}" />
-						</p:column>
-						
-						<p:column>
-							<h:outputText value="#{adap.description}" />
-						</p:column>
-
-						<p:column rendered="#{adap.adaptationType.renderFileUpload()}">
-							<p:fileUpload value="#{adap.data}" mode="simple"
-								dragDropSupport="true" />
-						</p:column>
-						<p:column rendered="#{adap.adaptationType.renderStringInput()}">
-							<p:inputText value="#{adap.extraData}">
-							</p:inputText>
-						</p:column>
-					</p:row>
-				</c:forEach>
-			</p:panelGrid>
-
-
-					<p:growl autoUpdate="true" sticky="true" showDetail="true"
+				<p:growl autoUpdate="true" sticky="true" showDetail="true"
 					escape="true" showSummary="true" />
-			<p:commandButton value="Crear Itinerario" ajax="false"
-				action="#{itineraryBean.crearItinerario}"
-				styleClass="ui-priority-primary " style="margin-top: 10px;" />
+				<p:commandButton value="Crear Itinerario" ajax="false"
+					action="#{itineraryBean.crearItinerario}"
+					styleClass="ui-priority-primary " style="margin-top: 10px;" />
 
-			<p:growl id="messages" showDetail="true" />
+
+			</p:panel>
 		</h:form>
+
 	</ui:define>
 	<ui:define name="menuIzq">
 		<ui:include src="/menu.xhtml" />
