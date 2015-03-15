@@ -30,7 +30,7 @@ public class DroolsManagerServiceBean implements DroolsManagerService {
 
 	private static KieSession kSession;
 	private static KieContainer kContainer;
-	private static KieServices kServices;
+	private static KieServices kServices = null;
 	private KieBaseConfiguration streamModeConfig;
 
 	@Inject
@@ -39,28 +39,35 @@ public class DroolsManagerServiceBean implements DroolsManagerService {
 
 	private static ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
 
-	@PostConstruct
+	@Override
 	public void intializeDroolsContext() {
-		try {
-			// inicializo fields para Drools
-			kServices = KieServices.Factory.get();
-			streamModeConfig = kServices.newKieBaseConfiguration();
-			streamModeConfig.setOption(EventProcessingOption.STREAM);
-
-			// Obtengo version activa para deployar
-			VersionTO activeVersion = cepService.getActiveVersion();
-
-			// Creo el releaseId
-			ReleaseId releaseId1 = kServices.newReleaseId("edu.fing.cep.engine", "drools-context-rules", activeVersion.getVersionNumber());
-
-			List<String> stringRules = getStringRules(activeVersion);
-
-			KieModule kieModule = DroolsUtils.createAndDeployJar(kServices, releaseId1, stringRules);
-
-			startSession(kieModule);
-
-		} catch (Throwable t) {
-			t.printStackTrace();
+		if (kServices==null){
+			try {
+				System.out.println("Initializing drools context...");
+				// inicializo fields para Drools
+				kServices = KieServices.Factory.get();
+				streamModeConfig = kServices.newKieBaseConfiguration();
+				streamModeConfig.setOption(EventProcessingOption.STREAM);
+	
+				// Obtengo version activa para deployar
+				VersionTO activeVersion = cepService.getActiveVersion();
+	
+				// Creo el releaseId
+				ReleaseId releaseId1 = kServices.newReleaseId("edu.fing.cep.engine", "drools-context-rules", activeVersion.getVersionNumber());
+	
+				List<String> stringRules = getStringRules(activeVersion);
+	
+				KieModule kieModule = DroolsUtils.createAndDeployJar(kServices, releaseId1, stringRules);
+	
+				startSession(kieModule);
+				System.out.println("Drools context successfully initialized!!!");
+			} catch (Throwable t) {
+				System.out.println("ERROR initializing drools context..");
+				kServices=null;
+				t.printStackTrace();
+			}
+		} else {
+			System.out.println("Drools context already initialized. Discarding initialization...");
 		}
 	}
 

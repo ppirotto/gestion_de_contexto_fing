@@ -101,6 +101,11 @@
 			<artifactId>adaptation-commons</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
+		<dependency>
+			<groupId>org.switchyard.components</groupId>
+			<artifactId>switchyard-component-camel-quartz</artifactId>
+			<version>${switchyard.version}</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
