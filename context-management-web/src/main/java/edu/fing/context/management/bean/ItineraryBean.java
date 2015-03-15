@@ -1,4 +1,4 @@
-package edu.fing.contenxt.management;
+package edu.fing.context.management.bean;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -17,7 +17,9 @@ import edu.fing.commons.dto.AdaptationTO;
 import edu.fing.commons.front.dto.ItineraryTO;
 import edu.fing.commons.front.dto.ServiceTO;
 import edu.fing.commons.front.dto.SituationTO;
-import edu.fing.contenxt.management.RemoteInvokerUtils.ServiceIp;
+import edu.fing.context.management.dto.AdaptationDto;
+import edu.fing.context.management.util.RemoteInvokerUtils;
+import edu.fing.context.management.util.RemoteInvokerUtils.ServiceIp;
 
 @ManagedBean
 @ViewScoped

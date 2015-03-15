@@ -10,7 +10,7 @@ import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
 
 import edu.fing.commons.front.dto.ContextSourceTO;
-import edu.fing.contenxt.management.VirtualServiceDto;
+import edu.fing.context.management.dto.VirtualServiceDto;
 
 public class JarCreationService {
 

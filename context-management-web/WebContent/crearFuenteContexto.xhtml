@@ -16,60 +16,63 @@
 		</h1>
 
 		<h:form>
+			<p:panel>
+				<f:facet name="header">Crear fuente de contexto</f:facet>
+				<p:panelGrid columns="2">
 
-			<p:panelGrid columns="2">
-
-				<p:outputLabel>
-					<b>Nombre del evento</b>
-				</p:outputLabel>
-				<p:inputText size="38" value="#{contextSourceBean.eventName}"
-					required="true" label="Nombre" requiredMessage="Ingrese nombre" />
-
-
-				<p:outputLabel for="selectEventType">
-					<b>Tipo del evento</b>
-				</p:outputLabel>
-				<p:selectOneMenu id="selectEventType" autoupdate="true"
-					required="true" requiredMessage="Seleccione un tipo de evento"
-					styleClass="span4" value="#{contextSourceBean.modeConverter}"
-					effect="fade">
-					<f:selectItem itemLabel="Seleccione un tipo" itemValue="" />
-					<f:selectItem itemLabel="JSON" itemValue="JSON" />
-					<f:selectItem itemLabel="XML" itemValue="XML" />
-
-				</p:selectOneMenu>
-
-				<p:outputLabel>
-					<b>Modo de entrada</b>
-				</p:outputLabel>
-				<p:selectOneMenu id="selectAdaptType" autoupdate="true"
-					required="true" requiredMessage="Seleccione un modo"
-					styleClass="span4" value="#{contextSourceBean.receiveMode}"
-					effect="fade">
-					<f:selectItem itemLabel="Seleccione modo" itemValue="" />
-					<f:selectItem itemLabel="Polling" itemValue="POLLING" />
-					<f:selectItem itemLabel="Listener" itemValue="LISTENER" />
+					<p:outputLabel>
+						<b>Nombre del evento</b>
+					</p:outputLabel>
+					<p:inputText size="38" value="#{contextSourceBean.eventName}"
+						required="true" label="Nombre" requiredMessage="Ingrese nombre" />
 
 
-				</p:selectOneMenu>
+					<p:outputLabel for="selectEventType">
+						<b>Tipo del evento</b>
+					</p:outputLabel>
+					<p:selectOneMenu id="selectEventType" autoupdate="true"
+						required="true" requiredMessage="Seleccione un tipo de evento"
+						styleClass="span4" value="#{contextSourceBean.modeConverter}"
+						effect="fade">
+						<f:selectItem itemLabel="Seleccione un tipo" itemValue="" />
+						<f:selectItem itemLabel="JSON" itemValue="JSON" />
+						<f:selectItem itemLabel="XML" itemValue="XML" />
 
-				<p:outputLabel>
-					<b>URL</b>
-				</p:outputLabel>
-				<p:inputText size="38" value="#{contextSourceBean.url}"
-					requiredMessage="Ingrese una URL" required="true" label="URL" />
+					</p:selectOneMenu>
 
-				<p:outputLabel>
-					<b>Cron</b>
-				</p:outputLabel>
-				<p:inputText size="38" value="#{contextSourceBean.cron}"
-					requiredMessage="Ingrese una cron" required="true" label="CRON" />
-			</p:panelGrid>
-			<p:growl autoUpdate="true" sticky="true" showDetail="true"
+					<p:outputLabel>
+						<b>Modo de entrada</b>
+					</p:outputLabel>
+					<p:selectOneMenu id="selectAdaptType" autoupdate="true"
+						required="true" requiredMessage="Seleccione un modo"
+						styleClass="span4" value="#{contextSourceBean.receiveMode}"
+						effect="fade">
+						<f:selectItem itemLabel="Seleccione modo" itemValue="" />
+						<f:selectItem itemLabel="Polling" itemValue="POLLING" />
+						<f:selectItem itemLabel="Listener" itemValue="LISTENER" />
+
+
+					</p:selectOneMenu>
+
+					<p:outputLabel>
+						<b>URL</b>
+					</p:outputLabel>
+					<p:inputText size="38" value="#{contextSourceBean.url}"
+						requiredMessage="Ingrese una URL" required="true" label="URL" />
+
+					<p:outputLabel>
+						<b>Cron</b>
+					</p:outputLabel>
+					<p:inputText size="38" value="#{contextSourceBean.cron}"
+						requiredMessage="Ingrese una cron" required="true" label="CRON" />
+				</p:panelGrid>
+				<p:growl autoUpdate="true" sticky="true" showDetail="true"
 					escape="true" showSummary="true" />
-			<p:commandButton value="Crear Fuente de Contexto"
-				action="#{contextSourceBean.crearFuenteContexto()}"
-				styleClass="ui-priority-primary" style="margin-top: 10px;" />
+				<p:commandButton value="Crear Fuente de Contexto"
+					action="#{contextSourceBean.crearFuenteContexto()}"
+					styleClass="ui-priority-primary" style="margin-top: 10px;" />
+
+			</p:panel>
 		</h:form>
 	</ui:define>
 	<ui:define name="menuIzq">

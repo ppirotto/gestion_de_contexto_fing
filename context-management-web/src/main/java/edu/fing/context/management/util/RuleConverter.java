@@ -1,4 +1,4 @@
-package edu.fing.contenxt.management;
+package edu.fing.context.management.util;
 
 import java.util.List;
 
@@ -10,6 +10,7 @@ import javax.faces.convert.ConverterException;
 import javax.faces.convert.FacesConverter;
 
 import edu.fing.commons.front.dto.RuleTO;
+import edu.fing.context.management.bean.RulesBean;
 
 @FacesConverter("ruleConverter")
 public class RuleConverter implements Converter {

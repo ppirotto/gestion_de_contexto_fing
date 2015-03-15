@@ -1,4 +1,4 @@
-package edu.fing.contenxt.management;
+package edu.fing.context.management.bean;
 
 import java.io.IOException;
 
@@ -9,8 +9,9 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
 import edu.fing.commons.front.dto.ContextSourceTO;
-import edu.fing.contenxt.management.RemoteInvokerUtils.ServiceIp;
 import edu.fing.context.management.jar.creation.JarCreationService;
+import edu.fing.context.management.util.RemoteInvokerUtils;
+import edu.fing.context.management.util.RemoteInvokerUtils.ServiceIp;
 
 @ManagedBean
 @ViewScoped

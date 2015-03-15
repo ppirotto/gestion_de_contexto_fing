@@ -11,10 +11,9 @@
 	<ui:define name="title">Itinerarios Activos</ui:define>
 	<ui:define name="body">
 		<p:messages autoUpdate="true" id="messagesGeneral" />
-		<h1>
-			<h:outputText value="Ver Itinerarios" />
-		</h1>
-
+	
+<p:panel>
+				<f:facet name="header">Ver Itinerarios</f:facet>
 		<h:form id="form">
 			<p:dataTable var="itineray" 
 				value="#{viewItineraryBean.itineraryList}" style="width:90%;"
@@ -90,6 +89,8 @@
 				</p:outputPanel>
 			</p:dialog>
 		</h:form>
+		
+		</p:panel>
 	</ui:define>
 	<ui:define name="menuIzq">
 		<ui:include src="/menu.xhtml" />

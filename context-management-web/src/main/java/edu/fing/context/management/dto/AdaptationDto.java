@@ -1,4 +1,4 @@
-package edu.fing.contenxt.management;
+package edu.fing.context.management.dto;
 
 import org.primefaces.model.UploadedFile;
 

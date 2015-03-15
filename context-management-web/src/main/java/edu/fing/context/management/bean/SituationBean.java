@@ -1,4 +1,4 @@
-package edu.fing.contenxt.management;
+package edu.fing.context.management.bean;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,7 +17,8 @@ import org.primefaces.model.TreeNode;
 
 import edu.fing.commons.front.dto.ContextSourceTO;
 import edu.fing.commons.front.dto.SituationTO;
-import edu.fing.contenxt.management.RemoteInvokerUtils.ServiceIp;
+import edu.fing.context.management.util.RemoteInvokerUtils;
+import edu.fing.context.management.util.RemoteInvokerUtils.ServiceIp;
 
 @ManagedBean
 @ViewScoped

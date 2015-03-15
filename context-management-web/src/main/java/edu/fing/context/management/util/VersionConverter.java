@@ -1,4 +1,4 @@
-package edu.fing.contenxt.management;
+package edu.fing.context.management.util;
 
 import java.util.List;
 
@@ -10,6 +10,7 @@ import javax.faces.convert.ConverterException;
 import javax.faces.convert.FacesConverter;
 
 import edu.fing.commons.front.dto.VersionTO;
+import edu.fing.context.management.bean.RulesBean;
 
 @FacesConverter("versionConverter")
 public class VersionConverter implements Converter {

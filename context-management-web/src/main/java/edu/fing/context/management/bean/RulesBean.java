@@ -1,4 +1,4 @@
-package edu.fing.contenxt.management;
+package edu.fing.context.management.bean;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -14,7 +14,8 @@ import edu.fing.commons.front.dto.AvailableRulesTO;
 import edu.fing.commons.front.dto.CreateRulesVersionResponseTO;
 import edu.fing.commons.front.dto.RuleTO;
 import edu.fing.commons.front.dto.VersionTO;
-import edu.fing.contenxt.management.RemoteInvokerUtils.ServiceIp;
+import edu.fing.context.management.util.RemoteInvokerUtils;
+import edu.fing.context.management.util.RemoteInvokerUtils.ServiceIp;
 
 @ManagedBean
 @ViewScoped

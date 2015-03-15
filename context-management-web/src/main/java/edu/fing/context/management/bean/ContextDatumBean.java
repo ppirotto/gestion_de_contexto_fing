@@ -1,4 +1,4 @@
-package edu.fing.contenxt.management;
+package edu.fing.context.management.bean;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +9,8 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
-import edu.fing.contenxt.management.RemoteInvokerUtils.ServiceIp;
+import edu.fing.context.management.util.RemoteInvokerUtils;
+import edu.fing.context.management.util.RemoteInvokerUtils.ServiceIp;
 
 @ManagedBean
 @ViewScoped

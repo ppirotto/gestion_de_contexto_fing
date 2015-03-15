@@ -1,4 +1,4 @@
-package edu.fing.contenxt.management;
+package edu.fing.context.management.bean;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -19,8 +19,10 @@ import com.predic8.wsdl.Definitions;
 import com.predic8.wsdl.WSDLParser;
 
 import edu.fing.commons.front.dto.ServiceTO;
-import edu.fing.contenxt.management.RemoteInvokerUtils.ServiceIp;
+import edu.fing.context.management.dto.VirtualServiceDto;
 import edu.fing.context.management.jar.creation.JarCreationService;
+import edu.fing.context.management.util.RemoteInvokerUtils;
+import edu.fing.context.management.util.RemoteInvokerUtils.ServiceIp;
 
 @ManagedBean
 @ViewScoped
