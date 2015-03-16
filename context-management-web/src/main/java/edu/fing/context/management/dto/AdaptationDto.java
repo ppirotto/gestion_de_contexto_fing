@@ -1,10 +1,14 @@
 package edu.fing.context.management.dto;
 
+import java.io.Serializable;
+
 import org.primefaces.model.UploadedFile;
 
 import edu.fing.commons.constant.AdaptationType;
 
-public class AdaptationDto {
+public class AdaptationDto implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 	private int id;
 	private AdaptationType adaptationType;
 	private String description;

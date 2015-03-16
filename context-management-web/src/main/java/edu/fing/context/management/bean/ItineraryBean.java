@@ -1,5 +1,6 @@
 package edu.fing.context.management.bean;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -23,7 +24,12 @@ import edu.fing.context.management.util.RemoteInvokerUtils.ServiceIp;
 
 @ManagedBean
 @ViewScoped
-public class ItineraryBean {
+public class ItineraryBean implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	private AdaptationType adaptSelec;
 
@@ -38,17 +44,23 @@ public class ItineraryBean {
 	private List<UploadedFile> files = new LinkedList<UploadedFile>();
 
 	private List<AdaptationDto> adaptations = new LinkedList<AdaptationDto>();
+	private AdaptationDto selectedAdaptation;
 
 	@ManagedProperty(value = "#{sessionBean}")
 	private SessionBean session;
 
 	public void agregarAdaptacion() {
+		if (this.adaptSelec != null) {
+			AdaptationDto a = new AdaptationDto(this.adaptations.size() + 1, this.adaptSelec, this.description);
 
-		AdaptationDto a = new AdaptationDto(this.adaptations.size() + 1, this.adaptSelec, this.description);
+			this.adaptations.add(a);
 
-		this.adaptations.add(a);
+			this.description = null;
 
-		this.description = null;
+		} else {
+			String mensaje = "Seleccione un tipo de adaptación";
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, mensaje, null));
+		}
 	}
 
 	public String crearItinerario() {
@@ -127,6 +139,10 @@ public class ItineraryBean {
 		return this.priority;
 	}
 
+	public AdaptationDto getSelectedAdaptation() {
+		return this.selectedAdaptation;
+	}
+
 	public Long getSelectedService() {
 		return this.selectedService;
 	}
@@ -173,6 +189,10 @@ public class ItineraryBean {
 
 	public void setPriority(int priority) {
 		this.priority = priority;
+	}
+
+	public void setSelectedAdaptation(AdaptationDto selectedAdaptation) {
+		this.selectedAdaptation = selectedAdaptation;
 	}
 
 	public void setSelectedService(Long selectedService) {

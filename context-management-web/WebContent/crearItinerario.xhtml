@@ -12,7 +12,7 @@
 	<ui:define name="body">
 
 
-		<h:form enctype="multipart/form-data">
+		<h:form id="itineraryForm" enctype="multipart/form-data">
 
 			<p:panel>
 				<f:facet name="header">Crear Itinerario</f:facet>
@@ -68,8 +68,7 @@
 						<p:selectOneMenu id="selectAdaptType" autoupdate="true"
 							styleClass="span3" value="#{itineraryBean.adaptSelec}"
 							effect="fade">adaptationTypeList
-						<f:selectItem itemLabel="Seleccione adaptaciones"
-								itemValue="" />
+						<f:selectItem itemLabel="Seleccione adaptaciones" itemValue="" />
 							<f:selectItems value="#{itineraryBean.adaptationTypeList}"
 								var="adapType" itemLabel="#{adapType}" itemValue="#{adapType}" />
 
@@ -78,13 +77,13 @@
 						<p:outputLabel>
 							<b>Descripción</b>
 						</p:outputLabel>
-						<p:inputTextarea id="descrpition" scrollHeight="2"  cols="30" rows="2"
-							value="#{itineraryBean.description}" label="Descripción">
+						<p:inputTextarea id="descrpition" scrollHeight="2" cols="30"
+							rows="2" value="#{itineraryBean.description}" label="Descripción">
 						</p:inputTextarea>
 						<f:facet name="footer">
 
 							<p:commandButton value="Agregar" id="ajax" style="float:right;"
-								update="adaptaciones descrpition"
+								update="descrpition adaptationTable"
 								actionListener="#{itineraryBean.agregarAdaptacion}" />
 						</f:facet>
 
@@ -94,35 +93,97 @@
 				</h:panelGrid>
 
 
-				<p:panelGrid id="adaptaciones" styleClass="centerContent"
-					columns="1">
-					<f:facet name="header">Itinerario</f:facet>
+				<!-- 				<p:panelGrid id="adaptaciones" styleClass="centerContent" -->
+				<!-- 					columns="1"> -->
+				<!-- 					<f:facet name="header">Itinerario</f:facet> -->
 
-					<c:forEach items="#{itineraryBean.adaptations}" var="adap">
-						<p:row>
-							<p:column>
-								<h:outputText value="#{adap.id}" />
-							</p:column>
-							<p:column>
-								<h:outputText value="#{adap.adaptationType}" />
-							</p:column>
+				<!-- 					<c:forEach items="#{itineraryBean.adaptations}" var="adap"> -->
+				<!-- 						<p:row> -->
+				<!-- 							<p:column> -->
+				<!-- 								<h:outputText value="#{adap.id}" /> -->
+				<!-- 							</p:column> -->
+				<!-- 							<p:column> -->
+				<!-- 								<h:outputText value="#{adap.adaptationType}" /> -->
+				<!-- 							</p:column> -->
 
-							<p:column>
-								<h:outputText value="#{adap.description}" />
-							</p:column>
+				<!-- 							<p:column> -->
+				<!-- 								<h:outputText value="#{adap.description}" /> -->
+				<!-- 							</p:column> -->
 
-							<p:column rendered="#{adap.adaptationType.renderFileUpload()}">
-								<p:fileUpload value="#{adap.data}" mode="simple"
-									dragDropSupport="true" />
-							</p:column>
-							<p:column rendered="#{adap.adaptationType.renderStringInput()}">
-								<p:inputText value="#{adap.extraData}">
-								</p:inputText>
-							</p:column>
-						</p:row>
-					</c:forEach>
-				</p:panelGrid>
+				<!-- 							<p:column rendered="#{adap.adaptationType.renderFileUpload()}"> -->
+				<!-- 								<p:fileUpload value="#{adap.data}" mode="simple" -->
+				<!-- 									dragDropSupport="true" /> -->
+				<!-- 							</p:column> -->
+				<!-- 							<p:column rendered="#{adap.adaptationType.renderStringInput()}"> -->
+				<!-- 								<p:inputText value="#{adap.extraData}"> -->
+				<!-- 								</p:inputText> -->
+				<!-- 							</p:column> -->
+				<!-- 						</p:row> -->
+				<!-- 					</c:forEach> -->
+				<!-- 				</p:panelGrid> -->
 
+				<p:dataTable id="adaptationTable" var="adapt" style="width:80%"
+					value="#{itineraryBean.adaptations}">
+					<f:facet name="header">
+           				 Adaptaciones
+        				</f:facet>
+					<p:column headerText="Id">
+						<h:outputText value="#{adapt.id}" />
+					</p:column>
+					<p:column headerText="Tipo">
+						<h:outputText value="#{adapt.adaptationType}" />
+					</p:column>
+					<p:column headerText="Descripción">
+						<h:outputText value="#{adapt.description}" />
+					</p:column>
+
+					<p:column style="width:32px;text-align: center">
+						<p:commandButton update=":itineraryForm:adaptationDetail"
+							oncomplete="PF('itinerayDialog').show()" icon="ui-icon-create"
+							title="View">
+							<f:setPropertyActionListener value="#{adapt}"
+								target="#{itineraryBean.selectedAdaptation}" />
+						</p:commandButton>
+					</p:column>
+				</p:dataTable>
+
+				<p:dialog header="Data de la adaptación" widgetVar="itinerayDialog"
+					modal="true" appendTo="@(body)" showEffect="fade" hideEffect="fade"
+					width="70%" height="400px" resizable="false">
+					<p:panel id="adaptationDetail">
+						<p:panelGrid columns="2" >
+							<h:outputLabel style="font-weight: bold;" value="Nombre" />						
+							<h:outputText
+								value="#{itineraryBean.selectedAdaptation.adaptationType}" />						
+						</p:panelGrid>
+						<p:panel style="width:90%; height:350px;">
+							<f:facet name="header">
+           				 		Data
+        					</f:facet>
+							<pe:codeMirror id="codeMirror" mode="xml" readOnly="false"
+								 theme="eclipse"  lineNumbers="true"
+								value="#{itineraryBean.selectedAdaptation.extraData}"
+								matchBrackets="true" lineWrapping="true" />						
+						</p:panel>
+					</p:panel>
+				</p:dialog>
+				
+				<p:dialog header="Definir el ruteo basado en itinerario" widgetVar="contentBasedDialog"
+					modal="true" appendTo="@(body)" showEffect="fade" hideEffect="fade"
+					width="70%" height="400px" resizable="false">
+					<p:panel id="contentBasedDetail" style="text-align:center;">
+					
+						<p:panelGrid columns="2" >
+							<h:outputLabel style="font-weight: bold;" value="Nombre" />						
+							<h:outputText
+								value="#{itineraryBean.selectedAdaptation.adaptationType}" />						
+						</p:panelGrid>
+						<p:panel style="width:90%; height:350px;">
+							
+											
+						</p:panel>
+					</p:panel>
+				</p:dialog>
 
 				<p:growl autoUpdate="true" sticky="true" showDetail="true"
 					escape="true" showSummary="true" />
