@@ -65,7 +65,7 @@
         <sca:interface.java interface="edu.fing.adaptation.manager.ContentBasedRouterService"/>
       </sca:service>
     </sca:component>
-    <sca:component name="Enrich / Filter">
+    <sca:component name="Enrich-Filter">
       <camel:implementation.camel>
         <camel:java class="edu.fing.adaptation.manager.Enrich"/>
       </camel:implementation.camel>
