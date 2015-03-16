@@ -2,7 +2,7 @@ package edu.fing.commons.constant;
 
 public enum AdaptationType {
 
-	DELAY(DataType.INT), FILTER(DataType.STRING), ENRICH(DataType.FILE), TRANSFORM(DataType.FILE), SERVICE_INVOCATION;
+	DELAY(DataType.INT), FILTER(DataType.STRING), ENRICH(DataType.FILE), TRANSFORM(DataType.STRING), CONTENT_BASED_ROUTER, SERVICE_INVOCATION;
 
 	private DataType dataType;
 

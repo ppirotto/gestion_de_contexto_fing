@@ -147,6 +147,31 @@ public class ConfigurationServiceBean implements ConfigurationService {
 	}
 
 	@Override
+	public List<String> getContextDataBySituation(String situationName) {
+		Session session = this.sessionFactory.openSession();
+
+		StringBuilder queryString = new StringBuilder();
+		queryString.append("SELECT ContextDatum c ");
+		queryString.append("FROM Situation sit ");
+		queryString.append("fetch join sit.outputContextData c ");
+
+		Query query = session.createQuery(queryString.toString());
+
+		@SuppressWarnings("unchecked")
+		List<ContextDatum> contextData = query.list();
+
+		session.close();
+
+		List<String> list = new ArrayList<String>();
+		if (contextData != null) {
+			for (ContextDatum contextDatum : contextData) {
+				list.add(contextDatum.getName());
+			}
+		}
+		return list;
+	}
+
+	@Override
 	public List<String> getContextSources() {
 		Session session = this.sessionFactory.openSession();
 
@@ -273,14 +298,22 @@ public class ConfigurationServiceBean implements ConfigurationService {
 			adaptation.setName(adaptationTO.getAdaptationType().name());
 			adaptation.setAdaptationOrder(adaptationTO.getOrder());
 			adaptation.setDescription(adaptationTO.getDescription());
-			if (AdaptationType.SERVICE_INVOCATION.equals(adaptationTO.getAdaptationType())) {
-				adaptation.setData(service.getUrl().getBytes());
-			} else {
-				adaptation.setData(this.getDataByType(adaptationTO.getData(), adaptationTO.getAdaptationType()));
-			}
 			adaptation.setService(service);
 			adaptation.setSituation(situation);
 			adaptation.setAdaptationReference(this.findAdaptationReferenceByAdaptationType(session, adaptationTO.getAdaptationType()));
+
+			Object adaptationData = adaptationTO.getData();
+			byte[] data = null;
+			if (AdaptationType.SERVICE_INVOCATION.equals(adaptationTO.getAdaptationType())) {
+				if (adaptationData != null) {
+					data = ((String) adaptationData).getBytes();
+				} else {
+					data = service.getUrl().getBytes();
+				}
+			} else {
+				data = this.getDataByType(adaptationData, adaptationTO.getAdaptationType());
+			}
+			adaptation.setData(data);
 			session.save(adaptation);
 		}
 
@@ -391,7 +424,7 @@ public class ConfigurationServiceBean implements ConfigurationService {
 		StringBuilder queryStringService = new StringBuilder();
 		queryStringService.append("SELECT cs ");
 		queryStringService.append("FROM ContextSource cs ");
-		queryStringService.append("join fetch cs.contextData ");
+		queryStringService.append("left join fetch cs.contextData ");
 		queryStringService.append("WHERE cs.name = :name ");
 
 		Query queryService = session.createQuery(queryStringService.toString());

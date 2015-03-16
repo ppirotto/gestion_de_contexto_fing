@@ -14,8 +14,8 @@
       <sca:reference name="ExternalInvocationService">
         <sca:interface.java interface="edu.fing.adaptation.manager.ExternalInvocationService"/>
       </sca:reference>
-      <sca:reference name="FilterService">
-        <sca:interface.java interface="edu.fing.adaptation.manager.FilterService"/>
+      <sca:reference name="ContentBasedRouterService">
+        <sca:interface.java interface="edu.fing.adaptation.manager.ContentBasedRouterService"/>
       </sca:reference>
       <sca:reference name="EnrichService">
         <sca:interface.java interface="edu.fing.adaptation.manager.EnrichService"/>
@@ -48,15 +48,24 @@
         <sca:interface.java interface="edu.fing.adaptation.manager.ServiceInvoker"/>
       </sca:reference>
     </sca:component>
-    <sca:component name="Filter">
+    <sca:component name="Router">
       <camel:implementation.camel>
         <camel:java class="edu.fing.adaptation.manager.Filter"/>
       </camel:implementation.camel>
-      <sca:service name="FilterService">
-        <sca:interface.java interface="edu.fing.adaptation.manager.FilterService"/>
+      <sca:reference name="DelayService">
+        <sca:interface.java interface="edu.fing.adaptation.manager.DelayService"/>
+      </sca:reference>
+      <sca:reference name="ExternalInvocationService">
+        <sca:interface.java interface="edu.fing.adaptation.manager.ExternalInvocationService"/>
+      </sca:reference>
+      <sca:reference name="EnrichService">
+        <sca:interface.java interface="edu.fing.adaptation.manager.EnrichService"/>
+      </sca:reference>
+      <sca:service name="ContentBasedRouterService">
+        <sca:interface.java interface="edu.fing.adaptation.manager.ContentBasedRouterService"/>
       </sca:service>
     </sca:component>
-    <sca:component name="Enrich">
+    <sca:component name="Enrich / Filter">
       <camel:implementation.camel>
         <camel:java class="edu.fing.adaptation.manager.Enrich"/>
       </camel:implementation.camel>

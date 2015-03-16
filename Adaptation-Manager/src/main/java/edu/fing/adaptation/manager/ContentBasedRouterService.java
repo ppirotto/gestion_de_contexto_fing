@@ -1,6 +1,6 @@
 package edu.fing.adaptation.manager;
 
-public interface FilterService {
+public interface ContentBasedRouterService {
 
 	String submit(String adaptedMessage);
 }

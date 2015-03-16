@@ -12,9 +12,9 @@ public class Delay extends RouteBuilder {
 	 * The Camel route is configured via this method. The from endpoint is
 	 * required to be a SwitchYard service.
 	 */
+	@Override
 	public void configure() {
 
-		// TODO Auto-generated method stub
 		from("switchyard://DelayService").process(new Processor() {
 
 			@Override
@@ -23,7 +23,7 @@ public class Delay extends RouteBuilder {
 				exchange.getIn().setHeader("delayTime", adaptedMessage.getAdaptations().get(0).getData());
 				adaptedMessage.getAdaptations().remove(0);
 			}
-		}).log("Received message for 'DelayService' : ${body}").delay(header("delayTime")).log("Finish Delay");
+		}).log("Received message for 'DelayService' : ${body}").delay(this.header("delayTime")).log("Finish Delay");
 
 	}
 

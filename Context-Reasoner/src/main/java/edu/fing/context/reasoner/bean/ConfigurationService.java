@@ -17,6 +17,8 @@ public interface ConfigurationService {
 
 	List<String> getContextData();
 
+	List<String> getContextDataBySituation(String situationName);
+
 	List<String> getContextSources();
 
 	Boolean createSituation(SituationTO situationTO);
