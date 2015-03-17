@@ -6,7 +6,7 @@ import edu.fing.commons.front.dto.VersionTO;
 
 public interface CEPService {
 
-	void updateActiveVersion(String versionNumber);
+	CreateRulesVersionResponseTO updateActiveVersion(String versionNumber);
 
 	AvailableRulesTO getAvailableRules();
 

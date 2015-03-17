@@ -45,6 +45,7 @@ public class CEPServiceBean implements CEPService {
 		Version savedVersion = (Version) queryNewVersion.uniqueResult();
 		
 		if (savedVersion!=null){
+			res = new CreateRulesVersionResponseTO();
 			res.setErrorCode("VERSION_ALREADY_EXISTS");
 			res.setSuccess(false);
 			res.setErrorMessage("The version with versionNumber = '"+versionTO.getVersionNumber()+"' already exists.");
@@ -59,9 +60,9 @@ public class CEPServiceBean implements CEPService {
 		res.setSuccess(true);
 		Version newVersion = this.mapToVersion(versionTO);
 		session.save(newVersion);	
+		updateLastVersion(newVersion,session);
 		
-		session.getTransaction().commit();
-		session.close();
+		HibernateUtils.commit(session);
 		
 		return res;
 	}
@@ -113,7 +114,7 @@ public class CEPServiceBean implements CEPService {
 
 	
 	@Override
-	public void updateActiveVersion(String versionNumber) {
+	public CreateRulesVersionResponseTO updateActiveVersion(String versionNumber) {
 		Session session = sessionFactory.openSession();
 		session.beginTransaction();
 
@@ -135,15 +136,26 @@ public class CEPServiceBean implements CEPService {
 			activeConfig.setActiveVersion(newVersion);
 			System.out.println("Updating to versionNumber: "+activeConfig.getActiveVersion().getVersionNumber());
 			session.update(activeConfig);
-			session.getTransaction().commit();
 		}
-		session.close();
+		HibernateUtils.commit(session);
+		return deployResponseTO;
 	}
 
+	
+	private void updateLastVersion(Version version,Session session) {
+		Query query = session.createSQLQuery("SELECT * FROM ACTIVE_CONFIGURATION").addEntity(ActiveConfiguration.class);
+
+		@SuppressWarnings("unchecked")
+		ActiveConfiguration activeConfig = (ActiveConfiguration) query.uniqueResult();
+		
+		activeConfig.setLastVersion(version);
+		System.out.println("Updating to lastVersion to versionNumber: "+activeConfig.getLastVersion().getVersionNumber());
+		session.update(activeConfig);
+	}
+	
 	@Override
 	public VersionTO getActiveVersion() {
 		Session session = sessionFactory.openSession();
-		
 		session.beginTransaction();
 		
 		StringBuilder queryString = new StringBuilder();
@@ -161,15 +173,13 @@ public class CEPServiceBean implements CEPService {
 		Version activeVersion = config.getActiveVersion();
 		System.out.println("versionNumber: "+activeVersion.getVersionNumber());
 		
-		session.getTransaction().commit();
-		session.close();
+		HibernateUtils.commit(session);
 		return mapToVersionTO(activeVersion);
 	}
 	
 	
 	private VersionTO getVersion(String version) {
 		Session session = sessionFactory.openSession();
-		
 		session.beginTransaction();
 		
 		StringBuilder queryString = new StringBuilder();
@@ -188,14 +198,12 @@ public class CEPServiceBean implements CEPService {
 		}
 		System.out.println("Version versionNumber: "+desiredVersion.getVersionNumber() + " loaded from database.");
 		
-		session.getTransaction().commit();
-		session.close();
+		HibernateUtils.commit(session);
 		return mapToVersionTO(desiredVersion);
 	}
 	
 	private Rule getRule(String ruleName) {
 		Session session = sessionFactory.openSession();
-		
 		session.beginTransaction();
 		
 		StringBuilder queryString = new StringBuilder();
@@ -210,8 +218,7 @@ public class CEPServiceBean implements CEPService {
 		@SuppressWarnings("unchecked")
 		Rule rule = (Rule) query.uniqueResult();
 				
-		session.getTransaction().commit();
-		session.close();
+		HibernateUtils.commit(session);
 		return rule;
 	}
 	
