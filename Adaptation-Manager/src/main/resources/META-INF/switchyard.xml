@@ -50,7 +50,7 @@
     </sca:component>
     <sca:component name="Router">
       <camel:implementation.camel>
-        <camel:java class="edu.fing.adaptation.manager.Filter"/>
+        <camel:java class="edu.fing.adaptation.manager.ContentBasedRouter"/>
       </camel:implementation.camel>
       <sca:reference name="DelayService">
         <sca:interface.java interface="edu.fing.adaptation.manager.DelayService"/>

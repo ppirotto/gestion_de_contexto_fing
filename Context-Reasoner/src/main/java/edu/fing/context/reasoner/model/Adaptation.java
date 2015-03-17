@@ -27,7 +27,7 @@ public class Adaptation implements Serializable {
 	private Service service;
 	private Situation situation;
 	private AdaptationReference adaptationReference;
-	private byte[] data;
+	private String data;
 
 	@Column(name = "ADAPTATION_ORDER")
 	public int getAdaptationOrder() {
@@ -42,7 +42,7 @@ public class Adaptation implements Serializable {
 
 	@Lob
 	@Column(name = "DATA", columnDefinition = "MEDIUMTEXT")
-	public byte[] getData() {
+	public String getData() {
 		return this.data;
 	}
 
@@ -83,7 +83,7 @@ public class Adaptation implements Serializable {
 		this.adaptationReference = adaptationReference;
 	}
 
-	public void setData(byte[] data) {
+	public void setData(String data) {
 		this.data = data;
 	}
 

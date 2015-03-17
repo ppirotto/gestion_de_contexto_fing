@@ -1,6 +1,5 @@
 package edu.fing.context.reasoner.bean;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -12,7 +11,6 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 import edu.fing.commons.constant.AdaptationType;
-import edu.fing.commons.constant.DataType;
 import edu.fing.commons.dto.AdaptationTO;
 import edu.fing.commons.front.dto.ContextSourceTO;
 import edu.fing.commons.front.dto.ItineraryTO;
@@ -30,7 +28,7 @@ import edu.fing.context.reasoner.util.HibernateUtils;
 @org.switchyard.component.bean.Service(ConfigurationService.class)
 public class ConfigurationServiceBean implements ConfigurationService {
 
-	private SessionFactory sessionFactory = HibernateUtils.getSessionFactory();
+	private final SessionFactory sessionFactory = HibernateUtils.getSessionFactory();
 
 	@Override
 	public List<ServiceTO> getServicesWithSituationsAndAdaptations() {
@@ -301,19 +299,7 @@ public class ConfigurationServiceBean implements ConfigurationService {
 			adaptation.setService(service);
 			adaptation.setSituation(situation);
 			adaptation.setAdaptationReference(this.findAdaptationReferenceByAdaptationType(session, adaptationTO.getAdaptationType()));
-
-			Object adaptationData = adaptationTO.getData();
-			byte[] data = null;
-			if (AdaptationType.SERVICE_INVOCATION.equals(adaptationTO.getAdaptationType())) {
-				if (adaptationData != null) {
-					data = ((String) adaptationData).getBytes();
-				} else {
-					data = service.getUrl().getBytes();
-				}
-			} else {
-				data = this.getDataByType(adaptationData, adaptationTO.getAdaptationType());
-			}
-			adaptation.setData(data);
+			adaptation.setData(this.getDataByAdaptationType(adaptationTO.getData(), adaptationTO.getAdaptationType(), service.getUrl()));
 			session.save(adaptation);
 		}
 
@@ -327,23 +313,28 @@ public class ConfigurationServiceBean implements ConfigurationService {
 		return HibernateUtils.commit(session);
 	}
 
-	private byte[] getDataByType(Object adaptationData, AdaptationType adaptationType) {
-		byte[] data = null;
-		DataType dataType = adaptationType.getDataType();
-		if (dataType != null) {
-			switch (dataType) {
-			case INT:
-				data = BigInteger.valueOf((Integer) adaptationData).toByteArray();
-				break;
-			case STRING:
-				data = ((String) adaptationData).getBytes();
-				break;
-			case FILE:
-				data = (byte[]) adaptationData;
-				break;
-			default:
-				break;
+	private String getDataByAdaptationType(Object adaptationData, AdaptationType adaptationType, String serviceUrl) {
+		String data = null;
+		switch (adaptationType) {
+		case CONTENT_BASED_ROUTER:
+			ObjectMapper objectMapper = new ObjectMapper();
+			try {
+				data = objectMapper.writeValueAsString(adaptationData);
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
+			break;
+		case DELAY:
+		case ENRICH:
+		case EXTERNAL_TRANSFORMATION:
+		case FILTER:
+			data = (String) adaptationData;
+			break;
+		case SERVICE_INVOCATION:
+			data = serviceUrl;
+			break;
+		default:
+			break;
 		}
 		return data;
 	}

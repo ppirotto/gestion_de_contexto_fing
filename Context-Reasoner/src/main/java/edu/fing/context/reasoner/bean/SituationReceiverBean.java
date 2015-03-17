@@ -5,7 +5,6 @@ import java.io.OutputStreamWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -16,15 +15,17 @@ import java.util.Set;
 
 import javax.inject.Inject;
 
+import org.codehaus.jackson.map.ObjectMapper;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.switchyard.component.bean.Reference;
 
-import edu.fing.commons.constant.DataType;
+import edu.fing.commons.constant.AdaptationType;
 import edu.fing.commons.dto.AdaptationTO;
 import edu.fing.commons.dto.ContextReasonerData;
 import edu.fing.commons.dto.SituationDetectedTO;
+import edu.fing.commons.front.dto.AdaptationTreeNodeTO;
 import edu.fing.context.reasoner.model.Adaptation;
 import edu.fing.context.reasoner.model.Service;
 import edu.fing.context.reasoner.model.ServiceSituationPriority;
@@ -41,7 +42,7 @@ public class SituationReceiverBean implements SituationReceiver {
 	@Reference
 	private AdaptationGatewayService adaptationGatewayService;
 
-	private SessionFactory sessionFactory = HibernateUtils.getSessionFactory();
+	private final SessionFactory sessionFactory = HibernateUtils.getSessionFactory();
 
 	@Override
 	public String receiveSituationFromCEP(/* SituationDetectedTO cepSituation */) {
@@ -82,7 +83,8 @@ public class SituationReceiverBean implements SituationReceiver {
 			int priority = this.findPriorityBySituationAndService(cepSituation.getSituationName(), service.getId(), session);
 			contextReasonerData.setPriority(priority);
 
-			List<Adaptation> adaptationsBySituationAndService = this.findAdaptationsBySituationAndService(cepSituation.getSituationName(), service.getId(), session);
+			List<Adaptation> adaptationsBySituationAndService = this.findAdaptationsBySituationAndService(cepSituation.getSituationName(),
+					service.getId(), session);
 
 			Iterator<Adaptation> iterator = adaptationsBySituationAndService.iterator();
 			Situation situation = iterator.next().getSituation();
@@ -151,31 +153,36 @@ public class SituationReceiverBean implements SituationReceiver {
 	}
 
 	private Object getAdaptationDataByType(Adaptation adaptation, Map<String, Object> contextualData) {
-		DataType dataType = adaptation.getAdaptationReference().getAdaptationType().getDataType();
-		byte[] data = adaptation.getData();
+		AdaptationType adaptationType = adaptation.getAdaptationReference().getAdaptationType();
 		Object adaptationData = null;
-		if (dataType != null) {
-			switch (dataType) {
-			case INT:
-				adaptationData = new BigInteger(data).intValue();
-				break;
-			case STRING:
-				adaptationData = new String(data);
-				break;
-			case FILE:
-				adaptationData = this.applyTemplate(data, contextualData);
-				break;
-			default:
-				break;
+		switch (adaptationType) {
+		case CONTENT_BASED_ROUTER:
+			ObjectMapper objectMapper = new ObjectMapper();
+			try {
+				adaptationData = objectMapper.readValue(adaptation.getData(), AdaptationTreeNodeTO.class);
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
+			break;
+		case ENRICH:
+			adaptationData = this.applyTemplate(adaptation.getData(), contextualData);
+			break;
+		case DELAY:
+		case EXTERNAL_TRANSFORMATION:
+		case FILTER:
+		case SERVICE_INVOCATION:
+			adaptationData = adaptation.getData();
+			break;
+		default:
+			break;
+
 		}
 
 		return adaptationData;
 	}
 
-	private Object applyTemplate(byte[] data, Map<String, Object> contextualData) {
+	private Object applyTemplate(String templateStr, Map<String, Object> contextualData) {
 
-		String templateStr = new String(data);
 		StringWriter outStr = new StringWriter();
 
 		try {

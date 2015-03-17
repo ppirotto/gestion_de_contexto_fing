@@ -5,9 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -25,8 +23,6 @@ import org.switchyard.Context;
 import org.switchyard.component.bean.Reference;
 import org.switchyard.component.bean.Service;
 import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import edu.fing.adaptation.gateway.model.ContextAwareAdaptation;
@@ -45,7 +41,7 @@ public class AdaptationServiceBean implements AdaptationService {
 	@Inject
 	private Context context;
 
-	private SessionFactory sessionFactory = HibernateUtils.getSessionFactory();
+	private final SessionFactory sessionFactory = HibernateUtils.getSessionFactory();
 
 	@Override
 	public String setItinerary(String message) {
@@ -116,29 +112,6 @@ public class AdaptationServiceBean implements AdaptationService {
 			ioe.printStackTrace();
 		}
 		return null;
-	}
-
-	public static Map<String, Object> createMap(Node node) {
-		Map<String, Object> map = new HashMap<String, Object>();
-		NodeList nodeList = node.getChildNodes();
-		for (int i = 0; i < nodeList.getLength(); i++) {
-			Node currentNode = nodeList.item(i);
-			// if (currentNode.hasAttributes()) {
-			// for (int j = 0; j < currentNode.getAttributes().getLength(); j++)
-			// {
-			// Node item = currentNode.getAttributes().item(i);
-			// map.put(item.getNodeName(), item.getTextContent());
-			// }
-			// }
-			if (node.getFirstChild() != null && node.getFirstChild().getNodeType() == Node.ELEMENT_NODE) {
-				map.putAll(createMap(currentNode));
-			} else if (node.getFirstChild().getNodeType() == Node.TEXT_NODE && currentNode.getLocalName() != null) {
-				System.out.println(currentNode);
-				map.put(currentNode.getLocalName(), currentNode.getTextContent());
-
-			}
-		}
-		return map;
 	}
 
 	private Itinerary findItineraryByUserAndService(String user, String service, String operation) {

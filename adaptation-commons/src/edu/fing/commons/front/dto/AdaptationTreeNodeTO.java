@@ -1,9 +1,11 @@
 package edu.fing.commons.front.dto;
 
+import edu.fing.commons.dto.AdaptationTO;
+
 public class AdaptationTreeNodeTO {
 
 	private String xpath;
-	private String url;
+	private AdaptationTO adaptation;
 	private AdaptationTreeNodeTO leftNode; // cumple condicion
 	private AdaptationTreeNodeTO rightNode; // no cumple condicion
 
@@ -13,14 +15,6 @@ public class AdaptationTreeNodeTO {
 
 	public void setXpath(String xpath) {
 		this.xpath = xpath;
-	}
-
-	public String getUrl() {
-		return this.url;
-	}
-
-	public void setUrl(String url) {
-		this.url = url;
 	}
 
 	public AdaptationTreeNodeTO getLeftNode() {
@@ -37,6 +31,14 @@ public class AdaptationTreeNodeTO {
 
 	public void setRightNode(AdaptationTreeNodeTO rightNode) {
 		this.rightNode = rightNode;
+	}
+
+	public AdaptationTO getAdaptation() {
+		return adaptation;
+	}
+
+	public void setAdaptation(AdaptationTO adaptation) {
+		this.adaptation = adaptation;
 	}
 
 }
