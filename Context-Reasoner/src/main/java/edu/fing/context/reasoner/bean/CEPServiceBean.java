@@ -13,6 +13,8 @@ import org.hibernate.SessionFactory;
 import org.switchyard.component.bean.Reference;
 import org.switchyard.component.bean.Service;
 
+import com.google.common.cache.RemovalCause;
+
 import edu.fing.commons.front.dto.AvailableRulesTO;
 import edu.fing.commons.front.dto.CreateRulesVersionResponseTO;
 import edu.fing.commons.front.dto.RuleTO;
@@ -22,13 +24,12 @@ import edu.fing.context.reasoner.model.Rule;
 import edu.fing.context.reasoner.model.RuleVersion;
 import edu.fing.context.reasoner.model.Version;
 import edu.fing.context.reasoner.util.HibernateUtils;
+import edu.fing.context.reasoner.util.RemoteInvokerUtils;
+import edu.fing.context.reasoner.util.RemoteInvokerUtils.ServiceIp;
 
 @Service(CEPService.class)
 public class CEPServiceBean implements CEPService {
 
-	@Inject
-	@Reference	
-	private DroolsManagerService droolsManager;
 	
 	private SessionFactory sessionFactory = HibernateUtils.getSessionFactory();
 	
@@ -36,8 +37,7 @@ public class CEPServiceBean implements CEPService {
 	public CreateRulesVersionResponseTO createNewVersion(VersionTO versionTO) {
 		Session session = sessionFactory.openSession();
 		session.beginTransaction();
-		CreateRulesVersionResponseTO res = new CreateRulesVersionResponseTO();
-		res.setSuccess(true);
+		CreateRulesVersionResponseTO res = null;
 		Query queryNewVersion = session.createSQLQuery("SELECT * FROM VERSION WHERE VERSION_NUMBER = :version ").addEntity(Version.class);
 		queryNewVersion.setParameter("version", versionTO.getVersionNumber());
 		
@@ -49,11 +49,16 @@ public class CEPServiceBean implements CEPService {
 			res.setSuccess(false);
 			res.setErrorMessage("The version with versionNumber = '"+versionTO.getVersionNumber()+"' already exists.");
 			return res;
-		} else if ((res = droolsManager.testDroolsCompiling(versionTO))!=null){
-			return res;
+		} else {
+			res = (CreateRulesVersionResponseTO)RemoteInvokerUtils.invoke(RemoteInvokerUtils.DroolsManagerService, "testDroolsCompiling", versionTO, ServiceIp.CepEngineIP);
+			if (res != null){
+				return res;
+			}
 		}
+		res = new CreateRulesVersionResponseTO();
+		res.setSuccess(true);
 		Version newVersion = this.mapToVersion(versionTO);
-		session.save(newVersion);
+		session.save(newVersion);	
 		
 		session.getTransaction().commit();
 		session.close();
@@ -124,7 +129,7 @@ public class CEPServiceBean implements CEPService {
 		Version newVersion = (Version) queryNewVersion.uniqueResult();
 		
 		VersionTO desiredVersion = mapToVersionTO(newVersion);
-		CreateRulesVersionResponseTO deployResponseTO = droolsManager.deployVersion(desiredVersion);
+		CreateRulesVersionResponseTO deployResponseTO = (CreateRulesVersionResponseTO)RemoteInvokerUtils.invoke(RemoteInvokerUtils.DroolsManagerService, "deployVersion", desiredVersion, ServiceIp.CepEngineIP);
 		System.out.println("droolsManager.deployVersion(desiredVersion) response:"+deployResponseTO.toString());
 		if (deployResponseTO.isSuccess()){
 			activeConfig.setActiveVersion(newVersion);
@@ -188,6 +193,27 @@ public class CEPServiceBean implements CEPService {
 		return mapToVersionTO(desiredVersion);
 	}
 	
+	private Rule getRule(String ruleName) {
+		Session session = sessionFactory.openSession();
+		
+		session.beginTransaction();
+		
+		StringBuilder queryString = new StringBuilder();
+
+		queryString.append("SELECT * ");
+		queryString.append("FROM RULE ");
+		queryString.append("WHERE NAME = :ruleName");
+
+		Query query = session.createSQLQuery(queryString.toString()).addEntity(Rule.class);
+		query.setParameter("ruleName", ruleName);
+
+		@SuppressWarnings("unchecked")
+		Rule rule = (Rule) query.uniqueResult();
+				
+		session.getTransaction().commit();
+		session.close();
+		return rule;
+	}
 	
 	private List<String> getStringRules(VersionTO desiredVersion) {
 		List<RuleTO> rules = desiredVersion.getRules();
@@ -222,8 +248,12 @@ public class CEPServiceBean implements CEPService {
 
 
 	private Rule mapToRule(RuleTO r, Version v) {
-		Rule res = new Rule();
-		res.setName(r.getName());
+		//Busco regla por el nombre
+		Rule res = getRule(r.getName());
+		if (res==null){//la regla es nueva, debo crearla
+			res = new Rule();
+			res.setName(r.getName());
+		}
 		return res;
 	}
 	

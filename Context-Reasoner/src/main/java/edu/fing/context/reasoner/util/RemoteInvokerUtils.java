@@ -1,4 +1,4 @@
-package edu.fing.context.management.util;
+package edu.fing.context.reasoner.util;
 
 import javax.xml.namespace.QName;
 
@@ -25,9 +25,7 @@ public class RemoteInvokerUtils {
 		}
 	}
 
-	public static final QName ContextReasonerCEPService = new QName("urn:edu.fing.context.management:context-reasoner:1.0", "CEPService");
-	public static final QName ContextReasonerConfigService = new QName("urn:edu.fing.context.management:context-reasoner:1.0", "ConfigurationService");
-	public static final QName AdaptationGatewayConfigService = new QName("urn:edu.fing.context.management:adaptation-gateway:1.0", "ItineraryService");
+	public static final QName DroolsManagerService = new QName("urn:edu.fing.context.management:cep-engine:1.0", "DroolsManagerService");
 
 	@SuppressWarnings("unchecked")
 	public static Object invoke(QName service, String operationName, Object msg, ServiceIp serviceIp) {

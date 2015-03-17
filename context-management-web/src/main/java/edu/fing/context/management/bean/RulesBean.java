@@ -44,7 +44,7 @@ public class RulesBean {
 
 	@PostConstruct
 	public void charge() {
-		this.res = (AvailableRulesTO) RemoteInvokerUtils.invoke(RemoteInvokerUtils.DroolsConfigService, "getAvailableRules", null, ServiceIp.CepEngineIP);
+		this.res = (AvailableRulesTO) RemoteInvokerUtils.invoke(RemoteInvokerUtils.ContextReasonerCEPService, "getAvailableRules", null, ServiceIp.ContextReasonerIp);
 		if (this.res == null) {
 			mocker();
 		}
@@ -65,17 +65,18 @@ public class RulesBean {
 		System.out.println("createVersion");
 		this.selectedVersion.setVersionNumber(this.newVersionName);
 		this.selectedVersion.setId(null);
-		CreateRulesVersionResponseTO response = (CreateRulesVersionResponseTO) RemoteInvokerUtils.invoke(RemoteInvokerUtils.DroolsConfigService, "createNewVersion", this.selectedVersion,
-				ServiceIp.CepEngineIP);
-
-		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, response.getErrorCode(), response.getErrorMessage()));
+		CreateRulesVersionResponseTO response = (CreateRulesVersionResponseTO) RemoteInvokerUtils.invoke(RemoteInvokerUtils.ContextReasonerCEPService, "createNewVersion", this.selectedVersion,
+				ServiceIp.ContextReasonerIp);
 		System.out.println("createNewVersion... responseCode: " + response.toString());
+		if (!response.isSuccess()){
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, response.getErrorCode(), response.getErrorMessage()));
+		}
 	}
 
 	public void deployVersion() {
 		System.out.println("deployVersion");
-		CreateRulesVersionResponseTO response = (CreateRulesVersionResponseTO) RemoteInvokerUtils.invoke(RemoteInvokerUtils.DroolsConfigService, "deployVersion",
-				this.versionToDeploy.getVersionNumber(), ServiceIp.CepEngineIP);
+		CreateRulesVersionResponseTO response = (CreateRulesVersionResponseTO) RemoteInvokerUtils.invoke(RemoteInvokerUtils.ContextReasonerCEPService, "updateActiveVersion",
+				this.versionToDeploy.getVersionNumber(), ServiceIp.ContextReasonerIp);
 		System.out.println("deployVersion... responseCode: " + response.toString());
 	}
 

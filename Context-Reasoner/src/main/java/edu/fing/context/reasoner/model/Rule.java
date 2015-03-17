@@ -30,7 +30,7 @@ public class Rule {
 		return name;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "rule")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "rule")
 	public Set<RuleVersion> getRuleVersions() {
 		return ruleVersions;
 	}

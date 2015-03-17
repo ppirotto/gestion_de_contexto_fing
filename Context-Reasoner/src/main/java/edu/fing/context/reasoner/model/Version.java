@@ -3,6 +3,7 @@ package edu.fing.context.reasoner.model;
 import java.util.Date;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -12,6 +13,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import org.hibernate.annotations.Cascade;
 
 @Entity
 @Table(name = "VERSION")
@@ -39,8 +42,7 @@ public class Version {
 	public Date getCreationDate() {
 		return creationDate;
 	}
-
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "version")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "version", cascade = CascadeType.ALL)
 	public Set<RuleVersion> getRuleVersions() {
 		return ruleVersions;
 	}
