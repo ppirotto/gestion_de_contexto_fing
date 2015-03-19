@@ -83,7 +83,7 @@
 						<f:facet name="footer">
 
 							<p:commandButton value="Agregar" id="ajax" style="float:right;"
-								update="descrpition adaptationTable"
+								update="adaptationTable"
 								actionListener="#{itineraryBean.agregarAdaptacion}" />
 						</f:facet>
 
@@ -91,36 +91,6 @@
 					</p:panelGrid>
 
 				</h:panelGrid>
-
-
-				<!-- 				<p:panelGrid id="adaptaciones" styleClass="centerContent" -->
-				<!-- 					columns="1"> -->
-				<!-- 					<f:facet name="header">Itinerario</f:facet> -->
-
-				<!-- 					<c:forEach items="#{itineraryBean.adaptations}" var="adap"> -->
-				<!-- 						<p:row> -->
-				<!-- 							<p:column> -->
-				<!-- 								<h:outputText value="#{adap.id}" /> -->
-				<!-- 							</p:column> -->
-				<!-- 							<p:column> -->
-				<!-- 								<h:outputText value="#{adap.adaptationType}" /> -->
-				<!-- 							</p:column> -->
-
-				<!-- 							<p:column> -->
-				<!-- 								<h:outputText value="#{adap.description}" /> -->
-				<!-- 							</p:column> -->
-
-				<!-- 							<p:column rendered="#{adap.adaptationType.renderFileUpload()}"> -->
-				<!-- 								<p:fileUpload value="#{adap.data}" mode="simple" -->
-				<!-- 									dragDropSupport="true" /> -->
-				<!-- 							</p:column> -->
-				<!-- 							<p:column rendered="#{adap.adaptationType.renderStringInput()}"> -->
-				<!-- 								<p:inputText value="#{adap.extraData}"> -->
-				<!-- 								</p:inputText> -->
-				<!-- 							</p:column> -->
-				<!-- 						</p:row> -->
-				<!-- 					</c:forEach> -->
-				<!-- 				</p:panelGrid> -->
 
 				<p:dataTable id="adaptationTable" var="adapt" style="width:80%"
 					value="#{itineraryBean.adaptations}">
@@ -138,62 +108,151 @@
 					</p:column>
 
 					<p:column style="width:32px;text-align: center">
-						<p:commandButton update=":itineraryForm:adaptationDetail"
-							oncomplete="PF('itinerayDialog').show()" icon="ui-icon-create"
-							title="View">
+						<p:commandButton oncomplete="PF('contentBasedDialog').show()"
+							icon="ui-icon-create" title="View">
 							<f:setPropertyActionListener value="#{adapt}"
 								target="#{itineraryBean.selectedAdaptation}" />
 						</p:commandButton>
 					</p:column>
 				</p:dataTable>
 
-				<p:dialog header="Data de la adaptación" widgetVar="itinerayDialog"
-					modal="true" appendTo="@(body)" showEffect="fade" hideEffect="fade"
-					width="70%" height="400px" resizable="false">
-					<p:panel id="adaptationDetail">
-						<p:panelGrid columns="2" >
-							<h:outputLabel style="font-weight: bold;" value="Nombre" />						
-							<h:outputText
-								value="#{itineraryBean.selectedAdaptation.adaptationType}" />						
-						</p:panelGrid>
-						<p:panel style="width:90%; height:350px;">
-							<f:facet name="header">
-           				 		Data
-        					</f:facet>
-							<pe:codeMirror id="codeMirror" mode="xml" readOnly="false"
-								 theme="eclipse"  lineNumbers="true"
-								value="#{itineraryBean.selectedAdaptation.extraData}"
-								matchBrackets="true" lineWrapping="true" />						
-						</p:panel>
-					</p:panel>
-				</p:dialog>
-				
-				<p:dialog header="Definir el ruteo basado en itinerario" widgetVar="contentBasedDialog"
-					modal="true" appendTo="@(body)" showEffect="fade" hideEffect="fade"
-					width="70%" height="400px" resizable="false">
-					<p:panel id="contentBasedDetail" style="text-align:center;">
-					
-						<p:panelGrid columns="2" >
-							<h:outputLabel style="font-weight: bold;" value="Nombre" />						
-							<h:outputText
-								value="#{itineraryBean.selectedAdaptation.adaptationType}" />						
-						</p:panelGrid>
-						<p:panel style="width:90%; height:350px;">
-							
-											
-						</p:panel>
-					</p:panel>
-				</p:dialog>
-
 				<p:growl autoUpdate="true" sticky="true" showDetail="true"
 					escape="true" showSummary="true" />
 				<p:commandButton value="Crear Itinerario" ajax="false"
-					action="#{itineraryBean.crearItinerario}"
+					action="#{itineraryBean.createItinerary}"
 					styleClass="ui-priority-primary " style="margin-top: 10px;" />
 
-
 			</p:panel>
+
 		</h:form>
+		<p:dialog header="Data de la adaptación" widgetVar="itinerayDialog"
+			modal="true" appendTo="@(body)" showEffect="fade" hideEffect="fade"
+			width="70%" height="400px" resizable="false">
+			<p:panel id="adaptationDetail">
+				<p:panelGrid columns="2">
+					<h:outputLabel style="font-weight: bold;" value="Nombre" />
+					<h:outputText
+						value="#{itineraryBean.selectedAdaptation.adaptationType}" />
+				</p:panelGrid>
+				<p:panel style="width:90%; height:350px;">
+					<f:facet name="header">
+           				 		Data
+        					</f:facet>
+					<pe:codeMirror id="codeMirror" mode="xml" readOnly="false"
+						theme="eclipse" lineNumbers="true"
+						value="#{itineraryBean.selectedAdaptation.extraData}"
+						matchBrackets="true" lineWrapping="true" />
+				</p:panel>
+			</p:panel>
+		</p:dialog>
+
+		<p:dialog header="Definir el ruteo basado en itinerario"
+			widgetVar="contentBasedDialog" modal="true" appendTo="@(body)"
+			showEffect="fade" hideEffect="fade" width="70%" height="400px"
+			resizable="false">
+
+			<h:form id="contentBasedDialogForm">
+				<p:panel id="contentBasedDetail">
+
+					<p:panelGrid columns="2">
+						<h:outputLabel style="font-weight: bold;" value="Nombre" />
+						<h:outputText
+							value="#{itineraryBean.selectedAdaptation.adaptationType}" />
+					</p:panelGrid>
+
+					<p:tree value="#{itineraryBean.root}" var="node" dynamic="true"
+						id="tree" selectionMode="single"
+						selection="#{itineraryBean.selectedNode}"
+						onSelectUpdate="messagess"
+						nodeSelectListener="#{itineraryBean.onNodeSelect}"
+						onExpandUpdate="messagess"
+						nodeExpandListener="#{itineraryBean.onNodeExpand}"
+						orientation="horizontal">
+						<p:treeNode>
+							<h:outputText value="#{node}" />
+						</p:treeNode>
+					</p:tree>
+					<p:panelGrid columns="2">
+						<p:panelGrid columns="2">
+							<f:facet name="header">Nodo</f:facet>
+							<h:outputLabel>
+								<b>Tipo</b>
+							</h:outputLabel>
+
+							<p:selectOneMenu id="selectNodeType" autoupdate="true"
+								styleClass="span3" value="#{itineraryBean.nodeType}"
+								effect="fade">adaptationTypeList
+						<f:selectItem itemLabel="Seleccione tipo de nodo" itemValue="" />
+								<f:selectItem itemLabel="Adaptación" itemValue="ADAPTATION" />
+								<f:selectItem itemLabel="XPath" itemValue="XPATH" />
+							</p:selectOneMenu>
+
+							<h:outputLabel>
+								<b>Adaptación</b>
+							</h:outputLabel>
+							<p:selectOneMenu id="selectAdaptType" autoupdate="true"
+								required="true" requiredMessage="Seleccione tipo de nodo"
+								styleClass="span3" value="#{itineraryBean.adaptSelec}"
+								effect="fade">
+								<f:selectItem itemLabel="Seleccione adaptaciones" itemValue="" />
+								<f:selectItems value="#{itineraryBean.adaptationTypeList}"
+									var="adapType" itemLabel="#{adapType}" itemValue="#{adapType}" />
+
+							</p:selectOneMenu>
+
+							<p:outputLabel>
+								<b>Descripción</b>
+							</p:outputLabel>
+							<p:inputTextarea id="descrpition" scrollHeight="2" cols="30"
+								rows="1" value="#{itineraryBean.description}"
+								label="Descripción">
+							</p:inputTextarea>
+
+							<p:outputLabel>
+								<b>XPath</b>
+							</p:outputLabel>
+							<p:inputText id="xpath" value="#{itineraryBean.xpath}"
+								label="XPath">
+							</p:inputText>
+
+							<p:outputLabel>
+								<b>Data</b>
+							</p:outputLabel>
+
+							<pe:codeMirror id="dataCM" mode="xml" readOnly="false"
+								theme="eclipse" lineNumbers="true" value="#{itineraryBean.data}"
+								matchBrackets="true" lineWrapping="true" />
+
+						</p:panelGrid>
+
+						<p:panelGrid columns="2">
+							<p:outputLabel>
+								<b>XPath Nodo Padre</b>
+							</p:outputLabel>
+							<p:inputText id="xpathParent"
+								value="#{itineraryBean.xpathParent}" label="XPath">
+							</p:inputText>
+
+						</p:panelGrid>
+					</p:panelGrid>
+					<p:commandButton value="Crear Nodo Falso" icon="ui-icon-newwin"
+						ajax="true" update="tree" style="float:left"
+						actionListener="#{itineraryBean.createFalseNode()}" />
+
+					<p:commandButton value="Crear Nodo Verdadero" icon="ui-icon-newwin"
+						ajax="true" update="tree" style="float:left"
+						actionListener="#{itineraryBean.createTrueNode()}" />
+						
+						<p:commandButton value="Crear Ruteo Basado en Contenido" icon="ui-icon-newwin"
+						ajax="true" update="tree" style="float:right"
+						actionListener="#{itineraryBean.createItinerary()}" />
+						
+						
+				</p:panel>
+			</h:form>
+		</p:dialog>
+
+
 
 	</ui:define>
 	<ui:define name="menuIzq">

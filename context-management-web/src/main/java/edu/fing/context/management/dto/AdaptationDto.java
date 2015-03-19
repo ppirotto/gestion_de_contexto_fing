@@ -2,9 +2,8 @@ package edu.fing.context.management.dto;
 
 import java.io.Serializable;
 
-import org.primefaces.model.UploadedFile;
-
 import edu.fing.commons.constant.AdaptationType;
+import edu.fing.commons.front.dto.AdaptationTreeNodeTO;
 
 public class AdaptationDto implements Serializable {
 
@@ -12,8 +11,8 @@ public class AdaptationDto implements Serializable {
 	private int id;
 	private AdaptationType adaptationType;
 	private String description;
-	private UploadedFile data;
-	private String extraData;
+	private String data;
+	private AdaptationTreeNodeTO tree;
 
 	public AdaptationDto(int id, AdaptationType adaptationType, String desc) {
 		super();
@@ -26,16 +25,12 @@ public class AdaptationDto implements Serializable {
 		return this.adaptationType;
 	}
 
-	public UploadedFile getData() {
+	public String getData() {
 		return this.data;
 	}
 
 	public String getDescription() {
 		return this.description;
-	}
-
-	public String getExtraData() {
-		return this.extraData;
 	}
 
 	public int getId() {
@@ -46,7 +41,7 @@ public class AdaptationDto implements Serializable {
 		this.adaptationType = adaptationType;
 	}
 
-	public void setData(UploadedFile data) {
+	public void setData(String data) {
 		this.data = data;
 	}
 
@@ -54,12 +49,16 @@ public class AdaptationDto implements Serializable {
 		this.description = description;
 	}
 
-	public void setExtraData(String extraData) {
-		this.extraData = extraData;
-	}
-
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public AdaptationTreeNodeTO getTree() {
+		return tree;
+	}
+
+	public void setTree(AdaptationTreeNodeTO tree) {
+		this.tree = tree;
 	}
 
 }
