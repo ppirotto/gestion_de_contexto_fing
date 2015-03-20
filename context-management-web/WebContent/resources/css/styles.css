@@ -124,6 +124,10 @@ font-family: 'Tangerine', serif;
    background: #f5f5f5;
 }
 
+.ui-state-highlight .ui-icon {
+	background-image: url("/context-management-web/faces/javax.faces.resource/images/ui-icons_333333_256x240.png?ln=primefaces-bootstrap");
+}
+
 div[id="codeMirrorForm:growlCenter_container"] {
     position:absolute;
     top:20px;

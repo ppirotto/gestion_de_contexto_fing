@@ -27,6 +27,7 @@
 	<context-param>
 		<param-name>primefaces.THEME</param-name>
 		<param-value>bootstrap</param-value>
+<!-- 		smoothness aristo-->
 	</context-param>
 
 	<listener>

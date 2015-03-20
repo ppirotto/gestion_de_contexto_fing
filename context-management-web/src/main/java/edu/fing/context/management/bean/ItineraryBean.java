@@ -12,9 +12,6 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
-import org.primefaces.event.NodeCollapseEvent;
-import org.primefaces.event.NodeExpandEvent;
-import org.primefaces.event.NodeSelectEvent;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
 import org.primefaces.model.UploadedFile;
@@ -139,8 +136,11 @@ public class ItineraryBean implements Serializable {
 			a.setOrder(adapt.getId());
 			a.setName("");
 			a.setDescription(adapt.getDescription());
-
-			a.setData(adapt.getData());
+			if (adapt.getAdaptationType().equals(AdaptationType.CONTENT_BASED_ROUTER)) {
+				a.setData(adapt.getTree());
+			} else {
+				a.setData(adapt.getData());
+			}
 
 			list.add(a);
 		}
@@ -249,26 +249,6 @@ public class ItineraryBean implements Serializable {
 
 	public String getXpathParent() {
 		return this.xpathParent;
-	}
-
-	public void onNodeCollapse(NodeCollapseEvent event) {
-		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Collapsed", event.getTreeNode().toString());
-
-		FacesContext.getCurrentInstance().addMessage(null, message);
-	}
-
-	public void onNodeExpand(NodeExpandEvent event) {
-		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Expanded", event.getTreeNode().toString());
-
-		FacesContext.getCurrentInstance().addMessage(null, message);
-
-	}
-
-	public void onNodeSelect(NodeSelectEvent event) {
-		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Selected", event.getTreeNode().toString());
-
-		FacesContext.getCurrentInstance().addMessage(null, message);
-
 	}
 
 	public void setAdaptations(List<AdaptationDto> adaptations) {
