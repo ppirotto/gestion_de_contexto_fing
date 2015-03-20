@@ -37,6 +37,15 @@ public class AdaptationDto implements Serializable {
 		return this.id;
 	}
 
+	public AdaptationTreeNodeTO getTree() {
+		return this.tree;
+	}
+
+	public boolean isCBR() {
+		return AdaptationType.CONTENT_BASED_ROUTER.equals(this.adaptationType);
+
+	}
+
 	public void setAdaptationType(AdaptationType adaptationType) {
 		this.adaptationType = adaptationType;
 	}
@@ -51,10 +60,6 @@ public class AdaptationDto implements Serializable {
 
 	public void setId(int id) {
 		this.id = id;
-	}
-
-	public AdaptationTreeNodeTO getTree() {
-		return tree;
 	}
 
 	public void setTree(AdaptationTreeNodeTO tree) {

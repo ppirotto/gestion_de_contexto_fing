@@ -108,8 +108,8 @@
 					</p:column>
 
 					<p:column style="width:32px;text-align: center">
-						<p:commandButton oncomplete="PF('contentBasedDialog').show()"
-							icon="ui-icon-create" title="View">
+						<p:commandButton oncomplete="if (#{adapt.isCBR()}){ PF('contentBasedDialog').show()}else{PF('itinerayDialog').show()}"
+							icon="ui-icon-create" title="View" update="adaptationDetail contentBasedDetail">
 							<f:setPropertyActionListener value="#{adapt}"
 								target="#{itineraryBean.selectedAdaptation}" />
 						</p:commandButton>
@@ -140,7 +140,7 @@
         					</f:facet>
 					<pe:codeMirror id="codeMirror" mode="xml" readOnly="false"
 						theme="eclipse" lineNumbers="true"
-						value="#{itineraryBean.selectedAdaptation.extraData}"
+						value="#{itineraryBean.selectedAdaptation.data}"
 						matchBrackets="true" lineWrapping="true" />
 				</p:panel>
 			</p:panel>
