@@ -1,5 +1,6 @@
 package edu.fing.context.management.bean;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,9 +17,11 @@ import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
 
 import edu.fing.commons.front.dto.ContextSourceTO;
+import edu.fing.commons.front.dto.RuleTemplateTO;
 import edu.fing.commons.front.dto.SituationTO;
 import edu.fing.context.management.util.RemoteInvokerUtils;
 import edu.fing.context.management.util.RemoteInvokerUtils.ServiceIp;
+import edu.fing.context.management.util.RuleTemplateService;
 
 @ManagedBean
 @ViewScoped
@@ -27,17 +30,18 @@ public class SituationBean {
 	private String description;
 	private String name;
 	private long duration;
+	private Map<String, ContextSourceTO> mappedContextData = new HashMap<String, ContextSourceTO>();
+	private List<String> selectedOutputDatum;
+
 	private String selectedContextSource;
 
 	private List<String> contextSources = (List<String>) RemoteInvokerUtils.invoke(RemoteInvokerUtils.ContextReasonerConfigService, "getContextSources", null, ServiceIp.ContextReasonerIp);
 
 	private List<String> contextDataList = (List<String>) RemoteInvokerUtils.invoke(RemoteInvokerUtils.ContextReasonerConfigService, "getContextData", null, ServiceIp.ContextReasonerIp);
 	private List<String> selectedInputDatum;
-	private List<String> selectedOutputDatum;
 
 	private TreeNode root = new DefaultTreeNode("Fuente de contexto", null);
 
-	private Map<String, ContextSourceTO> mappedContextData = new HashMap<String, ContextSourceTO>();
 
 	private String rule;
 
@@ -45,7 +49,7 @@ public class SituationBean {
 	private SessionBean session;
 
 	public String crearSituacion() {
-		System.out.println("Crear situación");
+		System.out.println("Crear situaciï¿½n");
 
 		SituationTO sit = new SituationTO();
 		sit.setName(this.name);
@@ -56,7 +60,7 @@ public class SituationBean {
 
 		Boolean result = (Boolean) RemoteInvokerUtils.invoke(RemoteInvokerUtils.ContextReasonerConfigService, "createSituation", sit, ServiceIp.ContextReasonerIp);
 		if (result) {
-			String mensaje = "Servicio creado con éxito";
+			String mensaje = "Servicio creado con ï¿½xito";
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(null, mensaje));
 
 		}
@@ -141,6 +145,18 @@ public class SituationBean {
 
 			// llamar servicio de
 			this.rule = "llamar servicio que crea el template";
+			RuleTemplateTO ruleTempTO = new RuleTemplateTO();
+			ruleTempTO.setDescription(description);
+			ruleTempTO.setDuration(duration);
+			ruleTempTO.setMappedContextData(mappedContextData);
+			ruleTempTO.setName(name);
+			ruleTempTO.setSelectedOutputDatum(selectedOutputDatum);
+			try {
+				this.rule = RuleTemplateService.createRuleTemplate(ruleTempTO);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 
 		return event.getNewStep();

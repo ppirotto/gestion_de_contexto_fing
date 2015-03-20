@@ -1,0 +1,73 @@
+package edu.fing.drools;
+import java.util.HashMap;
+import java.util.Map;
+import edu.fing.commons.dto.ContextualDataTO;
+
+declare UserLocation
+@role(event)
+	lat:	long
+	lon:	long
+	userId:	String
+end
+
+declare InCity
+@role(event)
+	city:	String
+	userId:	String
+end
+
+declare CityWeather
+@role(event)
+	city:	String
+	raining:boolean
+end
+
+rule "UserLocationMessageMapper"
+when
+    message:ContextualDataTO(this.getEventName() == "USER_LOCATION")
+then
+    System.out.println("Mapping message to UserLocation...");
+	Map<String,Object> info = message.getInfo();
+	UserLocation usrLoc = new UserLocation();
+	usrLoc.setLat(Long.parseLong((String)info.get("lat")));
+	usrLoc.setLon(Long.parseLong((String)info.get("lon")));
+	usrLoc.setUserId((String)info.get("userId"));
+	insert(usrLoc);
+end
+
+
+rule "User in City, new"
+when
+    usrLoc:UserLocation()
+    not (exists InCity(userId==usrLoc.userId))
+then
+    System.out.println("UserLocation received NEW... userId= " + usrLoc.getUserId());
+	InCity usrCity = new InCity();
+	usrCity.setCity("CUIDAD 1");
+	usrCity.setUserId(usrLoc.getUserId());
+	insert(usrCity);    
+end
+
+rule "User in City, update"
+no-loop true
+when
+    usrLoc:UserLocation()
+    usrInCity:InCity(userId==usrLoc.userId)
+then
+    System.out.println("UserLocation received UPDATE... userId= " + usrLoc.getUserId());
+	usrInCity.setCity("CUIDAD 1");
+	update(usrInCity);    
+end
+
+
+rule "User in City Raining"
+when
+    usrInCity:InCity()
+    CityWeather (city == usrInCity.city, raining == true) over window:time( 30m )
+then
+    System.out.println("UserInCity RAINING!!! userId= " + usrInCity.getUserId() + "city=" + usrInCity.getCity() + "  ---  NOTIFICAR CONTEXT REASONER!!!!!");
+    HashMap<String,Object> contextualData = new HashMap<String,Object>();
+    contextualData.put("city",usrInCity.getCity());
+	situationDetected(usrInCity.getUserId(), "UserInCityRaining",contextualData);
+end
+
