@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class RuleTemplateTO {
 
-	private String description;
+	private String description; 
 	private String name;
 	private long duration;
 	private Map<String, ContextSourceTO> mappedContextData = new HashMap<String, ContextSourceTO>();
