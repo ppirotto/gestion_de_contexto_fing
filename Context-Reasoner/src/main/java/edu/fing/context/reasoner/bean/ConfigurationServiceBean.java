@@ -152,8 +152,10 @@ public class ConfigurationServiceBean implements ConfigurationService {
 		queryString.append("SELECT ContextDatum c ");
 		queryString.append("FROM Situation sit ");
 		queryString.append("fetch join sit.outputContextData c ");
+		queryString.append("where sit.name = :situationName ");
 
 		Query query = session.createQuery(queryString.toString());
+		query.setParameter("situationName", situationName);
 
 		@SuppressWarnings("unchecked")
 		List<ContextDatum> contextData = query.list();
