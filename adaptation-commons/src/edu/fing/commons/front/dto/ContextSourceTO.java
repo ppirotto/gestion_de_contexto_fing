@@ -5,7 +5,6 @@ import java.util.List;
 public class ContextSourceTO {
 
 	private List<String> contextData;
-
 	private String eventName;
 	private String description;
 	private String modeConverter;

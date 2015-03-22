@@ -14,4 +14,6 @@ public interface CEPService {
 
 	VersionTO getActiveVersion();
 
+	VersionTO getLastVersion();
+
 }

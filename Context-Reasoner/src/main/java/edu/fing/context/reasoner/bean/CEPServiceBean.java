@@ -95,12 +95,10 @@ public class CEPServiceBean implements CEPService {
 		for (Version version : allVersions) {
 			VersionTO newVersionTO = new VersionTO();
 			newVersionTO.setCreationDate(version.getCreationDate());
-			newVersionTO.setId(version.getId());
 			newVersionTO.setVersionNumber(version.getVersionNumber());
 			List<RuleTO> rulesTO = new ArrayList<RuleTO>();
 			for (RuleVersion rV : version.getRuleVersions()) {
 				RuleTO ruleTO = new RuleTO();
-				ruleTO.setId(rV.getId());
 				ruleTO.setName(rV.getRule().getName());
 				ruleTO.setDrl(rV.getDrl());
 				rulesTO.add(ruleTO);
@@ -112,6 +110,24 @@ public class CEPServiceBean implements CEPService {
 		return res;
 	}
 
+	
+	@Override
+	public VersionTO getLastVersion() {
+		// TODO Auto-generated method stub
+		VersionTO res = new VersionTO();
+		
+		Session session = sessionFactory.openSession();
+		session.beginTransaction();
+		
+		Query activeConfigurationQuery = session.createSQLQuery("SELECT * FROM ACTIVE_CONFIGURATION").addEntity(ActiveConfiguration.class);
+
+		@SuppressWarnings("unchecked")
+		ActiveConfiguration activeConfig = (ActiveConfiguration) activeConfigurationQuery.uniqueResult();
+		
+		res = mapToVersionTO(activeConfig.getLastVersion());		
+		return res;
+	}
+	
 	
 	@Override
 	public FrontResponseTO updateActiveVersion(String versionNumber) {
@@ -272,7 +288,6 @@ public class CEPServiceBean implements CEPService {
 		for (RuleVersion r : version.getRuleVersions()) {
 			res.getRules().add(mapToRuleTO(r,res));
 		}
-		res.setId(version.getId());
 		return res;
 	}
 
@@ -282,7 +297,6 @@ public class CEPServiceBean implements CEPService {
 		RuleTO res = new RuleTO();
 		res.setName(r.getRule().getName());
 		res.setDrl(r.getDrl());
-		res.setId(r.getId());
 		return res;
 	}
 	
