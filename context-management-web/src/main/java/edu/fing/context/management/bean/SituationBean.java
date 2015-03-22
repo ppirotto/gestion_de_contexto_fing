@@ -72,7 +72,7 @@ public class SituationBean {
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(null, mensaje));
 
 		} else {
-			//MOSTRAR MENSAJE DE ERROR!!!
+			// MOSTRAR MENSAJE DE ERROR!!!
 		}
 		return "inicio";
 	}
@@ -208,23 +208,21 @@ public class SituationBean {
 			// llamar servicio de
 			// this.displayRule = "llamar servicio que crea el template";
 			RuleTemplateTO ruleTempTO = new RuleTemplateTO();
-			ruleTempTO.setDescription(description);
-			ruleTempTO.setDuration(duration);
+			ruleTempTO.setDescription(this.description);
+			ruleTempTO.setDuration(this.duration);
 
-			ruleTempTO.setMappedContextData(new ArrayList<ContextSourceTO>(
-					mappedContextData.values()));
-			ruleTempTO.setSituationName(name);
-			ruleTempTO.setSelectedOutputData(selectedOutputData);
+			ruleTempTO.setMappedContextData(new ArrayList<ContextSourceTO>(this.mappedContextData.values()));
+			ruleTempTO.setSituationName(this.name);
+			ruleTempTO.setSelectedOutputData(this.selectedOutputData);
 
 			// this.displayRule =
 			// RuleTemplateService.createRuleTemplate(ruleTempTO);
 			try {
 				String generatedRule = RuleTemplateService.createRuleTemplate(ruleTempTO);
-				VersionTO versionTO = (VersionTO) RemoteInvokerUtils.invoke(RemoteInvokerUtils.ContextReasonerCEPService, 
-						"getLastVersion", null, ServiceIp.ContextReasonerIp);
+				VersionTO versionTO = (VersionTO) RemoteInvokerUtils.invoke(RemoteInvokerUtils.ContextReasonerCEPService, "getLastVersion", null, ServiceIp.ContextReasonerIp);
 				RuleTO rule = new RuleTO();
 				rule.setDrl(generatedRule);
-				rule.setName(name);
+				rule.setName(this.name);
 				versionTO.getRules().add(rule);
 				this.setVersionRules(versionTO);
 			} catch (IOException e) {
@@ -233,6 +231,7 @@ public class SituationBean {
 			}
 
 			for (RuleTO ruleTO : this.getVersionRules().getRules()) {
+
 				if (ruleTO.getName().equals(this.name)) {
 					this.selectedRule = ruleTO;
 				}

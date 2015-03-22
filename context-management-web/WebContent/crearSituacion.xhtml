@@ -113,7 +113,7 @@
 									<f:facet name="header">Output</f:facet>
 									<p:dataTable id="dataTableOutput" var="dat" style="width:220px"
 										value="#{situationBean.contextDataList}" scrollable="true"
-										scrollHeight="260"
+										scrollHeight="274"
 										selection="#{situationBean.selectedOutputData}"
 										rowKey="#{dat}">
 
@@ -135,7 +135,7 @@
 
 					<p:tab id="ruleTab" title="Regla">
 						<p:panel header="Definir la regla: #{situationBean.name}">
-							<h:panelGrid columns="2">
+							<h:panelGrid columns="2" columnClasses="topAligned ">
 								<h:panelGrid columns="1">
 
 
