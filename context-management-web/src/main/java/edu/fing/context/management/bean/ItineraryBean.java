@@ -37,12 +37,20 @@ public class ItineraryBean implements Serializable {
 	}
 
 	private AdaptationType adaptSelec;
+	private AdaptationType adaptSelecCBR;
+
 	private String description;
 	private int priority;
-	private List<ServiceTO> serviceList;
+	@SuppressWarnings("unchecked")
+	private List<ServiceTO> serviceList = (List<ServiceTO>) RemoteInvokerUtils.invoke(RemoteInvokerUtils.ContextReasonerConfigService, "getServices", null, ServiceIp.ContextReasonerIp);
+
 	private AdaptationType[] adaptationTypeList = AdaptationType.values();
 
-	private List<SituationTO> situationList;
+	private AdaptationType[] adaptationTypeListCBR = { AdaptationType.DELAY, AdaptationType.ENRICH, AdaptationType.EXTERNAL_TRANSFORMATION, AdaptationType.FILTER, AdaptationType.SERVICE_INVOCATION };
+
+	@SuppressWarnings("unchecked")
+	private List<SituationTO> situationList = (List<SituationTO>) RemoteInvokerUtils.invoke(RemoteInvokerUtils.ContextReasonerConfigService, "getSituations", null, ServiceIp.ContextReasonerIp);
+
 	private Long selectedService;
 
 	private String selectedSituation;
@@ -183,8 +191,16 @@ public class ItineraryBean implements Serializable {
 		return this.adaptationTypeList;
 	}
 
+	public AdaptationType[] getAdaptationTypeListCBR() {
+		return this.adaptationTypeListCBR;
+	}
+
 	public AdaptationType getAdaptSelec() {
 		return this.adaptSelec;
+	}
+
+	public AdaptationType getAdaptSelecCBR() {
+		return this.adaptSelecCBR;
 	}
 
 	public String getData() {
@@ -228,8 +244,7 @@ public class ItineraryBean implements Serializable {
 	}
 
 	public List<ServiceTO> getServiceList() {
-		List<ServiceTO> results = (List<ServiceTO>) RemoteInvokerUtils.invoke(RemoteInvokerUtils.ContextReasonerConfigService, "getServices", null, ServiceIp.ContextReasonerIp);
-		this.serviceList = results;
+
 		return this.serviceList;
 	}
 
@@ -238,8 +253,7 @@ public class ItineraryBean implements Serializable {
 	}
 
 	public List<SituationTO> getSituationList() {
-		List<SituationTO> results = (List<SituationTO>) RemoteInvokerUtils.invoke(RemoteInvokerUtils.ContextReasonerConfigService, "getSituations", null, ServiceIp.ContextReasonerIp);
-		this.situationList = results;
+
 		return this.situationList;
 	}
 
@@ -251,6 +265,11 @@ public class ItineraryBean implements Serializable {
 		return this.xpathParent;
 	}
 
+	public boolean renderAdap() {
+
+		return "ADAPTATION".equals(this.nodeType);
+	}
+
 	public void setAdaptations(List<AdaptationDto> adaptations) {
 		this.adaptations = adaptations;
 	}
@@ -259,8 +278,16 @@ public class ItineraryBean implements Serializable {
 		this.adaptationTypeList = adaptationTypeList;
 	}
 
+	public void setAdaptationTypeListCBR(AdaptationType[] adaptationTypeListCBR) {
+		this.adaptationTypeListCBR = adaptationTypeListCBR;
+	}
+
 	public void setAdaptSelec(AdaptationType adaptSelec) {
 		this.adaptSelec = adaptSelec;
+	}
+
+	public void setAdaptSelecCBR(AdaptationType adaptSelecCBR) {
+		this.adaptSelecCBR = adaptSelecCBR;
 	}
 
 	public void setData(String data) {

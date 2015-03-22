@@ -1,9 +1,15 @@
 package edu.fing.commons.front.dto;
 
+import java.io.Serializable;
+
 import edu.fing.commons.dto.AdaptationTO;
 
-public class AdaptationTreeNodeTO {
+public class AdaptationTreeNodeTO implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String nodeType;
 	private String xpath;
 	private AdaptationTO adaptation;
