@@ -26,7 +26,7 @@ public interface ConfigurationService {
 
 	Boolean createService(ServiceTO serviceTO);
 
-	Boolean createItinerary(ItineraryTO itineraryTO);
+	FrontResponseTO createItinerary(ItineraryTO itineraryTO);
 
 	Boolean createContextDatum(String contextDatumName);
 

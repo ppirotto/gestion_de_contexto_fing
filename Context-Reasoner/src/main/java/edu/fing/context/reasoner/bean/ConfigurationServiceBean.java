@@ -240,6 +240,10 @@ public class ConfigurationServiceBean implements ConfigurationService {
 			session.save(situation);
 			boolean result = HibernateUtils.commit(session);
 			response.setSuccess(result);
+			if (!result) {
+				response.setErrorCode("ERROR_PROCESING_DATA");
+				response.setErrorMessage("Error procesando los datos");
+			}
 		}
 		return response;
 	}
@@ -298,13 +302,21 @@ public class ConfigurationServiceBean implements ConfigurationService {
 	}
 
 	@Override
-	public Boolean createItinerary(ItineraryTO itineraryTO) {
+	public FrontResponseTO createItinerary(ItineraryTO itineraryTO) {
 
+		FrontResponseTO frontResponseTO = new FrontResponseTO();
 		Session session = this.sessionFactory.openSession();
 		session.beginTransaction();
 
 		Service service = this.findServiceById(itineraryTO.getService().getId(), session);
 		Situation situation = this.findSituationByName(itineraryTO.getSituationName(), session);
+		boolean exists = this.existsPriotityForServiceAndSituation(itineraryTO.getSituationName(), itineraryTO.getService().getId(), session);
+		if (exists) {
+			frontResponseTO.setSuccess(false);
+			frontResponseTO.setErrorCode("ITINERARY_ALREADY_EXISTS");
+			frontResponseTO.setErrorMessage("El itinerario ya existe para la situación y servicio seleccionados");
+			return frontResponseTO;
+		}
 
 		for (AdaptationTO adaptationTO : itineraryTO.getAdaptations()) {
 			Adaptation adaptation = new Adaptation();
@@ -325,7 +337,13 @@ public class ConfigurationServiceBean implements ConfigurationService {
 		session.save(serviceSituationPriority);
 		session.save(service);
 
-		return HibernateUtils.commit(session);
+		boolean success = HibernateUtils.commit(session);
+		frontResponseTO.setSuccess(success);
+		if (!success) {
+			frontResponseTO.setErrorCode("ERROR_PROCESING_DATA");
+			frontResponseTO.setErrorMessage("Error procesando los datos");
+		}
+		return frontResponseTO;
 	}
 
 	private String getDataByAdaptationType(Object adaptationData, AdaptationType adaptationType, String serviceUrl) {
@@ -423,6 +441,29 @@ public class ConfigurationServiceBean implements ConfigurationService {
 
 		return query.list();
 
+	}
+
+	private boolean existsPriotityForServiceAndSituation(String situationName, Long serviceId, Session session) {
+
+		StringBuilder queryString = new StringBuilder();
+
+		queryString.append("SELECT ssp ");
+		queryString.append("FROM Service ser ");
+		queryString.append("join ser.priorities ssp ");
+		queryString.append("join ssp.situation sit ");
+		queryString.append("WHERE sit.name = :situationName and ser.id = :serviceId");
+
+		Query query = session.createQuery(queryString.toString());
+		query.setParameter("situationName", situationName);
+		query.setParameter("serviceId", serviceId);
+
+		ServiceSituationPriority priority = (ServiceSituationPriority) query.uniqueResult();
+
+		if (priority != null) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	private ContextSource findContextSourceByName(String name, Session session) {
