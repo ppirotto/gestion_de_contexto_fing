@@ -52,7 +52,7 @@ public class RulesBean {
 		if (this.res.getVersions() != null) {
 			this.selectedVersion = this.res.getVersions().get(0);
 			for (VersionTO v : this.res.getVersions()) {
-				if (v.getId().equals(this.res.getActiveVersionId())) {
+				if (v.getVersionNumber().equals(this.res.getActiveVersionNumber())) {
 					this.activeVersion = v.getVersionNumber();
 					this.newVersionName = this.activeVersion;
 				}
@@ -64,7 +64,6 @@ public class RulesBean {
 	public void createVersion() {
 		System.out.println("createVersion");
 		this.selectedVersion.setVersionNumber(this.newVersionName);
-		this.selectedVersion.setId(null);
 		FrontResponseTO response = (FrontResponseTO) RemoteInvokerUtils.invoke(RemoteInvokerUtils.ContextReasonerCEPService, "createNewVersion", this.selectedVersion,
 				ServiceIp.ContextReasonerIp);
 		System.out.println("createNewVersion... responseCode: " + response.toString());
@@ -110,16 +109,13 @@ public class RulesBean {
 
 	private void mocker() {
 		this.res = new AvailableRulesTO();
-		this.res.setActiveVersionId((long) 3.3);
 		this.res.setLastDeployDate(new Date());
 		ArrayList a = new ArrayList<VersionTO>();
 		VersionTO v1 = new VersionTO();
 		v1.setCreationDate(new Date());
-		v1.setId((long) 2);
 		v1.setVersionNumber("2.0");
 		List<RuleTO> rules = new ArrayList<RuleTO>();
 		RuleTO r = new RuleTO();
-		r.setId(1);
 		r.setName("REGLA POSTA");
 		r.setDrl("gggggggggggggggggggggggggggg");
 		rules.add(r);

@@ -5,20 +5,13 @@ import java.util.List;
 
 public class AvailableRulesTO {
 
-	private long activeVersionId;
+	private String activeVersionNumber;
 	private Date lastDeployDate;
-	private long lastVersionId;
+	private String lastVersionNumber;
 	
 	private List<VersionTO> versions;
 
-	public long getActiveVersionId() {
-		return activeVersionId;
-	}
-
-	public void setActiveVersionId(long activeVersionId) {
-		this.activeVersionId = activeVersionId;
-	}
-
+	
 	public Date getLastDeployDate() {
 		return lastDeployDate;
 	}
@@ -35,12 +28,20 @@ public class AvailableRulesTO {
 		this.versions = versions;
 	}
 
-	public long getLastVersionId() {
-		return lastVersionId;
+	public String getActiveVersionNumber() {
+		return activeVersionNumber;
 	}
 
-	public void setLastVersionId(long lastVersionId) {
-		this.lastVersionId = lastVersionId;
+	public void setActiveVersionNumber(String activeVersionNumber) {
+		this.activeVersionNumber = activeVersionNumber;
+	}
+
+	public String getLastVersionNumber() {
+		return lastVersionNumber;
+	}
+
+	public void setLastVersionNumber(String lastVersionNumber) {
+		this.lastVersionNumber = lastVersionNumber;
 	}
 
 }

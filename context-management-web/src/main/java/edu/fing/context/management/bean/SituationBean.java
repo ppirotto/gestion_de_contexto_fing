@@ -66,11 +66,13 @@ public class SituationBean {
 		sit.setContextSources(new ArrayList(this.mappedContextData.values()));
 		sit.setOutputContextData(this.selectedOutputData);
 
-		Boolean result = (Boolean) RemoteInvokerUtils.invoke(RemoteInvokerUtils.ContextReasonerConfigService, "createSituation", sit, ServiceIp.ContextReasonerIp);
-		if (result) {
+		FrontResponseTO response = (FrontResponseTO) RemoteInvokerUtils.invoke(RemoteInvokerUtils.ContextReasonerConfigService, "createSituation", sit, ServiceIp.ContextReasonerIp);
+		if (response.isSuccess()) {
 			String mensaje = "Servicio creado con �xito";
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(null, mensaje));
 
+		} else {
+			//MOSTRAR MENSAJE DE ERROR!!!
 		}
 		return "inicio";
 	}

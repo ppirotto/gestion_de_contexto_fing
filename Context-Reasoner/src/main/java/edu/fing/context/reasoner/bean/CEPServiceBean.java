@@ -81,8 +81,8 @@ public class CEPServiceBean implements CEPService {
 		@SuppressWarnings("unchecked")
 		ActiveConfiguration activeConfig = (ActiveConfiguration) activeConfigurationQuery.uniqueResult();
 		
-		res.setActiveVersionId(activeConfig.getActiveVersion().getId());
-		res.setLastVersionId(activeConfig.getLastVersion().getId());
+		res.setActiveVersionNumber(activeConfig.getActiveVersion().getVersionNumber());
+		res.setLastVersionNumber(activeConfig.getLastVersion().getVersionNumber());
 		res.setLastDeployDate(activeConfig.getLastDeployDate());
 		List<VersionTO> versions = new ArrayList<VersionTO>();
 		res.setVersions(versions);
