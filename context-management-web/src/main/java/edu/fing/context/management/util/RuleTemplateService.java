@@ -39,7 +39,6 @@ public class RuleTemplateService {
 		String strFile = readFile(sourcePath, Charset.defaultCharset());
 		rule = applyTemplate(ruleTempTO, strFile);
 		
-		
 		return rule;
 	}
 	
@@ -58,8 +57,6 @@ public class RuleTemplateService {
 
 			template.process(input, outStr);
 			outStr.flush();
-			System.out.println(outStr.toString());
-
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (TemplateException e) {

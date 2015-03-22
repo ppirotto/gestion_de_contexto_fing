@@ -3,7 +3,7 @@ package edu.fing.commons.front.dto;
 import java.util.Date;
 import java.util.List;
 
-public class AvailableRulesTO {
+public class AvailableRulesTO {	
 
 	private String activeVersionNumber;
 	private Date lastDeployDate;

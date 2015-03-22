@@ -168,14 +168,25 @@
 
 								<p:commandButton value="Guardar Regla"
 									 />
-								<p:commandButton value="Crear Situación"
-									action="#{situationBean.crearSituacion()}"
+								<p:commandButton value="Crear Situación" update="display"
+									onclick="PF('asignarNumeroVersionDlg').show()"
 									styleClass="ui-priority-primary" />
 							</f:facet>
 						</p:panel>
 					</p:tab>
 				</p:wizard>
-
+				<p:dialog header="Creando nueva version..." modal="false" dynamic="true"
+					showEffect="bounce" widgetVar="asignarNumeroVersionDlg" resizable="false">
+					<p:panelGrid columns="2" id="display" style="margin-bottom:10px"
+						cellpadding="5">
+						<h:outputText
+							value="Se creara una nueva version. Elegir nombre deseado." />
+						<h:inputText value="#{situationBean.versionRules.versionNumber}" />
+						<p:commandButton value="Crear nueva version!"
+							icon="ui-icon-check" actionListener="#{situationBean.crearSituacion()}"
+							oncomplete="PF('asignarNumeroVersionDlg').hide()" title="Crear nueva version!" />
+					</p:panelGrid>
+				</p:dialog>
 
 			</h:form>
 

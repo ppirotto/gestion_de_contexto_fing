@@ -36,7 +36,7 @@ public class SituationBean {
 	private long duration;
 	private Map<String, ContextSourceTO> mappedContextData = new HashMap<String, ContextSourceTO>();
 	private List<String> selectedOutputData;
-
+	private String newVersionName;
 	private String selectedContextSource;
 
 	@SuppressWarnings("unchecked")
@@ -49,7 +49,7 @@ public class SituationBean {
 	private TreeNode root = new DefaultTreeNode("Fuente de contexto", null);
 
 	private RuleTO selectedRule;
-	private VersionTO versionRules;
+	private VersionTO versionRules = new VersionTO();
 
 	@ManagedProperty(value = "#{sessionBean}")
 	private SessionBean session;
@@ -295,5 +295,13 @@ public class SituationBean {
 
 	public void setVersionRules(VersionTO versionRules) {
 		this.versionRules = versionRules;
+	}
+
+	public String getNewVersionName() {
+		return newVersionName;
+	}
+
+	public void setNewVersionName(String newVersionName) {
+		this.newVersionName = newVersionName;
 	}
 }
