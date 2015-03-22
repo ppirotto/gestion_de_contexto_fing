@@ -36,19 +36,6 @@ public class CleanItineraryServiceBean implements CleanItineraryService {
 
 			Set<ContextAwareAdaptation> adaptationDirective = itinerary.getAdaptationDirective();
 
-			// StringBuilder queryStr = new StringBuilder();
-			// queryStr.append("Select ContextAwareAdaptation c ");
-			// queryStr.append("FROM Itinerary i ");
-			// queryStr.append("JOIN fetch i.adaptationDirective c ");
-			// queryStr.append("WHERE i.id = :itineraryId ");
-			//
-			// Query queryAdaptation = session.createQuery(queryStr.toString());
-			// queryAdaptation.setParameter("itineraryId", itinerary.getId());
-			//
-			// @SuppressWarnings("unchecked")
-			// Set<ContextAwareAdaptation> adaptationDirective =
-			// (Set<ContextAwareAdaptation>) queryAdaptation.list();
-
 			for (ContextAwareAdaptation contextAwareAdaptation : adaptationDirective) {
 				session.delete(contextAwareAdaptation);
 			}

@@ -64,13 +64,15 @@ public class Situation implements Serializable {
 	}
 
 	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "SITUATION_INPUT_CONTEXT_DATUM", joinColumns = { @JoinColumn(name = "SITUATION_ID") }, inverseJoinColumns = { @JoinColumn(name = "CONTEXT_DATUM_ID") })
+	@JoinTable(name = "SITUATION_INPUT_CONTEXT_DATUM", joinColumns = { @JoinColumn(name = "SITUATION_ID") }, inverseJoinColumns = { @JoinColumn(
+			name = "CONTEXT_DATUM_ID") })
 	public Set<ContextDatum> getInputContextData() {
 		return inputContextData;
 	}
 
 	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "SITUATION_OUTPUT_CONTEXT_DATUM", joinColumns = { @JoinColumn(name = "SITUATION_ID") }, inverseJoinColumns = { @JoinColumn(name = "_CONTEXT_DATUM_ID") })
+	@JoinTable(name = "SITUATION_OUTPUT_CONTEXT_DATUM", joinColumns = { @JoinColumn(name = "SITUATION_ID") }, inverseJoinColumns = { @JoinColumn(
+			name = "CONTEXT_DATUM_ID") })
 	public Set<ContextDatum> getOutputContextData() {
 		return outputContextData;
 	}

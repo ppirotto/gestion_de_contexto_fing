@@ -15,7 +15,6 @@ import java.util.Set;
 
 import javax.inject.Inject;
 
-import org.codehaus.jackson.map.ObjectMapper;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -25,7 +24,6 @@ import edu.fing.commons.constant.AdaptationType;
 import edu.fing.commons.dto.AdaptationTO;
 import edu.fing.commons.dto.ContextReasonerData;
 import edu.fing.commons.dto.SituationDetectedTO;
-import edu.fing.commons.front.dto.AdaptationTreeNodeTO;
 import edu.fing.context.reasoner.model.Adaptation;
 import edu.fing.context.reasoner.model.Service;
 import edu.fing.context.reasoner.model.ServiceSituationPriority;
@@ -98,7 +96,11 @@ public class SituationReceiverBean implements SituationReceiver {
 				adaptationTO.setName(adaptation.getName());
 				adaptationTO.setOrder(adaptation.getAdaptationOrder());
 				adaptationTO.setUri(adaptation.getAdaptationReference().getUri());
-				adaptationTO.setData(this.getAdaptationDataByType(adaptation, cepSituation.getContextualData()));
+				if (AdaptationType.ENRICH.equals(adaptation.getAdaptationReference().getAdaptationType())) {
+					adaptationTO.setData(this.applyTemplate(adaptation.getData(), cepSituation.getContextualData()));
+				} else {
+					adaptationTO.setData(adaptation.getData());
+				}
 				adaptations.add(adaptationTO);
 			}
 			contextReasonerData.setAdaptations(adaptations);
@@ -150,35 +152,6 @@ public class SituationReceiverBean implements SituationReceiver {
 
 		return priority.getPriority();
 
-	}
-
-	private Object getAdaptationDataByType(Adaptation adaptation, Map<String, Object> contextualData) {
-		AdaptationType adaptationType = adaptation.getAdaptationReference().getAdaptationType();
-		Object adaptationData = null;
-		switch (adaptationType) {
-		case CONTENT_BASED_ROUTER:
-			ObjectMapper objectMapper = new ObjectMapper();
-			try {
-				adaptationData = objectMapper.readValue(adaptation.getData(), AdaptationTreeNodeTO.class);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			break;
-		case ENRICH:
-			adaptationData = this.applyTemplate(adaptation.getData(), contextualData);
-			break;
-		case DELAY:
-		case EXTERNAL_TRANSFORMATION:
-		case FILTER:
-		case SERVICE_INVOCATION:
-			adaptationData = adaptation.getData();
-			break;
-		default:
-			break;
-
-		}
-
-		return adaptationData;
 	}
 
 	private Object applyTemplate(String templateStr, Map<String, Object> contextualData) {

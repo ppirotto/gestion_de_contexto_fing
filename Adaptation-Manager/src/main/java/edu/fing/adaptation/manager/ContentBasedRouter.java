@@ -11,6 +11,7 @@ import javax.xml.xpath.XPathFactory;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 import org.apache.camel.builder.RouteBuilder;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.xml.sax.InputSource;
 
 import edu.fing.commons.dto.AdaptationTO;
@@ -42,11 +43,19 @@ public class ContentBasedRouter extends RouteBuilder {
 						// InputSource(new
 						// StringReader(adaptedMessage.getMessage())),
 						// XPathConstants.BOOLEAN);
-						AdaptationTO adaptationTO = this.preOrderSearch((AdaptationTreeNodeTO) adaptedMessage.getAdaptations().get(0).getData(),
-								xpath, adaptedMessage.getMessage());
-
+						ObjectMapper objectMapper = new ObjectMapper();
+						AdaptationTreeNodeTO adaptationTreeNode = null;
+						try {
+							adaptationTreeNode = objectMapper.readValue((String) adaptedMessage.getAdaptations().get(0).getData(),
+									AdaptationTreeNodeTO.class);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+						AdaptationTO adaptationTO = this.preOrderSearch(adaptationTreeNode, xpath, adaptedMessage.getMessage());
 						adaptedMessage.getAdaptations().remove(0);
-						adaptedMessage.getAdaptations().add(0, adaptationTO);
+						if (adaptationTO != null) {
+							adaptedMessage.getAdaptations().add(0, adaptationTO);
+						}
 						exchange.getIn().setHeader("adaptedMessage", adaptedMessage);
 						exchange.getIn().setHeader("uri", adaptationTO.getUri());
 					}
@@ -75,7 +84,7 @@ public class ContentBasedRouter extends RouteBuilder {
 						}
 					}
 
-				}).log("ContentBasedRouter body :${header[filter]} ${body}").recipientList(header("uri"));
+				}).log("ContentBasedRouter body: ${body}").recipientList(header("uri"));
 	}
 
 }

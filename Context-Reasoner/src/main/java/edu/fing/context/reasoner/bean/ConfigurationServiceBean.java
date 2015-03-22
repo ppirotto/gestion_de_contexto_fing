@@ -308,8 +308,6 @@ public class ConfigurationServiceBean implements ConfigurationService {
 		Session session = this.sessionFactory.openSession();
 		session.beginTransaction();
 
-		Service service = this.findServiceById(itineraryTO.getService().getId(), session);
-		Situation situation = this.findSituationByName(itineraryTO.getSituationName(), session);
 		boolean exists = this.existsPriotityForServiceAndSituation(itineraryTO.getSituationName(), itineraryTO.getService().getId(), session);
 		if (exists) {
 			frontResponseTO.setSuccess(false);
@@ -317,6 +315,9 @@ public class ConfigurationServiceBean implements ConfigurationService {
 			frontResponseTO.setErrorMessage("El itinerario ya existe para la situación y servicio seleccionados");
 			return frontResponseTO;
 		}
+
+		Service service = this.findServiceById(itineraryTO.getService().getId(), session);
+		Situation situation = this.findSituationByName(itineraryTO.getSituationName(), session);
 
 		for (AdaptationTO adaptationTO : itineraryTO.getAdaptations()) {
 			Adaptation adaptation = new Adaptation();

@@ -23,7 +23,7 @@ import edu.fing.commons.front.dto.ConfiguredItineraryTO;
 @Service(ItineraryService.class)
 public class ItineraryServiceBean implements ItineraryService {
 
-	private SessionFactory sessionFactory = HibernateUtils.getSessionFactory();
+	private final SessionFactory sessionFactory = HibernateUtils.getSessionFactory();
 
 	@Override
 	public void receiveAdaptations(List<ContextReasonerData> contextReasonerData) {
@@ -58,11 +58,7 @@ public class ItineraryServiceBean implements ItineraryService {
 				contextAwareAdaptation.setName(adaptationTO.getName());
 				contextAwareAdaptation.setUri(adaptationTO.getUri());
 				contextAwareAdaptation.setOrder(adaptationTO.getOrder());
-				if (adaptationTO.getData() instanceof Integer) {
-					contextAwareAdaptation.setData(Integer.toString((Integer) adaptationTO.getData()));
-				} else {
-					contextAwareAdaptation.setData((String) adaptationTO.getData());
-				}
+				contextAwareAdaptation.setData((String) adaptationTO.getData());
 				itinerary.getAdaptationDirective().add(contextAwareAdaptation);
 				session.save(contextAwareAdaptation);
 			}
