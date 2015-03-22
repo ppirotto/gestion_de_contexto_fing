@@ -1,5 +1,6 @@
 package edu.fing.commons.front.dto;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,10 +9,10 @@ import java.util.Map;
 public class RuleTemplateTO {
 
 	private String description; 
-	private String name;
+	private String situationName;
 	private long duration;
-	private Map<String, ContextSourceTO> mappedContextData = new HashMap<String, ContextSourceTO>();
-	private List<String> selectedOutputDatum;
+	private List<ContextSourceTO> mappedContextData = new ArrayList<ContextSourceTO>();
+	private List<String> selectedOutputData;
 	
 	public String getDescription() {
 		return description;
@@ -19,29 +20,32 @@ public class RuleTemplateTO {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
+
 	public long getDuration() {
 		return duration;
 	}
 	public void setDuration(long duration) {
 		this.duration = duration;
 	}
-	public Map<String, ContextSourceTO> getMappedContextData() {
+	
+	
+	public List<ContextSourceTO> getMappedContextData() {
 		return mappedContextData;
 	}
-	public void setMappedContextData(Map<String, ContextSourceTO> mappedContextData) {
+	public void setMappedContextData(List<ContextSourceTO> mappedContextData) {
 		this.mappedContextData = mappedContextData;
 	}
-	public List<String> getSelectedOutputDatum() {
-		return selectedOutputDatum;
+	public String getSituationName() {
+		return situationName;
 	}
-	public void setSelectedOutputDatum(List<String> selectedOutputDatum) {
-		this.selectedOutputDatum = selectedOutputDatum;
+	public void setSituationName(String situationName) {
+		this.situationName = situationName;
+	}
+	public List<String> getSelectedOutputData() {
+		return selectedOutputData;
+	}
+	public void setSelectedOutputData(List<String> selectedOutputData) {
+		this.selectedOutputData = selectedOutputData;
 	}
 
 }
