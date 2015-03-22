@@ -10,13 +10,14 @@
 
 	<ui:define name="title">Crear Situación</ui:define>
 	<ui:define name="body">
-		<p:panel>
+		
 			<!-- 			<f:facet name="header">Crear Situación</f:facet> -->
 
-			<h:form>
+			<h:form id="form">
 				<p:growl autoUpdate="true" life="6000" showDetail="true"
 					escape="true" showSummary="true" />
-				<p:wizard flowListener="#{situationBean.onFlowProcess}">
+				<p:wizard flowListener="#{situationBean.onFlowProcess}"
+					backLabel="Atrás" nextLabel="Siguiente">
 					<p:tab id="situationTab" title="Situación">
 						<p:panel>
 							<f:facet name="header">Crear Situación</f:facet>
@@ -24,8 +25,10 @@
 								<p:outputLabel>
 						Nombre de la situación
 					</p:outputLabel>
-								<p:inputText size="25" value="#{situationBean.name}"
-									required="true" label="Nombre de la situación" />
+								<p:inputText size="25" value="#{situationBean.name}" validatorMessage="El nombre debe empezar con mayúscula y debe ser alfanúmerico"
+									required="true" label="Nombre de la situación" >
+									 <f:validateRegex pattern="^[A-Z][a-zA-Z_]+$" />
+									</p:inputText>
 								<p:outputLabel>
 						Descripción
 					</p:outputLabel>
@@ -49,7 +52,7 @@
 					<p:tab id="contextTab" title="Contexto">
 						<p:panel>
 							<f:facet name="header">Definición de data contextual</f:facet>
-							<h:panelGrid columns="2" columnClasses="topAligned">
+							<h:panelGrid columns="3" columnClasses="topAligned">
 								<p:panel>
 									<f:facet name="header">Input</f:facet>
 
@@ -68,11 +71,11 @@
 													var="contSource" itemLabel="#{contSource}"
 													itemValue="#{contSource}" />
 											</p:selectOneMenu>
-
+											--------------------------------------
 											<p:dataTable id="dataTable" var="dat" style="width:180px"
 												value="#{situationBean.contextDataList}" scrollable="true"
 												scrollHeight="130"
-												selection="#{situationBean.selectedInputDatum}"
+												selection="#{situationBean.selectedInputData}"
 												rowKey="#{dat}">
 
 												<p:column selectionMode="multiple"
@@ -105,13 +108,13 @@
 									</f:facet>
 
 								</p:panel>
-
+								<p:spacer width="30px"></p:spacer>
 								<p:panel>
 									<f:facet name="header">Output</f:facet>
 									<p:dataTable id="dataTableOutput" var="dat" style="width:220px"
 										value="#{situationBean.contextDataList}" scrollable="true"
 										scrollHeight="260"
-										selection="#{situationBean.selectedOutputDatum}"
+										selection="#{situationBean.selectedOutputData}"
 										rowKey="#{dat}">
 
 										<p:column selectionMode="multiple"
@@ -131,24 +134,52 @@
 
 
 					<p:tab id="ruleTab" title="Regla">
-						<p:panel header="Definir la regla">
-							<pe:codeMirror id="codeMirror"
-								style="min-width:400px;min-height:400px;" mode="javascript"
-								theme="eclipse" value="#{situationBean.rule}" lineNumbers="true"
-								matchBrackets="true" lineWrapping="true" />
-						</p:panel>
+						<p:panel header="Definir la regla: #{situationBean.name}">
+							<h:panelGrid columns="2">
+								<h:panelGrid columns="1">
 
-						<p:commandButton value="Crear Situación"
-							action="#{situationBean.crearSituacion()}"
-							styleClass="ui-priority-primary"
-							style="margin-top: 10px; float:right;" />
+
+									<p:panel style="height:300px" header="Reglas:">
+
+										<p:selectOneListbox id="ruleSelectOneListbox"
+											value="#{situationBean.selectedRule}"
+											converter="ruleConverterSituation" style="width:210px">
+											<f:ajax listener="#{situationBean.selectedRuleChanged}"
+												render=":form:codeMirror" />
+											<f:selectItems value="#{situationBean.versionRules.rules}"
+												var="rule" itemLabel="#{rule.name}" itemValue="#{rule}" />
+										</p:selectOneListbox>
+
+									</p:panel>
+								</h:panelGrid>
+								<p:panel style="min-width:600px;min-height:300px;">
+									<pe:codeMirror id="codeMirror" mode="javascript"
+										readOnly="#{situationBean.isReadOnly()}" theme="eclipse"
+										value="#{situationBean.selectedRule.drl}" lineNumbers="true"
+										matchBrackets="true" lineWrapping="true" />
+
+								</p:panel>
+
+
+
+							</h:panelGrid>
+
+							<f:facet name="footer">
+
+								<p:commandButton value="Guardar Regla"
+									 />
+								<p:commandButton value="Crear Situación"
+									action="#{situationBean.crearSituacion()}"
+									styleClass="ui-priority-primary" />
+							</f:facet>
+						</p:panel>
 					</p:tab>
 				</p:wizard>
 
 
 			</h:form>
 
-		</p:panel>
+		
 	</ui:define>
 	<ui:define name="menuIzq">
 		<ui:include src="/menu.xhtml" />
