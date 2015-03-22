@@ -1,5 +1,6 @@
 package edu.fing.context.management.bean;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -17,12 +18,14 @@ import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
 
 import edu.fing.commons.front.dto.ContextSourceTO;
+import edu.fing.commons.front.dto.FrontResponseTO;
 import edu.fing.commons.front.dto.RuleTO;
 import edu.fing.commons.front.dto.RuleTemplateTO;
 import edu.fing.commons.front.dto.SituationTO;
 import edu.fing.commons.front.dto.VersionTO;
 import edu.fing.context.management.util.RemoteInvokerUtils;
 import edu.fing.context.management.util.RemoteInvokerUtils.ServiceIp;
+import edu.fing.context.management.util.RuleTemplateService;
 
 @ManagedBean
 @ViewScoped
@@ -181,16 +184,13 @@ public class SituationBean {
 
 		VersionTO v1 = new VersionTO();
 		v1.setCreationDate(new Date());
-		v1.setId((long) 2);
 		v1.setVersionNumber("2.0");
 		List<RuleTO> rules = new ArrayList<RuleTO>();
 		RuleTO r = new RuleTO();
-		r.setId(1);
 		r.setName("InTheEvening");
 		r.setDrl("La regla de la posta posta");
 
 		RuleTO r2 = new RuleTO();
-		r2.setId(1);
 		r2.setName("OTRA regla");
 		r2.setDrl("otraaaaaaaaaaaaaaaaa");
 		rules.add(r);
@@ -206,16 +206,29 @@ public class SituationBean {
 			// llamar servicio de
 			// this.displayRule = "llamar servicio que crea el template";
 			RuleTemplateTO ruleTempTO = new RuleTemplateTO();
-			ruleTempTO.setDescription(this.description);
-			ruleTempTO.setDuration(this.duration);
-			ruleTempTO.setMappedContextData(this.mappedContextData);
-			ruleTempTO.setName(this.name);
-			ruleTempTO.setSelectedOutputDatum(this.getSelectedOutputData());
+			ruleTempTO.setDescription(description);
+			ruleTempTO.setDuration(duration);
+
+			ruleTempTO.setMappedContextData(new ArrayList<ContextSourceTO>(
+					mappedContextData.values()));
+			ruleTempTO.setSituationName(name);
+			ruleTempTO.setSelectedOutputData(selectedOutputData);
 
 			// this.displayRule =
 			// RuleTemplateService.createRuleTemplate(ruleTempTO);
-
-			this.setVersionRules(mocker());
+			try {
+				String generatedRule = RuleTemplateService.createRuleTemplate(ruleTempTO);
+				VersionTO versionTO = (VersionTO) RemoteInvokerUtils.invoke(RemoteInvokerUtils.ContextReasonerCEPService, 
+						"getLastVersion", null, ServiceIp.ContextReasonerIp);
+				RuleTO rule = new RuleTO();
+				rule.setDrl(generatedRule);
+				rule.setName(name);
+				versionTO.getRules().add(rule);
+				this.setVersionRules(versionTO);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
 			for (RuleTO ruleTO : this.getVersionRules().getRules()) {
 				if (ruleTO.getName().equals(this.name)) {
@@ -224,9 +237,7 @@ public class SituationBean {
 			}
 
 		}
-
 		return event.getNewStep();
-
 	}
 
 	public void selectedRuleChanged() {
