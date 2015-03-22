@@ -21,7 +21,7 @@ import org.switchyard.component.bean.Service;
 import edu.fing.cep.engine.utils.DroolsCompilingException;
 import edu.fing.cep.engine.utils.DroolsUtils;
 import edu.fing.commons.dto.ContextualDataTO;
-import edu.fing.commons.front.dto.CreateRulesVersionResponseTO;
+import edu.fing.commons.front.dto.FrontResponseTO;
 import edu.fing.commons.front.dto.RuleTO;
 import edu.fing.commons.front.dto.VersionTO;
 
@@ -106,7 +106,7 @@ public class DroolsManagerServiceBean implements DroolsManagerService {
 	}
 
 	@Override
-	public CreateRulesVersionResponseTO deployVersion(VersionTO desiredVersion) {
+	public FrontResponseTO deployVersion(VersionTO desiredVersion) {
 
 		ReleaseId newReleaseId = kServices.newReleaseId("edu.fing.cep.engine", "drools-context-rules", desiredVersion.getVersionNumber());
 
@@ -130,7 +130,7 @@ public class DroolsManagerServiceBean implements DroolsManagerService {
 	 * correctamente
 	 * */
 	@Override
-	public CreateRulesVersionResponseTO testDroolsCompiling(VersionTO versionTO) {
+	public FrontResponseTO testDroolsCompiling(VersionTO versionTO) {
 		try {
 
 			// VersionTO versionToTest = this.mapToEntity(versionTO);
@@ -147,8 +147,8 @@ public class DroolsManagerServiceBean implements DroolsManagerService {
 
 	}
 
-	private CreateRulesVersionResponseTO buildRulesVersionResponseTO(DroolsCompilingException e) {
-		CreateRulesVersionResponseTO res = new CreateRulesVersionResponseTO();
+	private FrontResponseTO buildRulesVersionResponseTO(DroolsCompilingException e) {
+		FrontResponseTO res = new FrontResponseTO();
 		if (e == null) {
 			res.setSuccess(true);
 		} else {

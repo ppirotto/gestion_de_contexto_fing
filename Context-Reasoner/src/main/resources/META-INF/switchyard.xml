@@ -27,6 +27,9 @@
       <sca:service name="ConfigurationService">
         <sca:interface.java interface="edu.fing.context.reasoner.bean.ConfigurationService"/>
       </sca:service>
+      <sca:reference name="CEPService">
+        <sca:interface.java interface="edu.fing.context.reasoner.bean.CEPService"/>
+      </sca:reference>
     </sca:component>
     <sca:service name="ConfigurationService" promote="ConfigurationServiceBean/ConfigurationService">
       <sca:interface.java interface="edu.fing.context.reasoner.bean.ConfigurationService"/>

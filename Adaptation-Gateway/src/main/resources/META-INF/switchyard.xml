@@ -37,7 +37,6 @@
     <sca:service name="CleanItineraryService" promote="CleanItineraryServiceBean/CleanItineraryService">
       <sca:interface.java interface="edu.fing.adaptation.gateway.bean.CleanItineraryService"/>
       <quartz:binding.quartz name="CleanItinerary">
-        <sy:operationSelector operationName="deleteInactiveItineraries"/>
         <quartz:name>CleanItinerary</quartz:name>
         <quartz:cron>0 0/1 * * * ?</quartz:cron>
       </quartz:binding.quartz>

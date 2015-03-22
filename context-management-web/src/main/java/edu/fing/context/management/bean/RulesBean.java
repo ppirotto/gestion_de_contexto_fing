@@ -11,7 +11,7 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
 import edu.fing.commons.front.dto.AvailableRulesTO;
-import edu.fing.commons.front.dto.CreateRulesVersionResponseTO;
+import edu.fing.commons.front.dto.FrontResponseTO;
 import edu.fing.commons.front.dto.RuleTO;
 import edu.fing.commons.front.dto.VersionTO;
 import edu.fing.context.management.util.RemoteInvokerUtils;
@@ -65,7 +65,7 @@ public class RulesBean {
 		System.out.println("createVersion");
 		this.selectedVersion.setVersionNumber(this.newVersionName);
 		this.selectedVersion.setId(null);
-		CreateRulesVersionResponseTO response = (CreateRulesVersionResponseTO) RemoteInvokerUtils.invoke(RemoteInvokerUtils.ContextReasonerCEPService, "createNewVersion", this.selectedVersion,
+		FrontResponseTO response = (FrontResponseTO) RemoteInvokerUtils.invoke(RemoteInvokerUtils.ContextReasonerCEPService, "createNewVersion", this.selectedVersion,
 				ServiceIp.ContextReasonerIp);
 		System.out.println("createNewVersion... responseCode: " + response.toString());
 		if (!response.isSuccess()){
@@ -75,7 +75,7 @@ public class RulesBean {
 
 	public void deployVersion() {
 		System.out.println("deployVersion");
-		CreateRulesVersionResponseTO response = (CreateRulesVersionResponseTO) RemoteInvokerUtils.invoke(RemoteInvokerUtils.ContextReasonerCEPService, "updateActiveVersion",
+		FrontResponseTO response = (FrontResponseTO) RemoteInvokerUtils.invoke(RemoteInvokerUtils.ContextReasonerCEPService, "updateActiveVersion",
 				this.versionToDeploy.getVersionNumber(), ServiceIp.ContextReasonerIp);
 		System.out.println("deployVersion... responseCode: " + response.toString());
 	}

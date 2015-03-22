@@ -5,14 +5,18 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.inject.Inject;
+
 import org.codehaus.jackson.map.ObjectMapper;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.switchyard.component.bean.Reference;
 
 import edu.fing.commons.constant.AdaptationType;
 import edu.fing.commons.dto.AdaptationTO;
 import edu.fing.commons.front.dto.ContextSourceTO;
+import edu.fing.commons.front.dto.FrontResponseTO;
 import edu.fing.commons.front.dto.ItineraryTO;
 import edu.fing.commons.front.dto.ServiceTO;
 import edu.fing.commons.front.dto.SituationTO;
@@ -20,6 +24,7 @@ import edu.fing.context.reasoner.model.Adaptation;
 import edu.fing.context.reasoner.model.AdaptationReference;
 import edu.fing.context.reasoner.model.ContextDatum;
 import edu.fing.context.reasoner.model.ContextSource;
+import edu.fing.context.reasoner.model.Rule;
 import edu.fing.context.reasoner.model.Service;
 import edu.fing.context.reasoner.model.ServiceSituationPriority;
 import edu.fing.context.reasoner.model.Situation;
@@ -29,6 +34,10 @@ import edu.fing.context.reasoner.util.HibernateUtils;
 public class ConfigurationServiceBean implements ConfigurationService {
 
 	private final SessionFactory sessionFactory = HibernateUtils.getSessionFactory();
+
+	@Inject
+	@Reference
+	private CEPService cepService;
 
 	@Override
 	public List<ServiceTO> getServicesWithSituationsAndAdaptations() {
@@ -193,42 +202,46 @@ public class ConfigurationServiceBean implements ConfigurationService {
 	}
 
 	@Override
-	public Boolean createSituation(SituationTO situationTO) {
+	public FrontResponseTO createSituation(SituationTO situationTO) {
 
-		Session session = this.sessionFactory.openSession();
-		session.beginTransaction();
+		FrontResponseTO response = this.cepService.createNewVersion(situationTO.getVersionTO());
+		if (response.isSuccess()) {
 
-		Situation situation = new Situation();
-		situation.setName(situationTO.getName());
-		situation.setDescription(situationTO.getDescription());
-		situation.setDuration(situationTO.getDuration());
+			Session session = this.sessionFactory.openSession();
+			session.beginTransaction();
 
-		Set<ContextDatum> inputContextData = new HashSet<ContextDatum>();
-		List<ContextSourceTO> contextSources = situationTO.getContextSources();
-		for (ContextSourceTO contextSourceTO : contextSources) {
-			ContextSource contextSource = this.findContextSourceByName(contextSourceTO.getEventName(), session);
-			List<String> contextData = contextSourceTO.getContextData();
+			Situation situation = new Situation();
+			situation.setName(situationTO.getName());
+			situation.setDescription(situationTO.getDescription());
+			situation.setDuration(situationTO.getDuration());
+
+			Set<ContextDatum> inputContextData = new HashSet<ContextDatum>();
+			List<ContextSourceTO> contextSources = situationTO.getContextSources();
+			for (ContextSourceTO contextSourceTO : contextSources) {
+				ContextSource contextSource = this.findContextSourceByName(contextSourceTO.getEventName(), session);
+				List<String> contextData = contextSourceTO.getContextData();
+				for (String contextDatumName : contextData) {
+					ContextDatum contextDatum = this.findContextDatumByName(contextDatumName, session);
+					contextSource.getContextData().add(contextDatum);
+					inputContextData.add(contextDatum);
+				}
+			}
+			situation.setInputContextData(inputContextData);
+
+			Set<ContextDatum> outputContextData = new HashSet<ContextDatum>();
+			List<String> contextData = situationTO.getOutputContextData();
 			for (String contextDatumName : contextData) {
 				ContextDatum contextDatum = this.findContextDatumByName(contextDatumName, session);
-				contextSource.getContextData().add(contextDatum);
-				inputContextData.add(contextDatum);
+				outputContextData.add(contextDatum);
 			}
+			situation.setOutputContextData(outputContextData);
+			situation.setRule(this.findRuleByName(situationTO.getName(), session));
+
+			session.save(situation);
+			boolean result = HibernateUtils.commit(session);
+			response.setSuccess(result);
 		}
-		situation.setInputContextData(inputContextData);
-
-		Set<ContextDatum> outputContextData = new HashSet<ContextDatum>();
-		List<String> contextData = situationTO.getOutputContextData();
-		for (String contextDatumName : contextData) {
-			ContextDatum contextDatum = this.findContextDatumByName(contextDatumName, session);
-			outputContextData.add(contextDatum);
-		}
-		situation.setOutputContextData(outputContextData);
-
-		// TODO pegarle al servicio de pirotto para crear la regla
-		// situation.setRule(rule);
-
-		session.save(situation);
-		return HibernateUtils.commit(session);
+		return response;
 	}
 
 	@Override
@@ -437,6 +450,19 @@ public class ConfigurationServiceBean implements ConfigurationService {
 		queryService.setParameter("name", name);
 
 		return (ContextDatum) queryService.uniqueResult();
+	}
+
+	private Rule findRuleByName(String name, Session session) {
+
+		StringBuilder queryString = new StringBuilder();
+		queryString.append("SELECT rule ");
+		queryString.append("FROM Rule rule ");
+		queryString.append("WHERE rule.name = :name ");
+
+		Query query = session.createQuery(queryString.toString());
+		query.setParameter("name", name);
+
+		return (Rule) query.uniqueResult();
 	}
 
 	private ServiceTO mapService(Service service) {

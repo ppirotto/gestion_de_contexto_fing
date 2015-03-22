@@ -1,7 +1,7 @@
 package edu.fing.commons.front.dto;
 
 
-public class CreateRulesVersionResponseTO {
+public class FrontResponseTO {
 
 	@Override
 	public String toString() {

@@ -210,5 +210,4 @@ public class SituationReceiverBean implements SituationReceiver {
 
 		return outStr.toString();
 	}
-
 }

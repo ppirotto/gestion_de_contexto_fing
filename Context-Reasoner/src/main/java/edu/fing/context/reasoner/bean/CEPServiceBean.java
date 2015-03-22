@@ -16,7 +16,7 @@ import org.switchyard.component.bean.Service;
 import com.google.common.cache.RemovalCause;
 
 import edu.fing.commons.front.dto.AvailableRulesTO;
-import edu.fing.commons.front.dto.CreateRulesVersionResponseTO;
+import edu.fing.commons.front.dto.FrontResponseTO;
 import edu.fing.commons.front.dto.RuleTO;
 import edu.fing.commons.front.dto.VersionTO;
 import edu.fing.context.reasoner.model.ActiveConfiguration;
@@ -34,10 +34,10 @@ public class CEPServiceBean implements CEPService {
 	private SessionFactory sessionFactory = HibernateUtils.getSessionFactory();
 	
 	@Override
-	public CreateRulesVersionResponseTO createNewVersion(VersionTO versionTO) {
+	public FrontResponseTO createNewVersion(VersionTO versionTO) {
 		Session session = sessionFactory.openSession();
 		session.beginTransaction();
-		CreateRulesVersionResponseTO res = null;
+		FrontResponseTO res = null;
 		Query queryNewVersion = session.createSQLQuery("SELECT * FROM VERSION WHERE VERSION_NUMBER = :version ").addEntity(Version.class);
 		queryNewVersion.setParameter("version", versionTO.getVersionNumber());
 		
@@ -45,18 +45,18 @@ public class CEPServiceBean implements CEPService {
 		Version savedVersion = (Version) queryNewVersion.uniqueResult();
 		
 		if (savedVersion!=null){
-			res = new CreateRulesVersionResponseTO();
+			res = new FrontResponseTO();
 			res.setErrorCode("VERSION_ALREADY_EXISTS");
 			res.setSuccess(false);
 			res.setErrorMessage("The version with versionNumber = '"+versionTO.getVersionNumber()+"' already exists.");
 			return res;
 		} else {
-			res = (CreateRulesVersionResponseTO)RemoteInvokerUtils.invoke(RemoteInvokerUtils.DroolsManagerService, "testDroolsCompiling", versionTO, ServiceIp.CepEngineIP);
+			res = (FrontResponseTO)RemoteInvokerUtils.invoke(RemoteInvokerUtils.DroolsManagerService, "testDroolsCompiling", versionTO, ServiceIp.CepEngineIP);
 			if (res != null){
 				return res;
 			}
 		}
-		res = new CreateRulesVersionResponseTO();
+		res = new FrontResponseTO();
 		res.setSuccess(true);
 		Version newVersion = this.mapToVersion(versionTO);
 		session.save(newVersion);	
@@ -114,7 +114,7 @@ public class CEPServiceBean implements CEPService {
 
 	
 	@Override
-	public CreateRulesVersionResponseTO updateActiveVersion(String versionNumber) {
+	public FrontResponseTO updateActiveVersion(String versionNumber) {
 		Session session = sessionFactory.openSession();
 		session.beginTransaction();
 
@@ -130,7 +130,7 @@ public class CEPServiceBean implements CEPService {
 		Version newVersion = (Version) queryNewVersion.uniqueResult();
 		
 		VersionTO desiredVersion = mapToVersionTO(newVersion);
-		CreateRulesVersionResponseTO deployResponseTO = (CreateRulesVersionResponseTO)RemoteInvokerUtils.invoke(RemoteInvokerUtils.DroolsManagerService, "deployVersion", desiredVersion, ServiceIp.CepEngineIP);
+		FrontResponseTO deployResponseTO = (FrontResponseTO)RemoteInvokerUtils.invoke(RemoteInvokerUtils.DroolsManagerService, "deployVersion", desiredVersion, ServiceIp.CepEngineIP);
 		System.out.println("droolsManager.deployVersion(desiredVersion) response:"+deployResponseTO.toString());
 		if (deployResponseTO.isSuccess()){
 			activeConfig.setActiveVersion(newVersion);

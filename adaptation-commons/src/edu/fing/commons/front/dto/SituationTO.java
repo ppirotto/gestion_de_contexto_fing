@@ -12,6 +12,7 @@ public class SituationTO {
 	private List<AdaptationTO> adaptations;
 	private List<ContextSourceTO> contextSources;
 	private List<String> outputContextData;
+	private VersionTO versionTO;
 
 	public String getDescription() {
 		return this.description;
@@ -59,6 +60,14 @@ public class SituationTO {
 
 	public void setOutputContextData(List<String> outputContextData) {
 		this.outputContextData = outputContextData;
+	}
+
+	public VersionTO getVersionTO() {
+		return versionTO;
+	}
+
+	public void setVersionTO(VersionTO versionTO) {
+		this.versionTO = versionTO;
 	}
 
 }

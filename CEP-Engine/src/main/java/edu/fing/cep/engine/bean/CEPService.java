@@ -1,7 +1,7 @@
 package edu.fing.cep.engine.bean;
 
 import edu.fing.commons.front.dto.AvailableRulesTO;
-import edu.fing.commons.front.dto.CreateRulesVersionResponseTO;
+import edu.fing.commons.front.dto.FrontResponseTO;
 import edu.fing.commons.front.dto.VersionTO;
 
 public interface CEPService {
@@ -10,7 +10,7 @@ public interface CEPService {
 
 	AvailableRulesTO getAvailableRules();
 
-	CreateRulesVersionResponseTO createNewVersion(VersionTO version);
+	FrontResponseTO createNewVersion(VersionTO version);
 
 	VersionTO getActiveVersion();
 
