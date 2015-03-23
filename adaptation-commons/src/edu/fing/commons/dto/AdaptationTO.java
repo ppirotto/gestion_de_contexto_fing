@@ -4,8 +4,6 @@ import edu.fing.commons.constant.AdaptationType;
 
 public class AdaptationTO {
 
-	private String name;
-	private String uri;
 	private String description;
 	private int order;
 	private AdaptationType adaptationType;
@@ -23,16 +21,8 @@ public class AdaptationTO {
 		return this.description;
 	}
 
-	public String getName() {
-		return this.name;
-	}
-
 	public int getOrder() {
 		return this.order;
-	}
-
-	public String getUri() {
-		return this.uri;
 	}
 
 	public void setAdaptationType(AdaptationType adaptationType) {
@@ -47,16 +37,8 @@ public class AdaptationTO {
 		this.description = description;
 	}
 
-	public void setName(String name) {
-		this.name = name;
-	}
-
 	public void setOrder(int order) {
 		this.order = order;
-	}
-
-	public void setUri(String uri) {
-		this.uri = uri;
 	}
 
 }

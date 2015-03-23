@@ -22,8 +22,8 @@ public class Enrich extends RouteBuilder {
 	 * The Camel route is configured via this method. The from endpoint is
 	 * required to be a SwitchYard service.
 	 */
+	@Override
 	public void configure() {
-		// TODO Auto-generated method stub
 		from("switchyard://EnrichService").log("Received message for 'EnrichService' : ${body}").process(new Processor() {
 
 			@Override
@@ -39,7 +39,6 @@ public class Enrich extends RouteBuilder {
 					adaptedMessage.setMessage(writer.toString());
 
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				adaptedMessage.getAdaptations().remove(0);

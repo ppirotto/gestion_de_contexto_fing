@@ -93,9 +93,7 @@ public class SituationReceiverBean implements SituationReceiver {
 			List<AdaptationTO> adaptations = new ArrayList<AdaptationTO>();
 			for (Adaptation adaptation : adaptationsBySituationAndService) {
 				AdaptationTO adaptationTO = new AdaptationTO();
-				adaptationTO.setName(adaptation.getName());
 				adaptationTO.setOrder(adaptation.getAdaptationOrder());
-				adaptationTO.setUri(adaptation.getAdaptationType().getUri());
 				if (AdaptationType.ENRICH.equals(adaptation.getAdaptationType())) {
 					adaptationTO.setData(this.applyTemplate(adaptation.getData(), cepSituation.getContextualData()));
 				} else {

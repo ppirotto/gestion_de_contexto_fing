@@ -320,7 +320,6 @@ public class ConfigurationServiceBean implements ConfigurationService {
 
 		for (AdaptationTO adaptationTO : itineraryTO.getAdaptations()) {
 			Adaptation adaptation = new Adaptation();
-			adaptation.setName(adaptationTO.getAdaptationType().toString());
 			adaptation.setAdaptationOrder(adaptationTO.getOrder());
 			adaptation.setDescription(adaptationTO.getDescription());
 			adaptation.setService(service);
@@ -516,7 +515,7 @@ public class ConfigurationServiceBean implements ConfigurationService {
 
 	private AdaptationTO mapAdaptation(Adaptation adaptation) {
 		AdaptationTO adaptationTO = new AdaptationTO();
-		adaptationTO.setName(adaptation.getName());
+		adaptationTO.setAdaptationType(adaptation.getAdaptationType());
 		adaptationTO.setDescription(adaptation.getDescription());
 		adaptationTO.setOrder(adaptation.getAdaptationOrder());
 		if (adaptation.getData() != null) {

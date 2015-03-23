@@ -25,7 +25,6 @@ public class Adaptation implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private Long id;
-	private String name;
 	private String description;
 	private int adaptationOrder;
 	private Service service;
@@ -62,11 +61,6 @@ public class Adaptation implements Serializable {
 		return this.id;
 	}
 
-	@Column(name = "NAME")
-	public String getName() {
-		return this.name;
-	}
-
 	@ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL)
 	@JoinColumn(name = "SERVICE_ID", nullable = false)
 	public Service getService() {
@@ -97,10 +91,6 @@ public class Adaptation implements Serializable {
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	public void setService(Service service) {

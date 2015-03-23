@@ -65,7 +65,6 @@ public class AdaptationServiceBean implements AdaptationService {
 				for (ContextAwareAdaptation contextAwareAdaptation : adaptationDirectiveList) {
 					adaptationUris.add(contextAwareAdaptation.getUri());
 					AdaptationTO adapt = new AdaptationTO();
-					adapt.setName(contextAwareAdaptation.getName());
 					adapt.setData(contextAwareAdaptation.getData());
 					adaptations.add(adapt);
 				}
