@@ -12,9 +12,14 @@ import java.io.Writer;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import edu.fing.commons.front.dto.ContextSourceTO;
 import edu.fing.commons.front.dto.RuleTemplateTO;
 import edu.fing.context.management.jar.creation.ResourceAccessHelper;
 import freemarker.template.Configuration;
@@ -69,6 +74,32 @@ public class RuleTemplateService {
 	static String readFile(String path, Charset encoding) throws IOException {
 		byte[] encoded = Files.readAllBytes(Paths.get(path));
 		return new String(encoded, encoding);
+	}
+
+	public static List<String> validate(String drl, RuleTemplateTO ruleTempTO) {
+		List<String> res = new ArrayList<String>();
+		
+		//verifico inputs
+		for (ContextSourceTO elem : ruleTempTO.getMappedContextData()) {//recorro fuentes de contexto seleccionadas como inputs
+			for (String input :elem.getContextData()){//para cada input
+				String camelInput = input.substring(0, 1).toUpperCase() + input.substring(1);
+				Pattern p = Pattern.compile("inputEvent\\.set"+ camelInput + "\\(.*info\\.get\\(.*(\\.get\\(\")*"+input+"\"\\)"  );
+				Matcher m = p.matcher(drl);
+				if (!m.find()) {
+					res.add("WARNING: Input '" + input + "' para la fuente de contexto '" + elem.getEventName() + "' parece no estar utilizándose.");
+				}
+			}
+		}
+		
+		//verifico outputs
+		for (String output :ruleTempTO.getSelectedOutputData()){//para cada input
+			Pattern p = Pattern.compile("contextualData\\.put\\(\""+ output + "\",.*\\);"  );
+			Matcher m = p.matcher(drl);
+			if (!m.find()) {
+				res.add("WARNING: Output '" + output + "' parece no estar utilizándose.");
+			}
+		}
+		return res;
 	}
 
 }

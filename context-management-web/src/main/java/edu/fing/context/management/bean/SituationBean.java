@@ -7,13 +7,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 
 import org.primefaces.event.FlowEvent;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
+
+import com.sun.faces.util.CollectionsUtils;
 
 import edu.fing.commons.front.dto.ContextSourceTO;
 import edu.fing.commons.front.dto.FrontResponseTO;
@@ -62,19 +66,28 @@ public class SituationBean {
 		sit.setDescription(this.getDescription());
 		sit.setDuration(this.duration);
 		sit.setVersionTO(this.versionRules);
-
 		sit.setContextSources(new ArrayList(this.mappedContextData.values()));
 		sit.setOutputContextData(this.selectedOutputData);
 
-		// this.responseMsg = (FrontResponseTO)
-		// RemoteInvokerUtils.invoke(RemoteInvokerUtils.ContextReasonerConfigService,
-		// "createSituation", sit, ServiceIp.ContextReasonerIp);
 
-		FrontResponseTO f = new FrontResponseTO();
-		f.setErrorCode("OK");
-		f.setErrorMessage("le errasteeeeeeea a");
-		f.setSuccess(false);
-		this.setResponseMsg(f);
+		RuleTemplateTO ruleTempTO = mapRuleTemplateTO();
+		List<String> contextDataValidation = null;
+		for (RuleTO ruleTO : this.getVersionRules().getRules()) {
+
+			if (ruleTO.getName().equals(this.name)) {
+				contextDataValidation = RuleTemplateService.validate(ruleTO.getDrl(),ruleTempTO);
+				for (String string : contextDataValidation) {
+					System.out.println(string);
+				}
+			}
+		}
+		if (contextDataValidation!=null && !contextDataValidation.isEmpty()){
+			//TODO[matiasca]
+			// MOSTRAR MENSAJE DE ERROR!!!	REVISAR TODOS LOS CASOS QUE TOQUETEEEEE		
+		} else {
+			FrontResponseTO response = (FrontResponseTO) RemoteInvokerUtils.invoke(RemoteInvokerUtils.ContextReasonerConfigService, "createSituation", sit, ServiceIp.ContextReasonerIp);
+			this.setResponseMsg(response);
+		}
 		return "inicio";
 	}
 
@@ -212,13 +225,7 @@ public class SituationBean {
 
 			// llamar servicio de
 			// this.displayRule = "llamar servicio que crea el template";
-			RuleTemplateTO ruleTempTO = new RuleTemplateTO();
-			ruleTempTO.setDescription(this.description);
-			ruleTempTO.setDuration(this.duration);
-
-			ruleTempTO.setMappedContextData(new ArrayList<ContextSourceTO>(this.mappedContextData.values()));
-			ruleTempTO.setSituationName(this.name);
-			ruleTempTO.setSelectedOutputData(this.selectedOutputData);
+			RuleTemplateTO ruleTempTO = mapRuleTemplateTO();
 
 			// this.displayRule =
 			// RuleTemplateService.createRuleTemplate(ruleTempTO);
@@ -244,6 +251,17 @@ public class SituationBean {
 
 		}
 		return event.getNewStep();
+	}
+
+	private RuleTemplateTO mapRuleTemplateTO() {
+		RuleTemplateTO ruleTempTO = new RuleTemplateTO();
+		ruleTempTO.setDescription(this.description);
+		ruleTempTO.setDuration(this.duration);
+
+		ruleTempTO.setMappedContextData(new ArrayList<ContextSourceTO>(this.mappedContextData.values()));
+		ruleTempTO.setSituationName(this.name);
+		ruleTempTO.setSelectedOutputData(this.selectedOutputData);
+		return ruleTempTO;
 	}
 
 	public void selectedRuleChanged() {
