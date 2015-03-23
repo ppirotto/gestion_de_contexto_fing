@@ -10,8 +10,8 @@
 	<ui:define name="title">Manejo de CEP</ui:define>
 	<ui:define name="body">
 
-		<p:layout>
-			<p:layoutUnit position="north" size="55" style="border: 0px;">
+		<p:layout >
+			<p:layoutUnit position="north" size="90" style="border: 0px;" header="Manego de Reglas">
 				<h:form>
 					<p:panelGrid columns="8" cellpadding="3" style="border: 0px;">
 						<p:outputLabel for="versionSelectOneMenu">
@@ -75,24 +75,29 @@
 						<p:panelGrid columns="2" id="display" style="margin-bottom:10px"
 							cellpadding="5">
 							<h:outputText
-								value="Se creara una nueva version. Elegir nombre deseado." />
+								value="Ingrese número de versión:" />
 							<h:inputText value="#{rulesBean.newVersionName}" />
-							<p:commandButton value="Crear nueva version!"
-								icon="ui-icon-check" actionListener="#{rulesBean.createVersion}"
-								oncomplete="PF('dlg').hide()" title="Crear nueva version!" />
+							
 						</p:panelGrid>
+						<p:commandButton value="Crear nueva version!"
+								icon="ui-icon-check" actionListener="#{rulesBean.createVersion}" update="display2" style="float:right"
+								oncomplete="PF('dlg').hide();PF('messageResponseDialog').show()" title="Crear nueva version!" />
 					</p:dialog>
 
-					<p:dialog header="Crear regla" modal="false" showEffect="bounce"
-						widgetVar="createRuleDialog" resizable="false">
+					<p:dialog header="Resultado" modal="false" showEffect="bounce"
+						widgetVar="messageResponseDialog" resizable="false">
 						<p:panelGrid columns="2" id="display2" style="margin-bottom:10px"
 							cellpadding="5">
-							<h:outputText value="Nombre" />
-							<h:inputText value="#{rulesBean.newRuleName}" />
-							<p:commandButton value="Crear regla!" icon="ui-icon-check"
-								actionListener="#{rulesBean.addRule()}" update=":ruleForm:ruleSelectOneListbox"
-								oncomplete="PF('createRuleDialog').hide()" title="Crear Regla!" />
+							<h:outputText value="Resultado:" />
+							<h:outputText value="#{rulesBean.responseMsg.errorCode}" />
+							<h:outputText value="Mensaje:" rendered="#{!rulesBean.responseMsg.success}" />
+							<p:inputTextarea readonly="true" value="#{rulesBean.responseMsg.errorMessage}" cols="80"  rendered="#{!rulesBean.responseMsg.success}"  />
+							
+							
 						</p:panelGrid>
+						
+						<p:commandButton value="OK" icon="ui-icon-check" style="float:right"
+								oncomplete="PF('messageResponseDialog').hide()" title="OK" />
 					</p:dialog>
 
 					<p:columnGroup>
@@ -106,10 +111,6 @@
 						title="Guarda regla en la sesion" icon="ui-icon-check"
 						actionListener="#{rulesBean.saveRuleAction}" />
 					
-					<p:commandButton value="Agregar regla" update="display"
-						onclick="PF('createRuleDialog').show()" icon="ui-icon-check"
-						title="Crea regla vacía" />
-
 					<p:commandButton value="Crear nueva version!" update="display"
 						oncomplete="PF('dlg').show()" icon="ui-icon-check"
 						title="Crea una nueva version con las reglas nuevas versiones de las reglas" />

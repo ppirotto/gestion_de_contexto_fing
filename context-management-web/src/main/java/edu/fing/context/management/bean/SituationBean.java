@@ -7,11 +7,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.FacesContext;
 
 import org.primefaces.event.FlowEvent;
 import org.primefaces.model.DefaultTreeNode;
@@ -54,6 +52,8 @@ public class SituationBean {
 	@ManagedProperty(value = "#{sessionBean}")
 	private SessionBean session;
 
+	private FrontResponseTO responseMsg;
+
 	public String crearSituacion() {
 		System.out.println("Crear situaci�n");
 
@@ -66,14 +66,15 @@ public class SituationBean {
 		sit.setContextSources(new ArrayList(this.mappedContextData.values()));
 		sit.setOutputContextData(this.selectedOutputData);
 
-		FrontResponseTO response = (FrontResponseTO) RemoteInvokerUtils.invoke(RemoteInvokerUtils.ContextReasonerConfigService, "createSituation", sit, ServiceIp.ContextReasonerIp);
-		if (response.isSuccess()) {
-			String mensaje = "Servicio creado con �xito";
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(null, mensaje));
+		// this.responseMsg = (FrontResponseTO)
+		// RemoteInvokerUtils.invoke(RemoteInvokerUtils.ContextReasonerConfigService,
+		// "createSituation", sit, ServiceIp.ContextReasonerIp);
 
-		} else {
-			// MOSTRAR MENSAJE DE ERROR!!!
-		}
+		FrontResponseTO f = new FrontResponseTO();
+		f.setErrorCode("OK");
+		f.setErrorMessage("le errasteeeeeeea a");
+		f.setSuccess(false);
+		this.setResponseMsg(f);
 		return "inicio";
 	}
 
@@ -143,6 +144,10 @@ public class SituationBean {
 
 	public String getName() {
 		return this.name;
+	}
+
+	public FrontResponseTO getResponseMsg() {
+		return this.responseMsg;
 	}
 
 	public TreeNode getRoot() {
@@ -267,6 +272,10 @@ public class SituationBean {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public void setResponseMsg(FrontResponseTO responseMsg) {
+		this.responseMsg = responseMsg;
 	}
 
 	public void setRoot(TreeNode root) {
