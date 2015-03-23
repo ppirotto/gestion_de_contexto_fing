@@ -5,6 +5,8 @@ import java.io.Serializable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -13,6 +15,8 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+
+import edu.fing.commons.constant.AdaptationType;
 
 @Entity
 @Table(name = "ADAPTATION", uniqueConstraints = { @UniqueConstraint(columnNames = { "SITUATION_ID", "SERVICE_ID" }) })
@@ -26,7 +30,7 @@ public class Adaptation implements Serializable {
 	private int adaptationOrder;
 	private Service service;
 	private Situation situation;
-	private AdaptationReference adaptationReference;
+	private AdaptationType adaptationType;
 	private String data;
 
 	@Column(name = "ADAPTATION_ORDER")
@@ -34,10 +38,10 @@ public class Adaptation implements Serializable {
 		return this.adaptationOrder;
 	}
 
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "ADAPTATION_REFERENCE_ID", nullable = false)
-	public AdaptationReference getAdaptationReference() {
-		return this.adaptationReference;
+	@Enumerated(EnumType.STRING)
+	@Column(name = "ADAPTATION_TYPE")
+	public AdaptationType getAdaptationType() {
+		return adaptationType;
 	}
 
 	@Lob
@@ -79,8 +83,8 @@ public class Adaptation implements Serializable {
 		this.adaptationOrder = adaptationOrder;
 	}
 
-	public void setAdaptationReference(AdaptationReference adaptationReference) {
-		this.adaptationReference = adaptationReference;
+	public void setAdaptationType(AdaptationType adaptationType) {
+		this.adaptationType = adaptationType;
 	}
 
 	public void setData(String data) {

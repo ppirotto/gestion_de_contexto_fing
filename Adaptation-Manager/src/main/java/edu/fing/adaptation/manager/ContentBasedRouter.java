@@ -57,7 +57,7 @@ public class ContentBasedRouter extends RouteBuilder {
 							adaptedMessage.getAdaptations().add(0, adaptationTO);
 						}
 						exchange.getIn().setHeader("adaptedMessage", adaptedMessage);
-						exchange.getIn().setHeader("uri", adaptationTO.getUri());
+						exchange.getIn().setHeader("uri", adaptationTO.getAdaptationType().getUri());
 					}
 
 					private AdaptationTO preOrderSearch(AdaptationTreeNodeTO node, XPath xpath, String message) {

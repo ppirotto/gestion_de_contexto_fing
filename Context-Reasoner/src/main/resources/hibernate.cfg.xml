@@ -16,7 +16,6 @@
 		<mapping class="edu.fing.context.reasoner.model.Service"/>
 		<mapping class="edu.fing.context.reasoner.model.Situation"/>
 		<mapping class="edu.fing.context.reasoner.model.ServiceSituationPriority"/>
-		<mapping class="edu.fing.context.reasoner.model.AdaptationReference"/>
 		<mapping class="edu.fing.context.reasoner.model.ActiveConfiguration"/>
 		<mapping class="edu.fing.context.reasoner.model.ContextDatum"/>
 		<mapping class="edu.fing.context.reasoner.model.ContextSource"/>

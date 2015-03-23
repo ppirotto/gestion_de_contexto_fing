@@ -21,7 +21,6 @@ import edu.fing.commons.front.dto.ItineraryTO;
 import edu.fing.commons.front.dto.ServiceTO;
 import edu.fing.commons.front.dto.SituationTO;
 import edu.fing.context.reasoner.model.Adaptation;
-import edu.fing.context.reasoner.model.AdaptationReference;
 import edu.fing.context.reasoner.model.ContextDatum;
 import edu.fing.context.reasoner.model.ContextSource;
 import edu.fing.context.reasoner.model.Rule;
@@ -321,12 +320,12 @@ public class ConfigurationServiceBean implements ConfigurationService {
 
 		for (AdaptationTO adaptationTO : itineraryTO.getAdaptations()) {
 			Adaptation adaptation = new Adaptation();
-			adaptation.setName(adaptationTO.getAdaptationType().name());
+			adaptation.setName(adaptationTO.getAdaptationType().toString());
 			adaptation.setAdaptationOrder(adaptationTO.getOrder());
 			adaptation.setDescription(adaptationTO.getDescription());
 			adaptation.setService(service);
 			adaptation.setSituation(situation);
-			adaptation.setAdaptationReference(this.findAdaptationReferenceByAdaptationType(session, adaptationTO.getAdaptationType()));
+			adaptation.setAdaptationType(adaptationTO.getAdaptationType());
 			adaptation.setData(this.getDataByAdaptationType(adaptationTO.getData(), adaptationTO.getAdaptationType(), service.getUrl()));
 			session.save(adaptation);
 		}
@@ -371,18 +370,6 @@ public class ConfigurationServiceBean implements ConfigurationService {
 			break;
 		}
 		return data;
-	}
-
-	private AdaptationReference findAdaptationReferenceByAdaptationType(Session session, AdaptationType adaptationType) {
-		StringBuilder queryString = new StringBuilder();
-		queryString.append("SELECT ar ");
-		queryString.append("FROM AdaptationReference ar ");
-		queryString.append("WHERE ar.adaptationType = :adaptationType ");
-
-		Query query = session.createQuery(queryString.toString());
-		query.setParameter("adaptationType", adaptationType.name());
-
-		return (AdaptationReference) query.uniqueResult();
 	}
 
 	private Situation findSituationByName(String situationName, Session session) {
@@ -532,7 +519,6 @@ public class ConfigurationServiceBean implements ConfigurationService {
 		adaptationTO.setName(adaptation.getName());
 		adaptationTO.setDescription(adaptation.getDescription());
 		adaptationTO.setOrder(adaptation.getAdaptationOrder());
-		adaptationTO.setUri(adaptation.getAdaptationReference().getUri());
 		if (adaptation.getData() != null) {
 			adaptationTO.setData(new String(adaptation.getData()));
 		}
