@@ -7,17 +7,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.FacesContext;
 
 import org.primefaces.event.FlowEvent;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
-
-import com.sun.faces.util.CollectionsUtils;
 
 import edu.fing.commons.front.dto.ContextSourceTO;
 import edu.fing.commons.front.dto.FrontResponseTO;
@@ -69,21 +65,21 @@ public class SituationBean {
 		sit.setContextSources(new ArrayList(this.mappedContextData.values()));
 		sit.setOutputContextData(this.selectedOutputData);
 
-
 		RuleTemplateTO ruleTempTO = mapRuleTemplateTO();
 		List<String> contextDataValidation = null;
 		for (RuleTO ruleTO : this.getVersionRules().getRules()) {
 
 			if (ruleTO.getName().equals(this.name)) {
-				contextDataValidation = RuleTemplateService.validate(ruleTO.getDrl(),ruleTempTO);
+				contextDataValidation = RuleTemplateService.validate(ruleTO.getDrl(), ruleTempTO);
 				for (String string : contextDataValidation) {
 					System.out.println(string);
 				}
 			}
 		}
-		if (contextDataValidation!=null && !contextDataValidation.isEmpty()){
-			//TODO[matiasca]
-			// MOSTRAR MENSAJE DE ERROR!!!	REVISAR TODOS LOS CASOS QUE TOQUETEEEEE		
+		if (contextDataValidation != null && !contextDataValidation.isEmpty()) {
+			// TODO[matiasca]
+			// MOSTRAR MENSAJE DE ERROR!!! REVISAR TODOS LOS CASOS QUE
+			// TOQUETEEEEE
 		} else {
 			FrontResponseTO response = (FrontResponseTO) RemoteInvokerUtils.invoke(RemoteInvokerUtils.ContextReasonerConfigService, "createSituation", sit, ServiceIp.ContextReasonerIp);
 			this.setResponseMsg(response);
@@ -104,7 +100,7 @@ public class SituationBean {
 			TreeNode node0 = new DefaultTreeNode(this.selectedContextSource, this.root);
 
 			for (String data : this.getSelectedInputData()) {
-				TreeNode node01 = new DefaultTreeNode(data, node0);
+				new DefaultTreeNode(data, node0);
 
 			}
 		} else {// piso lo viejo
@@ -119,7 +115,7 @@ public class SituationBean {
 				if (name.equals(this.selectedContextSource)) {
 					treeNode.getChildren().clear();
 					for (String data : this.getSelectedInputData()) {
-						TreeNode node01 = new DefaultTreeNode(data, treeNode);
+						new DefaultTreeNode(data, treeNode);
 
 					}
 				}
@@ -157,6 +153,10 @@ public class SituationBean {
 
 	public String getName() {
 		return this.name;
+	}
+
+	public String getNewVersionName() {
+		return this.newVersionName;
 	}
 
 	public FrontResponseTO getResponseMsg() {
@@ -198,6 +198,17 @@ public class SituationBean {
 			return true;
 		}
 
+	}
+
+	private RuleTemplateTO mapRuleTemplateTO() {
+		RuleTemplateTO ruleTempTO = new RuleTemplateTO();
+		ruleTempTO.setDescription(this.description);
+		ruleTempTO.setDuration(this.duration);
+
+		ruleTempTO.setMappedContextData(new ArrayList<ContextSourceTO>(this.mappedContextData.values()));
+		ruleTempTO.setSituationName(this.name);
+		ruleTempTO.setSelectedOutputData(this.selectedOutputData);
+		return ruleTempTO;
 	}
 
 	private VersionTO mocker() {
@@ -253,17 +264,6 @@ public class SituationBean {
 		return event.getNewStep();
 	}
 
-	private RuleTemplateTO mapRuleTemplateTO() {
-		RuleTemplateTO ruleTempTO = new RuleTemplateTO();
-		ruleTempTO.setDescription(this.description);
-		ruleTempTO.setDuration(this.duration);
-
-		ruleTempTO.setMappedContextData(new ArrayList<ContextSourceTO>(this.mappedContextData.values()));
-		ruleTempTO.setSituationName(this.name);
-		ruleTempTO.setSelectedOutputData(this.selectedOutputData);
-		return ruleTempTO;
-	}
-
 	public void selectedRuleChanged() {
 
 	}
@@ -290,6 +290,10 @@ public class SituationBean {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public void setNewVersionName(String newVersionName) {
+		this.newVersionName = newVersionName;
 	}
 
 	public void setResponseMsg(FrontResponseTO responseMsg) {
@@ -322,13 +326,5 @@ public class SituationBean {
 
 	public void setVersionRules(VersionTO versionRules) {
 		this.versionRules = versionRules;
-	}
-
-	public String getNewVersionName() {
-		return newVersionName;
-	}
-
-	public void setNewVersionName(String newVersionName) {
-		this.newVersionName = newVersionName;
 	}
 }

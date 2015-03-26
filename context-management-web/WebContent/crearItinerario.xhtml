@@ -37,48 +37,66 @@
 			<p:panel>
 				<f:facet name="header">Crear Itinerario</f:facet>
 				<h:panelGrid columns="1">
-					<p:panelGrid columns="2">
-						<f:facet name="header">Itinerario</f:facet>
-						<p:outputLabel for="selectMenu">
-							<b>Servicio</b>
-						</p:outputLabel>
-						<p:selectOneMenu id="selectMenu" autoupdate="true" required="true"
-							requiredMessage="Seleccione un servicio" styleClass="span4"
-							value="#{itineraryBean.selectedService}" effect="fade">
-							<f:selectItem itemLabel="Seleccione un servicio" itemValue="" />
-							<f:selectItems value="#{itineraryBean.serviceList}" var="Service"
-								itemLabel="#{Service.serviceName}/#{Service.operationName}"
-								itemValue="#{Service.id}" />
-						</p:selectOneMenu>
 
-						<p:outputLabel for="selectSituation">
-							<b>Situación</b>
-						</p:outputLabel>
-						<p:selectOneMenu id="selectSituation" autoupdate="true"
-							required="true" requiredMessage="Seleccione una situación"
-							styleClass="span4" value="#{itineraryBean.selectedSituation}"
-							effect="fade">
-							<f:selectItem itemLabel="Seleccione una situación" itemValue="" />
-							<f:selectItems value="#{itineraryBean.situationList}"
-								var="Situation" itemLabel="#{Situation.name}"
-								itemValue="#{Situation.name}" />
-						</p:selectOneMenu>
+					<h:panelGrid columns="2">
+						<p:panelGrid columns="2">
+							<f:facet name="header">Itinerario</f:facet>
+							<p:outputLabel for="selectMenu">
+								<b>Servicio</b>
+							</p:outputLabel>
+							<p:selectOneMenu id="selectMenu" autoupdate="true"
+								required="true" onchange="#{itineraryBean.onServiceChange()}"
+								requiredMessage="Seleccione un servicio" styleClass="span4"
+								value="#{itineraryBean.selectedService}" effect="fade">
+								<f:selectItem itemLabel="Seleccione un servicio" itemValue="" />
+								<f:selectItems value="#{itineraryBean.serviceList}"
+									var="Service"
+									itemLabel="#{Service.serviceName}/#{Service.operationName}"
+									itemValue="#{Service.id}" />
+							</p:selectOneMenu>
 
-						<p:outputLabel>
-							<b>Prioridad</b>
-						</p:outputLabel>
-						<p:inputText id="prioridad" size="10" required="true"
-							requiredMessage="Ingrese prioridad"
-							validatorMessage="Proiridad mayor a 0"
-							value="#{itineraryBean.priority}" label="Prioridad">
-							<f:convertNumber integerOnly="true" type="number" />
-							<f:validateDoubleRange minimum="1" />
-						</p:inputText>
+							<p:outputLabel for="selectSituation">
+								<b>Situación</b>
+							</p:outputLabel>
+							<p:selectOneMenu id="selectSituation" autoupdate="true"
+								required="true" requiredMessage="Seleccione una situación"
+								styleClass="span4" value="#{itineraryBean.selectedSituation}"
+								effect="fade">
+								<f:selectItem itemLabel="Seleccione una situación" itemValue="" />
+								<f:selectItems value="#{itineraryBean.situationList}"
+									var="Situation" itemLabel="#{Situation.name}"
+									itemValue="#{Situation.name}" />
+							</p:selectOneMenu>
+
+							<p:outputLabel>
+								<b>Prioridad</b>
+							</p:outputLabel>
+							<p:inputText id="prioridad" size="10" required="true"
+								requiredMessage="Ingrese prioridad"
+								validatorMessage="Proiridad mayor a 0"
+								value="#{itineraryBean.priority}" label="Prioridad">
+								<f:convertNumber integerOnly="true" type="number" />
+								<f:validateDoubleRange minimum="1" />
+							</p:inputText>
 
 
 
-					</p:panelGrid>
+						</p:panelGrid>
 
+
+						<p:dataTable var="situation" 
+							value="#{itineraryBean.situationsForService}">
+							<f:facet name="header">Situaciones para el servicio</f:facet>
+							<p:column headerText="Prioridad">
+								<h:outputText value="#{situation.priority}" />
+							</p:column>
+
+							<p:column headerText="Nombre">
+								<h:outputText value="#{situation.name}" />
+							</p:column>
+
+						</p:dataTable>
+					</h:panelGrid>
 
 					<p:panelGrid columns="2">
 						<f:facet name="header">Agregue los pasos del itinerario</f:facet>
@@ -88,7 +106,7 @@
 						<p:selectOneMenu id="selectAdaptType" autoupdate="true"
 							styleClass="span4" value="#{itineraryBean.adaptSelec}"
 							effect="fade">adaptationTypeList
-						<f:selectItem itemLabel="Seleccione adaptaciones" itemValue="" /> 
+						<f:selectItem itemLabel="Seleccione adaptaciones" itemValue="" />
 							<f:selectItems value="#{itineraryBean.adaptationTypeList}"
 								var="adapType" itemLabel="#{adapType}" itemValue="#{adapType}" />
 
@@ -225,15 +243,15 @@
 								<p:outputLabel>
 									<b>XPath</b>
 								</p:outputLabel>
-								<p:inputText id="xpath" value="#{itineraryBean.xpath}" styleClass="span4"
-									label="XPath">
+								<p:inputText id="xpath" value="#{itineraryBean.xpath}"
+									styleClass="span4" label="XPath">
 								</p:inputText>
 							</p:panelGrid>
 							<p:panelGrid columns="2" id="hideAdap">
 								<h:outputLabel for="selectAdaptType">
 									<b>Adaptación</b>
 								</h:outputLabel>
-								<p:selectOneMenu id="selectAdaptType" autoupdate="true" 
+								<p:selectOneMenu id="selectAdaptType" autoupdate="true"
 									styleClass="span4" value="#{itineraryBean.adaptSelecCBR}"
 									effect="fade">
 									<f:selectItem itemLabel="Seleccione adaptaciones" itemValue="" />
@@ -255,7 +273,7 @@
 									<b>Data</b>
 								</p:outputLabel>
 
-								<pe:codeMirror id="dataCM" mode="xml" readOnly="false" 
+								<pe:codeMirror id="dataCM" mode="xml" readOnly="false"
 									theme="eclipse" lineNumbers="true"
 									value="#{itineraryBean.data}" matchBrackets="true"
 									lineWrapping="true" />

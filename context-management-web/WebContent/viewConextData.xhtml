@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	template="/masterTemplate.xhtml"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<ui:define name="title">Información contextual</ui:define>
+	<ui:define name="body">
+
+
+		<p:panel>
+			<f:facet name="header">Vista de fuentes de contexto con sus datos</f:facet>
+			<h:form id="form">
+
+				<p:treeTable value="#{viewContextDataBean.root}" var="document"
+					style="width:70%;">
+					<f:facet name="header">
+            		Fuentes de conexto
+       			 </f:facet>
+					<p:column headerText="Nombre" width="400px;">
+						<h:outputText value="#{document.name}" style="width:400px;" />
+					</p:column>
+					<p:column headerText="Tipo" width="100px;" >
+						<h:outputText value="#{document.type}" />
+					</p:column>
+
+				</p:treeTable>
+
+			</h:form>
+		</p:panel>
+	</ui:define>
+	<ui:define name="menuIzq">
+		<ui:include src="/menu.xhtml" />
+	</ui:define>
+</ui:composition>

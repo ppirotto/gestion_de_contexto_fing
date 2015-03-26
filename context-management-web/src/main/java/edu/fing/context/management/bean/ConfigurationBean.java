@@ -46,28 +46,12 @@ public class ConfigurationBean {
 				for (SituationTO situationTO : serviceTO.getSituations()) {
 					TreeNode node00 = new DefaultTreeNode(new InfoTreeNode(situationTO.getName(), situationTO.getDescription(), "Situación"), node0);
 					for (AdaptationTO adaptationTO : situationTO.getAdaptations()) {
-						TreeNode node000 = new DefaultTreeNode(new InfoTreeNode(adaptationTO.getName(), (String) adaptationTO.getData(), "Adaptación"), node00);
+						TreeNode node000 = new DefaultTreeNode(new InfoTreeNode(adaptationTO.getAdaptationType().toString(), (String) adaptationTO.getData(), "Adaptación"), node00);
 					}
 
 				}
 			}
 		}
-
-		// TreeNode node0 = new DefaultTreeNode("Node 0", this.root);
-		// TreeNode node1 = new DefaultTreeNode("Node 1", this.root);
-		//
-		// TreeNode node00 = new DefaultTreeNode("Node 0.0", node0);
-		// TreeNode node01 = new DefaultTreeNode("Node 0.1", node0);
-		//
-		// TreeNode node10 = new DefaultTreeNode("Node 1.0", node1);
-		//
-		// node1.getChildren().add(new DefaultTreeNode("Node 1.1"));
-		// node00.getChildren().add(new DefaultTreeNode("Node 0.0.0"));
-		// node00.getChildren().add(new DefaultTreeNode("Node 0.0.1"));
-		// node01.getChildren().add(new DefaultTreeNode("Node 0.1.0"));
-		// node10.getChildren().add(new DefaultTreeNode("Node 1.0.0"));
-		// this.root.getChildren().add(new DefaultTreeNode("Node 2"));
-
 	}
 
 	public String getDescription() {

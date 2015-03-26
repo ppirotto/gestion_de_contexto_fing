@@ -36,6 +36,8 @@ public class ItineraryBean implements Serializable {
 		return serialVersionUID;
 	}
 
+	private List<SituationTO> situationsForService = new ArrayList<SituationTO>();
+
 	private AdaptationType adaptSelec;
 	private AdaptationType adaptSelecCBR;
 
@@ -142,7 +144,6 @@ public class ItineraryBean implements Serializable {
 			AdaptationTO a = new AdaptationTO();
 			a.setAdaptationType(adapt.getAdaptationType());
 			a.setOrder(adapt.getId());
-			a.setName("");
 			a.setDescription(adapt.getDescription());
 			if (adapt.getAdaptationType().equals(AdaptationType.CONTENT_BASED_ROUTER)) {
 				a.setData(adapt.getTree());
@@ -257,12 +258,27 @@ public class ItineraryBean implements Serializable {
 		return this.situationList;
 	}
 
+	public List<SituationTO> getSituationsForService() {
+		return this.situationsForService;
+	}
+
 	public String getXpath() {
 		return this.xpath;
 	}
 
 	public String getXpathParent() {
 		return this.xpathParent;
+	}
+
+	@SuppressWarnings("unchecked")
+	public void onServiceChange() {
+
+		if (this.selectedService != null) {
+
+			this.situationsForService = (List<SituationTO>) RemoteInvokerUtils.invoke(RemoteInvokerUtils.ContextReasonerConfigService, "getSituationsWithPriority", this.selectedService,
+					ServiceIp.ContextReasonerIp);
+		}
+
 	}
 
 	public boolean renderAdap() {
@@ -340,6 +356,10 @@ public class ItineraryBean implements Serializable {
 
 	public void setSituationList(List<SituationTO> situationList) {
 		this.situationList = situationList;
+	}
+
+	public void setSituationsForService(List<SituationTO> situationsForService) {
+		this.situationsForService = situationsForService;
 	}
 
 	public void setXpath(String xpath) {
