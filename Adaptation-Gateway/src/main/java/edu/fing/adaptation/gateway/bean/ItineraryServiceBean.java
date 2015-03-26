@@ -56,6 +56,7 @@ public class ItineraryServiceBean implements ItineraryService {
 			for (AdaptationTO adaptationTO : data.getAdaptations()) {
 				ContextAwareAdaptation contextAwareAdaptation = new ContextAwareAdaptation();
 				contextAwareAdaptation.setUri(adaptationTO.getAdaptationType().getUri());
+				contextAwareAdaptation.setName(adaptationTO.getAdaptationType().toString());
 				contextAwareAdaptation.setOrder(adaptationTO.getOrder());
 				contextAwareAdaptation.setData((String) adaptationTO.getData());
 				itinerary.getAdaptationDirective().add(contextAwareAdaptation);

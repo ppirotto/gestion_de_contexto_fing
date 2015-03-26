@@ -13,6 +13,7 @@ public class SituationTO {
 	private List<ContextSourceTO> contextSources;
 	private List<String> outputContextData;
 	private VersionTO versionTO;
+	private int priority;
 
 	public String getDescription() {
 		return this.description;
@@ -68,6 +69,14 @@ public class SituationTO {
 
 	public void setVersionTO(VersionTO versionTO) {
 		this.versionTO = versionTO;
+	}
+
+	public int getPriority() {
+		return priority;
+	}
+
+	public void setPriority(int priority) {
+		this.priority = priority;
 	}
 
 }

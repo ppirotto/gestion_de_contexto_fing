@@ -1,6 +1,7 @@
 package edu.fing.context.reasoner.bean;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -109,14 +110,8 @@ public class ConfigurationServiceBean implements ConfigurationService {
 
 		Session session = this.sessionFactory.openSession();
 
-		StringBuilder queryString = new StringBuilder();
-		queryString.append("SELECT s ");
-		queryString.append("FROM Situation s ");
-
-		Query query = session.createQuery(queryString.toString());
-
 		@SuppressWarnings("unchecked")
-		List<Situation> situations = query.list();
+		List<Situation> situations = this.findSituations(session);
 
 		session.close();
 
@@ -129,6 +124,58 @@ public class ConfigurationServiceBean implements ConfigurationService {
 			list.add(situationTO);
 		}
 		return list;
+	}
+
+	@Override
+	public List<SituationTO> getSituationsWithPriority(String serviceName) {
+
+		Session session = this.sessionFactory.openSession();
+
+		StringBuilder queryString = new StringBuilder();
+		queryString.append("SELECT priority ");
+		queryString.append("FROM Service service ");
+		queryString.append("JOIN service.priorities priority ");
+		queryString.append("JOIN FETCH priority.situation situation ");
+		queryString.append("where service.name = :serviceName ");
+
+		Query query = session.createQuery(queryString.toString());
+		query.setParameter("serviceName", serviceName);
+
+		@SuppressWarnings("unchecked")
+		List<ServiceSituationPriority> priorities = query.list();
+		session.close();
+
+		Collections.sort(priorities, ServiceSituationPriority.ORDER_COMPARATOR);
+		List<SituationTO> list = new ArrayList<SituationTO>();
+		for (ServiceSituationPriority serviceSituationPriority : priorities) {
+			SituationTO situationTO = new SituationTO();
+			situationTO.setName(serviceSituationPriority.getSituation().getName());
+			situationTO.setPriority(serviceSituationPriority.getPriority());
+			list.add(situationTO);
+		}
+
+		return list;
+	}
+
+	private List<Situation> findSituations(Session session) {
+		StringBuilder queryString = new StringBuilder();
+		queryString.append("SELECT s ");
+		queryString.append("FROM Situation s ");
+
+		Query query = session.createQuery(queryString.toString());
+
+		@SuppressWarnings("unchecked")
+		List<Situation> situations = query.list();
+		return situations;
+	}
+
+	@Override
+	public List<SituationTO> getSituationsWithContexData() {
+		Session session = this.sessionFactory.openSession();
+		List<Situation> situations = this.findSituations(session);
+
+		session.close();
+		return null;
 	}
 
 	@Override
@@ -183,6 +230,18 @@ public class ConfigurationServiceBean implements ConfigurationService {
 	public List<String> getContextSources() {
 		Session session = this.sessionFactory.openSession();
 
+		@SuppressWarnings("unchecked")
+		List<ContextSource> contextSources = this.findContextSources(session);
+
+		List<String> list = new ArrayList<String>();
+		for (ContextSource contextSource : contextSources) {
+			list.add(contextSource.getName());
+		}
+		session.close();
+		return list;
+	}
+
+	private List<ContextSource> findContextSources(Session session) {
 		StringBuilder queryString = new StringBuilder();
 		queryString.append("FROM ContextSource ");
 
@@ -190,14 +249,48 @@ public class ConfigurationServiceBean implements ConfigurationService {
 
 		@SuppressWarnings("unchecked")
 		List<ContextSource> contextSources = query.list();
+		return contextSources;
+	}
 
-		session.close();
+	@Override
+	public List<ContextSourceTO> getContextSourcesWithContextData() {
+		Session session = this.sessionFactory.openSession();
+		@SuppressWarnings("unchecked")
+		List<ContextSource> contextSources = findContextSources(session);
 
-		List<String> list = new ArrayList<String>();
-		for (ContextSource contextSource : contextSources) {
-			list.add(contextSource.getName());
+		List<ContextSourceTO> res = new ArrayList<ContextSourceTO>();
+		for (ContextSource contexSource : contextSources) {
+			ContextSourceTO contextSourceTO = new ContextSourceTO();
+			contextSourceTO.setEventName(contexSource.getName());
+
+			ObjectMapper objectMapper = new ObjectMapper();
+			try {
+				ContextSourceTO cs = objectMapper.readValue(contexSource.getProperties(), ContextSourceTO.class);
+				contextSourceTO.setReceiveMode(cs.getReceiveMode());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+			StringBuilder queryString = new StringBuilder();
+
+			queryString.append("SELECT datum ");
+			queryString.append("FROM ContextSource source ");
+			queryString.append("JOIN source.contextData datum ");
+			queryString.append("WHERE source.name = :sourceName ");
+
+			Query query = session.createQuery(queryString.toString());
+			query.setParameter("sourceName", contexSource.getName());
+			@SuppressWarnings("unchecked")
+			List<ContextDatum> contextData = query.list();
+			List<String> list = new ArrayList<String>();
+			for (ContextDatum contextDatum : contextData) {
+				list.add(contextDatum.getName());
+			}
+			contextSourceTO.setContextData(list);
+			res.add(contextSourceTO);
 		}
-		return list;
+		session.close();
+		return res;
 	}
 
 	@Override

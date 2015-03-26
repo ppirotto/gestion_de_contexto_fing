@@ -1,5 +1,7 @@
 package edu.fing.context.reasoner.model;
 
+import java.util.Comparator;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,6 +16,14 @@ import javax.persistence.UniqueConstraint;
 @Entity
 @Table(name = "SERVICE_SITUATION_PRIORITY", uniqueConstraints = { @UniqueConstraint(columnNames = { "SITUATION_ID", "SERVICE_ID" }) })
 public class ServiceSituationPriority {
+
+	public static final Comparator<ServiceSituationPriority> ORDER_COMPARATOR = new Comparator<ServiceSituationPriority>() {
+
+		@Override
+		public int compare(ServiceSituationPriority ssp1, ServiceSituationPriority ssp2) {
+			return ssp1.getPriority() - ssp2.getPriority();
+		}
+	};
 
 	private Long id;
 	private int priority;
