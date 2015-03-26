@@ -270,7 +270,6 @@ public class ItineraryBean implements Serializable {
 		return this.xpathParent;
 	}
 
-	@SuppressWarnings("unchecked")
 	public void onServiceChange() {
 
 		if (this.selectedService != null) {

@@ -5,6 +5,10 @@
     position: relative;
 }
 
+.centeredColumn {
+   text-align:center !important;
+}
+
 .topAligned {
     vertical-align: top;
 }

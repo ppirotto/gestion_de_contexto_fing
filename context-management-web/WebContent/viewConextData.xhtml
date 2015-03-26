@@ -16,16 +16,16 @@
 			<f:facet name="header">Vista de fuentes de contexto con sus datos</f:facet>
 			<h:form id="form">
 
-				<p:treeTable value="#{viewContextDataBean.root}" var="document"
+				<p:treeTable value="#{viewContextDataBean.root}" var="document"  
 					style="width:70%;">
 					<f:facet name="header">
             		Fuentes de conexto
        			 </f:facet>
-					<p:column headerText="Nombre" width="400px;">
-						<h:outputText value="#{document.name}" style="width:400px;" />
+					<p:column headerText="Nombre" style="width:400px;"  >
+						<h:outputText value="#{document.name}" />
 					</p:column>
-					<p:column headerText="Tipo" width="100px;" >
-						<h:outputText value="#{document.type}" />
+					<p:column headerText="Tipo"  styleClass="centeredColumn">
+						<h:outputText value="#{document.type}"   />
 					</p:column>
 
 				</p:treeTable>

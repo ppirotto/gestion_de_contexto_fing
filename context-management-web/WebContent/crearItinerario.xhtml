@@ -38,16 +38,17 @@
 				<f:facet name="header">Crear Itinerario</f:facet>
 				<h:panelGrid columns="1">
 
-					<h:panelGrid columns="2">
+					<h:panelGrid columns="3" columnClasses="topAligned " >
 						<p:panelGrid columns="2">
 							<f:facet name="header">Itinerario</f:facet>
 							<p:outputLabel for="selectMenu">
 								<b>Servicio</b>
 							</p:outputLabel>
-							<p:selectOneMenu id="selectMenu" autoupdate="true"
+							<p:selectOneMenu id="selectMenu" autoupdate="true" 
 								required="true" onchange="#{itineraryBean.onServiceChange()}"
 								requiredMessage="Seleccione un servicio" styleClass="span4"
 								value="#{itineraryBean.selectedService}" effect="fade">
+								<p:ajax event="change"  update="tableSituation" listener="#{itineraryBean.onServiceChange()}" />
 								<f:selectItem itemLabel="Seleccione un servicio" itemValue="" />
 								<f:selectItems value="#{itineraryBean.serviceList}"
 									var="Service"
@@ -82,16 +83,16 @@
 
 
 						</p:panelGrid>
+					<p:spacer width="100px"></p:spacer>
 
-
-						<p:dataTable var="situation" 
-							value="#{itineraryBean.situationsForService}">
+						<p:dataTable var="situation" id="tableSituation" style="width:300px;" paginator="true" rows="5"  paginatorPosition="bottom"
+							value="#{itineraryBean.situationsForService}" > 
 							<f:facet name="header">Situaciones para el servicio</f:facet>
-							<p:column headerText="Prioridad">
+							<p:column headerText="Prioridad" width="20px" style="width:70px;">
 								<h:outputText value="#{situation.priority}" />
 							</p:column>
 
-							<p:column headerText="Nombre">
+							<p:column headerText="Situación">
 								<h:outputText value="#{situation.name}" />
 							</p:column>
 
