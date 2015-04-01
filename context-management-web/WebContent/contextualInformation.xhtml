@@ -17,10 +17,10 @@
 			<h:form id="form">
 
 
-				<p:treeTable value="#{configurationBean.root}" var="document"
+				<p:treeTable value="#{viewSituationContextDataBean.root}" var="document"
 					style="width:800px;">
 					<f:facet name="header">
-            		Servicios Configurados
+            		Situaciones
        			 </f:facet>
 					<p:column headerText="Nombre">
 						<h:outputText value="#{document.name}" />
@@ -33,7 +33,7 @@
 							oncomplete="PF('documentDialog').show()" title="Ver Detalle"
 							styleClass="ui-icon ui-icon-search">
 							<f:setPropertyActionListener value="#{document}"
-								target="#{configurationBean.selectedNode}" />
+								target="#{viewSituationContextDataBean.selectedNode}" />
 						</p:commandLink>
 					</p:column>
 				</p:treeTable>
@@ -44,21 +44,21 @@
 					modal="true" resizable="false" draggable="false">
 					<p:outputPanel id="documentPanel">
 						<p:panelGrid columns="2" columnClasses="label,value"
-							rendered="#{not empty configurationBean.selectedNode}">
+							rendered="#{not empty viewSituationContextDataBean.selectedNode}">
 							<h:outputLabel for="name" value="Name: " />
 							<h:outputText id="name"
-								value="#{configurationBean.selectedNode.name}"
+								value="#{viewSituationContextDataBean.selectedNode.name}"
 								style="font-weight:bold" />
 
 							<h:outputLabel for="data" value="Data " />
 							<pe:codeMirror id="codeMirror" mode="xml" readOnly="true"
 								smartIndent="true" theme="eclipse"
-								value="#{configurationBean.selectedNode.data}"
+								value="#{viewSituationContextDataBean.selectedNode.data}"
 								matchBrackets="true" lineWrapping="true" />
 
 							<h:outputLabel for="type" value="Type " />
 							<h:outputText id="type"
-								value="#{configurationBean.selectedNode.type}"
+								value="#{viewSituationContextDataBean.selectedNode.type}"
 								style="font-weight:bold" />
 						</p:panelGrid>
 					</p:outputPanel>

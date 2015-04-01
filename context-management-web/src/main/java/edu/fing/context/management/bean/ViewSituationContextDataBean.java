@@ -13,8 +13,6 @@ import org.primefaces.event.NodeSelectEvent;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
 
-import edu.fing.commons.dto.AdaptationTO;
-import edu.fing.commons.front.dto.ServiceTO;
 import edu.fing.commons.front.dto.SituationTO;
 import edu.fing.context.management.dto.InfoTreeNode;
 import edu.fing.context.management.util.RemoteInvokerUtils;
@@ -29,7 +27,7 @@ public class ViewSituationContextDataBean {
 	private TreeNode root;
 	private InfoTreeNode selectedNode;
 
-	private List<ServiceTO> services;
+	private List<SituationTO> situations;
 
 	@ManagedProperty(value = "#{sessionBean}")
 	private SessionBean session;
@@ -37,19 +35,25 @@ public class ViewSituationContextDataBean {
 	@PostConstruct
 	public void construct() {
 
-		this.services = (List<ServiceTO>) RemoteInvokerUtils.invoke(RemoteInvokerUtils.ContextReasonerConfigService, "getServicesWithSituationsAndAdaptations", null, ServiceIp.ContextReasonerIp);
+		this.situations = (List<SituationTO>) RemoteInvokerUtils.invoke(RemoteInvokerUtils.ContextReasonerConfigService, "getSituationsWithContextData", null, ServiceIp.ContextReasonerIp);
 
 		this.root = new DefaultTreeNode("Root", null);
-		if (this.services != null) {
-			for (ServiceTO serviceTO : this.services) {
-				TreeNode node0 = new DefaultTreeNode(new InfoTreeNode(serviceTO.getServiceName() + "/" + serviceTO.getOperationName(), serviceTO.getUrl(), "Servicio"), this.root);
-				for (SituationTO situationTO : serviceTO.getSituations()) {
-					TreeNode node00 = new DefaultTreeNode(new InfoTreeNode(situationTO.getName(), situationTO.getDescription(), "Situación"), node0);
-					for (AdaptationTO adaptationTO : situationTO.getAdaptations()) {
-						TreeNode node000 = new DefaultTreeNode(new InfoTreeNode(adaptationTO.getAdaptationType().toString(), (String) adaptationTO.getData(), "Adaptación"), node00);
-					}
+		if (this.situations != null) {
+			for (SituationTO situationTO : this.situations) {
+				TreeNode node0 = new DefaultTreeNode(new InfoTreeNode(situationTO.getName(), situationTO.getName(), "Situación"), this.root);
 
-				}
+				// for (SituationTO situationTO : serviceTO.getSituations()) {
+				// TreeNode node00 = new DefaultTreeNode(new
+				// InfoTreeNode(situationTO.getName(),
+				// situationTO.getDescription(), "Situación"), node0);
+				// for (AdaptationTO adaptationTO :
+				// situationTO.getAdaptations()) {
+				// TreeNode node000 = new DefaultTreeNode(new
+				// InfoTreeNode(adaptationTO.getAdaptationType().toString(),
+				// (String) adaptationTO.getData(), "Adaptación"), node00);
+				// }
+				//
+				// }
 			}
 		}
 	}

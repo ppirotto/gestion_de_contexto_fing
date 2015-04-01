@@ -170,25 +170,25 @@
 									 />
 
 								<p:commandButton value="Crear Situación" update="display2 display" onclick="PF('asignarNumeroVersionDlg').show()"
-									actionListener="#{situationBean.crearSituacion()}" oncomplete="PF('messageResponseDialog').show()"
+									 
 
 									styleClass="ui-priority-primary" />
 							</f:facet>
 						</p:panel>
 						
-						<p:dialog header="Resultado" modal="false" showEffect="bounce"
+					<p:dialog header="Resultado" modal="false" showEffect="bounce"
 						widgetVar="messageResponseDialog" resizable="false">
 						<p:panelGrid columns="2" id="display2" style="margin-bottom:10px"
 							cellpadding="5">
 							<h:outputText value="Resultado:" />
-							<h:outputText value="#{rulesBean.responseMsg.errorCode}" />
-							<h:outputText value="Mensaje:" rendered="#{!rulesBean.responseMsg.success}" />
-							<p:inputTextarea readonly="true" value="#{rulesBean.responseMsg.errorMessage}" cols="80"  rendered="#{!rulesBean.responseMsg.success}"  />
+							<h:outputText value="#{situationBean.responseMsg.errorCode}" />
+							<h:outputText value="Mensaje:" rendered="#{!situationBean.responseMsg.success}" />
+							<p:inputTextarea readonly="true" value="#{situationBean.responseMsg.errorMessage}" cols="80"  rendered="#{!situationBean.responseMsg.success}"  />
 							
 							
 						</p:panelGrid>
 						
-						<p:commandButton value="OK" icon="ui-icon-check" style="float:right" action="inicio"
+						<p:commandButton value="OK" icon="ui-icon-check" style="float:right"
 								oncomplete="PF('messageResponseDialog').hide()" title="OK" />
 					</p:dialog>
 					</p:tab>
@@ -198,11 +198,11 @@
 					<p:panelGrid columns="2" id="display" style="margin-bottom:10px"
 						cellpadding="5">
 						<h:outputText
-							value="Se creara una nueva version. Elegir nombre deseado." />
+							value="Elegir nombre deseado:" />
 						<h:inputText value="#{situationBean.versionRules.versionNumber}" />
 						<p:commandButton value="Crear nueva version!"
 							icon="ui-icon-check" actionListener="#{situationBean.crearSituacion()}"
-							oncomplete="PF('asignarNumeroVersionDlg').hide()" title="Crear nueva version!" />
+							oncomplete="PF('asignarNumeroVersionDlg').hide();PF('messageResponseDialog').show()" title="Crear nueva version!" />
 					</p:panelGrid>
 				</p:dialog>
 
