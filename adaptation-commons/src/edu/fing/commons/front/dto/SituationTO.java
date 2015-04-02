@@ -14,6 +14,7 @@ public class SituationTO {
 	private List<String> outputContextData;
 	private VersionTO versionTO;
 	private int priority;
+	private String rule;
 
 	public String getDescription() {
 		return this.description;
@@ -77,6 +78,14 @@ public class SituationTO {
 
 	public void setPriority(int priority) {
 		this.priority = priority;
+	}
+
+	public String getRule() {
+		return rule;
+	}
+
+	public void setRule(String rule) {
+		this.rule = rule;
 	}
 
 }
