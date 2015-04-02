@@ -12,6 +12,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
+import org.apache.commons.lang3.StringUtils;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
 import org.primefaces.model.UploadedFile;
@@ -19,6 +20,7 @@ import org.primefaces.model.UploadedFile;
 import edu.fing.commons.constant.AdaptationType;
 import edu.fing.commons.dto.AdaptationTO;
 import edu.fing.commons.front.dto.AdaptationTreeNodeTO;
+import edu.fing.commons.front.dto.FrontResponseTO;
 import edu.fing.commons.front.dto.ItineraryTO;
 import edu.fing.commons.front.dto.ServiceTO;
 import edu.fing.commons.front.dto.SituationTO;
@@ -36,13 +38,15 @@ public class ItineraryBean implements Serializable {
 		return serialVersionUID;
 	}
 
+	private FrontResponseTO responseMsg;
+
 	private List<SituationTO> situationsForService = new ArrayList<SituationTO>();
-
 	private AdaptationType adaptSelec;
-	private AdaptationType adaptSelecCBR;
 
+	private AdaptationType adaptSelecCBR;
 	private String description;
 	private int priority;
+
 	@SuppressWarnings("unchecked")
 	private List<ServiceTO> serviceList = (List<ServiceTO>) RemoteInvokerUtils.invoke(RemoteInvokerUtils.ContextReasonerConfigService, "getServices", null, ServiceIp.ContextReasonerIp);
 
@@ -56,23 +60,22 @@ public class ItineraryBean implements Serializable {
 	private Long selectedService;
 
 	private String selectedSituation;
-
 	private List<UploadedFile> files = new LinkedList<UploadedFile>();
+
 	private List<AdaptationDto> adaptations = new LinkedList<AdaptationDto>();
 
 	private AdaptationDto selectedAdaptation;
-
 	@ManagedProperty(value = "#{sessionBean}")
 	private SessionBean session;
-	private TreeNode root;
 
+	private TreeNode root;
 	private TreeNode selectedNode;
+
 	private String xpath;
 
 	private String xpathParent;
 
 	private String data;
-
 	private String nodeType;
 
 	public void agregarAdaptacion() {
@@ -224,6 +227,10 @@ public class ItineraryBean implements Serializable {
 		return this.priority;
 	}
 
+	public FrontResponseTO getResponseMsg() {
+		return this.responseMsg;
+	}
+
 	public TreeNode getRoot() {
 		return this.root;
 	}
@@ -325,6 +332,10 @@ public class ItineraryBean implements Serializable {
 		this.priority = priority;
 	}
 
+	public void setResponseMsg(FrontResponseTO responseMsg) {
+		this.responseMsg = responseMsg;
+	}
+
 	public void setRoot(TreeNode root) {
 		this.root = root;
 	}
@@ -379,5 +390,40 @@ public class ItineraryBean implements Serializable {
 			message = new FacesMessage("Error", " is uploaded.");
 		}
 
+	}
+
+	public void validarEnrich() {
+
+		SituationTO selectedStuationTO = null;
+		for (SituationTO situationTO : this.situationList) {
+			if (this.selectedSituation.equals(situationTO.getName())) {
+				selectedStuationTO = situationTO;
+				break;
+			}
+
+		}
+		List<String> validate = validate(this.selectedAdaptation.getData(), selectedStuationTO.getOutputContextData());
+		this.setResponseMsg(new FrontResponseTO());
+
+		if (validate.isEmpty()) {
+			this.getResponseMsg().setSuccess(true);
+			this.getResponseMsg().setErrorCode("OK");
+		} else {
+			this.getResponseMsg().setSuccess(false);
+			this.getResponseMsg().setErrorCode("Error en el FTL");
+			this.getResponseMsg().setErrorMessage(StringUtils.join(validate, "\n"));
+		}
+
+	}
+
+	private List<String> validate(String ftl, List<String> outputData) {
+		List<String> res = new ArrayList<String>();
+		// verifico outputs
+		for (String output : outputData) {// para cada input
+			if (!ftl.contains("${" + output + "}")) {
+				res.add("WARNING: Output '" + output + "' parece no estar utilizándose.");
+			}
+		}
+		return res;
 	}
 }

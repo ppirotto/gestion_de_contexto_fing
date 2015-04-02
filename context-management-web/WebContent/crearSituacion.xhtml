@@ -52,28 +52,28 @@
 				</p:tab>
 				<p:tab id="contextTab" title="Contexto">
 					<p:panel>
-						<f:facet name="header">Definición de data contextual</f:facet>
+						<f:facet name="header">Definición de datos contextuales para la sitaución</f:facet>
 						<h:panelGrid columns="3" columnClasses="topAligned">
 							<p:panel>
-								<f:facet name="header">Input</f:facet>
+								<f:facet name="header">Datos de entrada de la regla</f:facet>
 
 
-								<h:panelGrid columns="2">
+								<h:panelGrid columns="2" cellpadding="10">
 									<h:panelGrid columns="1">
-										<p:outputLabel value="Fuente de contexto" />
+										<p:outputLabel style=" font-weight: bold;" value="Fuente de contexto" />
 
 										<p:selectOneMenu id="selectSituation" autoupdate="true"
 											required="true"
 											requiredMessage="Seleccione fuente de conexto"
-											style="width:180px"
+											style="width:200px"
 											value="#{situationBean.selectedContextSource}" effect="fade">
-											<f:selectItem itemLabel="Seleccione una" itemValue="" />
+											<f:selectItem itemLabel="Seleccione..." itemValue="" />
 											<f:selectItems value="#{situationBean.contextSources}"
 												var="contSource" itemLabel="#{contSource}"
 												itemValue="#{contSource}" />
 										</p:selectOneMenu>
 											--------------------------------------
-											<p:dataTable id="dataTable" var="dat" style="width:180px"
+											<p:dataTable id="dataTable" var="dat" style="width:200px"
 											value="#{situationBean.contextDataList}" scrollable="true"
 											scrollHeight="130"
 											selection="#{situationBean.selectedInputData}"
@@ -81,7 +81,7 @@
 
 											<p:column selectionMode="multiple"
 												style="width:16px;text-align:center" />
-											<p:column headerText="ContextData">
+											<p:column headerText="Dato de contexto">
 												<h:outputText value="#{dat}" />
 											</p:column>
 
@@ -109,9 +109,9 @@
 								</f:facet>
 
 							</p:panel>
-							<p:spacer width="30px"></p:spacer>
+							<p:spacer width="50px"></p:spacer>
 							<p:panel>
-								<f:facet name="header">Output</f:facet>
+								<f:facet name="header">Datos de salida de la regla</f:facet>
 								<p:dataTable id="dataTableOutput" var="dat" style="width:220px"
 									value="#{situationBean.contextDataList}" scrollable="true"
 									scrollHeight="274"
@@ -119,7 +119,7 @@
 
 									<p:column selectionMode="multiple"
 										style="width:16px;text-align:center" />
-									<p:column headerText="ContextData">
+									<p:column headerText="Dato de contexto">
 										<h:outputText value="#{dat}" />
 									</p:column>
 
@@ -191,7 +191,7 @@
 						</p:panelGrid>
 
 						<p:commandButton value="OK" icon="ui-icon-check"
-							style="float:right"
+							style="float:right" action=""
 							oncomplete="PF('messageResponseDialog').hide()" title="OK" />
 					</p:dialog>
 				</p:tab>
@@ -205,7 +205,7 @@
 					<h:inputText value="#{situationBean.versionRules.versionNumber}" />
 				</p:panelGrid>
 				<p:commandButton value="Crear nueva version!" icon="ui-icon-check" style="float:right;"
-					actionListener="#{situationBean.crearSituacion()}"
+					actionListener="#{situationBean.crearSituacion()}" update="display2"
 					oncomplete="PF('asignarNumeroVersionDlg').hide();PF('messageResponseDialog').show()"
 					title="Crear nueva version!" />
 

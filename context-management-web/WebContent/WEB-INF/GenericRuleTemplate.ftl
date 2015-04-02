@@ -35,7 +35,7 @@ import edu.fing.commons.dto.ContextualDataTO;
 
 	rule "Notify Situation ${rule.situationName}"
 	when
-		//Condici√≥n para detectar situaci√≥n
+		//CondiciÛn para detectar situaciÛn
 	then
 	    HashMap<String,Object> contextualData = new HashMap<String,Object>();
 	    /*
@@ -47,7 +47,7 @@ import edu.fing.commons.dto.ContextualDataTO;
 		contextualData.put("${outputDatum}",/*VALOR_${outputDatum}*/);
 	</#list>
 	
-	    /*Sustitu√≠r USER_ID por el id del usuario de tipo String*/
+	    /*Sustituir USER_ID por el id del usuario de tipo String*/
 		situationDetected(/*USER_ID*/, "${rule.situationName}",contextualData);
 	end
 

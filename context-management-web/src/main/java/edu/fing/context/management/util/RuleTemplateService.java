@@ -1,7 +1,5 @@
 package edu.fing.context.management.util;
 
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -26,29 +24,10 @@ import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 
-
 public class RuleTemplateService {
 
-	public static void copy(InputStream input, OutputStream output) throws IOException {
-		int bytesRead;
-		byte[] buffer = new byte[4 * 1024 * 1024];
-		while ((bytesRead = input.read(buffer)) != -1) {
-			output.write(buffer, 0, bytesRead);
-		}
-	}
-	
-	public static String createRuleTemplate(RuleTemplateTO ruleTempTO) throws IOException {
-		String rule="";
-		String sourcePath = ResourceAccessHelper.getWebInfPath();
-		sourcePath += "/GenericRuleTemplate.ftl";
-		String strFile = readFile(sourcePath, Charset.defaultCharset());
-		rule = applyTemplate(ruleTempTO, strFile);
-		
-		return rule;
-	}
-	
 	private static String applyTemplate(RuleTemplateTO ruleTemplateTO, String strFile) {
-		
+
 		StringWriter outStr = new StringWriter();
 		try {
 			Template template = new Template("xslt", new StringReader(strFile), new Configuration());
@@ -70,7 +49,25 @@ public class RuleTemplateService {
 
 		return outStr.toString();
 	}
-	
+
+	public static void copy(InputStream input, OutputStream output) throws IOException {
+		int bytesRead;
+		byte[] buffer = new byte[4 * 1024 * 1024];
+		while ((bytesRead = input.read(buffer)) != -1) {
+			output.write(buffer, 0, bytesRead);
+		}
+	}
+
+	public static String createRuleTemplate(RuleTemplateTO ruleTempTO) throws IOException {
+		String rule = "";
+		String sourcePath = ResourceAccessHelper.getWebInfPath();
+		sourcePath += "/GenericRuleTemplate.ftl";
+		String strFile = readFile(sourcePath, Charset.defaultCharset());
+		rule = applyTemplate(ruleTempTO, strFile);
+
+		return rule;
+	}
+
 	static String readFile(String path, Charset encoding) throws IOException {
 		byte[] encoded = Files.readAllBytes(Paths.get(path));
 		return new String(encoded, encoding);
@@ -78,25 +75,32 @@ public class RuleTemplateService {
 
 	public static List<String> validate(String drl, RuleTemplateTO ruleTempTO) {
 		List<String> res = new ArrayList<String>();
-		
-		//verifico inputs
-		for (ContextSourceTO elem : ruleTempTO.getMappedContextData()) {//recorro fuentes de contexto seleccionadas como inputs
-			for (String input :elem.getContextData()){//para cada input
+
+		// verifico inputs
+		for (ContextSourceTO elem : ruleTempTO.getMappedContextData()) {// recorro
+																		// fuentes
+																		// de
+																		// contexto
+																		// seleccionadas
+																		// como
+																		// inputs
+			for (String input : elem.getContextData()) {// para cada input
 				String camelInput = input.substring(0, 1).toUpperCase() + input.substring(1);
-				Pattern p = Pattern.compile("inputEvent\\.set"+ camelInput + "\\(.*info\\.get\\(.*(\\.get\\(\")*"+input+"\"\\)"  );
+				Pattern p = Pattern.compile("inputEvent\\.set" + camelInput + "\\(.*info\\.get\\(.*(\\.get\\(\")*" + input + "\"\\)");
 				Matcher m = p.matcher(drl);
 				if (!m.find()) {
-					res.add("WARNING: Input '" + input + "' para la fuente de contexto '" + elem.getEventName() + "' parece no estar utiliz√°ndose.");
+					res.add("WARNING: Input '" + input + "' para la fuente de contexto '" + elem.getEventName() + "' parece no estar utiliz·ndose.");
 				}
 			}
 		}
-		
-		//verifico outputs
-		for (String output :ruleTempTO.getSelectedOutputData()){//para cada input
-			Pattern p = Pattern.compile("contextualData\\.put\\(\""+ output + "\",.*\\);"  );
+
+		// verifico outputs
+		for (String output : ruleTempTO.getSelectedOutputData()) {// para cada
+																	// input
+			Pattern p = Pattern.compile("contextualData\\.put\\(\"" + output + "\",.*\\);");
 			Matcher m = p.matcher(drl);
 			if (!m.find()) {
-				res.add("WARNING: Output '" + output + "' parece no estar utiliz√°ndose.");
+				res.add("WARNING: Output '" + output + "' parece no estar utiliz·ndose.");
 			}
 		}
 		return res;

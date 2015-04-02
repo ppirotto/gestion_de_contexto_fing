@@ -11,6 +11,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
+import org.apache.commons.lang3.StringUtils;
 import org.primefaces.event.FlowEvent;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
@@ -80,6 +81,13 @@ public class SituationBean {
 			// TODO[matiasca]
 			// MOSTRAR MENSAJE DE ERROR!!! REVISAR TODOS LOS CASOS QUE
 			// TOQUETEEEEE
+			FrontResponseTO response = new FrontResponseTO();
+			response.setSuccess(false);
+			response.setErrorCode("Error");
+
+			response.setErrorMessage(StringUtils.join(contextDataValidation, "\n"));
+			this.setResponseMsg(response);
+
 		} else {
 			FrontResponseTO response = (FrontResponseTO) RemoteInvokerUtils.invoke(RemoteInvokerUtils.ContextReasonerConfigService, "createSituation", sit, ServiceIp.ContextReasonerIp);
 			this.setResponseMsg(response);
@@ -262,6 +270,15 @@ public class SituationBean {
 
 		}
 		return event.getNewStep();
+	}
+
+	public String redirect() {
+
+		if (this.responseMsg.isSuccess()) {
+			return "inicio";
+		} else {
+			return null;
+		}
 	}
 
 	public void selectedRuleChanged() {

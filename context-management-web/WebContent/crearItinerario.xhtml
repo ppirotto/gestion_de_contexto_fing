@@ -181,11 +181,31 @@
 
 
 				</p:panel>
-				<p:commandButton value="Guardar" icon="ui-icon-newwin" ajax="true"
-					style="float:right" oncomplete="PF('itinerayDialog').hide()" />
+				<p:commandButton value="Guardar" icon="ui-icon-newwin" ajax="true" actionListener="#{itineraryBean.validarEnrich()}"
+					style="float:right" oncomplete="PF('messageResponseDialog').show()" update="display2"/>
+					
+					
+					<p:dialog header="Resultado" showEffect="bounce" modal="true" appendTo="@(body)" closable="false"
+						widgetVar="messageResponseDialog" resizable="false">
+						
+						<p:panelGrid columns="2" id="display2" style="margin-bottom:10px"
+							cellpadding="5">
+							<h:outputText value="Resultado:" />
+							<h:outputText value="#{itineraryBean.responseMsg.errorCode}" />
+							<h:outputText value="Mensaje:" rendered="#{!itineraryBean.responseMsg.success}" />
+							<p:inputTextarea readonly="true" value="#{itineraryBean.responseMsg.errorMessage}" cols="80"  rendered="#{!itineraryBean.responseMsg.success}"  />													
+					</p:panelGrid>
+						
+						<p:commandButton value="OK" icon="ui-icon-check" style="float:right"  ajax="true"
+								onclick="if (#{itineraryBean.responseMsg.success} ){PF('messageResponseDialog').hide() PF('itinerayDialog').hide()}else{PF('messageResponseDialog').hide()}" title="OK" /> 
+								
+					</p:dialog>
+					
+					
 			</h:form>
 		</p:dialog>
-
+		
+			
 		<p:dialog header="Definir el ruteo basado en itinerario"
 			onShow="hidePanels()" widgetVar="contentBasedDialog" modal="true"
 			appendTo="@(body)" showEffect="fade" hideEffect="fade" width="70%"
