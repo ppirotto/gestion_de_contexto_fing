@@ -13,6 +13,7 @@ import org.primefaces.event.NodeSelectEvent;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
 
+import edu.fing.commons.front.dto.ContextSourceTO;
 import edu.fing.commons.front.dto.SituationTO;
 import edu.fing.context.management.dto.InfoTreeNode;
 import edu.fing.context.management.util.RemoteInvokerUtils;
@@ -40,20 +41,22 @@ public class ViewSituationContextDataBean {
 		this.root = new DefaultTreeNode("Root", null);
 		if (this.situations != null) {
 			for (SituationTO situationTO : this.situations) {
-				TreeNode node0 = new DefaultTreeNode(new InfoTreeNode(situationTO.getName(), situationTO.getName(), "Situación"), this.root);
+				TreeNode node0 = new DefaultTreeNode(new InfoTreeNode(situationTO.getName(), situationTO.getRule(), "Situación"), this.root);
 
-				// for (SituationTO situationTO : serviceTO.getSituations()) {
-				// TreeNode node00 = new DefaultTreeNode(new
-				// InfoTreeNode(situationTO.getName(),
-				// situationTO.getDescription(), "Situación"), node0);
-				// for (AdaptationTO adaptationTO :
-				// situationTO.getAdaptations()) {
-				// TreeNode node000 = new DefaultTreeNode(new
-				// InfoTreeNode(adaptationTO.getAdaptationType().toString(),
-				// (String) adaptationTO.getData(), "Adaptación"), node00);
-				// }
-				//
-				// }
+				TreeNode node01 = new DefaultTreeNode(new InfoTreeNode("Entrada", null, ""), node0);
+				TreeNode node02 = new DefaultTreeNode(new InfoTreeNode("Salida", null, ""), node0);
+
+				for (ContextSourceTO contextSourceTO : situationTO.getContextSources()) {
+					TreeNode node001 = new DefaultTreeNode(new InfoTreeNode(contextSourceTO.getEventName(), contextSourceTO.getDescription(), "Fuente de Contexto"), node01);
+					for (String contextData : contextSourceTO.getContextData()) {
+						TreeNode node000 = new DefaultTreeNode(new InfoTreeNode(contextData, contextData, "Dato contextual"), node001);
+					}
+					//
+				}
+
+				for (String contextData : situationTO.getOutputContextData()) {
+					new DefaultTreeNode(new InfoTreeNode(contextData, contextData, "Dato contextual"), node02);
+				}
 			}
 		}
 	}

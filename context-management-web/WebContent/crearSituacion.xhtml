@@ -10,205 +10,210 @@
 
 	<ui:define name="title">Crear Situación</ui:define>
 	<ui:define name="body">
-		
-			<!-- 			<f:facet name="header">Crear Situación</f:facet> -->
 
-			<h:form id="form">
-				<p:growl autoUpdate="true" life="6000" showDetail="true"
-					escape="true" showSummary="true" />
-				<p:wizard flowListener="#{situationBean.onFlowProcess}"
-					backLabel="Atrás" nextLabel="Siguiente">
-					<p:tab id="situationTab" title="Situación">
-						<p:panel>
-							<f:facet name="header">Crear Situación</f:facet>
-							<p:panelGrid columns="2">
-								<p:outputLabel>
+		<!-- 			<f:facet name="header">Crear Situación</f:facet> -->
+
+		<h:form id="form">
+			<p:growl autoUpdate="true" life="6000" showDetail="true"
+				escape="true" showSummary="true" />
+			<p:wizard flowListener="#{situationBean.onFlowProcess}"
+				backLabel="Atrás" nextLabel="Siguiente">
+				<p:tab id="situationTab" title="Situación">
+					<p:panel>
+						<f:facet name="header">Crear Situación</f:facet>
+						<p:panelGrid columns="2">
+							<p:outputLabel>
 						Nombre de la situación
 					</p:outputLabel>
-								<p:inputText size="25" value="#{situationBean.name}" validatorMessage="El nombre debe empezar con mayúscula y debe ser alfanúmerico"
-									required="true" label="Nombre de la situación" >
-									 <f:validateRegex pattern="^[A-Z][a-zA-Z_]+$" />
-									</p:inputText>
-								<p:outputLabel>
+							<p:inputText size="25" value="#{situationBean.name}"
+								validatorMessage="El nombre debe empezar con mayúscula y debe ser alfanúmerico"
+								required="true" label="Nombre de la situación">
+								<f:validateRegex pattern="^[A-Z][a-zA-Z_]+$" />
+							</p:inputText>
+							<p:outputLabel>
 						Descripción
 					</p:outputLabel>
-								<p:inputTextarea scrollHeight="2" autoResize="false"
-									style="width:225px" value="#{situationBean.description}"
-									required="true" validatorMessage="Falta descripción"
-									label="Descripción" />
+							<p:inputTextarea scrollHeight="2" autoResize="false"
+								style="width:225px" value="#{situationBean.description}"
+								required="true" validatorMessage="Falta descripción"
+								label="Descripción" />
 
-								<p:outputLabel>
+							<p:outputLabel>
 						Duración (milisegundos)
 					</p:outputLabel>
-								<p:inputText id="duration" size="16"
-									value="#{situationBean.duration}" label="Duración"
-									validatorMessage="Duración mayor a 0">
-									<f:validateDoubleRange minimum="1" />
-								</p:inputText>
+							<p:inputText id="duration" size="16"
+								value="#{situationBean.duration}" label="Duración"
+								validatorMessage="Duración mayor a 0">
+								<f:validateDoubleRange minimum="1" />
+							</p:inputText>
 
-							</p:panelGrid>
-						</p:panel>
-					</p:tab>
-					<p:tab id="contextTab" title="Contexto">
-						<p:panel>
-							<f:facet name="header">Definición de data contextual</f:facet>
-							<h:panelGrid columns="3" columnClasses="topAligned">
-								<p:panel>
-									<f:facet name="header">Input</f:facet>
+						</p:panelGrid>
+					</p:panel>
+				</p:tab>
+				<p:tab id="contextTab" title="Contexto">
+					<p:panel>
+						<f:facet name="header">Definición de data contextual</f:facet>
+						<h:panelGrid columns="3" columnClasses="topAligned">
+							<p:panel>
+								<f:facet name="header">Input</f:facet>
 
 
-									<h:panelGrid columns="2">
-										<h:panelGrid columns="1">
-											<p:outputLabel value="Fuente de contexto" />
+								<h:panelGrid columns="2">
+									<h:panelGrid columns="1">
+										<p:outputLabel value="Fuente de contexto" />
 
-											<p:selectOneMenu id="selectSituation" autoupdate="true"
-												required="true"
-												requiredMessage="Seleccione fuente de conexto"
-												style="width:180px"
-												value="#{situationBean.selectedContextSource}" effect="fade">
-												<f:selectItem itemLabel="Seleccione una" itemValue="" />
-												<f:selectItems value="#{situationBean.contextSources}"
-													var="contSource" itemLabel="#{contSource}"
-													itemValue="#{contSource}" />
-											</p:selectOneMenu>
+										<p:selectOneMenu id="selectSituation" autoupdate="true"
+											required="true"
+											requiredMessage="Seleccione fuente de conexto"
+											style="width:180px"
+											value="#{situationBean.selectedContextSource}" effect="fade">
+											<f:selectItem itemLabel="Seleccione una" itemValue="" />
+											<f:selectItems value="#{situationBean.contextSources}"
+												var="contSource" itemLabel="#{contSource}"
+												itemValue="#{contSource}" />
+										</p:selectOneMenu>
 											--------------------------------------
 											<p:dataTable id="dataTable" var="dat" style="width:180px"
-												value="#{situationBean.contextDataList}" scrollable="true"
-												scrollHeight="130"
-												selection="#{situationBean.selectedInputData}"
-												rowKey="#{dat}">
+											value="#{situationBean.contextDataList}" scrollable="true"
+											scrollHeight="130"
+											selection="#{situationBean.selectedInputData}"
+											rowKey="#{dat}">
 
-												<p:column selectionMode="multiple"
-													style="width:16px;text-align:center" />
-												<p:column headerText="ContextData">
-													<h:outputText value="#{dat}" />
-												</p:column>
+											<p:column selectionMode="multiple"
+												style="width:16px;text-align:center" />
+											<p:column headerText="ContextData">
+												<h:outputText value="#{dat}" />
+											</p:column>
 
-											</p:dataTable>
-
-										</h:panelGrid>
-										<p:panel>
-											<f:facet name="header">Seleccionados	</f:facet>
-
-											<p:tree id="tree" value="#{situationBean.root}" var="node"
-												dynamic="true"
-												style="width:190px;height:160px;overflow: auto;">
-
-												<p:treeNode>
-													<h:outputText value="#{node}" />
-												</p:treeNode>
-											</p:tree>
-										</p:panel>
-
+										</p:dataTable>
 
 									</h:panelGrid>
-									<f:facet name="footer">
-										<p:commandButton value="Asignar" update="tree"
-											action="#{situationBean.createDatumForInput()}" />
-									</f:facet>
+									<p:panel>
+										<f:facet name="header">Seleccionados	</f:facet>
 
-								</p:panel>
-								<p:spacer width="30px"></p:spacer>
-								<p:panel>
-									<f:facet name="header">Output</f:facet>
-									<p:dataTable id="dataTableOutput" var="dat" style="width:220px"
-										value="#{situationBean.contextDataList}" scrollable="true"
-										scrollHeight="274"
-										selection="#{situationBean.selectedOutputData}"
-										rowKey="#{dat}">
+										<p:tree id="tree" value="#{situationBean.root}" var="node"
+											dynamic="true"
+											style="width:190px;height:160px;overflow: auto;">
 
-										<p:column selectionMode="multiple"
-											style="width:16px;text-align:center" />
-										<p:column headerText="ContextData">
-											<h:outputText value="#{dat}" />
-										</p:column>
-
-									</p:dataTable>
-
-								</p:panel>
-							</h:panelGrid>
-
-
-						</p:panel>
-					</p:tab>
-
-
-					<p:tab id="ruleTab" title="Regla">
-						<p:panel header="Definir la regla: #{situationBean.name}">
-							<h:panelGrid columns="2" columnClasses="topAligned">
-								<h:panelGrid columns="1">
-
-
-									<p:panel style="height:300px" header="Reglas:">
-
-										<p:selectOneListbox id="ruleSelectOneListbox"
-											value="#{situationBean.selectedRule}"
-											converter="ruleConverterSituation" style="width:210px">
-											<f:ajax listener="#{situationBean.selectedRuleChanged}"
-												render=":form:codeMirror" />
-											<f:selectItems value="#{situationBean.versionRules.rules}"
-												var="rule" itemLabel="#{rule.name}" itemValue="#{rule}" />
-										</p:selectOneListbox>
-
+											<p:treeNode>
+												<h:outputText value="#{node}" />
+											</p:treeNode>
+										</p:tree>
 									</p:panel>
+
+
 								</h:panelGrid>
-								<p:panel style="min-width:600px;min-height:300px;">
-									<pe:codeMirror id="codeMirror" mode="javascript"
-										readOnly="#{situationBean.isReadOnly()}" theme="eclipse"
-										value="#{situationBean.selectedRule.drl}" lineNumbers="true"
-										matchBrackets="true" lineWrapping="true" />
+								<f:facet name="footer">
+									<p:commandButton value="Asignar" update="tree"
+										action="#{situationBean.createDatumForInput()}" />
+								</f:facet>
+
+							</p:panel>
+							<p:spacer width="30px"></p:spacer>
+							<p:panel>
+								<f:facet name="header">Output</f:facet>
+								<p:dataTable id="dataTableOutput" var="dat" style="width:220px"
+									value="#{situationBean.contextDataList}" scrollable="true"
+									scrollHeight="274"
+									selection="#{situationBean.selectedOutputData}" rowKey="#{dat}">
+
+									<p:column selectionMode="multiple"
+										style="width:16px;text-align:center" />
+									<p:column headerText="ContextData">
+										<h:outputText value="#{dat}" />
+									</p:column>
+
+								</p:dataTable>
+
+							</p:panel>
+						</h:panelGrid>
+
+
+					</p:panel>
+				</p:tab>
+
+
+				<p:tab id="ruleTab" title="Regla">
+					<p:panel header="Definir la regla: #{situationBean.name}">
+						<h:panelGrid columns="2" columnClasses="topAligned">
+							<h:panelGrid columns="1">
+
+
+								<p:panel style="height:300px" header="Reglas:">
+
+									<p:selectOneListbox id="ruleSelectOneListbox"
+										value="#{situationBean.selectedRule}"
+										converter="ruleConverterSituation" style="width:210px">
+										<f:ajax listener="#{situationBean.selectedRuleChanged}"
+											render=":form:codeMirror" />
+										<f:selectItems value="#{situationBean.versionRules.rules}"
+											var="rule" itemLabel="#{rule.name}" itemValue="#{rule}" />
+									</p:selectOneListbox>
 
 								</p:panel>
-
-
-
 							</h:panelGrid>
+							<p:panel style="min-width:600px;min-height:300px;">
+								<pe:codeMirror id="codeMirror" mode="javascript"
+									readOnly="#{situationBean.isReadOnly()}" theme="eclipse"
+									value="#{situationBean.selectedRule.drl}" lineNumbers="true"
+									matchBrackets="true" lineWrapping="true" />
 
-							<f:facet name="footer">
+							</p:panel>
 
-								<p:commandButton value="Guardar Regla"
-									 />
 
-								<p:commandButton value="Crear Situación" update="display2 display" onclick="PF('asignarNumeroVersionDlg').show()"
-									 
 
-									styleClass="ui-priority-primary" />
-							</f:facet>
-						</p:panel>
-						
+						</h:panelGrid>
+
+						<f:facet name="footer">
+
+							<p:commandButton value="Guardar Regla" />
+
+							<p:commandButton value="Crear Situación"
+								update="display2 display"
+								onclick="PF('asignarNumeroVersionDlg').show()"
+								styleClass="ui-priority-primary" />
+						</f:facet>
+					</p:panel>
+
 					<p:dialog header="Resultado" modal="false" showEffect="bounce"
 						widgetVar="messageResponseDialog" resizable="false">
 						<p:panelGrid columns="2" id="display2" style="margin-bottom:10px"
 							cellpadding="5">
 							<h:outputText value="Resultado:" />
 							<h:outputText value="#{situationBean.responseMsg.errorCode}" />
-							<h:outputText value="Mensaje:" rendered="#{!situationBean.responseMsg.success}" />
-							<p:inputTextarea readonly="true" value="#{situationBean.responseMsg.errorMessage}" cols="80"  rendered="#{!situationBean.responseMsg.success}"  />
-							
-							
+							<h:outputText value="Mensaje:"
+								rendered="#{!situationBean.responseMsg.success}" />
+							<p:inputTextarea readonly="true"
+								value="#{situationBean.responseMsg.errorMessage}" cols="80"
+								rendered="#{!situationBean.responseMsg.success}" />
+
+
 						</p:panelGrid>
-						
-						<p:commandButton value="OK" icon="ui-icon-check" style="float:right"
-								oncomplete="PF('messageResponseDialog').hide()" title="OK" />
+
+						<p:commandButton value="OK" icon="ui-icon-check"
+							style="float:right"
+							oncomplete="PF('messageResponseDialog').hide()" title="OK" />
 					</p:dialog>
-					</p:tab>
-				</p:wizard>
-				<p:dialog header="Creando nueva version..." modal="false" dynamic="true"
-					showEffect="bounce" widgetVar="asignarNumeroVersionDlg" resizable="false">
-					<p:panelGrid columns="2" id="display" style="margin-bottom:10px"
-						cellpadding="5">
-						<h:outputText
-							value="Elegir nombre deseado:" />
-						<h:inputText value="#{situationBean.versionRules.versionNumber}" />
-						<p:commandButton value="Crear nueva version!"
-							icon="ui-icon-check" actionListener="#{situationBean.crearSituacion()}"
-							oncomplete="PF('asignarNumeroVersionDlg').hide();PF('messageResponseDialog').show()" title="Crear nueva version!" />
-					</p:panelGrid>
-				</p:dialog>
+				</p:tab>
+			</p:wizard>
+			<p:dialog header="Creando nueva version..." modal="false"
+				dynamic="true" showEffect="bounce"
+				widgetVar="asignarNumeroVersionDlg" resizable="false">
+				<p:panelGrid columns="2" id="display" style="margin-bottom:10px"
+					cellpadding="5">
+					<h:outputText value="Número de versión:" />
+					<h:inputText value="#{situationBean.versionRules.versionNumber}" />
+				</p:panelGrid>
+				<p:commandButton value="Crear nueva version!" icon="ui-icon-check" style="float:right;"
+					actionListener="#{situationBean.crearSituacion()}"
+					oncomplete="PF('asignarNumeroVersionDlg').hide();PF('messageResponseDialog').show()"
+					title="Crear nueva version!" />
 
-			</h:form>
+			</p:dialog>
 
-		
+		</h:form>
+
+
 	</ui:define>
 	<ui:define name="menuIzq">
 		<ui:include src="/menu.xhtml" />

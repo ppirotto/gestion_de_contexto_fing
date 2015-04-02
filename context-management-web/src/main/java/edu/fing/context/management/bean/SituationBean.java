@@ -67,7 +67,7 @@ public class SituationBean {
 
 		RuleTemplateTO ruleTempTO = mapRuleTemplateTO();
 		List<String> contextDataValidation = null;
-		//Verifico que se usen los input y output que se definieron
+		// Verifico que se usen los input y output que se definieron
 		for (RuleTO ruleTO : this.getVersionRules().getRules()) {
 			if (ruleTO.getName().equals(this.name)) {
 				contextDataValidation = RuleTemplateService.validate(ruleTO.getDrl(), ruleTempTO);
@@ -200,7 +200,16 @@ public class SituationBean {
 
 	}
 
+	private RuleTemplateTO mapRuleTemplateTO() {
+		RuleTemplateTO ruleTempTO = new RuleTemplateTO();
+		ruleTempTO.setDescription(this.description);
+		ruleTempTO.setDuration(this.duration);
 
+		ruleTempTO.setMappedContextData(new ArrayList<ContextSourceTO>(this.mappedContextData.values()));
+		ruleTempTO.setSituationName(this.name);
+		ruleTempTO.setSelectedOutputData(this.selectedOutputData);
+		return ruleTempTO;
+	}
 
 	private VersionTO mocker() {
 
@@ -254,17 +263,7 @@ public class SituationBean {
 		}
 		return event.getNewStep();
 	}
-	
-	private RuleTemplateTO mapRuleTemplateTO() {
-		RuleTemplateTO ruleTempTO = new RuleTemplateTO();
-		ruleTempTO.setDescription(this.description);
-		ruleTempTO.setDuration(this.duration);
 
-		ruleTempTO.setMappedContextData(new ArrayList<ContextSourceTO>(this.mappedContextData.values()));
-		ruleTempTO.setSituationName(this.name);
-		ruleTempTO.setSelectedOutputData(this.selectedOutputData);
-		return ruleTempTO;
-	}
 	public void selectedRuleChanged() {
 
 	}

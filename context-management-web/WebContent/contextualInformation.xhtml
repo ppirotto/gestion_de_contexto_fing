@@ -13,7 +13,7 @@
 
 
 		<p:panel>
-			<f:facet name="header">Vista de situaciones y la información contextual</f:facet>
+			<f:facet name="header">Situaciones y su información contextual</f:facet>
 			<h:form id="form">
 
 
@@ -25,41 +25,39 @@
 					<p:column headerText="Nombre">
 						<h:outputText value="#{document.name}" />
 					</p:column>
-					<p:column headerText="Tipo">
+					<p:column headerText="Tipo" style="width:120px" >
 						<h:outputText value="#{document.type}" />
 					</p:column>
-					<p:column style="width:24px">
-						<p:commandLink update=":form:dialog"
-							oncomplete="PF('documentDialog').show()" title="Ver Detalle"
+					<p:column style="width:45px"  headerText="Regla" >
+						
+						<p:commandLink update=":form:dialog"  value="Ver regla" rendered="#{document.type== 'Situación'}"
+							oncomplete="PF('documentDialog').show()" title="Ver regla"
 							styleClass="ui-icon ui-icon-search">
 							<f:setPropertyActionListener value="#{document}"
 								target="#{viewSituationContextDataBean.selectedNode}" />
 						</p:commandLink>
+					
 					</p:column>
 				</p:treeTable>
 
 				<p:dialog id="dialog" header="Detalle" showEffect="fade"
 					position="center" appendTo="@(body)" dynamic="true"
-					style="width:50% important!" widgetVar="documentDialog"
+					style="width:50% important!;height:80% important!" widgetVar="documentDialog"
 					modal="true" resizable="false" draggable="false">
-					<p:outputPanel id="documentPanel">
+					<p:outputPanel id="documentPanel" style="overflow:auto;">
 						<p:panelGrid columns="2" columnClasses="label,value"
 							rendered="#{not empty viewSituationContextDataBean.selectedNode}">
-							<h:outputLabel for="name" value="Name: " />
+							<h:outputLabel for="name" value="Nombre: " />
 							<h:outputText id="name"
 								value="#{viewSituationContextDataBean.selectedNode.name}"
 								style="font-weight:bold" />
 
-							<h:outputLabel for="data" value="Data " />
-							<pe:codeMirror id="codeMirror" mode="xml" readOnly="true"
+							<h:outputLabel for="data" value="Regla: " />
+							<pe:codeMirror id="codeMirror" mode="javascript" readOnly="true" 
 								smartIndent="true" theme="eclipse"
 								value="#{viewSituationContextDataBean.selectedNode.data}"
 								matchBrackets="true" lineWrapping="true" />
-
-							<h:outputLabel for="type" value="Type " />
-							<h:outputText id="type"
-								value="#{viewSituationContextDataBean.selectedNode.type}"
-								style="font-weight:bold" />
+		
 						</p:panelGrid>
 					</p:outputPanel>
 				</p:dialog>
