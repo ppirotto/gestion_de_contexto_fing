@@ -140,7 +140,7 @@
 						<h:outputText value="#{adapt.id}" />
 					</p:column>
 					<p:column headerText="Tipo">
-						<h:outputText value="#{adapt.adaptationType}" />
+						<h:outputText value="#{adapt.adaptationType.toString()}" />
 					</p:column>
 					<p:column headerText="Descripción">
 						<h:outputText value="#{adapt.description}" />
@@ -166,49 +166,31 @@
 			</p:panel>
 
 		</h:form>
-		<p:dialog header="Data de la adaptación" widgetVar="itinerayDialog"
+		<p:dialog header="Configuración de la adaptación" widgetVar="itinerayDialog"
 			modal="true" appendTo="@(body)" showEffect="fade" hideEffect="fade"
 			width="60%" height="350px" resizable="false">
 			<h:form id="itineraryDialogForm">
 				<p:panel style="width:90%; height:300px;" id="adaptationDetail">
 					<f:facet name="header">
-           				 		#{itineraryBean.selectedAdaptation.adaptationType} Data:
+           				 		#{itineraryBean.selectedAdaptation.adaptationType.toString()}:
         					</f:facet>
 					<pe:codeMirror id="codeMirror" mode="xml" readOnly="false"
 						theme="eclipse" lineNumbers="true"
 						value="#{itineraryBean.selectedAdaptation.data}"
 						matchBrackets="true" lineWrapping="true" />
 
-
 				</p:panel>
-				<p:commandButton value="Guardar" icon="ui-icon-newwin" ajax="true" actionListener="#{itineraryBean.validarEnrich()}"
-					style="float:right" oncomplete="PF('messageResponseDialog').show()" update="display2"/>
+				<p:commandButton value="Guardar" icon="ui-icon-newwin" ajax="true" actionListener="#{itineraryBean.validate()}"
+					style="float:right"/>
 					
-					
-					<p:dialog header="Resultado" showEffect="bounce" modal="true" appendTo="@(body)" closable="false"
-						widgetVar="messageResponseDialog" resizable="false">
-						
-						<p:panelGrid columns="2" id="display2" style="margin-bottom:10px"
-							cellpadding="5">
-							<h:outputText value="Resultado:" />
-							<h:outputText value="#{itineraryBean.responseMsg.errorCode}" />
-							<h:outputText value="Mensaje:" rendered="#{!itineraryBean.responseMsg.success}" />
-							<p:inputTextarea readonly="true" value="#{itineraryBean.responseMsg.errorMessage}" cols="80"  rendered="#{!itineraryBean.responseMsg.success}"  />													
-					</p:panelGrid>
-						
-						<p:commandButton value="OK" icon="ui-icon-check" style="float:right"  ajax="true"
-								onclick="if (#{itineraryBean.responseMsg.success} ){PF('messageResponseDialog').hide() PF('itinerayDialog').hide()}else{PF('messageResponseDialog').hide()}" title="OK" /> 
-								
-					</p:dialog>
-					
-					
+				
 			</h:form>
 		</p:dialog>
 		
 			
 		<p:dialog header="Definir el ruteo basado en itinerario"
 			onShow="hidePanels()" widgetVar="contentBasedDialog" modal="true"
-			appendTo="@(body)" showEffect="fade" hideEffect="fade" width="70%"
+			appendTo="@(body)" showEffect="fade" hideEffect="fade" width="60%"
 			height="400px" resizable="false">
 
 			<h:form id="contentBasedDialogForm">
@@ -217,7 +199,7 @@
 					<p:panelGrid columns="2">
 						<h:outputLabel style="font-weight: bold;" value="Nombre" />
 						<h:outputText
-							value="#{itineraryBean.selectedAdaptation.adaptationType}" />
+							value="#{itineraryBean.selectedAdaptation.adaptationType.toString()}" />
 					</p:panelGrid>
 
 					<p:tree value="#{itineraryBean.root}" var="node" dynamic="true"
@@ -234,7 +216,7 @@
 							<p:outputLabel>
 								<b>XPath Nodo Raíz</b>
 							</p:outputLabel>
-							<p:inputText id="xpathParent" styleClass="span4"
+							<p:inputText id="xpathParent" styleClass="span4" required="true" requiredMessage="Ingrese Xpath para el nodo raíz"
 								value="#{itineraryBean.xpathParent}" label="XPath">
 							</p:inputText>
 

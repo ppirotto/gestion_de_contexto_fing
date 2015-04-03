@@ -1,9 +1,13 @@
 package edu.fing.context.management.bean;
 
+import java.io.IOException;
 import java.io.Serializable;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -11,8 +15,13 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.xml.transform.Templates;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.stream.StreamSource;
 
 import org.apache.commons.lang3.StringUtils;
+import org.primefaces.context.RequestContext;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
 import org.primefaces.model.UploadedFile;
@@ -20,25 +29,25 @@ import org.primefaces.model.UploadedFile;
 import edu.fing.commons.constant.AdaptationType;
 import edu.fing.commons.dto.AdaptationTO;
 import edu.fing.commons.front.dto.AdaptationTreeNodeTO;
-import edu.fing.commons.front.dto.FrontResponseTO;
 import edu.fing.commons.front.dto.ItineraryTO;
 import edu.fing.commons.front.dto.ServiceTO;
 import edu.fing.commons.front.dto.SituationTO;
 import edu.fing.context.management.dto.AdaptationDto;
 import edu.fing.context.management.util.RemoteInvokerUtils;
 import edu.fing.context.management.util.RemoteInvokerUtils.ServiceIp;
+import freemarker.template.Configuration;
+import freemarker.template.Template;
 
 @ManagedBean
 @ViewScoped
 public class ItineraryBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+	private static final TransformerFactory tFactory = TransformerFactory.newInstance();
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
-
-	private FrontResponseTO responseMsg;
 
 	private List<SituationTO> situationsForService = new ArrayList<SituationTO>();
 	private AdaptationType adaptSelec;
@@ -92,38 +101,6 @@ public class ItineraryBean implements Serializable {
 		}
 	}
 
-	private void crearNodo(boolean bool) {
-
-		AdaptationTreeNodeTO treeNode = new AdaptationTreeNodeTO();
-
-		if (this.nodeType.equals("ADAPTATION")) {
-			AdaptationTO ad = new AdaptationTO();
-			ad.setAdaptationType(this.adaptSelec);
-			ad.setData(this.data);
-			treeNode.setAdaptation(ad);
-		} else {
-
-			treeNode.setXpath(this.xpath);
-		}
-
-		if (bool) {
-			treeNode.setNodeType("Si");
-			AdaptationTreeNodeTO selATN = (AdaptationTreeNodeTO) this.selectedNode.getData();
-			selATN.setLeftNode(treeNode);
-
-			TreeNode node00 = new DefaultTreeNode(treeNode, this.selectedNode);
-			node00.setExpanded(true);
-
-		} else {
-			treeNode.setNodeType("No");
-			AdaptationTreeNodeTO selATN = (AdaptationTreeNodeTO) this.selectedNode.getData();
-			selATN.setRightNode(treeNode);
-			TreeNode node00 = new DefaultTreeNode(treeNode, this.selectedNode);
-			node00.setExpanded(true);
-		}
-
-	}
-
 	public void createCBR() {
 
 		AdaptationTreeNodeTO adTN = (AdaptationTreeNodeTO) this.root.getData();
@@ -133,7 +110,7 @@ public class ItineraryBean implements Serializable {
 	}
 
 	public void createFalseNode() {
-		crearNodo(false);
+		createNodo(false);
 	}
 
 	public String createItinerary() {
@@ -173,8 +150,44 @@ public class ItineraryBean implements Serializable {
 		return "inicio";
 	}
 
+	private void createNodo(boolean bool) {
+
+		SituationTO selectedStuationTO = getSelectedSituationTO();
+
+		if (validationMessages(this.data, this.adaptSelecCBR, selectedStuationTO)) {
+
+			AdaptationTreeNodeTO treeNode = new AdaptationTreeNodeTO();
+
+			if (this.nodeType.equals("ADAPTATION")) {
+				AdaptationTO ad = new AdaptationTO();
+				ad.setAdaptationType(this.adaptSelec);
+				ad.setData(this.data);
+				treeNode.setAdaptation(ad);
+			} else {
+
+				treeNode.setXpath(this.xpath);
+			}
+
+			if (bool) {
+				treeNode.setNodeType("Si");
+				AdaptationTreeNodeTO selATN = (AdaptationTreeNodeTO) this.selectedNode.getData();
+				selATN.setLeftNode(treeNode);
+
+				TreeNode node00 = new DefaultTreeNode(treeNode, this.selectedNode);
+				node00.setExpanded(true);
+
+			} else {
+				treeNode.setNodeType("No");
+				AdaptationTreeNodeTO selATN = (AdaptationTreeNodeTO) this.selectedNode.getData();
+				selATN.setRightNode(treeNode);
+				TreeNode node00 = new DefaultTreeNode(treeNode, this.selectedNode);
+				node00.setExpanded(true);
+			}
+		}
+	}
+
 	public void createTrueNode() {
-		crearNodo(true);
+		createNodo(true);
 	}
 
 	@PostConstruct
@@ -227,10 +240,6 @@ public class ItineraryBean implements Serializable {
 		return this.priority;
 	}
 
-	public FrontResponseTO getResponseMsg() {
-		return this.responseMsg;
-	}
-
 	public TreeNode getRoot() {
 		return this.root;
 	}
@@ -249,6 +258,18 @@ public class ItineraryBean implements Serializable {
 
 	public String getSelectedSituation() {
 		return this.selectedSituation;
+	}
+
+	private SituationTO getSelectedSituationTO() {
+		SituationTO selectedStuationTO = null;
+		for (SituationTO situationTO : this.situationList) {
+			if (this.selectedSituation.equals(situationTO.getName())) {
+				selectedStuationTO = situationTO;
+				break;
+			}
+
+		}
+		return selectedStuationTO;
 	}
 
 	public List<ServiceTO> getServiceList() {
@@ -332,10 +353,6 @@ public class ItineraryBean implements Serializable {
 		this.priority = priority;
 	}
 
-	public void setResponseMsg(FrontResponseTO responseMsg) {
-		this.responseMsg = responseMsg;
-	}
-
 	public void setRoot(TreeNode root) {
 		this.root = root;
 	}
@@ -392,38 +409,110 @@ public class ItineraryBean implements Serializable {
 
 	}
 
-	public void validarEnrich() {
+	public void validate() {
 
-		SituationTO selectedStuationTO = null;
-		for (SituationTO situationTO : this.situationList) {
-			if (this.selectedSituation.equals(situationTO.getName())) {
-				selectedStuationTO = situationTO;
-				break;
-			}
+		SituationTO selectedStuationTO = getSelectedSituationTO();
 
-		}
-		List<String> validate = validate(this.selectedAdaptation.getData(), selectedStuationTO.getOutputContextData());
-		this.setResponseMsg(new FrontResponseTO());
-
-		if (validate.isEmpty()) {
-			this.getResponseMsg().setSuccess(true);
-			this.getResponseMsg().setErrorCode("OK");
-		} else {
-			this.getResponseMsg().setSuccess(false);
-			this.getResponseMsg().setErrorCode("Error en el FTL");
-			this.getResponseMsg().setErrorMessage(StringUtils.join(validate, "\n"));
-		}
+		String data = this.selectedAdaptation.getData();
+		validationMessages(data, this.selectedAdaptation.getAdaptationType(), selectedStuationTO);
 
 	}
 
-	private List<String> validate(String ftl, List<String> outputData) {
+	public List<String> validateFTL(String ftl, List<String> outputData) {
 		List<String> res = new ArrayList<String>();
-		// verifico outputs
-		for (String output : outputData) {// para cada input
-			if (!ftl.contains("${" + output + "}")) {
-				res.add("WARNING: Output '" + output + "' parece no estar utilizándose.");
+		Pattern p = Pattern.compile("\\$\\{(\\w*)\\}");
+		Matcher m = p.matcher(ftl);
+		int index = 1;
+		while (m.find()) {
+			String group = m.group(index);
+			if (!outputData.contains(group)) {
+				res.add("ERROR: \\'" + group + "\\' no es un dato contextual válido.");
 			}
+		}
+
+		try {
+			Template template = new Template("xslt", new StringReader(ftl), new Configuration());
+		} catch (IOException e) {
+			res.add("ERROR: El template no es válido");
+
+			return res;
+		}
+
+		return res;
+	}
+
+	public List<String> validateXSLT(String xslt) {
+		List<String> res = new ArrayList();
+		try {
+			Templates templates = tFactory.newTemplates(new StreamSource(new StringReader(xslt)));
+		} catch (TransformerConfigurationException e) {
+			res.add("El XSLT no es válido");
+			return res;
 		}
 		return res;
 	}
+
+	private boolean validationMessages(String data, AdaptationType adapType, SituationTO selectedStuationTO) {
+
+		List<String> validate = new ArrayList<String>();
+		RequestContext currentInstance = RequestContext.getCurrentInstance();
+		switch (adapType) {
+		case ENRICH:
+
+			validate = validateFTL(data, selectedStuationTO.getOutputContextData());
+			validate.addAll(validateXSLT(data));
+			if (validate.isEmpty()) {
+				FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "OK", "El template es válido");
+				currentInstance.showMessageInDialog(message);
+
+			} else {
+				String mensajeconcatenado = StringUtils.join(validate, "<br/>");
+				FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error en el FTL", mensajeconcatenado);
+				currentInstance.showMessageInDialog(message);
+				return false;
+			}
+
+			break;
+		case CONTENT_BASED_ROUTER:
+			break;
+		case DELAY:
+			Pattern p = Pattern.compile("\\d+");
+			Matcher m = p.matcher(data);
+			if (m.find()) {
+				FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "OK", "Número válido");
+				currentInstance.showMessageInDialog(message);
+			} else {
+				FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Número no válido");
+				currentInstance.showMessageInDialog(message);
+				return false;
+			}
+
+			break;
+		case EXTERNAL_TRANSFORMATION:
+			break;
+		case FILTER:
+			validate.addAll(validateXSLT(data));
+			if (validate.isEmpty()) {
+				FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "OK", "El template es válido");
+				currentInstance.showMessageInDialog(message);
+
+			} else {
+				String mensajeconcatenado = StringUtils.join(validate, "<br/>");
+				FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error en el FTL", mensajeconcatenado);
+
+				currentInstance.showMessageInDialog(message);
+				return false;
+			}
+
+			break;
+		case SERVICE_INVOCATION:
+			break;
+		default:
+			break;
+
+		}
+
+		return true;
+	}
+
 }

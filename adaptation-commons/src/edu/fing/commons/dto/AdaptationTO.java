@@ -1,9 +1,15 @@
 package edu.fing.commons.dto;
 
+import java.io.Serializable;
+
 import edu.fing.commons.constant.AdaptationType;
 
-public class AdaptationTO {
+public class AdaptationTO implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String description;
 	private int order;
 	private AdaptationType adaptationType;
