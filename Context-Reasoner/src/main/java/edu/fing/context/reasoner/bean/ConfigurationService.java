@@ -24,9 +24,9 @@ public interface ConfigurationService {
 
 	List<ContextSourceTO> getContextSourcesWithContextData();
 
-	List<SituationTO> getSituationsWithPriority(String serviceName);
+	List<SituationTO> getSituationsWithPriority(Long serviceId);
 
-	List<SituationTO> getSituationsWithContexData();
+	List<SituationTO> getSituationsWithContextData();
 
 	FrontResponseTO createSituation(SituationTO situationTO);
 

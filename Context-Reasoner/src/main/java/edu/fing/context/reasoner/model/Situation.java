@@ -29,6 +29,7 @@ public class Situation implements Serializable {
 	private Rule rule;
 	private Set<ContextDatum> inputContextData;
 	private Set<ContextDatum> outputContextData;
+	private Set<ContextSource> contextSources;
 
 	@Id
 	@GeneratedValue
@@ -77,6 +78,13 @@ public class Situation implements Serializable {
 		return outputContextData;
 	}
 
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "SITUATION_CONTEXT_SOURCE", joinColumns = { @JoinColumn(name = "SITUATION_ID") }, inverseJoinColumns = { @JoinColumn(
+			name = "CONTEXT_SOURCE_ID") })
+	public Set<ContextSource> getContextSources() {
+		return contextSources;
+	}
+
 	public void setId(Long id) {
 		this.id = id;
 	}
@@ -107,6 +115,10 @@ public class Situation implements Serializable {
 
 	public void setOutputContextData(Set<ContextDatum> outputContextData) {
 		this.outputContextData = outputContextData;
+	}
+
+	public void setContextSources(Set<ContextSource> contextSources) {
+		this.contextSources = contextSources;
 	}
 
 }

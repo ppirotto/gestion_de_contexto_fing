@@ -25,6 +25,7 @@ import edu.fing.context.reasoner.model.Adaptation;
 import edu.fing.context.reasoner.model.ContextDatum;
 import edu.fing.context.reasoner.model.ContextSource;
 import edu.fing.context.reasoner.model.Rule;
+import edu.fing.context.reasoner.model.RuleVersion;
 import edu.fing.context.reasoner.model.Service;
 import edu.fing.context.reasoner.model.ServiceSituationPriority;
 import edu.fing.context.reasoner.model.Situation;
@@ -110,8 +111,7 @@ public class ConfigurationServiceBean implements ConfigurationService {
 
 		Session session = this.sessionFactory.openSession();
 
-		@SuppressWarnings("unchecked")
-		List<Situation> situations = this.findSituations(session);
+		Set<Situation> situations = this.findSituations(session);
 
 		session.close();
 
@@ -121,13 +121,14 @@ public class ConfigurationServiceBean implements ConfigurationService {
 			situationTO.setName(situation.getName());
 			situationTO.setDescription(situation.getDescription());
 			situationTO.setDuration(situation.getDuration());
+			situationTO.setOutputContextData(this.mapContextData(situation.getOutputContextData()));
 			list.add(situationTO);
 		}
 		return list;
 	}
 
 	@Override
-	public List<SituationTO> getSituationsWithPriority(String serviceName) {
+	public List<SituationTO> getSituationsWithPriority(Long serviceId) {
 
 		Session session = this.sessionFactory.openSession();
 
@@ -136,10 +137,10 @@ public class ConfigurationServiceBean implements ConfigurationService {
 		queryString.append("FROM Service service ");
 		queryString.append("JOIN service.priorities priority ");
 		queryString.append("JOIN FETCH priority.situation situation ");
-		queryString.append("where service.name = :serviceName ");
+		queryString.append("where service.id = :serviceId ");
 
 		Query query = session.createQuery(queryString.toString());
-		query.setParameter("serviceName", serviceName);
+		query.setParameter("serviceId", serviceId);
 
 		@SuppressWarnings("unchecked")
 		List<ServiceSituationPriority> priorities = query.list();
@@ -157,25 +158,75 @@ public class ConfigurationServiceBean implements ConfigurationService {
 		return list;
 	}
 
-	private List<Situation> findSituations(Session session) {
+	private Set<Situation> findSituations(Session session) {
 		StringBuilder queryString = new StringBuilder();
 		queryString.append("SELECT s ");
 		queryString.append("FROM Situation s ");
+		queryString.append("JOIN FETCH s.outputContextData ");
 
 		Query query = session.createQuery(queryString.toString());
 
 		@SuppressWarnings("unchecked")
 		List<Situation> situations = query.list();
-		return situations;
+		return new HashSet<Situation>(situations);
 	}
 
 	@Override
-	public List<SituationTO> getSituationsWithContexData() {
+	public List<SituationTO> getSituationsWithContextData() {
+		List<SituationTO> situationTOs = new ArrayList<SituationTO>();
 		Session session = this.sessionFactory.openSession();
-		List<Situation> situations = this.findSituations(session);
+
+		StringBuilder queryString = new StringBuilder();
+		queryString.append("SELECT situation ");
+		queryString.append("FROM Situation situation ");
+		queryString.append("JOIN FETCH situation.inputContextData ");
+		queryString.append("JOIN FETCH situation.outputContextData ");
+		queryString.append("JOIN FETCH situation.contextSources ");
+		queryString.append("JOIN FETCH situation.rule ");
+
+		Query query = session.createQuery(queryString.toString());
+
+		@SuppressWarnings("unchecked")
+		List<Situation> situationsList = query.list();
+		Set<Situation> situations = new HashSet<Situation>(situationsList);
+
+		for (Situation situation : situations) {
+			SituationTO situationTO = new SituationTO();
+			situationTO.setName(situation.getName());
+
+			// Context Sources
+			List<ContextSourceTO> contextSourcesTO = new ArrayList<ContextSourceTO>();
+			for (ContextSource contextSource : situation.getContextSources()) {
+				ContextSourceTO contextSourceTO = new ContextSourceTO();
+				contextSourceTO.setEventName(contextSource.getName());
+				List<ContextDatum> contextData = this.findContexDataByContextSourceAndSituation(contextSource, situation, session);
+				contextSourceTO.setContextData(this.mapContextData(new HashSet<ContextDatum>(contextData)));
+				contextSourcesTO.add(contextSourceTO);
+			}
+			situationTO.setContextSources(contextSourcesTO);
+
+			// Output contextData
+			situationTO.setOutputContextData(this.mapContextData(situation.getOutputContextData()));
+
+			// Rule
+			StringBuilder queryStringRule = new StringBuilder();
+			queryStringRule.append("SELECT ruleVersion ");
+			queryStringRule.append("FROM ActiveConfiguration ac ");
+			queryStringRule.append("JOIN ac.lastVersion lastVersion ");
+			queryStringRule.append("JOIN lastVersion.ruleVersions ruleVersion ");
+			queryStringRule.append("JOIN ruleVersion.rule rule ");
+			queryStringRule.append("WHERE rule.id = :ruleId ");
+
+			Query queryRule = session.createQuery(queryStringRule.toString());
+			queryRule.setParameter("ruleId", situation.getRule().getId());
+			RuleVersion ruleVersion = (RuleVersion) queryRule.uniqueResult();
+
+			situationTO.setRule(ruleVersion.getDrl());
+			situationTOs.add(situationTO);
+		}
 
 		session.close();
-		return null;
+		return situationTOs;
 	}
 
 	@Override
@@ -189,14 +240,9 @@ public class ConfigurationServiceBean implements ConfigurationService {
 
 		@SuppressWarnings("unchecked")
 		List<ContextDatum> contextData = query.list();
-
 		session.close();
 
-		List<String> list = new ArrayList<String>();
-		for (ContextDatum contextDatum : contextData) {
-			list.add(contextDatum.getName());
-		}
-		return list;
+		return this.mapContextData(new HashSet<ContextDatum>(contextData));
 	}
 
 	@Override
@@ -214,23 +260,15 @@ public class ConfigurationServiceBean implements ConfigurationService {
 
 		@SuppressWarnings("unchecked")
 		List<ContextDatum> contextData = query.list();
-
 		session.close();
 
-		List<String> list = new ArrayList<String>();
-		if (contextData != null) {
-			for (ContextDatum contextDatum : contextData) {
-				list.add(contextDatum.getName());
-			}
-		}
-		return list;
+		return this.mapContextData(new HashSet<ContextDatum>(contextData));
 	}
 
 	@Override
 	public List<String> getContextSources() {
 		Session session = this.sessionFactory.openSession();
 
-		@SuppressWarnings("unchecked")
 		List<ContextSource> contextSources = this.findContextSources(session);
 
 		List<String> list = new ArrayList<String>();
@@ -255,7 +293,7 @@ public class ConfigurationServiceBean implements ConfigurationService {
 	@Override
 	public List<ContextSourceTO> getContextSourcesWithContextData() {
 		Session session = this.sessionFactory.openSession();
-		@SuppressWarnings("unchecked")
+
 		List<ContextSource> contextSources = findContextSources(session);
 
 		List<ContextSourceTO> res = new ArrayList<ContextSourceTO>();
@@ -280,13 +318,10 @@ public class ConfigurationServiceBean implements ConfigurationService {
 
 			Query query = session.createQuery(queryString.toString());
 			query.setParameter("sourceName", contexSource.getName());
+
 			@SuppressWarnings("unchecked")
 			List<ContextDatum> contextData = query.list();
-			List<String> list = new ArrayList<String>();
-			for (ContextDatum contextDatum : contextData) {
-				list.add(contextDatum.getName());
-			}
-			contextSourceTO.setContextData(list);
+			contextSourceTO.setContextData(this.mapContextData(new HashSet<ContextDatum>(contextData)));
 			res.add(contextSourceTO);
 		}
 		session.close();
@@ -308,9 +343,10 @@ public class ConfigurationServiceBean implements ConfigurationService {
 			situation.setDuration(situationTO.getDuration());
 
 			Set<ContextDatum> inputContextData = new HashSet<ContextDatum>();
-			List<ContextSourceTO> contextSources = situationTO.getContextSources();
-			for (ContextSourceTO contextSourceTO : contextSources) {
+			Set<ContextSource> contextSources = new HashSet<ContextSource>();
+			for (ContextSourceTO contextSourceTO : situationTO.getContextSources()) {
 				ContextSource contextSource = this.findContextSourceByName(contextSourceTO.getEventName(), session);
+				contextSources.add(contextSource);
 				List<String> contextData = contextSourceTO.getContextData();
 				for (String contextDatumName : contextData) {
 					ContextDatum contextDatum = this.findContextDatumByName(contextDatumName, session);
@@ -318,6 +354,7 @@ public class ConfigurationServiceBean implements ConfigurationService {
 					inputContextData.add(contextDatum);
 				}
 			}
+			situation.setContextSources(contextSources);
 			situation.setInputContextData(inputContextData);
 
 			Set<ContextDatum> outputContextData = new HashSet<ContextDatum>();
@@ -586,6 +623,23 @@ public class ConfigurationServiceBean implements ConfigurationService {
 		return (Rule) query.uniqueResult();
 	}
 
+	@SuppressWarnings("unchecked")
+	private List<ContextDatum> findContexDataByContextSourceAndSituation(ContextSource contextSource, Situation situation, Session session) {
+
+		List<String> inputContextData = this.mapContextData(situation.getInputContextData());
+
+		StringBuilder queryString = new StringBuilder();
+		queryString.append("SELECT contextDatum ");
+		queryString.append("FROM ContextSource contextSource ");
+		queryString.append("JOIN contextSource.contextData contextDatum ");
+		queryString.append("WHERE contextDatum.name IN (:inputContextData) ");
+		queryString.append("and contextSource.id = :contextSourceId");
+		Query query = session.createQuery(queryString.toString());
+		query.setParameterList("inputContextData", inputContextData);
+		query.setParameter("contextSourceId", contextSource.getId());
+		return query.list();
+	}
+
 	private ServiceTO mapService(Service service) {
 		ServiceTO serviceTO = new ServiceTO();
 		serviceTO.setId(service.getId());
@@ -616,6 +670,16 @@ public class ConfigurationServiceBean implements ConfigurationService {
 		}
 
 		return adaptationTO;
+	}
+
+	private List<String> mapContextData(Set<ContextDatum> contextData) {
+		List<String> list = new ArrayList<String>();
+		if (contextData != null) {
+			for (ContextDatum contextDatum : contextData) {
+				list.add(contextDatum.getName());
+			}
+		}
+		return list;
 	}
 
 }
