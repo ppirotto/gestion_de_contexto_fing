@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
 import org.kie.api.KieBase;
@@ -41,29 +40,29 @@ public class DroolsManagerServiceBean implements DroolsManagerService {
 
 	@Override
 	public void intializeDroolsContext() {
-		if (kServices==null){
+		if (kServices == null) {
 			try {
 				System.out.println("Initializing drools context...");
 				// inicializo fields para Drools
 				kServices = KieServices.Factory.get();
 				streamModeConfig = kServices.newKieBaseConfiguration();
 				streamModeConfig.setOption(EventProcessingOption.STREAM);
-	
+
 				// Obtengo version activa para deployar
 				VersionTO activeVersion = cepService.getActiveVersion();
-	
+
 				// Creo el releaseId
 				ReleaseId releaseId1 = kServices.newReleaseId("edu.fing.cep.engine", "drools-context-rules", activeVersion.getVersionNumber());
-	
+
 				List<String> stringRules = getStringRules(activeVersion);
-	
+
 				KieModule kieModule = DroolsUtils.createAndDeployJar(kServices, releaseId1, stringRules);
-	
+
 				startSession(kieModule);
 				System.out.println("Drools context successfully initialized!!!");
 			} catch (Throwable t) {
 				System.out.println("ERROR initializing drools context..");
-				kServices=null;
+				kServices = null;
 				t.printStackTrace();
 			}
 		} else {
@@ -83,6 +82,7 @@ public class DroolsManagerServiceBean implements DroolsManagerService {
 			}
 			kSession = kBase.newKieSession();
 			new Thread(new Runnable() {
+				@Override
 				public void run() {
 					kSession.fireUntilHalt();
 				}
@@ -152,7 +152,7 @@ public class DroolsManagerServiceBean implements DroolsManagerService {
 		if (e == null) {
 			res.setSuccess(true);
 		} else {
-			res.setErrorCode("COMPILING_ERROR");
+			res.setErrorCode("Error de compilación");
 			res.setSuccess(false);
 			res.setErrorMessage(e.getMessage());
 		}

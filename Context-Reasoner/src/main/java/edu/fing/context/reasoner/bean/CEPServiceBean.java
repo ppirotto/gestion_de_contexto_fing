@@ -40,9 +40,9 @@ public class CEPServiceBean implements CEPService {
 
 		if (savedVersion != null) {
 			res = new FrontResponseTO();
-			res.setErrorCode("VERSION_ALREADY_EXISTS");
+			res.setErrorCode("Error");
 			res.setSuccess(false);
-			res.setErrorMessage("The version with versionNumber = '" + versionTO.getVersionNumber() + "' already exists.");
+			res.setErrorMessage("La versión '" + versionTO.getVersionNumber() + "' ya existe.");
 			return res;
 		} else {
 			res = (FrontResponseTO) RemoteInvokerUtils.invoke(RemoteInvokerUtils.DroolsManagerService, "testDroolsCompiling", versionTO,

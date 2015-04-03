@@ -370,7 +370,7 @@ public class ConfigurationServiceBean implements ConfigurationService {
 			boolean result = HibernateUtils.commit(session);
 			response.setSuccess(result);
 			if (!result) {
-				response.setErrorCode("ERROR_PROCESING_DATA");
+				response.setErrorCode("Error");
 				response.setErrorMessage("Error procesando los datos");
 			}
 		}
@@ -440,7 +440,7 @@ public class ConfigurationServiceBean implements ConfigurationService {
 		boolean exists = this.existsPriotityForServiceAndSituation(itineraryTO.getSituationName(), itineraryTO.getService().getId(), session);
 		if (exists) {
 			frontResponseTO.setSuccess(false);
-			frontResponseTO.setErrorCode("ITINERARY_ALREADY_EXISTS");
+			frontResponseTO.setErrorCode("Error");
 			frontResponseTO.setErrorMessage("El itinerario ya existe para la situación y servicio seleccionados");
 			return frontResponseTO;
 		}
@@ -469,7 +469,7 @@ public class ConfigurationServiceBean implements ConfigurationService {
 		boolean success = HibernateUtils.commit(session);
 		frontResponseTO.setSuccess(success);
 		if (!success) {
-			frontResponseTO.setErrorCode("ERROR_PROCESING_DATA");
+			frontResponseTO.setErrorCode("Error");
 			frontResponseTO.setErrorMessage("Error procesando los datos");
 		}
 		return frontResponseTO;
