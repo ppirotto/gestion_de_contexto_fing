@@ -67,7 +67,7 @@
 											requiredMessage="Seleccione fuente de conexto"
 											style="width:200px"
 											value="#{situationBean.selectedContextSource}" effect="fade">
-											<f:selectItem itemLabel="Seleccione..." itemValue="" />
+											<f:selectItem itemLabel="Selección..." itemValue="" />
 											<f:selectItems value="#{situationBean.contextSources}"
 												var="contSource" itemLabel="#{contSource}"
 												itemValue="#{contSource}" />
@@ -169,13 +169,13 @@
 							<p:commandButton value="Guardar Regla" />
 
 							<p:commandButton value="Crear Situación"
-								update="display2 display"
+								update="display2 display" 
 								onclick="PF('asignarNumeroVersionDlg').show()"
 								styleClass="ui-priority-primary" />
 						</f:facet>
 					</p:panel>
 
-					<p:dialog header="Resultado" modal="false" showEffect="bounce"
+					<p:dialog header="Resultado" showEffect="bounce"  modal="true" appendTo="@(body)"
 						widgetVar="messageResponseDialog" resizable="false">
 						<p:panelGrid columns="2" id="display2" style="margin-bottom:10px"
 							cellpadding="5">

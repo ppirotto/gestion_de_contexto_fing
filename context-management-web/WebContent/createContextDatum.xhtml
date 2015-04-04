@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	template="/masterTemplate.xhtml"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<ui:define name="title">Crear Situación</ui:define>
+	<ui:define name="body">
+
+		<h:form>
+			<p:dataTable var="datum" emptyMessage="No hay data definida"
+				style="width:300px" rows="10" paginator="true"
+				paginatorPosition="bottom"
+				value="#{contextDatumBean.contextualDatumList}">
+
+				<p:column headerText="Datos contextuales">
+					<h:outputText value="#{datum}" />
+				</p:column>
+
+			</p:dataTable>
+			<br/>
+			<p:panel style="width:60%;">
+				<f:facet name="header">Crear dato contextual</f:facet>
+
+
+				<p:panelGrid columns="2">
+					<p:outputLabel>
+						<b>Nombre</b>
+					</p:outputLabel>
+					<p:inputText size="25" value="#{contextDatumBean.atributeName}"
+						required="true" label="Nombre de la situación" />
+				</p:panelGrid>
+
+	<p:commandButton value="Agregar"
+				action="#{contextDatumBean.crearDatum()}"
+				styleClass="ui-priority-primary " style="margin-top:-30px;float:right;" />
+
+			</p:panel>
+
+
+
+			<p:growl autoUpdate="true" sticky="true" showDetail="true"
+				escape="true" showSummary="true" />
+		
+		</h:form>
+	</ui:define>
+	<ui:define name="menuIzq">
+		<ui:include src="/menu.xhtml" />
+	</ui:define>
+</ui:composition>

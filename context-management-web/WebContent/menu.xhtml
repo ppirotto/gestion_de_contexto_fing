@@ -10,47 +10,48 @@
 
 			<p:submenu label="Home" autoDisplay="true">
 				<p:menuitem value="Configuración"
-					url="/faces/verConfiguracion.xhtml" icon="ui-icon-zoomin" />
+					url="/faces/viewConfiguration.xhtml" icon="ui-icon-zoomin" />
 				<p:menuitem value="Itinerarios activos"
-					url="/faces/verItinerariosActivos.xhtml" icon="ui-icon-zoomin" />
-					<p:menuitem value="Información Contextual"
+					url="/faces/viewActiveItineraries.xhtml" icon="ui-icon-zoomin" />
+				<p:menuitem value="Información Contextual"
 					url="/faces/contextualInformation.xhtml" icon="ui-icon-zoomin" />
-					
-					
+
+
+			</p:submenu>
+			
+				<p:submenu label="Fuentes de Contexto">
+				<p:menuitem value="Crear" onclick=""
+					url="/faces/createContextSource.xhtml" icon="ui-icon-plusthick" />
+				<p:menuitem value="Datos contextuales" onclick=""
+					url="/faces/createContextDatum.xhtml" icon="ui-icon-pencil" />
+				<p:menuitem value="Ver" onclick="" url="/faces/viewConextData.xhtml"
+					icon="ui-icon-zoomin" />
+
 			</p:submenu>
 
 			<p:submenu label="Servicio" autoDisplay="true">
-				<p:menuitem value="Crear" url="/faces/crearServicio.xhtml"
+				<p:menuitem value="Crear" url="/faces/createService.xhtml"
 					icon="ui-icon-plusthick" />
 			</p:submenu>
 
 			<p:submenu label="Situación" autoDisplay="true">
-				<p:menuitem value="Crear" url="/faces/crearSituacion.xhtml"
+				<p:menuitem value="Crear" url="/faces/createSituation.xhtml"
 					icon="ui-icon-plusthick" />
 			</p:submenu>
 
 			<p:submenu label="Itinerario" autoDisplay="true">
-				<p:menuitem value="Crear" url="/faces/crearItinerario.xhtml"
+				<p:menuitem value="Crear" url="/faces/createItinerary.xhtml"
 					icon="ui-icon-plusthick" />
-				
-			</p:submenu>
-
-			<p:submenu label="CEP" autoDisplay="true">
-				<p:menuitem value="Manejo de reglas"
-					url="/faces/cepmanagement.xhtml" icon="ui-icon-plusthick" />
 
 			</p:submenu>
 
-			<p:submenu label="Fuentes de Contexto">
-				<p:menuitem value="Crear" onclick=""
-					url="/faces/crearFuenteContexto.xhtml" icon="ui-icon-plusthick" />
-				<p:menuitem value="Definir dato contextual" onclick=""
-					url="/faces/crearContextDatum.xhtml" icon="ui-icon-pencil" />
-				<p:menuitem value="Ver" onclick=""
-					url="/faces/viewConextData.xhtml" icon="ui-icon-zoomin" />	
-					
-			</p:submenu>
+		
+			
+			<p:submenu label="Manejo de Reglas" autoDisplay="true">
+				<p:menuitem value="Configuración" url="/faces/cepmanagement.xhtml"
+					icon="ui-icon-pencil" />
 
+			</p:submenu>
 
 		</p:menu>
 	</h:form>

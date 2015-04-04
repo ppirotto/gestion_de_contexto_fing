@@ -12,40 +12,43 @@
 	<ui:define name="body">
 		<p:messages autoUpdate="true" id="messagesGeneral" />
 
-		<h:form enctype="multipart/form-data">
+		<h:form>
 			<p:panel>
 				<f:facet name="header">Crear Servicio</f:facet>
-				<h:panelGrid columns="2">
-					<p:panelGrid columns="2">
-						<p:outputLabel>
-							<b>Nombre del servicio</b>
-						</p:outputLabel>
-						<p:inputText size="50" value="#{serviceBean.serviceName}"
-							required="true" requiredMessage="Ingrese nombre" />
-						<p:outputLabel>
-							<b>Url del servicio</b>
-						</p:outputLabel>
-						<p:inputText size="50" value="#{serviceBean.serviceURL}"
-							required="true" requiredMessage="Ingrese URL" />
 
-
-						<p:outputLabel>
-							<b>Servicio virtual</b>
-						</p:outputLabel>
-						<h:panelGrid columns="2">
-							<p:outputLabel value="http://#{serviceBean.ip}:8080/" />
-							<p:inputText size="30" value="#{serviceBean.virtualService}"
-								required="true" requiredMessage="Ingrese Servicio Virtual" />
-						</h:panelGrid>
-
-					</p:panelGrid>
-					<p:commandButton value="Cargar Operaciones del Servicio"
-						actionListener="#{serviceBean.getOperationsForService()}"
-						update="operaciones" style="margin-top: 5px;" />
-				</h:panelGrid>
-
-				<p:spacer height="20" />
 				<p:panelGrid columns="2">
+					<p:outputLabel>
+						<b>Nombre del servicio</b>
+					</p:outputLabel>
+					<p:inputText size="50" value="#{serviceBean.serviceName}"
+						required="true" requiredMessage="Ingrese nombre">
+						<p:ajax event="keyup" update="labelInfo" />
+					</p:inputText>
+					<p:outputLabel>
+						<b>Url del servicio</b>
+					</p:outputLabel>
+					<p:inputText size="50" value="#{serviceBean.serviceURL}"
+						required="true" requiredMessage="Ingrese URL" />
+
+				</p:panelGrid>
+
+
+
+				<p:panel header="Servicio virtual publicado" style="width:625px;">
+					<p:outputLabel id="labelInfo"
+						value="http://#{serviceBean.ip}:8080/virtual-service/#{serviceBean.serviceName}" />
+
+
+				</p:panel>
+				<p:spacer height="20" />
+				<p:panelGrid columns="2"  style="width:630px;">
+
+					<f:facet name="footer">
+						<p:commandButton value="Cargar Operaciones del Servicio" 
+							actionListener="#{serviceBean.getOperationsForService()}"
+							update="operaciones" style="float:right;" />
+					</f:facet>
+
 					<p:outputLabel>
 						<b>Seleccione operación</b>
 					</p:outputLabel>
@@ -60,12 +63,15 @@
 						</p:column>
 
 					</p:dataTable>
+
+
 				</p:panelGrid>
 				<p:growl autoUpdate="true" sticky="true" showDetail="true"
 					escape="true" showSummary="true" />
 				<p:commandButton value="Crear Servicio"
 					action="#{serviceBean.crearServicio()}"
-					styleClass="ui-priority-primary " style="margin-top: 10px;" />
+					styleClass="ui-priority-primary "
+					style="margin-top: -40px;float:right;" />
 			</p:panel>
 		</h:form>
 	</ui:define>

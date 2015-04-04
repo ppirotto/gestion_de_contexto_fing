@@ -40,26 +40,20 @@
 					</p:column>
 				</p:treeTable>
 
-				<p:dialog id="dialog" header="Detalle" showEffect="fade"
-					position="center" appendTo="@(body)" dynamic="true"
-					style="width:50% important!;height:80% important!" widgetVar="documentDialog"
-					modal="true" resizable="false" draggable="false">
-					<p:outputPanel id="documentPanel" style="overflow:auto;">
-						<p:panelGrid columns="2" columnClasses="label,value"
-							rendered="#{not empty viewSituationContextDataBean.selectedNode}">
-							<h:outputLabel for="name" value="Nombre: " />
-							<h:outputText id="name"
-								value="#{viewSituationContextDataBean.selectedNode.name}"
-								style="font-weight:bold" />
-
-							<h:outputLabel for="data" value="Regla: " />
-							<pe:codeMirror id="codeMirror" mode="javascript" readOnly="true" 
+				<p:dialog id="dialog" header="Regla: #{viewSituationContextDataBean.selectedNode.name}" showEffect="fade"
+					position="center" modal="true" appendTo="@(body)" dynamic="true"
+					style="width:50% important!;height:600px important!" widgetVar="documentDialog"
+					 resizable="false" draggable="false">
+					<p:panel id="documentPanel" style="overflow:auto;height:500px;">
+						
+				
+							<pe:codeMirror id="codeMirror" mode="javascript" readOnly="true"  style="overflow:auto;"
 								smartIndent="true" theme="eclipse"
 								value="#{viewSituationContextDataBean.selectedNode.data}"
 								matchBrackets="true" lineWrapping="true" />
 		
-						</p:panelGrid>
-					</p:outputPanel>
+						
+					</p:panel> 
 				</p:dialog>
 			</h:form>
 		</p:panel>

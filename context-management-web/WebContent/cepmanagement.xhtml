@@ -7,15 +7,15 @@
 	xmlns:pe="http://primefaces.org/ui/extensions"
 	template="/masterTemplate.xhtml">
 
-	<ui:define name="title">Manejo de CEP</ui:define>
+	<ui:define name="title">Manejo de Reglas</ui:define>
 	<ui:define name="body">
 
 		<p:layout >
-			<p:layoutUnit position="north" size="90" style="border: 0px;" header="Manego de Reglas">
+			<p:layoutUnit position="north" size="90" style="border: 0px;" header="Manejo de Reglas">
 				<h:form>
 					<p:panelGrid columns="8" cellpadding="3" style="border: 0px;">
 						<p:outputLabel for="versionSelectOneMenu">
-							<b>Seleccionar version base:</b>
+							<b>Seleccionar versión base:</b>
 						</p:outputLabel>
 						<p:selectOneMenu id="versionSelectOneMenu"
 							value="#{rulesBean.selectedVersion}" converter="versionConverter"
@@ -27,12 +27,12 @@
 								itemLabel="#{version.versionNumber}" itemValue="#{version}" />
 						</p:selectOneMenu>
 						<p:outputLabel>
-							<b>Version activa: </b>
+							<b>Versión activa: </b>
 						</p:outputLabel>
 						<p:outputLabel value="#{rulesBean.activeVersion}" />
 
 						<p:outputLabel for="deploySelectOneMenu">
-							<b>Deployar version:</b>
+							<b>Deployar versión:</b>
 						</p:outputLabel>
 						<p:selectOneMenu id="deploySelectOneMenu"
 							value="#{rulesBean.versionToDeploy}" converter="versionConverter"
@@ -42,7 +42,7 @@
 						</p:selectOneMenu>
 						<p:commandButton value="Deploy!!!" icon="ui-icon-check"
 							actionListener="#{rulesBean.deployVersion}"
-							title="Deployar version seleccionada" />
+							title="Deployar versión seleccionada" />
 					</p:panelGrid>
 				</h:form>
 			</p:layoutUnit>
@@ -70,7 +70,7 @@
 						lineNumbers="true" matchBrackets="true" lineWrapping="true" />
 
 
-					<p:dialog header="Creando nueva version..." modal="false"
+					<p:dialog header="Creando nueva versión..." modal="false"
 						showEffect="bounce" widgetVar="dlg" resizable="false">
 						<p:panelGrid columns="2" id="display" style="margin-bottom:10px"
 							cellpadding="5">
@@ -79,7 +79,7 @@
 							<h:inputText value="#{rulesBean.newVersionName}" />
 							
 						</p:panelGrid>
-						<p:commandButton value="Crear nueva version!"
+						<p:commandButton value="Crear nueva versión!"
 								icon="ui-icon-check" actionListener="#{rulesBean.createVersion}" update="display2" style="float:right"
 								oncomplete="PF('dlg').hide();PF('messageResponseDialog').show()" title="Crear nueva version!" />
 					</p:dialog>
@@ -111,9 +111,9 @@
 						title="Guarda regla en la sesion" icon="ui-icon-check"
 						actionListener="#{rulesBean.saveRuleAction}" />
 					
-					<p:commandButton value="Crear nueva version!" update="display"
+					<p:commandButton value="Crear nueva versión!" update="display"
 						oncomplete="PF('dlg').show()" icon="ui-icon-check"
-						title="Crea una nueva version con las reglas nuevas versiones de las reglas" />
+						title="Crea una nueva versión con las reglas nuevas versiones de las reglas" />
 				</p:layoutUnit>
 			</h:form>
 		</p:layout>
