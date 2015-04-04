@@ -10,8 +10,9 @@
 	<ui:define name="title">Manejo de Reglas</ui:define>
 	<ui:define name="body">
 
-		<p:layout >
-			<p:layoutUnit position="north" size="90" style="border: 0px;" header="Manejo de Reglas">
+		<p:layout>
+			<p:layoutUnit position="north" size="90" style="border: 0px;"
+				header="Manejo de Reglas">
 				<h:form>
 					<p:panelGrid columns="8" cellpadding="3" style="border: 0px;">
 						<p:outputLabel for="versionSelectOneMenu">
@@ -40,7 +41,8 @@
 							<f:selectItems value="#{rulesBean.res.versions}" var="version2"
 								itemLabel="#{version2.versionNumber}" itemValue="#{version2}" />
 						</p:selectOneMenu>
-						<p:commandButton value="Deploy!!!" icon="ui-icon-check"
+						<p:commandButton value="Deploy" icon="ui-icon-check"
+							styleClass="ui-priority-primary"
 							actionListener="#{rulesBean.deployVersion}"
 							title="Deployar versión seleccionada" />
 					</p:panelGrid>
@@ -74,14 +76,16 @@
 						showEffect="bounce" widgetVar="dlg" resizable="false">
 						<p:panelGrid columns="2" id="display" style="margin-bottom:10px"
 							cellpadding="5">
-							<h:outputText
-								value="Ingrese número de versión:" />
+							<h:outputText value="Ingrese número de versión:" />
 							<h:inputText value="#{rulesBean.newVersionName}" />
-							
+
 						</p:panelGrid>
-						<p:commandButton value="Crear nueva versión!"
-								icon="ui-icon-check" actionListener="#{rulesBean.createVersion}" update="display2" style="float:right"
-								oncomplete="PF('dlg').hide();PF('messageResponseDialog').show()" title="Crear nueva version!" />
+						<p:commandButton value="Crear"
+							styleClass="ui-priority-primary" icon="ui-icon-check"
+							actionListener="#{rulesBean.createVersion}" update="display2"
+							style="float:right"
+							oncomplete="PF('dlg').hide();PF('messageResponseDialog').show()"
+							title="Crear nueva version!" />
 					</p:dialog>
 
 					<p:dialog header="Resultado" modal="false" showEffect="bounce"
@@ -90,14 +94,18 @@
 							cellpadding="5">
 							<h:outputText value="Resultado:" />
 							<h:outputText value="#{rulesBean.responseMsg.errorCode}" />
-							<h:outputText value="Mensaje:" rendered="#{!rulesBean.responseMsg.success}" />
-							<p:inputTextarea readonly="true" value="#{rulesBean.responseMsg.errorMessage}" cols="80"  rendered="#{!rulesBean.responseMsg.success}"  />
-							
-							
+							<h:outputText value="Mensaje:"
+								rendered="#{!rulesBean.responseMsg.success}" />
+							<p:inputTextarea readonly="true"
+								value="#{rulesBean.responseMsg.errorMessage}" cols="80"
+								rendered="#{!rulesBean.responseMsg.success}" />
+
+
 						</p:panelGrid>
-						
-						<p:commandButton value="OK" icon="ui-icon-check" style="float:right"
-								oncomplete="PF('messageResponseDialog').hide()" title="OK" />
+
+						<p:commandButton value="OK" icon="ui-icon-check"
+							style="float:right"
+							oncomplete="PF('messageResponseDialog').hide()" title="OK" />
 					</p:dialog>
 
 					<p:columnGroup>
@@ -107,13 +115,16 @@
 
 				</p:layoutUnit>
 				<p:layoutUnit position="south" size="100">
-					<p:commandButton value="Guardar regla" style="float:bottom"
-						title="Guarda regla en la sesion" icon="ui-icon-check"
-						actionListener="#{rulesBean.saveRuleAction}" />
-					
-					<p:commandButton value="Crear nueva versión!" update="display"
-						oncomplete="PF('dlg').show()" icon="ui-icon-check"
+
+					<p:commandButton value="Crear nueva versión" update="display"
+						styleClass="ui-priority-primary" oncomplete="PF('dlg').show()"
+						style="float:right"
 						title="Crea una nueva versión con las reglas nuevas versiones de las reglas" />
+					<p:commandButton value="Guardar regla" style="float:right"
+						title="Guarda regla en la sesion" styleClass="ui-priority-primary"
+						actionListener="#{rulesBean.saveRuleAction}" />
+
+
 				</p:layoutUnit>
 			</h:form>
 		</p:layout>
