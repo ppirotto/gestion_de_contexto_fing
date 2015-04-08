@@ -16,14 +16,20 @@
 			var select=$("#form\\:selectModeType_input").val();
 			
 			if (select=="POLLING"){
+				$("#form\\:urlPub").hide();
 				$("#form\\:cron").show();
 				$("#form\\:polling").show();
 			}
-			else{
+			else if (select=="LISTENER"){
+				$("#form\\:urlPub").show();
 				$("#form\\:cron").hide();
 				$("#form\\:polling").hide();
 				
-			}
+			}else{
+				$("#form\\:urlPub").hide();
+				$("#form\\:cron").hide();
+				$("#form\\:polling").hide();
+				}
 		}
 	
 </script>
@@ -37,7 +43,9 @@
 						<b>Nombre del evento</b>
 					</p:outputLabel>
 					<p:inputText size="38" value="#{contextSourceBean.eventName}"
-						required="true" label="Nombre" requiredMessage="Ingrese nombre" />
+						required="true" label="Nombre" requiredMessage="Ingrese nombre" >
+						<p:ajax event="keyup" update="labelInfo" />
+						</p:inputText>
 
 					<p:outputLabel>
 						<b>Modo de entrada</b>
@@ -67,6 +75,12 @@
 					</p:selectOneMenu>
 
 				</p:panelGrid>
+				
+				<p:panel header="Url publicación" style="width:525px;display:none;" id="urlPub">
+					<p:outputLabel id="labelInfo"
+						value="http://#{contextSourceBean.ip}:8080/context-source/#{contextSourceBean.eventName}" />
+							</p:panel>
+				
 				<p:panelGrid id="polling" columns="2" style="display:none;">
 					<h:panelGrid style="width:138px;">
 						<p:outputLabel>

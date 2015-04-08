@@ -1,6 +1,8 @@
 package edu.fing.context.management.bean;
 
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -22,6 +24,7 @@ public class ContextSourceBean {
 	private String receiveMode;
 	private String url;
 	private String cron;
+	private String ip;
 
 	@ManagedProperty(value = "#{sessionBean}")
 	private SessionBean session;
@@ -62,6 +65,23 @@ public class ContextSourceBean {
 		return this.eventName;
 	}
 
+	public String getIp() {
+
+		if (this.ip == null) {
+			InetAddress IP = null;
+			try {
+				IP = InetAddress.getLocalHost();
+			} catch (UnknownHostException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			this.ip = IP.getHostAddress();
+		}
+		return this.ip;
+
+	}
+
 	public String getModeConverter() {
 		return this.modeConverter;
 	}
@@ -84,6 +104,10 @@ public class ContextSourceBean {
 
 	public void setEventName(String eventName) {
 		this.eventName = eventName;
+	}
+
+	public void setIp(String ip) {
+		this.ip = ip;
 	}
 
 	public void setModeConverter(String modeConverter) {
