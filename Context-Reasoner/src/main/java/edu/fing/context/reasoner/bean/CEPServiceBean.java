@@ -42,7 +42,7 @@ public class CEPServiceBean implements CEPService {
 			res = new FrontResponseTO();
 			res.setErrorCode("Error");
 			res.setSuccess(false);
-			res.setErrorMessage("La versión '" + versionTO.getVersionNumber() + "' ya existe.");
+			res.setErrorMessage("La versiÃ³n '" + versionTO.getVersionNumber() + "' ya existe.");
 			return res;
 		} else {
 			res = (FrontResponseTO) RemoteInvokerUtils.invoke(RemoteInvokerUtils.DroolsManagerService, "testDroolsCompiling", versionTO,

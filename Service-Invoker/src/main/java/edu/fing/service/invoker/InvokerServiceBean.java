@@ -16,6 +16,7 @@ import javax.xml.transform.stream.StreamSource;
 
 import org.switchyard.component.bean.Service;
 
+import edu.fing.commons.dto.AdaptationTO;
 import edu.fing.commons.dto.AdaptedMessage;
 
 @Service(InvokerService.class)
@@ -25,16 +26,20 @@ public class InvokerServiceBean implements InvokerService {
 
 	public AdaptedMessage submit(AdaptedMessage adaptedMessage) {
 
+		String message = adaptedMessage.getMessage();
+		String service = adaptedMessage.getService();
+		
 		if (adaptedMessage.getAdaptations() != null) {
+			AdaptationTO adaptationTO = adaptedMessage.getAdaptations().get(0);
+			service = (String) adaptationTO.getData();
 			adaptedMessage.getAdaptations().remove(0);
 		}
-		String message = adaptedMessage.getMessage();
+		
 		String response = null;
-
 		String request = this.addEnvelopeToRequest(message);
 
 		if (message != null) {
-			response = this.postSoapMessage(request, adaptedMessage.getService());
+			response = this.postSoapMessage(request, service);
 			response = this.removeEnvelopeFromResponse(response);
 		}
 

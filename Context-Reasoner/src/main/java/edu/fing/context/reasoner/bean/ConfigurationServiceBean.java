@@ -441,7 +441,7 @@ public class ConfigurationServiceBean implements ConfigurationService {
 		if (exists) {
 			frontResponseTO.setSuccess(false);
 			frontResponseTO.setErrorCode("Error");
-			frontResponseTO.setErrorMessage("El itinerario ya existe para la situación y servicio seleccionados");
+			frontResponseTO.setErrorMessage("El itinerario ya existe para la situaciÃ³n y servicio seleccionados");
 			return frontResponseTO;
 		}
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ASCII"?>
 <routes xmlns="http://camel.apache.org/schema/spring">
     <route>
-        <from uri="switchyard://InvokeService"/>
+        <from uri="switchyard://VirtualService"/>
         <setHeader headerName="serviceUrl">
             <simple>http://localhost:8080/attractions-provider/AttractionsService</simple>
         </setHeader>

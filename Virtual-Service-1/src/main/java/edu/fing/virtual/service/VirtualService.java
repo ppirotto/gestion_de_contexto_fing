@@ -1,6 +1,6 @@
 package edu.fing.virtual.service;
 
-public interface AdaptationGatewayService {
+public interface VirtualService {
 
 	String submit(String message);
 }

@@ -1,26 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <sy:switchyard xmlns:camel="urn:switchyard-component-camel:config:1.1" xmlns:http="urn:switchyard-component-http:config:1.1" xmlns:sca="http://docs.oasis-open.org/ns/opencsa/sca/200912" xmlns:soap="urn:switchyard-component-soap:config:1.1" xmlns:sy="urn:switchyard-config:switchyard:1.1" name="Virtual-Service-1" targetNamespace="urn:edu.fing.context.management:virtual-service-1:1.0">
   <sca:composite name="Virtual-Service-1" targetNamespace="urn:edu.fing.context.management:virtual-service-1:1.0">
-    <sca:component name="InvokeAG">
+    <sca:component name="SetService">
       <camel:implementation.camel>
-        <camel:xml path="invokeAG.xml"/>
+        <camel:xml path="setService.xml"/>
       </camel:implementation.camel>
-      <sca:service name="InvokeService">
-        <sy:interface.esb inputType="java.lang.String" outputType="java.lang.String"/>
-      </sca:service>
       <sca:reference name="AdaptationGatewayService">
         <sca:interface.java interface="edu.fing.virtual.service.AdaptationGatewayService"/>
       </sca:reference>
+      <sca:service name="VirtualService">
+        <sca:interface.java interface="edu.fing.virtual.service.VirtualService"/>
+      </sca:service>
     </sca:component>
-    <sca:service name="VirtualService" promote="InvokeAG/InvokeService">
-      <sy:interface.esb inputType="java.lang.String" outputType="java.lang.String"/>
+    <sca:service name="VirtualService" promote="SetService/VirtualService">
+      <sca:interface.java interface="edu.fing.virtual.service.VirtualService"/>
       <soap:binding.soap name="soap1">
-        <soap:contextMapper soapHeadersType="XML" class="edu.fing.virtual.service.SoapHeadersContextMapper"/>
+        <soap:contextMapper class="edu.fing.virtual.service.SoapHeadersContextMapper" soapHeadersType="XML"/>
         <soap:wsdl>http://localhost:8080/attractions-provider/AttractionsService?wsdl</soap:wsdl>
         <soap:contextPath>Virtual-Service-1</soap:contextPath>
       </soap:binding.soap>
     </sca:service>
-    <sca:reference name="AdaptationGatewayService" multiplicity="0..1" promote="InvokeAG/AdaptationGatewayService">
+    <sca:reference name="AdaptationGatewayService" multiplicity="0..1" promote="SetService/AdaptationGatewayService">
       <sca:interface.java interface="edu.fing.virtual.service.AdaptationGatewayService"/>
       <sca:binding.sca sy:targetNamespace="urn:edu.fing.context.management:adaptation-gateway:1.0" sy:target="AdaptationService" name="sca1123"/>
     </sca:reference>
