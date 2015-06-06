@@ -47,7 +47,7 @@
 						<p:ajax event="keyup" update="labelInfo" />
 						</p:inputText>
 
-					<p:outputLabel>
+					<p:outputLabel >
 						<b>Modo de entrada</b>
 					</p:outputLabel>
 					<p:selectOneMenu id="selectModeType" onchange="hidePanels()"
@@ -61,14 +61,14 @@
 
 					</p:selectOneMenu>
 
-					<p:outputLabel for="selectEventType">
-						<b>Tipo del evento</b>
+					<p:outputLabel >
+						<b>Formato del evento</b>
 					</p:outputLabel>
 					<p:selectOneMenu id="selectEventType" autoupdate="true"
-						required="true" requiredMessage="Seleccione un tipo de evento"
+						required="true" requiredMessage="Seleccione un formato de evento"
 						styleClass="span4" value="#{contextSourceBean.modeConverter}"
 						effect="fade">
-						<f:selectItem itemLabel="Seleccione un tipo" itemValue="" />
+						<f:selectItem itemLabel="Seleccione un formato" itemValue="" />
 						<f:selectItem itemLabel="JSON" itemValue="JSON" />
 						<f:selectItem itemLabel="XML" itemValue="XML" />
 
@@ -82,7 +82,7 @@
 							</p:panel>
 				
 				<p:panelGrid id="polling" columns="2" style="display:none;">
-					<h:panelGrid style="width:138px;">
+					<h:panelGrid style="width:141px;">
 						<p:outputLabel>
 							<b> URL de poleo </b>
 						</p:outputLabel>
@@ -91,7 +91,7 @@
 						requiredMessage="Ingrese una URL" label="URL" />
 				</p:panelGrid>
 				<p:panelGrid id="cron" columns="2" style="display:none;">
-					<h:panelGrid style="width:138px;">
+					<h:panelGrid style="width:141px;">
 						<p:outputLabel>
 							<b> Cron </b>
 						</p:outputLabel>
