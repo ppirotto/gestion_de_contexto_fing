@@ -17,7 +17,7 @@
 		<h:form id="form">
 			<p:dataTable var="itineray" 
 				value="#{viewItineraryBean.itineraryList}" style="width:90%;"
-				widgetVar="itinerayTable" emptyMessage="No hay itinerario"
+				widgetVar="itinerayTable" emptyMessage="No hay itinerarios activos"
 				filteredValue="#{viewItineraryBean.filteredItineraryList}">
 
 				<f:facet name="header">
@@ -28,27 +28,27 @@
 							placeholder="Escriba aquí" />
 					</p:outputPanel>
 				</f:facet>
-				<p:column filterBy="#{itineray.priority}" headerText="Prioridad" width="90"
-					filterMatchMode="contains">
+				<p:column filterBy="#{itineray.priority}" headerText="Prioridad" width="95px" 
+					filterMatchMode="contains" filterStyle="height: 12px"> 
 					<h:outputText value="#{itineray.priority}" />
 				</p:column>
 				<p:column filterBy="#{itineray.service}/#{itineray.operation}" headerText="Servicio/Operación" width="250"
-					filterMatchMode="contains">
+					filterMatchMode="contains" filterStyle="height: 12px">
 					<h:outputText value="#{itineray.service}/#{itineray.operation}" />
 				</p:column>
 
 				<p:column filterBy="#{itineray.situation}" headerText="Situación"
-					filterMatchMode="contains">
+					filterMatchMode="contains" filterStyle="height: 12px">
 					<h:outputText value="#{itineray.situation}" />
 				</p:column>
 
 				<p:column filterBy="#{itineray.user}" headerText="Usuario"
-					filterMatchMode="contains">
+					filterMatchMode="contains" filterStyle="height: 12px">
 					<h:outputText value="#{itineray.user}" />
 				</p:column>
 
 				<p:column filterBy="#{itineray.adaptationNames}"
-					headerText="Adaptaciones" filterMatchMode="contains">
+					headerText="Adaptaciones" filterMatchMode="contains" filterStyle="height: 12px">
 					<h:outputText value="#{itineray.adaptationNames}" />
 				</p:column>
 				<p:column style="width:32px;text-align: center">
@@ -64,16 +64,16 @@
 			</p:dataTable>
 
 			<p:dialog header="Directiva de adaptación" widgetVar="itDialog"
-				modal="true" width="50%" showEffect="fade" appendTo="@(body)"
+				modal="true" width="60%" showEffect="fade" appendTo="@(body)"
 				hideEffect="fade" resizable="false">
-				<p:outputPanel id="itDetail" style="text-align:center;">
+				<p:outputPanel id="itDetail" style="text-align:left;">
 					<p:panelGrid columns="1"
 						rendered="#{not empty viewItineraryBean.selectedItinerary}">
 
-						<p:dataTable var="adapt"
+						<p:dataTable var="adapt" style="overflow:auto"
 							value="#{viewItineraryBean.selectedItinerary.adaptationDirective}">
-							<p:column headerText="Nombre" width="60">
-								<h:outputText value="#{adapt.name}" />
+							<p:column headerText="Nombre" width="70">
+								<h:outputText value="#{adapt.adaptationType.toString()}" />
 							</p:column>
 
 							<p:column headerText="Data">

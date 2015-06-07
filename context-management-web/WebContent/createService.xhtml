@@ -34,14 +34,14 @@
 
 
 
-				<p:panel header="Servicio virtual publicado" style="width:625px;">
+				<p:panel header="Servicio virtual publicado" style="width:655px;">
 					<p:outputLabel id="labelInfo"
 						value="http://#{serviceBean.ip}:8080/virtual-service/#{serviceBean.serviceName}" />
 
 
 				</p:panel>
 				<p:spacer height="20" />
-				<p:panelGrid columns="2"  style="width:630px;">
+				<p:panelGrid columns="2"  style="width:660px;">
 
 					<f:facet name="footer">
 						<p:commandButton value="Cargar Operaciones del Servicio" 
@@ -52,7 +52,7 @@
 					<p:outputLabel>
 						<b>Seleccione operación</b>
 					</p:outputLabel>
-					<p:dataTable id="operaciones" var="op" style="width:380px"
+					<p:dataTable id="operaciones" var="op" style="width:450px"
 						value="#{serviceBean.operations}"
 						selection="#{serviceBean.selectedOperations}" rowKey="#{op}">
 
@@ -71,7 +71,7 @@
 				<p:commandButton value="Crear Servicio"
 					action="#{serviceBean.crearServicio()}"
 					styleClass="ui-priority-primary "
-					style="margin-top: -40px;float:right;" />
+					style="margin-top: -35px;float:right;" />
 			</p:panel>
 		</h:form>
 	</ui:define>

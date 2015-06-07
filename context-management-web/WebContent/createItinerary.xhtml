@@ -83,11 +83,11 @@
 
 
 						</p:panelGrid>
-					<p:spacer width="100px"></p:spacer>
+					<p:spacer width="70px"></p:spacer>
 
 						<p:dataTable var="situation" id="tableSituation" style="width:300px;" paginator="true" rows="5"  paginatorPosition="bottom"
 							value="#{itineraryBean.situationsForService}" > 
-							<f:facet name="header">Situaciones para el servicio</f:facet>
+							<f:facet name="header">Situaciones definidas para el servicio</f:facet>
 							<p:column headerText="Prioridad" width="20px" style="width:70px;">
 								<h:outputText value="#{situation.priority}" />
 							</p:column>
@@ -105,9 +105,9 @@
 							<b>Paso del itinerario</b>
 						</h:outputLabel>
 						<p:selectOneMenu id="selectAdaptType" autoupdate="true"
-							styleClass="span4" value="#{itineraryBean.adaptSelec}"
+							styleClass="span3" value="#{itineraryBean.adaptSelec}"
 							effect="fade">adaptationTypeList
-						<f:selectItem itemLabel="Seleccione adaptaciones" itemValue="" />
+						<f:selectItem itemLabel="Seleccione adaptación" itemValue="" />
 							<f:selectItems value="#{itineraryBean.adaptationTypeList}"
 								var="adapType" itemLabel="#{adapType}" itemValue="#{adapType}" />
 
@@ -116,8 +116,8 @@
 						<p:outputLabel>
 							<b>Descripción</b>
 						</p:outputLabel>
-						<p:inputTextarea id="descrpition" scrollHeight="2" cols="40"
-							rows="2" value="#{itineraryBean.description}" label="Descripción">
+						<p:inputTextarea id="descrpition" scrollHeight="1" cols="26"
+							rows="1" value="#{itineraryBean.description}" label="Descripción">
 						</p:inputTextarea>
 						<f:facet name="footer">
 
@@ -241,8 +241,7 @@
 								</p:selectOneMenu>
 							</p:panelGrid>
 
-							<!-- 							<p:remoteCommand name="updateTableDiv" update="render" /> -->
-							<p:panelGrid columns="2" id="hideXpath">
+								<p:panelGrid columns="2" id="hideXpath">
 								<p:outputLabel>
 									<b>XPath</b>
 								</p:outputLabel>
@@ -257,7 +256,7 @@
 								<p:selectOneMenu id="selectAdaptType" autoupdate="true"
 									styleClass="span4" value="#{itineraryBean.adaptSelecCBR}"
 									effect="fade">
-									<f:selectItem itemLabel="Seleccione adaptaciones" itemValue="" />
+									<f:selectItem itemLabel="Seleccione adaptación" itemValue="" />
 									<f:selectItems value="#{itineraryBean.adaptationTypeListCBR}"
 										var="adapType" itemLabel="#{adapType}" itemValue="#{adapType}" />
 

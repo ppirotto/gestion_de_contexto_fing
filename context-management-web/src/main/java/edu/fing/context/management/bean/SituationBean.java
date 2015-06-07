@@ -56,8 +56,7 @@ public class SituationBean {
 	private FrontResponseTO responseMsg;
 
 	public String crearSituacion() {
-		System.out.println("Crear situaci�n");
-
+		
 		SituationTO sit = new SituationTO();
 		sit.setName(this.name);
 		sit.setDescription(this.getDescription());
@@ -72,15 +71,10 @@ public class SituationBean {
 		for (RuleTO ruleTO : this.getVersionRules().getRules()) {
 			if (ruleTO.getName().equals(this.name)) {
 				contextDataValidation = RuleTemplateService.validate(ruleTO.getDrl(), ruleTempTO);
-				for (String string : contextDataValidation) {
-					System.out.println(string);
-				}
 			}
 		}
 		if (contextDataValidation != null && !contextDataValidation.isEmpty()) {
-			// TODO[matiasca]
-			// MOSTRAR MENSAJE DE ERROR!!! REVISAR TODOS LOS CASOS QUE
-			// TOQUETEEEEE
+
 			FrontResponseTO response = new FrontResponseTO();
 			response.setSuccess(false);
 			response.setErrorCode("Error");
@@ -91,8 +85,11 @@ public class SituationBean {
 		} else {
 			FrontResponseTO response = (FrontResponseTO) RemoteInvokerUtils.invoke(RemoteInvokerUtils.ContextReasonerConfigService, "createSituation", sit, ServiceIp.ContextReasonerIp);
 			this.setResponseMsg(response);
+			if (response.isSuccess()){
+				return "inicio";
+			}
 		}
-		return "inicio";
+		return null;
 	}
 
 	public void createDatumForInput() {
