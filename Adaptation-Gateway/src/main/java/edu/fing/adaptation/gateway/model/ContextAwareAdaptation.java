@@ -4,10 +4,14 @@ import java.util.Comparator;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.Table;
+
+import edu.fing.commons.constant.AdaptationType;
 
 @Entity
 @Table(name = "CONTEXT_AWARE_ADAPTATION")
@@ -22,8 +26,7 @@ public class ContextAwareAdaptation {
 	};
 
 	private Long id;
-	private String name;
-	private String uri;
+	private AdaptationType adaptationType;
 	private int order;
 	private String data;
 
@@ -34,14 +37,10 @@ public class ContextAwareAdaptation {
 		return id;
 	}
 
-	@Column(name = "NAME")
-	public String getName() {
-		return name;
-	}
-
-	@Column(name = "URI")
-	public String getUri() {
-		return uri;
+	@Enumerated(EnumType.STRING)
+	@Column(name = "ADAPTATION_TYPE")
+	public AdaptationType getAdaptationType() {
+		return adaptationType;
 	}
 
 	@Column(name = "ADAPTATION_ORDER")
@@ -59,12 +58,8 @@ public class ContextAwareAdaptation {
 		this.id = id;
 	}
 
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public void setUri(String uri) {
-		this.uri = uri;
+	public void setAdaptationType(AdaptationType adaptationType) {
+		this.adaptationType = adaptationType;
 	}
 
 	public void setData(String data) {

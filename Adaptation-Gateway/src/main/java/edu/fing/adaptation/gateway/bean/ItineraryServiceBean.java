@@ -55,8 +55,7 @@ public class ItineraryServiceBean implements ItineraryService {
 			session.beginTransaction();
 			for (AdaptationTO adaptationTO : data.getAdaptations()) {
 				ContextAwareAdaptation contextAwareAdaptation = new ContextAwareAdaptation();
-				contextAwareAdaptation.setUri(adaptationTO.getAdaptationType().getUri());
-				contextAwareAdaptation.setName(adaptationTO.getAdaptationType().toString());
+				contextAwareAdaptation.setAdaptationType(adaptationTO.getAdaptationType());
 				contextAwareAdaptation.setOrder(adaptationTO.getOrder());
 				contextAwareAdaptation.setData((String) adaptationTO.getData());
 				itinerary.getAdaptationDirective().add(contextAwareAdaptation);
@@ -120,8 +119,9 @@ public class ItineraryServiceBean implements ItineraryService {
 				Collections.sort(adaptationDirectiveList, ContextAwareAdaptation.ORDER_COMPARATOR);
 				List<String> adaptationNames = new ArrayList<String>();
 				for (ContextAwareAdaptation contextAwareAdaptation : adaptationDirectiveList) {
-					adaptationNames.add(contextAwareAdaptation.getName());
+					adaptationNames.add(contextAwareAdaptation.getAdaptationType().toString());
 					AdaptationTO adaptationTO = new AdaptationTO();
+					adaptationTO.setAdaptationType(contextAwareAdaptation.getAdaptationType());
 					adaptationTO.setOrder(contextAwareAdaptation.getOrder());
 					adaptationTO.setData(contextAwareAdaptation.getData());
 					adaptationDirective.add(adaptationTO);

@@ -63,7 +63,7 @@ public class AdaptationServiceBean implements AdaptationService {
 				Collections.sort(adaptationDirectiveList, ContextAwareAdaptation.ORDER_COMPARATOR);
 				List<String> adaptationUris = new ArrayList<String>();
 				for (ContextAwareAdaptation contextAwareAdaptation : adaptationDirectiveList) {
-					adaptationUris.add(contextAwareAdaptation.getUri());
+					adaptationUris.add(contextAwareAdaptation.getAdaptationType().getUri());
 					AdaptationTO adapt = new AdaptationTO();
 					adapt.setData(contextAwareAdaptation.getData());
 					adaptations.add(adapt);
