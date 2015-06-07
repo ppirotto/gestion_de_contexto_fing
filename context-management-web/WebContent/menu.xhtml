@@ -6,7 +6,7 @@
 	xmlns:p="http://primefaces.org/ui">
 
 	<h:form>
-		<p:menu autoDisplay="true" multiple="false" style="width:auto; ">
+		<p:menu autoDisplay="true" multiple="false" style="width:auto; border:0px;padding:0px">
 
 			<p:submenu label="Home" autoDisplay="true">
 				<p:menuitem value="Configuración"
@@ -15,8 +15,6 @@
 					url="/faces/viewActiveItineraries.xhtml" icon="ui-icon-zoomin" />
 				<p:menuitem value="Información Contextual"
 					url="/faces/contextualInformation.xhtml" icon="ui-icon-zoomin" />
-
-
 			</p:submenu>
 
 			<p:submenu label="Fuentes de Contexto">
@@ -25,7 +23,6 @@
 
 				<p:menuitem value="Ver" onclick="" url="/faces/viewConextData.xhtml"
 					icon="ui-icon-zoomin" />
-
 			</p:submenu>
 
 			<p:submenu label="Servicio" autoDisplay="true">
@@ -46,12 +43,9 @@
 
 			</p:submenu>
 
-
-
 			<p:submenu label="Manejo de Reglas" autoDisplay="true">
 				<p:menuitem value="Configuración" url="/faces/ruleManagement.xhtml"
 					icon="ui-icon-pencil" />
-
 			</p:submenu>
 
 		</p:menu>

@@ -10,10 +10,10 @@
 		<!-- 			<f:facet name="header">Crear Situación</f:facet> -->
 
 		<h:form id="form">
-			<p:growl autoUpdate="true" life="6000" showDetail="true" escape="true" showSummary="true" />
+			<p:growl autoUpdate="true" life="6000" showDetail="true" escape="true" showSummary="true"  />
 			<p:wizard flowListener="#{situationBean.onFlowProcess}" backLabel="Atrás" nextLabel="Siguiente">
 				<p:tab id="situationTab" title="Situación">
-					<p:panel>
+					<p:panel style="padding:0px">
 						<f:facet name="header">Crear Situación</f:facet>
 						<p:panelGrid columns="2">
 							<p:outputLabel>
@@ -43,7 +43,7 @@
 					</p:panel>
 				</p:tab>
 				<p:tab id="contextTab" title="Contexto">
-					<p:panel>
+					<p:panel style="padding:0px">
 						<f:facet name="header">Definición de datos contextuales para la sitaución</f:facet>
 						<h:panelGrid columns="3" columnClasses="topAligned">
 							<p:panel>
@@ -118,7 +118,7 @@
 
 
 				<p:tab id="ruleTab" title="Regla">
-					<p:panel header="Definir la regla: #{situationBean.name}">
+					<p:panel header="Definir la regla: #{situationBean.name}" style="padding:0px">
 						<h:panelGrid columns="2" columnClasses="topAligned">
 							<h:panelGrid columns="1">
 

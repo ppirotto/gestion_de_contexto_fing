@@ -34,7 +34,7 @@
 
 		<h:form id="itineraryForm" enctype="multipart/form-data">
 
-			<p:panel>
+			<p:panel style="padding:0px">
 				<f:facet name="header">Crear Itinerario</f:facet>
 				<h:panelGrid columns="1">
 
@@ -119,12 +119,12 @@
 						<p:inputTextarea id="descrpition" scrollHeight="1" cols="26"
 							rows="1" value="#{itineraryBean.description}" label="Descripción">
 						</p:inputTextarea>
-						<f:facet name="footer">
+						<br/>
 
 							<p:commandButton value="Agregar" id="ajax" style="float:right;"
 								update="adaptationTable"
 								actionListener="#{itineraryBean.agregarAdaptacion}" />
-						</f:facet>
+						
 
 
 					</p:panelGrid>
