@@ -1,7 +1,6 @@
 package edu.fing.cep.engine.bean;
 
 import edu.fing.commons.dto.ContextualDataTO;
-import edu.fing.commons.front.dto.AvailableRulesTO;
 import edu.fing.commons.front.dto.FrontResponseTO;
 import edu.fing.commons.front.dto.VersionTO;
 

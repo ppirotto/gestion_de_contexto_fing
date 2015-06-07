@@ -152,7 +152,7 @@ public class DroolsManagerServiceBean implements DroolsManagerService {
 		if (e == null) {
 			res.setSuccess(true);
 		} else {
-			res.setErrorCode("Error de compilación");
+			res.setErrorCode("Error de compilaciÃ³n");
 			res.setSuccess(false);
 			res.setErrorMessage(e.getMessage());
 		}
