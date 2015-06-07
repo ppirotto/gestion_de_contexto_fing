@@ -26,11 +26,13 @@ import freemarker.template.TemplateException;
 
 public class RuleTemplateService {
 
-	private static String applyTemplate(RuleTemplateTO ruleTemplateTO, String strFile) {
+	private static String applyTemplate(RuleTemplateTO ruleTemplateTO,
+			String strFile) {
 
 		StringWriter outStr = new StringWriter();
 		try {
-			Template template = new Template("xslt", new StringReader(strFile), new Configuration());
+			Template template = new Template("xslt", new StringReader(strFile),
+					new Configuration());
 
 			Map<String, Object> input = new HashMap<String, Object>();
 			input.put("rule", ruleTemplateTO);
@@ -50,7 +52,8 @@ public class RuleTemplateService {
 		return outStr.toString();
 	}
 
-	public static void copy(InputStream input, OutputStream output) throws IOException {
+	public static void copy(InputStream input, OutputStream output)
+			throws IOException {
 		int bytesRead;
 		byte[] buffer = new byte[4 * 1024 * 1024];
 		while ((bytesRead = input.read(buffer)) != -1) {
@@ -58,7 +61,8 @@ public class RuleTemplateService {
 		}
 	}
 
-	public static String createRuleTemplate(RuleTemplateTO ruleTempTO) throws IOException {
+	public static String createRuleTemplate(RuleTemplateTO ruleTempTO)
+			throws IOException {
 		String rule = "";
 		String sourcePath = ResourceAccessHelper.getWebInfPath();
 		sourcePath += "/GenericRuleTemplate.ftl";
@@ -85,11 +89,17 @@ public class RuleTemplateService {
 																		// como
 																		// inputs
 			for (String input : elem.getContextData()) {// para cada input
-				String camelInput = input.substring(0, 1).toUpperCase() + input.substring(1);
-				Pattern p = Pattern.compile("inputEvent\\.set" + camelInput + "\\(.*info\\.get\\(.*(\\.get\\(\")*" + input + "\"\\)");
+				String camelInput = input.substring(0, 1).toUpperCase()
+						+ input.substring(1);
+				Pattern p = Pattern.compile("inputEvent\\.set" + camelInput
+						+ "\\(.*info\\.get\\(.*(\\.get\\(\")*" + input
+						+ "\"\\)");
 				Matcher m = p.matcher(drl);
 				if (!m.find()) {
-					res.add("WARNING: Input '" + input + "' para la fuente de contexto '" + elem.getEventName() + "' parece no estar utiliz·ndose.");
+					res.add("WARNING: Input '" + input
+							+ "' para la fuente de contexto '"
+							+ elem.getEventName()
+							+ "' parece no estar utiliz√°ndose.");
 				}
 			}
 		}
@@ -97,10 +107,12 @@ public class RuleTemplateService {
 		// verifico outputs
 		for (String output : ruleTempTO.getSelectedOutputData()) {// para cada
 																	// input
-			Pattern p = Pattern.compile("contextualData\\.put\\(\"" + output + "\",.*\\);");
+			Pattern p = Pattern.compile("contextualData\\.put\\(\"" + output
+					+ "\",.*\\);");
 			Matcher m = p.matcher(drl);
 			if (!m.find()) {
-				res.add("WARNING: Output '" + output + "' parece no estar utiliz·ndose.");
+				res.add("WARNING: Output '" + output
+						+ "' parece no estar utiliz√°ndose.");
 			}
 		}
 		return res;

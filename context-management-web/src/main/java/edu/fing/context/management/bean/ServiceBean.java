@@ -1,7 +1,6 @@
 package edu.fing.context.management.bean;
 
 import java.io.IOException;
-import java.io.Serializable;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -9,7 +8,6 @@ import java.util.List;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
@@ -26,20 +24,16 @@ import edu.fing.context.management.util.RemoteInvokerUtils.ServiceIp;
 
 @ManagedBean
 @ViewScoped
-public class ServiceBean implements Serializable {
+public class ServiceBean {
 
 	private String description;
 	private String ip;
 	private List<String> operations = new ArrayList<String>();
 	private List<String> selectedOperations;
-
 	private List<String> situationList;
 	private String serviceName;
 	private String serviceURL;
 	private String virtualService;
-
-	@ManagedProperty(value = "#{sessionBean}")
-	private SessionBean session;
 
 	public String crearServicio() {
 		System.out.println("Crear servicio");
@@ -64,11 +58,14 @@ public class ServiceBean implements Serializable {
 		serv.setDescription(this.description);
 
 		// //////////////////
-		Boolean result = (Boolean) RemoteInvokerUtils.invoke(RemoteInvokerUtils.ContextReasonerConfigService, "createService", serv, ServiceIp.ContextReasonerIp);
+		Boolean result = (Boolean) RemoteInvokerUtils.invoke(
+				RemoteInvokerUtils.ContextReasonerConfigService,
+				"createService", serv, ServiceIp.ContextReasonerIp);
 		if (result) {
 
 			String mensaje = "Servicio creado con exito";
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(null, mensaje));
+			FacesContext.getCurrentInstance().addMessage(null,
+					new FacesMessage(null, mensaje));
 
 		}
 		return "inicio";
@@ -137,10 +134,6 @@ public class ServiceBean implements Serializable {
 		return this.serviceURL;
 	}
 
-	public SessionBean getSession() {
-		return this.session;
-	}
-
 	public List<String> getSituationList() {
 		return this.situationList;
 	}
@@ -171,10 +164,6 @@ public class ServiceBean implements Serializable {
 
 	public void setServiceURL(String serviceURL) {
 		this.serviceURL = serviceURL;
-	}
-
-	public void setSession(SessionBean session) {
-		this.session = session;
 	}
 
 	public void setSituationList(List<String> situationList) {

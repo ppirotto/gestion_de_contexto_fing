@@ -1,7 +1,6 @@
 package edu.fing.context.management.bean;
 
 import java.io.IOException;
-import java.io.Serializable;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -12,7 +11,6 @@ import java.util.regex.Pattern;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.xml.transform.Templates;
@@ -40,31 +38,31 @@ import freemarker.template.Template;
 
 @ManagedBean
 @ViewScoped
-public class ItineraryBean implements Serializable {
+public class ItineraryBean {
 
-	private static final long serialVersionUID = 1L;
-	private static final TransformerFactory tFactory = TransformerFactory.newInstance();
-
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
-
+	private static final TransformerFactory tFactory = TransformerFactory
+			.newInstance();
 	private List<SituationTO> situationsForService = new ArrayList<SituationTO>();
 	private AdaptationType adaptSelec;
-
 	private AdaptationType adaptSelecCBR;
 	private String description;
 	private int priority;
 
 	@SuppressWarnings("unchecked")
-	private List<ServiceTO> serviceList = (List<ServiceTO>) RemoteInvokerUtils.invoke(RemoteInvokerUtils.ContextReasonerConfigService, "getServices", null, ServiceIp.ContextReasonerIp);
+	private List<ServiceTO> serviceList = (List<ServiceTO>) RemoteInvokerUtils
+			.invoke(RemoteInvokerUtils.ContextReasonerConfigService,
+					"getServices", null, ServiceIp.ContextReasonerIp);
 
 	private AdaptationType[] adaptationTypeList = AdaptationType.values();
 
-	private AdaptationType[] adaptationTypeListCBR = { AdaptationType.DELAY, AdaptationType.ENRICH, AdaptationType.EXTERNAL_TRANSFORMATION, AdaptationType.FILTER, AdaptationType.SERVICE_INVOCATION };
+	private AdaptationType[] adaptationTypeListCBR = { AdaptationType.DELAY,
+			AdaptationType.ENRICH, AdaptationType.EXTERNAL_TRANSFORMATION,
+			AdaptationType.FILTER, AdaptationType.SERVICE_INVOCATION };
 
 	@SuppressWarnings("unchecked")
-	private List<SituationTO> situationList = (List<SituationTO>) RemoteInvokerUtils.invoke(RemoteInvokerUtils.ContextReasonerConfigService, "getSituations", null, ServiceIp.ContextReasonerIp);
+	private List<SituationTO> situationList = (List<SituationTO>) RemoteInvokerUtils
+			.invoke(RemoteInvokerUtils.ContextReasonerConfigService,
+					"getSituations", null, ServiceIp.ContextReasonerIp);
 
 	private Long selectedService;
 
@@ -74,8 +72,6 @@ public class ItineraryBean implements Serializable {
 	private List<AdaptationDto> adaptations = new LinkedList<AdaptationDto>();
 
 	private AdaptationDto selectedAdaptation;
-	@ManagedProperty(value = "#{sessionBean}")
-	private SessionBean session;
 
 	private TreeNode root;
 	private TreeNode selectedNode;
@@ -89,15 +85,20 @@ public class ItineraryBean implements Serializable {
 
 	public void agregarAdaptacion() {
 		if (this.adaptSelec != null) {
-			AdaptationDto a = new AdaptationDto(this.adaptations.size() + 1, this.adaptSelec, this.description);
+			AdaptationDto a = new AdaptationDto(this.adaptations.size() + 1,
+					this.adaptSelec, this.description);
 
 			this.adaptations.add(a);
 
 			this.description = null;
 
 		} else {
-			String mensaje = "Seleccione un tipo de adaptaciÛn";
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, mensaje, null));
+			String mensaje = "Seleccione un tipo de adaptaci√≥n";
+			FacesContext.getCurrentInstance()
+					.addMessage(
+							null,
+							new FacesMessage(FacesMessage.SEVERITY_ERROR,
+									mensaje, null));
 		}
 	}
 
@@ -125,7 +126,8 @@ public class ItineraryBean implements Serializable {
 			a.setAdaptationType(adapt.getAdaptationType());
 			a.setOrder(adapt.getId());
 			a.setDescription(adapt.getDescription());
-			if (adapt.getAdaptationType().equals(AdaptationType.CONTENT_BASED_ROUTER)) {
+			if (adapt.getAdaptationType().equals(
+					AdaptationType.CONTENT_BASED_ROUTER)) {
 				a.setData(adapt.getTree());
 			} else {
 				a.setData(adapt.getData());
@@ -139,14 +141,17 @@ public class ItineraryBean implements Serializable {
 		ServiceTO serviceTO = new ServiceTO();
 		serviceTO.setId(this.selectedService);
 		itinerary.setService(serviceTO);
-		Boolean result = (Boolean) RemoteInvokerUtils.invoke(RemoteInvokerUtils.ContextReasonerConfigService, "createItinerary", itinerary, ServiceIp.ContextReasonerIp);
+		Boolean result = (Boolean) RemoteInvokerUtils.invoke(
+				RemoteInvokerUtils.ContextReasonerConfigService,
+				"createItinerary", itinerary, ServiceIp.ContextReasonerIp);
 		if (result) {
 
-			String mensaje = "Itinerario creado con Èxito";
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(mensaje, null));
+			String mensaje = "Itinerario creado con √©xito";
+			FacesContext.getCurrentInstance().addMessage(null,
+					new FacesMessage(mensaje, null));
 		}
 		// servicio de context reasoner
-		// (url servicio, situaciÛn, lista de adaptaciones con su data)
+		// (url servicio, situaci√≥n, lista de adaptaciones con su data)
 		return "inicio";
 	}
 
@@ -154,7 +159,8 @@ public class ItineraryBean implements Serializable {
 
 		SituationTO selectedStuationTO = getSelectedSituationTO();
 
-		if (validationMessages(this.data, this.adaptSelecCBR, selectedStuationTO)) {
+		if (validationMessages(this.data, this.adaptSelecCBR,
+				selectedStuationTO)) {
 
 			AdaptationTreeNodeTO treeNode = new AdaptationTreeNodeTO();
 
@@ -170,17 +176,21 @@ public class ItineraryBean implements Serializable {
 
 			if (bool) {
 				treeNode.setNodeType("Si");
-				AdaptationTreeNodeTO selATN = (AdaptationTreeNodeTO) this.selectedNode.getData();
+				AdaptationTreeNodeTO selATN = (AdaptationTreeNodeTO) this.selectedNode
+						.getData();
 				selATN.setLeftNode(treeNode);
 
-				TreeNode node00 = new DefaultTreeNode(treeNode, this.selectedNode);
+				TreeNode node00 = new DefaultTreeNode(treeNode,
+						this.selectedNode);
 				node00.setExpanded(true);
 
 			} else {
 				treeNode.setNodeType("No");
-				AdaptationTreeNodeTO selATN = (AdaptationTreeNodeTO) this.selectedNode.getData();
+				AdaptationTreeNodeTO selATN = (AdaptationTreeNodeTO) this.selectedNode
+						.getData();
 				selATN.setRightNode(treeNode);
-				TreeNode node00 = new DefaultTreeNode(treeNode, this.selectedNode);
+				TreeNode node00 = new DefaultTreeNode(treeNode,
+						this.selectedNode);
 				node00.setExpanded(true);
 			}
 		}
@@ -277,10 +287,6 @@ public class ItineraryBean implements Serializable {
 		return this.serviceList;
 	}
 
-	public SessionBean getSession() {
-		return this.session;
-	}
-
 	public List<SituationTO> getSituationList() {
 
 		return this.situationList;
@@ -302,8 +308,10 @@ public class ItineraryBean implements Serializable {
 
 		if (this.selectedService != null) {
 
-			this.situationsForService = (List<SituationTO>) RemoteInvokerUtils.invoke(RemoteInvokerUtils.ContextReasonerConfigService, "getSituationsWithPriority", this.selectedService,
-					ServiceIp.ContextReasonerIp);
+			this.situationsForService = (List<SituationTO>) RemoteInvokerUtils
+					.invoke(RemoteInvokerUtils.ContextReasonerConfigService,
+							"getSituationsWithPriority", this.selectedService,
+							ServiceIp.ContextReasonerIp);
 		}
 
 	}
@@ -377,10 +385,6 @@ public class ItineraryBean implements Serializable {
 		this.serviceList = serviceList;
 	}
 
-	public void setSession(SessionBean session) {
-		this.session = session;
-	}
-
 	public void setSituationList(List<SituationTO> situationList) {
 		this.situationList = situationList;
 	}
@@ -414,7 +418,8 @@ public class ItineraryBean implements Serializable {
 		SituationTO selectedStuationTO = getSelectedSituationTO();
 
 		String data = this.selectedAdaptation.getData();
-		validationMessages(data, this.selectedAdaptation.getAdaptationType(), selectedStuationTO);
+		validationMessages(data, this.selectedAdaptation.getAdaptationType(),
+				selectedStuationTO);
 
 	}
 
@@ -426,14 +431,16 @@ public class ItineraryBean implements Serializable {
 		while (m.find()) {
 			String group = m.group(index);
 			if (!outputData.contains(group)) {
-				res.add("ERROR: \\'" + group + "\\' no es un dato contextual v·lido.");
+				res.add("ERROR: \\'" + group
+						+ "\\' no es un dato contextual v√°lido.");
 			}
 		}
 
 		try {
-			Template template = new Template("xslt", new StringReader(ftl), new Configuration());
+			Template template = new Template("xslt", new StringReader(ftl),
+					new Configuration());
 		} catch (IOException e) {
-			res.add("ERROR: El template no es v·lido");
+			res.add("ERROR: El template no es v√°lido");
 
 			return res;
 		}
@@ -444,30 +451,37 @@ public class ItineraryBean implements Serializable {
 	public List<String> validateXSLT(String xslt) {
 		List<String> res = new ArrayList();
 		try {
-			Templates templates = tFactory.newTemplates(new StreamSource(new StringReader(xslt)));
+			Templates templates = tFactory.newTemplates(new StreamSource(
+					new StringReader(xslt)));
 		} catch (TransformerConfigurationException e) {
-			res.add("El XSLT no es v·lido");
+			res.add("El XSLT no es v√°lido");
 			return res;
 		}
 		return res;
 	}
 
-	private boolean validationMessages(String data, AdaptationType adapType, SituationTO selectedStuationTO) {
+	private boolean validationMessages(String data, AdaptationType adapType,
+			SituationTO selectedStuationTO) {
 
 		List<String> validate = new ArrayList<String>();
 		RequestContext currentInstance = RequestContext.getCurrentInstance();
 		switch (adapType) {
 		case ENRICH:
 
-			validate = validateFTL(data, selectedStuationTO.getOutputContextData());
+			validate = validateFTL(data,
+					selectedStuationTO.getOutputContextData());
 			validate.addAll(validateXSLT(data));
 			if (validate.isEmpty()) {
-				FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "OK", "El template es v·lido");
+				FacesMessage message = new FacesMessage(
+						FacesMessage.SEVERITY_INFO, "OK",
+						"El template es v√°lido");
 				currentInstance.showMessageInDialog(message);
 
 			} else {
 				String mensajeconcatenado = StringUtils.join(validate, "<br/>");
-				FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error en el FTL", mensajeconcatenado);
+				FacesMessage message = new FacesMessage(
+						FacesMessage.SEVERITY_ERROR, "Error en el FTL",
+						mensajeconcatenado);
 				currentInstance.showMessageInDialog(message);
 				return false;
 			}
@@ -479,10 +493,13 @@ public class ItineraryBean implements Serializable {
 			Pattern p = Pattern.compile("\\d+");
 			Matcher m = p.matcher(data);
 			if (m.find()) {
-				FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "OK", "N˙mero v·lido");
+				FacesMessage message = new FacesMessage(
+						FacesMessage.SEVERITY_INFO, "OK", "N√∫mero v√°lido");
 				currentInstance.showMessageInDialog(message);
 			} else {
-				FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "N˙mero no v·lido");
+				FacesMessage message = new FacesMessage(
+						FacesMessage.SEVERITY_ERROR, "Error",
+						"N√∫mero no v√°lido");
 				currentInstance.showMessageInDialog(message);
 				return false;
 			}
@@ -493,12 +510,16 @@ public class ItineraryBean implements Serializable {
 		case FILTER:
 			validate.addAll(validateXSLT(data));
 			if (validate.isEmpty()) {
-				FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "OK", "El template es v·lido");
+				FacesMessage message = new FacesMessage(
+						FacesMessage.SEVERITY_INFO, "OK",
+						"El template es v√°lido");
 				currentInstance.showMessageInDialog(message);
 
 			} else {
 				String mensajeconcatenado = StringUtils.join(validate, "<br/>");
-				FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error en el FTL", mensajeconcatenado);
+				FacesMessage message = new FacesMessage(
+						FacesMessage.SEVERITY_ERROR, "Error en el FTL",
+						mensajeconcatenado);
 
 				currentInstance.showMessageInDialog(message);
 				return false;

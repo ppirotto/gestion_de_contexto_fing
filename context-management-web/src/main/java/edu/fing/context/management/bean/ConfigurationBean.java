@@ -5,7 +5,6 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
@@ -28,25 +27,34 @@ public class ConfigurationBean {
 	private String serviceName;
 	private TreeNode root;
 	private InfoTreeNode selectedNode;
-
 	private List<ServiceTO> services;
-
-	@ManagedProperty(value = "#{sessionBean}")
-	private SessionBean session;
 
 	@PostConstruct
 	public void construct() {
 
-		this.services = (List<ServiceTO>) RemoteInvokerUtils.invoke(RemoteInvokerUtils.ContextReasonerConfigService, "getServicesWithSituationsAndAdaptations", null, ServiceIp.ContextReasonerIp);
+		this.services = (List<ServiceTO>) RemoteInvokerUtils.invoke(
+				RemoteInvokerUtils.ContextReasonerConfigService,
+				"getServicesWithSituationsAndAdaptations", null,
+				ServiceIp.ContextReasonerIp);
 
 		this.root = new DefaultTreeNode("Root", null);
 		if (this.services != null) {
 			for (ServiceTO serviceTO : this.services) {
-				TreeNode node0 = new DefaultTreeNode(new InfoTreeNode(serviceTO.getServiceName() + "/" + serviceTO.getOperationName(), serviceTO.getUrl(), "Servicio"), this.root);
+				TreeNode node0 = new DefaultTreeNode(new InfoTreeNode(
+						serviceTO.getServiceName() + "/"
+								+ serviceTO.getOperationName(),
+						serviceTO.getUrl(), "Servicio"), this.root);
 				for (SituationTO situationTO : serviceTO.getSituations()) {
-					TreeNode node00 = new DefaultTreeNode(new InfoTreeNode(situationTO.getName(), situationTO.getDescription(), "Situación"), node0);
-					for (AdaptationTO adaptationTO : situationTO.getAdaptations()) {
-						TreeNode node000 = new DefaultTreeNode(new InfoTreeNode(adaptationTO.getAdaptationType().toString(), (String) adaptationTO.getData(), "Adaptación"), node00);
+					TreeNode node00 = new DefaultTreeNode(new InfoTreeNode(
+							situationTO.getName(),
+							situationTO.getDescription(), "SituaciÃ³n"), node0);
+					for (AdaptationTO adaptationTO : situationTO
+							.getAdaptations()) {
+						TreeNode node000 = new DefaultTreeNode(
+								new InfoTreeNode(adaptationTO
+										.getAdaptationType().toString(),
+										(String) adaptationTO.getData(),
+										"AdaptaciÃ³n"), node00);
 					}
 
 				}
@@ -70,12 +78,9 @@ public class ConfigurationBean {
 		return this.serviceName;
 	}
 
-	public SessionBean getSession() {
-		return this.session;
-	}
-
 	public void onNodeSelect(NodeSelectEvent event) {
-		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Selected", event.getTreeNode().toString());
+		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,
+				"Selected", event.getTreeNode().toString());
 		FacesContext.getCurrentInstance().addMessage(null, message);
 	}
 
@@ -93,9 +98,5 @@ public class ConfigurationBean {
 
 	public void setServiceName(String serviceName) {
 		this.serviceName = serviceName;
-	}
-
-	public void setSession(SessionBean session) {
-		this.session = session;
 	}
 }

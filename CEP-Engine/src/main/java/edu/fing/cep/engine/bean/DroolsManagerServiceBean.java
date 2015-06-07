@@ -52,21 +52,26 @@ public class DroolsManagerServiceBean implements DroolsManagerService {
 				VersionTO activeVersion = cepService.getActiveVersion();
 
 				// Creo el releaseId
-				ReleaseId releaseId1 = kServices.newReleaseId("edu.fing.cep.engine", "drools-context-rules", activeVersion.getVersionNumber());
+				ReleaseId releaseId1 = kServices.newReleaseId(
+						"edu.fing.cep.engine", "drools-context-rules",
+						activeVersion.getVersionNumber());
 
 				List<String> stringRules = getStringRules(activeVersion);
 
-				KieModule kieModule = DroolsUtils.createAndDeployJar(kServices, releaseId1, stringRules);
+				KieModule kieModule = DroolsUtils.createAndDeployJar(kServices,
+						releaseId1, stringRules);
 
 				startSession(kieModule);
-				System.out.println("Drools context successfully initialized!!!");
+				System.out
+						.println("Drools context successfully initialized!!!");
 			} catch (Throwable t) {
 				System.out.println("ERROR initializing drools context..");
 				kServices = null;
 				t.printStackTrace();
 			}
 		} else {
-			System.out.println("Drools context already initialized. Discarding initialization...");
+			System.out
+					.println("Drools context already initialized. Discarding initialization...");
 		}
 	}
 
@@ -108,12 +113,14 @@ public class DroolsManagerServiceBean implements DroolsManagerService {
 	@Override
 	public FrontResponseTO deployVersion(VersionTO desiredVersion) {
 
-		ReleaseId newReleaseId = kServices.newReleaseId("edu.fing.cep.engine", "drools-context-rules", desiredVersion.getVersionNumber());
+		ReleaseId newReleaseId = kServices.newReleaseId("edu.fing.cep.engine",
+				"drools-context-rules", desiredVersion.getVersionNumber());
 
 		List<String> stringRules = getStringRules(desiredVersion);
 		KieModule kieModule;
 		try {
-			kieModule = DroolsUtils.createAndDeployJar(kServices, newReleaseId, stringRules);
+			kieModule = DroolsUtils.createAndDeployJar(kServices, newReleaseId,
+					stringRules);
 		} catch (DroolsCompilingException e) {
 			return buildRulesVersionResponseTO(e);
 		}
@@ -135,10 +142,13 @@ public class DroolsManagerServiceBean implements DroolsManagerService {
 
 			// VersionTO versionToTest = this.mapToEntity(versionTO);
 
-			ReleaseId newReleaseId = kServices.newReleaseId("edu.fing.cep.engine", "drools-context-rules", versionTO.getVersionNumber());
+			ReleaseId newReleaseId = kServices.newReleaseId(
+					"edu.fing.cep.engine", "drools-context-rules",
+					versionTO.getVersionNumber());
 
 			List<String> stringRules = getStringRules(versionTO);
-			KieModule kieModule = DroolsUtils.createAndDeployJar(kServices, newReleaseId, stringRules);
+			KieModule kieModule = DroolsUtils.createAndDeployJar(kServices,
+					newReleaseId, stringRules);
 
 		} catch (DroolsCompilingException e) {
 			return buildRulesVersionResponseTO(e);
@@ -147,7 +157,8 @@ public class DroolsManagerServiceBean implements DroolsManagerService {
 
 	}
 
-	private FrontResponseTO buildRulesVersionResponseTO(DroolsCompilingException e) {
+	private FrontResponseTO buildRulesVersionResponseTO(
+			DroolsCompilingException e) {
 		FrontResponseTO res = new FrontResponseTO();
 		if (e == null) {
 			res.setSuccess(true);

@@ -1,10 +1,8 @@
 package edu.fing.context.management.bean;
 
-import java.io.Serializable;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
 import edu.fing.commons.front.dto.ConfiguredItineraryTO;
@@ -13,19 +11,13 @@ import edu.fing.context.management.util.RemoteInvokerUtils.ServiceIp;
 
 @ManagedBean
 @ViewScoped
-public class ViewItineraryBean implements Serializable {
-
-	private static final long serialVersionUID = 1L;
-
+public class ViewItineraryBean {
 	private ConfiguredItineraryTO selectedItinerary;
-
-	private List<ConfiguredItineraryTO> itineraryList = (List<ConfiguredItineraryTO>) RemoteInvokerUtils.invoke(RemoteInvokerUtils.AdaptationGatewayConfigService, "getItineraries", null,
-			ServiceIp.AdaptationGatewayIp);
+	private List<ConfiguredItineraryTO> itineraryList = (List<ConfiguredItineraryTO>) RemoteInvokerUtils
+			.invoke(RemoteInvokerUtils.AdaptationGatewayConfigService,
+					"getItineraries", null, ServiceIp.AdaptationGatewayIp);
 
 	private List<ConfiguredItineraryTO> filteredItineraryList;
-
-	@ManagedProperty(value = "#{sessionBean}")
-	private SessionBean session;
 
 	public List<ConfiguredItineraryTO> getFilteredItineraryList() {
 		return this.filteredItineraryList;
@@ -40,11 +32,8 @@ public class ViewItineraryBean implements Serializable {
 		return this.selectedItinerary;
 	}
 
-	public SessionBean getSession() {
-		return this.session;
-	}
-
-	public void setFilteredItineraryList(List<ConfiguredItineraryTO> filteredItineraryList) {
+	public void setFilteredItineraryList(
+			List<ConfiguredItineraryTO> filteredItineraryList) {
 		this.filteredItineraryList = filteredItineraryList;
 	}
 
@@ -54,10 +43,6 @@ public class ViewItineraryBean implements Serializable {
 
 	public void setSelectedItinerary(ConfiguredItineraryTO selectedItinerary) {
 		this.selectedItinerary = selectedItinerary;
-	}
-
-	public void setSession(SessionBean session) {
-		this.session = session;
 	}
 
 }

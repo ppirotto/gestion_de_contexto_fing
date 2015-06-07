@@ -61,9 +61,10 @@ public class AdaptationTreeNodeTO implements Serializable {
 		if (this.xpath != null) {
 			return "[" + this.nodeType + "] " + this.xpath;
 		} else if (this.adaptation != null) {
-			return "[" + this.nodeType + "] " + this.adaptation.getAdaptationType().toString();
+			return "[" + this.nodeType + "] "
+					+ this.adaptation.getAdaptationType().toString();
 		} else {
-			return "Nodo Raíz";
+			return "Nodo RaÃ­z";
 		}
 	}
 }

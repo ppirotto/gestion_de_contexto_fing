@@ -6,7 +6,6 @@ import java.net.UnknownHostException;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
@@ -26,9 +25,6 @@ public class ContextSourceBean {
 	private String cron;
 	private String ip;
 
-	@ManagedProperty(value = "#{sessionBean}")
-	private SessionBean session;
-
 	public String crearFuenteContexto() {
 		System.out.println("Fuente creada");
 
@@ -44,14 +40,22 @@ public class ContextSourceBean {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		boolean res = (Boolean) RemoteInvokerUtils.invoke(RemoteInvokerUtils.ContextReasonerConfigService, "createContextSource", cS, ServiceIp.ContextReasonerIp);
+		boolean res = (Boolean) RemoteInvokerUtils.invoke(
+				RemoteInvokerUtils.ContextReasonerConfigService,
+				"createContextSource", cS, ServiceIp.ContextReasonerIp);
 
 		if (res) {
-			String mensaje = "Fuente de contexto creada con éxito";
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", mensaje));
+			String mensaje = "Fuente de contexto creada con Ã‰xito";
+			FacesContext.getCurrentInstance().addMessage(
+					null,
+					new FacesMessage(FacesMessage.SEVERITY_INFO, "Ã‰xito",
+							mensaje));
 		} else {
 			String mensaje = "Error al crear fuente de contexto";
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERROR", mensaje));
+			FacesContext.getCurrentInstance().addMessage(
+					null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERROR",
+							mensaje));
 		}
 
 		return "inicio";
@@ -90,10 +94,6 @@ public class ContextSourceBean {
 		return this.receiveMode;
 	}
 
-	public SessionBean getSession() {
-		return this.session;
-	}
-
 	public String getUrl() {
 		return this.url;
 	}
@@ -116,10 +116,6 @@ public class ContextSourceBean {
 
 	public void setReceiveMode(String receiveMode) {
 		this.receiveMode = receiveMode;
-	}
-
-	public void setSession(SessionBean session) {
-		this.session = session;
 	}
 
 	public void setUrl(String url) {
