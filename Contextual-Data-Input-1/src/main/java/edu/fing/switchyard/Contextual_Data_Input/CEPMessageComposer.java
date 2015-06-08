@@ -1,6 +1,6 @@
 package edu.fing.switchyard.Contextual_Data_Input;
 
-public interface DroolsMessageComposer {
+public interface CEPMessageComposer {
 
 	String send(String input);
 

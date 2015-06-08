@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<sy:switchyard xmlns:bean="urn:switchyard-component-bean:config:1.1" xmlns:http="urn:switchyard-component-http:config:1.1" xmlns:quartz="urn:switchyard-component-camel-quartz:config:1.1" xmlns:sca="http://docs.oasis-open.org/ns/opencsa/sca/200912" xmlns:sy="urn:switchyard-config:switchyard:1.1" name="Contextual-Data-Input-1" targetNamespace="urn:edu.fing.switchyard:Contextual-Data-Input-1:1.0">
-  <sca:composite name="Context-Source-Polling" targetNamespace="urn:edu.fing.switchyard:Context-Source-Polling:1.0">
+<sy:switchyard xmlns:bean="urn:switchyard-component-bean:config:1.1" xmlns:http="urn:switchyard-component-http:config:1.1" xmlns:quartz="urn:switchyard-component-camel-quartz:config:1.1" xmlns:sca="http://docs.oasis-open.org/ns/opencsa/sca/200912" xmlns:sy="urn:switchyard-config:switchyard:1.1" name="${eventName}" targetNamespace="urn:edu.fing.switchyard:${eventName}:1.0">
+  <sca:composite name="${eventName}" targetNamespace="urn:edu.fing.switchyard:${eventName}:1.0">
     <sca:component name="CEPMessageComposerPollerBean">
       <bean:implementation.bean class="edu.fing.switchyard.Contextual_Data_Input.CEPMessageComposerPollerBean"/>
       <sca:service name="CEPMessageComposerPoller">
@@ -18,17 +18,17 @@
       <quartz:binding.quartz name="Context-Source-Polling">
         <sy:operationSelector operationName="poll"/>
         <quartz:name>Context-Source-Polling</quartz:name>
-        <quartz:cron>0 0/1 * * * ?</quartz:cron>
+        <quartz:cron>${cron}</quartz:cron>
       </quartz:binding.quartz>
     </sca:service>
     <sca:reference name="CEPFeederService" multiplicity="0..1" promote="CEPMessageComposerPollerBean/CEPFeederService">
       <sca:interface.java interface="edu.fing.switchyard.Contextual_Data_Input.CEPFeederService"/>
-      <sca:binding.sca sy:target="ESBServiceDrools" sy:targetNamespace="urn:edu.fing.context.management:cep-engine:1.0" name="sca13232"/>
+      <sca:binding.sca sy:target="ESBServiceDrools" sy:targetNamespace="urn:edu.fing.context.management:cep-engine:1.0" name="sca123"/>
     </sca:reference>
     <sca:reference name="ContextSourceInvoker" multiplicity="0..1" promote="CEPMessageComposerPollerBean/ContextSourceInvoker">
       <sca:interface.java interface="edu.fing.switchyard.Contextual_Data_Input.ContextSourceInvoker"/>
       <http:binding.http name="http1">
-        <http:address>http://www.trackip.net/ip?json</http:address>
+        <http:address>${url}</http:address>
         <http:method>GET</http:method>
       </http:binding.http>
     </sca:reference>

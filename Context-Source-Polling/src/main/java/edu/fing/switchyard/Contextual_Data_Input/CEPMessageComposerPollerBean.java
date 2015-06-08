@@ -37,13 +37,17 @@ import com.thoughtworks.xstream.io.xml.DomDriver;
 
 import edu.fing.commons.dto.ContextualDataTO;
 
-@Service(DroolsMessageComposerPoller.class)
-public class DroolsMessageComposerPollerBean implements DroolsMessageComposerPoller {
+@Service(CEPMessageComposerPoller.class)
+public class CEPMessageComposerPollerBean implements CEPMessageComposerPoller {
 
 	@Inject
 	@Reference
-	private DroolsFeederService droolsFeederService;
+	private CEPFeederService droolsFeederService;
 
+	@Inject
+	@Reference
+	private ContextSourceInvoker contextSourceInvoker;
+	
 	private enum ContextualDataModeConverter {
 		JSON, XML
 	}
@@ -75,43 +79,13 @@ public class DroolsMessageComposerPollerBean implements DroolsMessageComposerPol
 		url = (String) prop.getProperty("url");
 	}
 	
-	private String httpGet() throws IOException {
-
-			 
-			URL obj = new URL(url);
-			HttpURLConnection con = (HttpURLConnection) obj.openConnection(); 
-			con.setRequestMethod("GET");
-	 
-			int responseCode = con.getResponseCode();
-			System.out.println("\nSending 'GET' request to URL : " + url);
-			System.out.println("Response Code : " + responseCode);
-	 
-			BufferedReader in = new BufferedReader(
-			        new InputStreamReader(con.getInputStream()));
-			String inputLine;
-			StringBuffer response = new StringBuffer();
-	 
-			while ((inputLine = in.readLine()) != null) {
-				response.append(inputLine);
-			}
-			in.close();
-	 
-			//print result
-			System.out.println(response.toString());
-			return response.toString();
-		
-	}
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	public String poll(String message) {
 
 		String input = null;
-		try {
-			input = this.httpGet();
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+			input = this.contextSourceInvoker.invoke();
 		if (input==null){
 			return "ERROR";
 		}

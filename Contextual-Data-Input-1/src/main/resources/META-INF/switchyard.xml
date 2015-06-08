@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<sy:switchyard xmlns:bean="urn:switchyard-component-bean:config:1.1" xmlns:http="urn:switchyard-component-http:config:1.1" xmlns:sca="http://docs.oasis-open.org/ns/opencsa/sca/200912" xmlns:sy="urn:switchyard-config:switchyard:1.1" name="Contextual-Data-Input-1" targetNamespace="urn:edu.fing.switchyard:Contextual-Data-Input-1:1.0">
-  <sca:composite name="Contextual-Data-Input-1" targetNamespace="urn:edu.fing.switchyard:Contextual-Data-Input-1:1.0">
-    <sca:component name="DroolsMessageComposerBean">
-      <bean:implementation.bean class="edu.fing.switchyard.Contextual_Data_Input.DroolsMessageComposerBean"/>
-      <sca:service name="DroolsMessageComposer">
-        <sca:interface.java interface="edu.fing.switchyard.Contextual_Data_Input.DroolsMessageComposer"/>
+<sy:switchyard xmlns:bean="urn:switchyard-component-bean:config:1.1" xmlns:http="urn:switchyard-component-http:config:1.1" xmlns:sca="http://docs.oasis-open.org/ns/opencsa/sca/200912" xmlns:sy="urn:switchyard-config:switchyard:1.1" name="Context-Suorce-Listener" targetNamespace="urn:edu.fing.switchyard:Contextual-Data-Input-1:1.0">
+  <sca:composite name="Context-Suorce-Listener" targetNamespace="urn:edu.fing.switchyard:Contextual-Data-Input-1:1.0">
+    <sca:component name="CEPMessageComposerBean">
+      <bean:implementation.bean class="edu.fing.switchyard.Contextual_Data_Input.CEPMessageComposerBean"/>
+      <sca:service name="CEPMessageComposer">
+        <sca:interface.java interface="edu.fing.switchyard.Contextual_Data_Input.CEPMessageComposer"/>
       </sca:service>
-      <sca:reference name="DroolsFeederService">
-        <sca:interface.java interface="edu.fing.switchyard.Contextual_Data_Input.DroolsFeederService"/>
+      <sca:reference name="CEPFeederService">
+        <sca:interface.java interface="edu.fing.switchyard.Contextual_Data_Input.CEPFeederService"/>
       </sca:reference>
     </sca:component>
-    <sca:service name="DroolsMessageComposer" promote="DroolsMessageComposerBean/DroolsMessageComposer">
-      <sca:interface.java interface="edu.fing.switchyard.Contextual_Data_Input.DroolsMessageComposer"/>
+    <sca:service name="CEPMessageComposer" promote="CEPMessageComposerBean/CEPMessageComposer">
+      <sca:interface.java interface="edu.fing.switchyard.Contextual_Data_Input.CEPMessageComposer"/>
       <http:binding.http name="contextual-data-input-1">
         <sy:operationSelector operationName="send"/>
         <http:contextPath>contextual-data-1</http:contextPath>
       </http:binding.http>
     </sca:service>
-    <sca:reference name="DroolsFeederService" multiplicity="0..1" promote="DroolsMessageComposerBean/DroolsFeederService">
-      <sca:interface.java interface="edu.fing.switchyard.Contextual_Data_Input.DroolsFeederService"/>
-      <sca:binding.sca sy:target="ESBServiceDrools" sy:targetNamespace="urn:edu.fing.switchyard:CEP-Engine:1.0" name="sca13232"/>
+    <sca:reference name="CEPFeederService" multiplicity="0..1" promote="CEPMessageComposerBean/CEPFeederService">
+      <sca:interface.java interface="edu.fing.switchyard.Contextual_Data_Input.CEPFeederService"/>
+      <sca:binding.sca sy:target="ESBServiceDrools" sy:targetNamespace="urn:edu.fing.context.management:cep-engine:1.0" name="sca13232"/>
     </sca:reference>
   </sca:composite>
 </sy:switchyard>

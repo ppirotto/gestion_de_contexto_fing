@@ -31,12 +31,12 @@ import com.thoughtworks.xstream.io.xml.DomDriver;
 
 import edu.fing.commons.dto.ContextualDataTO;
 
-@Service(DroolsMessageComposer.class)
-public class DroolsMessageComposerBean implements DroolsMessageComposer {
+@Service(CEPMessageComposer.class)
+public class CEPMessageComposerBean implements CEPMessageComposer {
 
 	@Inject
 	@Reference
-	private DroolsFeederService droolsFeederService;
+	private CEPFeederService droolsFeederService;
 
 	private enum ContextualDataModeConverter {
 		JSON, XML
