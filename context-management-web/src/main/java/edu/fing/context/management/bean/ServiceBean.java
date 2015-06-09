@@ -81,7 +81,7 @@ public class ServiceBean {
 			try {
 				IP = InetAddress.getLocalHost();
 			} catch (UnknownHostException e) {
-				// TODO Auto-generated catch block
+
 				e.printStackTrace();
 			}
 
@@ -111,15 +111,6 @@ public class ServiceBean {
 
 		}
 
-		// System.out.println(this.getFiles().size());
-		// FacesMessage message = null;
-		// if (!this.adaptations.isEmpty()) {
-		// message = new FacesMessage("Succesful", " is uploaded.");
-		//
-		// } else {
-		// message = new FacesMessage("Error", " is uploaded.");
-		// }
-		// FacesContext.getCurrentInstance().addMessage("growl2", message);
 	}
 
 	public List<String> getSelectedOperations() {
