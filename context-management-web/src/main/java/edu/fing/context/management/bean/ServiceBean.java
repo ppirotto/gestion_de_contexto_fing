@@ -37,7 +37,6 @@ public class ServiceBean {
 
 	public String crearServicio() {
 		System.out.println("Crear servicio");
-
 		// llamar servicio para crear virtual service
 		VirtualServiceDto vS = new VirtualServiceDto();
 		vS.setServiceName(this.serviceName);
@@ -57,15 +56,12 @@ public class ServiceBean {
 		serv.setUrl(this.serviceURL);
 		serv.setDescription(this.description);
 
-		// //////////////////
-		Boolean result = (Boolean) RemoteInvokerUtils.invoke(
-				RemoteInvokerUtils.ContextReasonerConfigService,
+		Boolean result = (Boolean) RemoteInvokerUtils.invoke(RemoteInvokerUtils.ContextReasonerConfigService,
 				"createService", serv, ServiceIp.ContextReasonerIp);
 		if (result) {
 
 			String mensaje = "Servicio creado con exito";
-			FacesContext.getCurrentInstance().addMessage(null,
-					new FacesMessage(null, mensaje));
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(null, mensaje));
 
 		}
 		return "inicio";

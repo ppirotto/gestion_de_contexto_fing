@@ -37,25 +37,19 @@ public class ContextSourceBean {
 		try {
 			JarCreationService.createContextSource(cS);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		boolean res = (Boolean) RemoteInvokerUtils.invoke(
-				RemoteInvokerUtils.ContextReasonerConfigService,
+		boolean res = (Boolean) RemoteInvokerUtils.invoke(RemoteInvokerUtils.ContextReasonerConfigService,
 				"createContextSource", cS, ServiceIp.ContextReasonerIp);
 
 		if (res) {
 			String mensaje = "Fuente de contexto creada con Éxito";
-			FacesContext.getCurrentInstance().addMessage(
-					null,
-					new FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito",
-							mensaje));
+			FacesContext.getCurrentInstance().addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", mensaje));
 		} else {
 			String mensaje = "Error al crear fuente de contexto";
-			FacesContext.getCurrentInstance().addMessage(
-					null,
-					new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERROR",
-							mensaje));
+			FacesContext.getCurrentInstance().addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERROR", mensaje));
 		}
 
 		return "inicio";
@@ -76,7 +70,7 @@ public class ContextSourceBean {
 			try {
 				IP = InetAddress.getLocalHost();
 			} catch (UnknownHostException e) {
-				// TODO Auto-generated catch block
+
 				e.printStackTrace();
 			}
 

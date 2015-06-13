@@ -2,7 +2,6 @@ package edu.fing.context.management.bean;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,14 +37,12 @@ public class SituationBean {
 	private String selectedContextSource;
 
 	@SuppressWarnings("unchecked")
-	private List<String> contextSources = (List<String>) RemoteInvokerUtils
-			.invoke(RemoteInvokerUtils.ContextReasonerConfigService,
-					"getContextSources", null, ServiceIp.ContextReasonerIp);
+	private List<String> contextSources = (List<String>) RemoteInvokerUtils.invoke(
+			RemoteInvokerUtils.ContextReasonerConfigService, "getContextSources", null, ServiceIp.ContextReasonerIp);
 
 	@SuppressWarnings("unchecked")
-	private List<String> contextDataList = (List<String>) RemoteInvokerUtils
-			.invoke(RemoteInvokerUtils.ContextReasonerConfigService,
-					"getContextData", null, ServiceIp.ContextReasonerIp);
+	private List<String> contextDataList = (List<String>) RemoteInvokerUtils.invoke(
+			RemoteInvokerUtils.ContextReasonerConfigService, "getContextData", null, ServiceIp.ContextReasonerIp);
 	private List<String> selectedInputData;
 
 	private TreeNode root = new DefaultTreeNode("Fuente de contexto", null);
@@ -62,7 +59,7 @@ public class SituationBean {
 		sit.setDescription(this.getDescription());
 		sit.setDuration(this.duration);
 		sit.setVersionTO(this.versionRules);
-		sit.setContextSources(new ArrayList(this.mappedContextData.values()));
+		sit.setContextSources(new ArrayList<ContextSourceTO>(this.mappedContextData.values()));
 		sit.setOutputContextData(this.selectedOutputData);
 
 		RuleTemplateTO ruleTempTO = mapRuleTemplateTO();
@@ -70,8 +67,7 @@ public class SituationBean {
 		// Verifico que se usen los input y output que se definieron
 		for (RuleTO ruleTO : this.getVersionRules().getRules()) {
 			if (ruleTO.getName().equals(this.name)) {
-				contextDataValidation = RuleTemplateService.validate(
-						ruleTO.getDrl(), ruleTempTO);
+				contextDataValidation = RuleTemplateService.validate(ruleTO.getDrl(), ruleTempTO);
 			}
 		}
 		if (contextDataValidation != null && !contextDataValidation.isEmpty()) {
@@ -80,14 +76,13 @@ public class SituationBean {
 			response.setSuccess(false);
 			response.setErrorCode("Error");
 
-			response.setErrorMessage(StringUtils.join(contextDataValidation,
-					"\n"));
+			response.setErrorMessage(StringUtils.join(contextDataValidation, "\n"));
 			this.setResponseMsg(response);
 
 		} else {
-			FrontResponseTO response = (FrontResponseTO) RemoteInvokerUtils
-					.invoke(RemoteInvokerUtils.ContextReasonerConfigService,
-							"createSituation", sit, ServiceIp.ContextReasonerIp);
+			FrontResponseTO response = (FrontResponseTO) RemoteInvokerUtils.invoke(
+					RemoteInvokerUtils.ContextReasonerConfigService, "createSituation", sit,
+					ServiceIp.ContextReasonerIp);
 			this.setResponseMsg(response);
 			if (response.isSuccess()) {
 				return "inicio";
@@ -106,8 +101,7 @@ public class SituationBean {
 			this.getMappedContextData().put(this.selectedContextSource, csTo);
 
 			// Solo para vista
-			TreeNode node0 = new DefaultTreeNode(this.selectedContextSource,
-					this.root);
+			TreeNode node0 = new DefaultTreeNode(this.selectedContextSource, this.root);
 
 			for (String data : this.getSelectedInputData()) {
 				new DefaultTreeNode(data, node0);
@@ -211,31 +205,10 @@ public class SituationBean {
 		ruleTempTO.setDescription(this.description);
 		ruleTempTO.setDuration(this.duration);
 
-		ruleTempTO.setMappedContextData(new ArrayList<ContextSourceTO>(
-				this.mappedContextData.values()));
+		ruleTempTO.setMappedContextData(new ArrayList<ContextSourceTO>(this.mappedContextData.values()));
 		ruleTempTO.setSituationName(this.name);
 		ruleTempTO.setSelectedOutputData(this.selectedOutputData);
 		return ruleTempTO;
-	}
-
-	private VersionTO mocker() {
-
-		VersionTO v1 = new VersionTO();
-		v1.setCreationDate(new Date());
-		v1.setVersionNumber("2.0");
-		List<RuleTO> rules = new ArrayList<RuleTO>();
-		RuleTO r = new RuleTO();
-		r.setName("InTheEvening");
-		r.setDrl("La regla de la posta posta");
-
-		RuleTO r2 = new RuleTO();
-		r2.setName("OTRA regla");
-		r2.setDrl("otraaaaaaaaaaaaaaaaa");
-		rules.add(r);
-		rules.add(r2);
-		v1.setRules(rules);
-
-		return v1;
 	}
 
 	public String onFlowProcess(FlowEvent event) {
@@ -248,18 +221,16 @@ public class SituationBean {
 			// this.displayRule =
 			// RuleTemplateService.createRuleTemplate(ruleTempTO);
 			try {
-				String generatedRule = RuleTemplateService
-						.createRuleTemplate(ruleTempTO);
+				String generatedRule = RuleTemplateService.createRuleTemplate(ruleTempTO);
 				VersionTO versionTO = (VersionTO) RemoteInvokerUtils.invoke(
-						RemoteInvokerUtils.ContextReasonerCEPService,
-						"getLastVersion", null, ServiceIp.ContextReasonerIp);
+						RemoteInvokerUtils.ContextReasonerCEPService, "getLastVersion", null,
+						ServiceIp.ContextReasonerIp);
 				RuleTO rule = new RuleTO();
 				rule.setDrl(generatedRule);
 				rule.setName(this.name);
 				versionTO.getRules().add(rule);
 				this.setVersionRules(versionTO);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
@@ -303,8 +274,7 @@ public class SituationBean {
 		this.duration = duration;
 	}
 
-	public void setMappedContextData(
-			Map<String, ContextSourceTO> mappedContextData) {
+	public void setMappedContextData(Map<String, ContextSourceTO> mappedContextData) {
 		this.mappedContextData = mappedContextData;
 	}
 

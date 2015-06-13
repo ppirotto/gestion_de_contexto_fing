@@ -8,7 +8,7 @@ import org.switchyard.remote.http.HttpInvoker;
 
 public class RemoteInvokerUtils {
 	public enum ServiceIp {
-		CepEngineIP("localhost"), ContextReasonerIp("192.168.0.101"), AdaptationGatewayIp("192.168.0.101");
+		CepEngineIP("192.168.0.108"), ContextReasonerIp("192.168.0.103"), AdaptationGatewayIp("192.168.0.103");
 
 		private String ip;
 
@@ -25,11 +25,13 @@ public class RemoteInvokerUtils {
 		}
 	}
 
-	public static final QName ContextReasonerCEPService = new QName("urn:edu.fing.context.management:context-reasoner:1.0", "CEPService");
-	public static final QName ContextReasonerConfigService = new QName("urn:edu.fing.context.management:context-reasoner:1.0", "ConfigurationService");
-	public static final QName AdaptationGatewayConfigService = new QName("urn:edu.fing.context.management:adaptation-gateway:1.0", "ItineraryService");
+	public static final QName ContextReasonerCEPService = new QName(
+			"urn:edu.fing.context.management:context-reasoner:1.0", "CEPService");
+	public static final QName ContextReasonerConfigService = new QName(
+			"urn:edu.fing.context.management:context-reasoner:1.0", "ConfigurationService");
+	public static final QName AdaptationGatewayConfigService = new QName(
+			"urn:edu.fing.context.management:adaptation-gateway:1.0", "ItineraryService");
 
-	@SuppressWarnings("unchecked")
 	public static Object invoke(QName service, String operationName, Object msg, ServiceIp serviceIp) {
 
 		Object response = null;
@@ -38,7 +40,6 @@ public class RemoteInvokerUtils {
 		// Create the request message
 		RemoteMessage message = new RemoteMessage();
 		message.setService(service).setOperation(operationName).setContent(msg);
-
 		// Invoke the service
 		RemoteMessage reply;
 		try {
@@ -50,11 +51,8 @@ public class RemoteInvokerUtils {
 				response = reply.getContent();
 			}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return response;
-
-		// return response;
 	}
 }

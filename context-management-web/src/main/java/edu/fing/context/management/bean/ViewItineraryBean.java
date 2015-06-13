@@ -13,9 +13,9 @@ import edu.fing.context.management.util.RemoteInvokerUtils.ServiceIp;
 @ViewScoped
 public class ViewItineraryBean {
 	private ConfiguredItineraryTO selectedItinerary;
-	private List<ConfiguredItineraryTO> itineraryList = (List<ConfiguredItineraryTO>) RemoteInvokerUtils
-			.invoke(RemoteInvokerUtils.AdaptationGatewayConfigService,
-					"getItineraries", null, ServiceIp.AdaptationGatewayIp);
+	@SuppressWarnings("unchecked")
+	private List<ConfiguredItineraryTO> itineraryList = (List<ConfiguredItineraryTO>) RemoteInvokerUtils.invoke(
+			RemoteInvokerUtils.AdaptationGatewayConfigService, "getItineraries", null, ServiceIp.AdaptationGatewayIp);
 
 	private List<ConfiguredItineraryTO> filteredItineraryList;
 
@@ -32,8 +32,7 @@ public class ViewItineraryBean {
 		return this.selectedItinerary;
 	}
 
-	public void setFilteredItineraryList(
-			List<ConfiguredItineraryTO> filteredItineraryList) {
+	public void setFilteredItineraryList(List<ConfiguredItineraryTO> filteredItineraryList) {
 		this.filteredItineraryList = filteredItineraryList;
 	}
 

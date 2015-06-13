@@ -29,32 +29,24 @@ public class ConfigurationBean {
 	private InfoTreeNode selectedNode;
 	private List<ServiceTO> services;
 
+	@SuppressWarnings("unchecked")
 	@PostConstruct
 	public void construct() {
 
-		this.services = (List<ServiceTO>) RemoteInvokerUtils.invoke(
-				RemoteInvokerUtils.ContextReasonerConfigService,
-				"getServicesWithSituationsAndAdaptations", null,
-				ServiceIp.ContextReasonerIp);
+		this.services = (List<ServiceTO>) RemoteInvokerUtils.invoke(RemoteInvokerUtils.ContextReasonerConfigService,
+				"getServicesWithSituationsAndAdaptations", null, ServiceIp.ContextReasonerIp);
 
 		this.root = new DefaultTreeNode("Root", null);
 		if (this.services != null) {
 			for (ServiceTO serviceTO : this.services) {
-				TreeNode node0 = new DefaultTreeNode(new InfoTreeNode(
-						serviceTO.getServiceName() + "/"
-								+ serviceTO.getOperationName(),
-						serviceTO.getUrl(), "Servicio"), this.root);
+				TreeNode node0 = new DefaultTreeNode(new InfoTreeNode(serviceTO.getServiceName() + "/"
+						+ serviceTO.getOperationName(), serviceTO.getUrl(), "Servicio"), this.root);
 				for (SituationTO situationTO : serviceTO.getSituations()) {
-					TreeNode node00 = new DefaultTreeNode(new InfoTreeNode(
-							situationTO.getName(),
+					TreeNode node00 = new DefaultTreeNode(new InfoTreeNode(situationTO.getName(),
 							situationTO.getDescription(), "Situación"), node0);
-					for (AdaptationTO adaptationTO : situationTO
-							.getAdaptations()) {
-						TreeNode node000 = new DefaultTreeNode(
-								new InfoTreeNode(adaptationTO
-										.getAdaptationType().toString(),
-										(String) adaptationTO.getData(),
-										"Adaptación"), node00);
+					for (AdaptationTO adaptationTO : situationTO.getAdaptations()) {
+						new DefaultTreeNode(new InfoTreeNode(adaptationTO.getAdaptationType().toString(),
+								(String) adaptationTO.getData(), "Adaptación"), node00);
 					}
 
 				}
@@ -79,8 +71,7 @@ public class ConfigurationBean {
 	}
 
 	public void onNodeSelect(NodeSelectEvent event) {
-		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,
-				"Selected", event.getTreeNode().toString());
+		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Selected", event.getTreeNode().toString());
 		FacesContext.getCurrentInstance().addMessage(null, message);
 	}
 

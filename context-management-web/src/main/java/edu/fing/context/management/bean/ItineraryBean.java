@@ -13,7 +13,6 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-import javax.xml.transform.Templates;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamSource;
@@ -40,8 +39,7 @@ import freemarker.template.Template;
 @ViewScoped
 public class ItineraryBean {
 
-	private static final TransformerFactory tFactory = TransformerFactory
-			.newInstance();
+	private static final TransformerFactory tFactory = TransformerFactory.newInstance();
 	private List<SituationTO> situationsForService = new ArrayList<SituationTO>();
 	private AdaptationType adaptSelec;
 	private AdaptationType adaptSelecCBR;
@@ -49,20 +47,17 @@ public class ItineraryBean {
 	private int priority;
 
 	@SuppressWarnings("unchecked")
-	private List<ServiceTO> serviceList = (List<ServiceTO>) RemoteInvokerUtils
-			.invoke(RemoteInvokerUtils.ContextReasonerConfigService,
-					"getServices", null, ServiceIp.ContextReasonerIp);
+	private List<ServiceTO> serviceList = (List<ServiceTO>) RemoteInvokerUtils.invoke(
+			RemoteInvokerUtils.ContextReasonerConfigService, "getServices", null, ServiceIp.ContextReasonerIp);
 
 	private AdaptationType[] adaptationTypeList = AdaptationType.values();
 
-	private AdaptationType[] adaptationTypeListCBR = { AdaptationType.DELAY,
-			AdaptationType.ENRICH, AdaptationType.EXTERNAL_TRANSFORMATION,
-			AdaptationType.FILTER, AdaptationType.SERVICE_INVOCATION };
+	private AdaptationType[] adaptationTypeListCBR = { AdaptationType.DELAY, AdaptationType.ENRICH,
+			AdaptationType.EXTERNAL_TRANSFORMATION, AdaptationType.FILTER, AdaptationType.SERVICE_INVOCATION };
 
 	@SuppressWarnings("unchecked")
-	private List<SituationTO> situationList = (List<SituationTO>) RemoteInvokerUtils
-			.invoke(RemoteInvokerUtils.ContextReasonerConfigService,
-					"getSituations", null, ServiceIp.ContextReasonerIp);
+	private List<SituationTO> situationList = (List<SituationTO>) RemoteInvokerUtils.invoke(
+			RemoteInvokerUtils.ContextReasonerConfigService, "getSituations", null, ServiceIp.ContextReasonerIp);
 
 	private Long selectedService;
 
@@ -85,8 +80,7 @@ public class ItineraryBean {
 
 	public void agregarAdaptacion() {
 		if (this.adaptSelec != null) {
-			AdaptationDto a = new AdaptationDto(this.adaptations.size() + 1,
-					this.adaptSelec, this.description);
+			AdaptationDto a = new AdaptationDto(this.adaptations.size() + 1, this.adaptSelec, this.description);
 
 			this.adaptations.add(a);
 
@@ -94,11 +88,8 @@ public class ItineraryBean {
 
 		} else {
 			String mensaje = "Seleccione un tipo de adaptación";
-			FacesContext.getCurrentInstance()
-					.addMessage(
-							null,
-							new FacesMessage(FacesMessage.SEVERITY_ERROR,
-									mensaje, null));
+			FacesContext.getCurrentInstance().addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, mensaje, null));
 		}
 	}
 
@@ -126,8 +117,7 @@ public class ItineraryBean {
 			a.setAdaptationType(adapt.getAdaptationType());
 			a.setOrder(adapt.getId());
 			a.setDescription(adapt.getDescription());
-			if (adapt.getAdaptationType().equals(
-					AdaptationType.CONTENT_BASED_ROUTER)) {
+			if (adapt.getAdaptationType().equals(AdaptationType.CONTENT_BASED_ROUTER)) {
 				a.setData(adapt.getTree());
 			} else {
 				a.setData(adapt.getData());
@@ -141,14 +131,11 @@ public class ItineraryBean {
 		ServiceTO serviceTO = new ServiceTO();
 		serviceTO.setId(this.selectedService);
 		itinerary.setService(serviceTO);
-		Boolean result = (Boolean) RemoteInvokerUtils.invoke(
-				RemoteInvokerUtils.ContextReasonerConfigService,
+		Boolean result = (Boolean) RemoteInvokerUtils.invoke(RemoteInvokerUtils.ContextReasonerConfigService,
 				"createItinerary", itinerary, ServiceIp.ContextReasonerIp);
 		if (result) {
-
 			String mensaje = "Itinerario creado con éxito";
-			FacesContext.getCurrentInstance().addMessage(null,
-					new FacesMessage(mensaje, null));
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(mensaje, null));
 		}
 		// servicio de context reasoner
 		// (url servicio, situación, lista de adaptaciones con su data)
@@ -159,8 +146,7 @@ public class ItineraryBean {
 
 		SituationTO selectedStuationTO = getSelectedSituationTO();
 
-		if (validationMessages(this.data, this.adaptSelecCBR,
-				selectedStuationTO)) {
+		if (validationMessages(this.data, this.adaptSelecCBR, selectedStuationTO)) {
 
 			AdaptationTreeNodeTO treeNode = new AdaptationTreeNodeTO();
 
@@ -176,21 +162,17 @@ public class ItineraryBean {
 
 			if (bool) {
 				treeNode.setNodeType("Si");
-				AdaptationTreeNodeTO selATN = (AdaptationTreeNodeTO) this.selectedNode
-						.getData();
+				AdaptationTreeNodeTO selATN = (AdaptationTreeNodeTO) this.selectedNode.getData();
 				selATN.setLeftNode(treeNode);
 
-				TreeNode node00 = new DefaultTreeNode(treeNode,
-						this.selectedNode);
+				TreeNode node00 = new DefaultTreeNode(treeNode, this.selectedNode);
 				node00.setExpanded(true);
 
 			} else {
 				treeNode.setNodeType("No");
-				AdaptationTreeNodeTO selATN = (AdaptationTreeNodeTO) this.selectedNode
-						.getData();
+				AdaptationTreeNodeTO selATN = (AdaptationTreeNodeTO) this.selectedNode.getData();
 				selATN.setRightNode(treeNode);
-				TreeNode node00 = new DefaultTreeNode(treeNode,
-						this.selectedNode);
+				TreeNode node00 = new DefaultTreeNode(treeNode, this.selectedNode);
 				node00.setExpanded(true);
 			}
 		}
@@ -304,14 +286,14 @@ public class ItineraryBean {
 		return this.xpathParent;
 	}
 
+	@SuppressWarnings("unchecked")
 	public void onServiceChange() {
 
 		if (this.selectedService != null) {
 
-			this.situationsForService = (List<SituationTO>) RemoteInvokerUtils
-					.invoke(RemoteInvokerUtils.ContextReasonerConfigService,
-							"getSituationsWithPriority", this.selectedService,
-							ServiceIp.ContextReasonerIp);
+			this.situationsForService = (List<SituationTO>) RemoteInvokerUtils.invoke(
+					RemoteInvokerUtils.ContextReasonerConfigService, "getSituationsWithPriority", this.selectedService,
+					ServiceIp.ContextReasonerIp);
 		}
 
 	}
@@ -401,25 +383,12 @@ public class ItineraryBean {
 		this.xpathParent = xpathParent;
 	}
 
-	public void upload() {
-		System.out.println(this.getFiles().size());
-		FacesMessage message = null;
-		if (!this.adaptations.isEmpty()) {
-			message = new FacesMessage("Succesful", " is uploaded.");
-
-		} else {
-			message = new FacesMessage("Error", " is uploaded.");
-		}
-
-	}
-
 	public void validate() {
 
 		SituationTO selectedStuationTO = getSelectedSituationTO();
 
 		String data = this.selectedAdaptation.getData();
-		validationMessages(data, this.selectedAdaptation.getAdaptationType(),
-				selectedStuationTO);
+		validationMessages(data, this.selectedAdaptation.getAdaptationType(), selectedStuationTO);
 
 	}
 
@@ -431,14 +400,12 @@ public class ItineraryBean {
 		while (m.find()) {
 			String group = m.group(index);
 			if (!outputData.contains(group)) {
-				res.add("ERROR: \\'" + group
-						+ "\\' no es un dato contextual válido.");
+				res.add("ERROR: \\'" + group + "\\' no es un dato contextual válido.");
 			}
 		}
 
 		try {
-			Template template = new Template("xslt", new StringReader(ftl),
-					new Configuration());
+			new Template("xslt", new StringReader(ftl), new Configuration());
 		} catch (IOException e) {
 			res.add("ERROR: El template no es válido");
 
@@ -449,10 +416,9 @@ public class ItineraryBean {
 	}
 
 	public List<String> validateXSLT(String xslt) {
-		List<String> res = new ArrayList();
+		List<String> res = new ArrayList<String>();
 		try {
-			Templates templates = tFactory.newTemplates(new StreamSource(
-					new StringReader(xslt)));
+			tFactory.newTemplates(new StreamSource(new StringReader(xslt)));
 		} catch (TransformerConfigurationException e) {
 			res.add("El XSLT no es válido");
 			return res;
@@ -460,27 +426,22 @@ public class ItineraryBean {
 		return res;
 	}
 
-	private boolean validationMessages(String data, AdaptationType adapType,
-			SituationTO selectedStuationTO) {
+	private boolean validationMessages(String data, AdaptationType adapType, SituationTO selectedStuationTO) {
 
 		List<String> validate = new ArrayList<String>();
 		RequestContext currentInstance = RequestContext.getCurrentInstance();
 		switch (adapType) {
 		case ENRICH:
 
-			validate = validateFTL(data,
-					selectedStuationTO.getOutputContextData());
+			validate = validateFTL(data, selectedStuationTO.getOutputContextData());
 			validate.addAll(validateXSLT(data));
 			if (validate.isEmpty()) {
-				FacesMessage message = new FacesMessage(
-						FacesMessage.SEVERITY_INFO, "OK",
-						"El template es válido");
+				FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "OK", "El template es válido");
 				currentInstance.showMessageInDialog(message);
 
 			} else {
 				String mensajeconcatenado = StringUtils.join(validate, "<br/>");
-				FacesMessage message = new FacesMessage(
-						FacesMessage.SEVERITY_ERROR, "Error en el FTL",
+				FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error en el FTL",
 						mensajeconcatenado);
 				currentInstance.showMessageInDialog(message);
 				return false;
@@ -493,13 +454,10 @@ public class ItineraryBean {
 			Pattern p = Pattern.compile("\\d+");
 			Matcher m = p.matcher(data);
 			if (m.find()) {
-				FacesMessage message = new FacesMessage(
-						FacesMessage.SEVERITY_INFO, "OK", "Número válido");
+				FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "OK", "Número válido");
 				currentInstance.showMessageInDialog(message);
 			} else {
-				FacesMessage message = new FacesMessage(
-						FacesMessage.SEVERITY_ERROR, "Error",
-						"Número no válido");
+				FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Número no válido");
 				currentInstance.showMessageInDialog(message);
 				return false;
 			}
@@ -510,21 +468,17 @@ public class ItineraryBean {
 		case FILTER:
 			validate.addAll(validateXSLT(data));
 			if (validate.isEmpty()) {
-				FacesMessage message = new FacesMessage(
-						FacesMessage.SEVERITY_INFO, "OK",
-						"El template es válido");
+				FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "OK", "El template es válido");
 				currentInstance.showMessageInDialog(message);
 
 			} else {
 				String mensajeconcatenado = StringUtils.join(validate, "<br/>");
-				FacesMessage message = new FacesMessage(
-						FacesMessage.SEVERITY_ERROR, "Error en el FTL",
+				FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error en el FTL",
 						mensajeconcatenado);
 
 				currentInstance.showMessageInDialog(message);
 				return false;
 			}
-
 			break;
 		case SERVICE_INVOCATION:
 			break;
@@ -532,7 +486,6 @@ public class ItineraryBean {
 			break;
 
 		}
-
 		return true;
 	}
 

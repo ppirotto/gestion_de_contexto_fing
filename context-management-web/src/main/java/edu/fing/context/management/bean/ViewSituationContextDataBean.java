@@ -33,38 +33,29 @@ public class ViewSituationContextDataBean {
 	public void construct() {
 
 		this.situations = (List<SituationTO>) RemoteInvokerUtils.invoke(
-				RemoteInvokerUtils.ContextReasonerConfigService,
-				"getSituationsWithContextData", null,
+				RemoteInvokerUtils.ContextReasonerConfigService, "getSituationsWithContextData", null,
 				ServiceIp.ContextReasonerIp);
 
 		this.root = new DefaultTreeNode("Root", null);
 		if (this.situations != null) {
 			for (SituationTO situationTO : this.situations) {
-				TreeNode node0 = new DefaultTreeNode(new InfoTreeNode(
-						situationTO.getName(), situationTO.getRule(),
+				TreeNode node0 = new DefaultTreeNode(new InfoTreeNode(situationTO.getName(), situationTO.getRule(),
 						"Situación"), this.root);
 
-				TreeNode node01 = new DefaultTreeNode(new InfoTreeNode(
-						"Entrada", null, ""), node0);
-				TreeNode node02 = new DefaultTreeNode(new InfoTreeNode(
-						"Salida", null, ""), node0);
+				TreeNode node01 = new DefaultTreeNode(new InfoTreeNode("Entrada", null, ""), node0);
+				TreeNode node02 = new DefaultTreeNode(new InfoTreeNode("Salida", null, ""), node0);
 
-				for (ContextSourceTO contextSourceTO : situationTO
-						.getContextSources()) {
-					TreeNode node001 = new DefaultTreeNode(new InfoTreeNode(
-							contextSourceTO.getEventName(),
-							contextSourceTO.getDescription(),
-							"Fuente de Contexto"), node01);
+				for (ContextSourceTO contextSourceTO : situationTO.getContextSources()) {
+					TreeNode node001 = new DefaultTreeNode(new InfoTreeNode(contextSourceTO.getEventName(),
+							contextSourceTO.getDescription(), "Fuente de Contexto"), node01);
 					for (String contextData : contextSourceTO.getContextData()) {
-						new DefaultTreeNode(new InfoTreeNode(contextData,
-								contextData, "Dato contextual"), node001);
+						new DefaultTreeNode(new InfoTreeNode(contextData, contextData, "Dato contextual"), node001);
 					}
 					//
 				}
 
 				for (String contextData : situationTO.getOutputContextData()) {
-					new DefaultTreeNode(new InfoTreeNode(contextData,
-							contextData, "Dato contextual"), node02);
+					new DefaultTreeNode(new InfoTreeNode(contextData, contextData, "Dato contextual"), node02);
 				}
 			}
 		}
@@ -87,8 +78,7 @@ public class ViewSituationContextDataBean {
 	}
 
 	public void onNodeSelect(NodeSelectEvent event) {
-		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,
-				"Selected", event.getTreeNode().toString());
+		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Selected", event.getTreeNode().toString());
 		FacesContext.getCurrentInstance().addMessage(null, message);
 	}
 

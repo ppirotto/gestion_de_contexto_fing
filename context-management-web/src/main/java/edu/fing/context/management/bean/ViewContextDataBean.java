@@ -22,16 +22,19 @@ public class ViewContextDataBean {
 
 	private List<ContextSourceTO> contextSources;
 
+	@SuppressWarnings("unchecked")
 	@PostConstruct
 	public void construct() {
 
-		this.setContextSources((List<ContextSourceTO>) RemoteInvokerUtils
-				.invoke(RemoteInvokerUtils.ContextReasonerConfigService, "getContextSourcesWithContextData", null, ServiceIp.ContextReasonerIp));
+		this.setContextSources((List<ContextSourceTO>) RemoteInvokerUtils.invoke(
+				RemoteInvokerUtils.ContextReasonerConfigService, "getContextSourcesWithContextData", null,
+				ServiceIp.ContextReasonerIp));
 
 		this.root = new DefaultTreeNode("Root", null);
 		if (this.getContextSources() != null) {
 			for (ContextSourceTO conextSource : this.getContextSources()) {
-				TreeNode node0 = new DefaultTreeNode(new InfoTreeNode(conextSource.getEventName(), null, "Fuente de Contexto" + " - " + conextSource.getReceiveMode().toLowerCase()), this.root);
+				TreeNode node0 = new DefaultTreeNode(new InfoTreeNode(conextSource.getEventName(), null,
+						"Fuente de Contexto" + " - " + conextSource.getReceiveMode().toLowerCase()), this.root);
 				for (String data : conextSource.getContextData()) {
 					new DefaultTreeNode(new InfoTreeNode(data, null, "Dato Contextual"), node0);
 
