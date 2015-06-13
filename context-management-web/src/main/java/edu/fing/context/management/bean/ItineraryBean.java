@@ -420,7 +420,13 @@ public class ItineraryBean {
 		try {
 			tFactory.newTemplates(new StreamSource(new StringReader(xslt)));
 		} catch (TransformerConfigurationException e) {
-			res.add("El XSLT no es válido");
+			res.add("El XSLT no es válido: ");
+
+			String[] split = e.getLocalizedMessage().split(";");
+			for (int i = 0; i < split.length; i++) {
+				res.add(split[i]);
+			}
+
 			return res;
 		}
 		return res;

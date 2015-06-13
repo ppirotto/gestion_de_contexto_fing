@@ -154,11 +154,12 @@
 						widgetVar="messageResponseDialog" resizable="false">
 						<p:panelGrid columns="2" id="display2" style="margin-bottom:10px" cellpadding="5">
 							<h:outputText value="Resultado:" />
-							<h:outputText value="#{situationBean.responseMsg.errorCode}" />
+							<h:outputText value="#{situationBean.responseMsg.errorCode}" rendered="#{rulesBean.responseMsg.success}" />
 							<h:outputText value="Mensaje:" rendered="#{!situationBean.responseMsg.success}" />
 							<p:inputTextarea readonly="true" value="#{situationBean.responseMsg.errorMessage}" cols="80"
 								rendered="#{!situationBean.responseMsg.success}" />
-
+								<h:outputText value="OK"
+								rendered="#{rulesBean.responseMsg.success}" />
 
 						</p:panelGrid>
 
