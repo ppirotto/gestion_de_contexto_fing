@@ -1,44 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <sy:switchyard xmlns:bean="urn:switchyard-component-bean:config:1.1" xmlns:http="urn:switchyard-component-http:config:1.1" xmlns:quartz="urn:switchyard-component-camel-quartz:config:1.1" xmlns:sca="http://docs.oasis-open.org/ns/opencsa/sca/200912" xmlns:sy="urn:switchyard-config:switchyard:1.1" name="CEP-Engine" targetNamespace="urn:edu.fing.context.management:cep-engine:1.0">
   <sca:composite name="CEP-Engine" targetNamespace="urn:edu.fing.context.management:cep-engine:1.0">
-    <sca:component name="DroolsFeederServiceBean">
-      <bean:implementation.bean class="edu.fing.cep.engine.bean.DroolsFeederServiceBean"/>
-      <sca:service name="DroolsFeederService">
-        <sca:interface.java interface="edu.fing.cep.engine.bean.DroolsFeederService"/>
-      </sca:service>
-      <sca:reference name="DroolsManagerService">
-        <sca:interface.java interface="edu.fing.cep.engine.bean.DroolsManagerService"/>
-      </sca:reference>
-    </sca:component>
     <sca:component name="DroolsManagerServiceBean">
       <bean:implementation.bean class="edu.fing.cep.engine.bean.DroolsManagerServiceBean"/>
       <sca:service name="DroolsManagerService">
         <sca:interface.java interface="edu.fing.cep.engine.bean.DroolsManagerService"/>
       </sca:service>
-      <sca:reference name="CEPService">
-        <sca:interface.java interface="edu.fing.cep.engine.bean.CEPService"/>
+      <sca:reference name="DroolsCore">
+        <sca:interface.java interface="edu.fing.cep.engine.bean.DroolsCore"/>
       </sca:reference>
     </sca:component>
-    <sca:service name="ESBServiceDrools" promote="DroolsFeederServiceBean/DroolsFeederService">
-      <sca:interface.java interface="edu.fing.cep.engine.bean.DroolsFeederService"/>
-      <sca:binding.sca name="CEP-SCA"/>
-    </sca:service>
-    <sca:reference name="CEPService" multiplicity="0..1" promote="DroolsManagerServiceBean/CEPService">
-      <sca:interface.java interface="edu.fing.cep.engine.bean.CEPService"/>
-      <sca:binding.sca sy:targetNamespace="urn:edu.fing.context.management:context-reasoner:1.0" sy:target="CEPService" name="scacep"/>
-    </sca:reference>
     <sca:service name="DroolsManagerService" promote="DroolsManagerServiceBean/DroolsManagerService">
       <sca:interface.java interface="edu.fing.cep.engine.bean.DroolsManagerService"/>
       <sca:binding.sca name="sca"/>
-      <http:binding.http name="http1">
-        <sy:operationSelector operationName="intializeDroolsContext"/>
-        <http:contextPath>cep</http:contextPath>
-      </http:binding.http>
       <quartz:binding.quartz name="CEP-Engine">
         <sy:operationSelector operationName="intializeDroolsContext"/>
         <quartz:name>CEP-Engine</quartz:name>
         <quartz:cron>0 0/1 * * * ?</quartz:cron>
       </quartz:binding.quartz>
     </sca:service>
+    <sca:component name="DroolsFeederServiceBean">
+      <bean:implementation.bean class="edu.fing.cep.engine.bean.DroolsFeederServiceBean"/>
+      <sca:service name="DroolsFeederService">
+        <sca:interface.java interface="edu.fing.cep.engine.bean.DroolsFeederService"/>
+      </sca:service>
+      <sca:reference name="DroolsCore">
+        <sca:interface.java interface="edu.fing.cep.engine.bean.DroolsCore"/>
+      </sca:reference>
+    </sca:component>
+    <sca:service name="DroolsFeederService" promote="DroolsFeederServiceBean/DroolsFeederService">
+      <sca:interface.java interface="edu.fing.cep.engine.bean.DroolsFeederService"/>
+      <sca:binding.sca name="scaFeeder"/>
+    </sca:service>
+    <sca:component name="DroolsCoreBean">
+      <bean:implementation.bean class="edu.fing.cep.engine.bean.DroolsCoreBean"/>
+      <sca:service name="DroolsCore">
+        <sca:interface.java interface="edu.fing.cep.engine.bean.DroolsCore"/>
+      </sca:service>
+      <sca:reference name="ContextReasonerService">
+        <sca:interface.java interface="edu.fing.cep.engine.bean.ContextReasonerService"/>
+      </sca:reference>
+    </sca:component>
+    <sca:reference name="ContextReasonerService" multiplicity="0..1" promote="DroolsCoreBean/ContextReasonerService">
+      <sca:interface.java interface="edu.fing.cep.engine.bean.ContextReasonerService"/>
+      <sca:binding.sca sy:targetNamespace="urn:edu.fing.context.management:context-reasoner:1.0" sy:target="CEPService" name="sca1"/>
+    </sca:reference>
   </sca:composite>
 </sy:switchyard>

@@ -23,7 +23,7 @@
     </sca:service>
     <sca:reference name="CEPFeederService" multiplicity="0..1" promote="CEPMessageComposerPollerBean/CEPFeederService">
       <sca:interface.java interface="edu.fing.switchyard.Contextual_Data_Input.CEPFeederService"/>
-      <sca:binding.sca sy:target="ESBServiceDrools" sy:targetNamespace="urn:edu.fing.context.management:cep-engine:1.0" name="sca13232"/>
+      <sca:binding.sca sy:target="DroolsFeederService" sy:targetNamespace="urn:edu.fing.context.management:cep-engine:1.0" name="sca13232"/>
     </sca:reference>
     <sca:reference name="ContextSourceInvoker" multiplicity="0..1" promote="CEPMessageComposerPollerBean/ContextSourceInvoker">
       <sca:interface.java interface="edu.fing.switchyard.Contextual_Data_Input.ContextSourceInvoker"/>
