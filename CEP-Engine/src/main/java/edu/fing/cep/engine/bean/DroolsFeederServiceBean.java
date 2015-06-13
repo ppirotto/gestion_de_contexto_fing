@@ -11,15 +11,12 @@ import edu.fing.commons.dto.ContextualDataTO;
 public class DroolsFeederServiceBean implements DroolsFeederService {
 
 	@Inject
-	@Reference	
-	private DroolsManagerService droolsManager;
+	@Reference
+	private DroolsCore droolsCore;
 	
 	@Override
 	public String receiveMessage(ContextualDataTO data) {
-		
-		return droolsManager.insert(data);
+		return droolsCore.receiveMessage(data);
 	}
-	
-	
 
 }
