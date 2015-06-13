@@ -64,16 +64,16 @@
   		<version>${switchyard.version}</version>
   	</dependency>
   	<dependency>
-  		<groupId>org.switchyard.components</groupId>
-  		<artifactId>switchyard-component-http</artifactId>
-  		<version>${switchyard.version}</version>
-  	</dependency>
-  	<dependency>
   		<groupId>edu.fing.context.management</groupId>
   		<artifactId>adaptation-commons</artifactId>
   		<version>0.0.1-SNAPSHOT</version>
   	</dependency>
- 
+
+  	<dependency>
+  		<groupId>org.switchyard.components</groupId>
+  		<artifactId>switchyard-component-http</artifactId>
+  		<version>${switchyard.version}</version>
+  	</dependency>
   </dependencies>
   <build>
     <plugins>

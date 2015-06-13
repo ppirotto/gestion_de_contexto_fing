@@ -5,12 +5,9 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 
-import javax.inject.Inject;
-
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.switchyard.component.bean.Reference;
 import org.switchyard.component.bean.Service;
 
 import edu.fing.commons.front.dto.AvailableRulesTO;
@@ -22,15 +19,13 @@ import edu.fing.context.reasoner.model.Rule;
 import edu.fing.context.reasoner.model.RuleVersion;
 import edu.fing.context.reasoner.model.Version;
 import edu.fing.context.reasoner.util.HibernateUtils;
+import edu.fing.context.reasoner.util.RemoteInvokerUtils;
+import edu.fing.context.reasoner.util.RemoteInvokerUtils.ServiceIp;
 
 @Service(CEPService.class)
 public class CEPServiceBean implements CEPService {
 
 	private final SessionFactory sessionFactory = HibernateUtils.getSessionFactory();
-	
-	@Inject
-	@Reference
-	private DroolsManagerService droolsManagerService;
 
 	@Override
 	public FrontResponseTO createNewVersion(VersionTO versionTO) {
@@ -49,7 +44,8 @@ public class CEPServiceBean implements CEPService {
 			res.setErrorMessage("La versión '" + versionTO.getVersionNumber() + "' ya existe.");
 			return res;
 		} else {
-			res = this.droolsManagerService.testDroolsCompiling(versionTO);
+			res = (FrontResponseTO) RemoteInvokerUtils.invoke(RemoteInvokerUtils.DroolsManagerService, "testDroolsCompiling", versionTO,
+					ServiceIp.CepEngineIP);
 			if (res != null) {
 				return res;
 			}
@@ -73,7 +69,6 @@ public class CEPServiceBean implements CEPService {
 		session.beginTransaction();
 
 		Query activeConfigurationQuery = session.createSQLQuery("SELECT * FROM ACTIVE_CONFIGURATION").addEntity(ActiveConfiguration.class);
-
 		ActiveConfiguration activeConfig = (ActiveConfiguration) activeConfigurationQuery.uniqueResult();
 
 		res.setActiveVersionNumber(activeConfig.getActiveVersion().getVersionNumber());
@@ -126,16 +121,16 @@ public class CEPServiceBean implements CEPService {
 		session.beginTransaction();
 
 		Query query = session.createSQLQuery("SELECT * FROM ACTIVE_CONFIGURATION").addEntity(ActiveConfiguration.class);
-
 		ActiveConfiguration activeConfig = (ActiveConfiguration) query.uniqueResult();
 
 		Query queryNewVersion = session.createSQLQuery("SELECT * FROM VERSION WHERE VERSION_NUMBER = :version ").addEntity(Version.class);
 		queryNewVersion.setParameter("version", versionNumber);
-
 		Version newVersion = (Version) queryNewVersion.uniqueResult();
 
 		VersionTO desiredVersion = mapToVersionTO(newVersion);
-		FrontResponseTO deployResponseTO = this.droolsManagerService.deployVersion(desiredVersion);
+		FrontResponseTO deployResponseTO = (FrontResponseTO) RemoteInvokerUtils.invoke(RemoteInvokerUtils.DroolsManagerService, "deployVersion",
+				desiredVersion, ServiceIp.CepEngineIP);
+		System.out.println("droolsManager.deployVersion(desiredVersion) response:" + deployResponseTO.toString());
 		if (deployResponseTO.isSuccess()) {
 			activeConfig.setActiveVersion(newVersion);
 			System.out.println("Updating to versionNumber: " + activeConfig.getActiveVersion().getVersionNumber());
@@ -161,10 +156,11 @@ public class CEPServiceBean implements CEPService {
 		session.beginTransaction();
 
 		StringBuilder queryString = new StringBuilder();
+
 		queryString.append("SELECT * ");
 		queryString.append("FROM ACTIVE_CONFIGURATION");
-
 		Query query = session.createSQLQuery(queryString.toString()).addEntity(ActiveConfiguration.class);
+
 		ActiveConfiguration config = (ActiveConfiguration) query.uniqueResult();
 		if (config == null) {
 			return null;
@@ -175,6 +171,7 @@ public class CEPServiceBean implements CEPService {
 		HibernateUtils.commit(session);
 		return mapToVersionTO(activeVersion);
 	}
+
 
 	private Rule getRule(String ruleName) {
 		Session session = sessionFactory.openSession();
