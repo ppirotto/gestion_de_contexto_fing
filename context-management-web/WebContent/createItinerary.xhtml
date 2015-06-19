@@ -168,9 +168,9 @@
 		</h:form>
 		<p:dialog header="Configuración de la adaptación" widgetVar="itinerayDialog"
 			modal="true" appendTo="@(body)" showEffect="fade" hideEffect="fade"
-			width="60%" height="350px" resizable="false">
+			width="60%" height="400px" resizable="false">
 			<h:form id="itineraryDialogForm">
-				<p:panel style="width:90%; height:300px;" id="adaptationDetail">
+				<p:panel style="width:90%; height:350px;" id="adaptationDetail">
 					<f:facet name="header">
            				 		#{itineraryBean.selectedAdaptation.adaptationType.toString()}:
         					</f:facet>
@@ -193,7 +193,7 @@
 		<p:dialog header="Definir el ruteo basado en itinerario"
 			onShow="hidePanels()" widgetVar="contentBasedDialog" modal="true"
 			appendTo="@(body)" showEffect="fade" hideEffect="fade" width="60%"
-			height="400px" resizable="false">
+			height="500px" resizable="false">
 
 			<h:form id="contentBasedDialogForm">
 				<p:panel id="contentBasedDetail">

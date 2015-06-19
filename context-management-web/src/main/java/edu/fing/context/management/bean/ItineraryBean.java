@@ -147,6 +147,14 @@ public class ItineraryBean {
 
 	private void createNodo(boolean bool) {
 
+		if (!validationMessages(this.xpathParent, AdaptationType.CONTENT_BASED_ROUTER, getSelectedSituationTO())) {
+			RequestContext currentInstance = RequestContext.getCurrentInstance();
+			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "XPath nodo raíz inválido");
+			currentInstance.showMessageInDialog(message);
+
+			return;
+		}
+
 		String dataToValidate = this.xpath;
 		if (this.nodeType.equals("ADAPTATION")) {
 			dataToValidate = this.data;
@@ -164,11 +172,11 @@ public class ItineraryBean {
 			AdaptationTreeNodeTO treeNode = new AdaptationTreeNodeTO();
 
 			if (this.nodeType.equals("ADAPTATION")) {
-				if (!validationMessages(this.data, adaptSelec, getSelectedSituationTO())) {
+				if (!validationMessages(this.data, adaptSelecCBR, getSelectedSituationTO())) {
 					return;
 				}
 				AdaptationTO ad = new AdaptationTO();
-				ad.setAdaptationType(this.adaptSelec);
+				ad.setAdaptationType(this.adaptSelecCBR);
 				ad.setData(this.data);
 				treeNode.setAdaptation(ad);
 			} else {
