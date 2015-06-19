@@ -16,6 +16,9 @@ import javax.faces.context.FacesContext;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamSource;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
 
 import org.apache.commons.lang3.StringUtils;
 import org.primefaces.context.RequestContext;
@@ -144,13 +147,26 @@ public class ItineraryBean {
 
 	private void createNodo(boolean bool) {
 
-		SituationTO selectedStuationTO = getSelectedSituationTO();
+		String dataToValidate = this.xpath;
+		if (this.nodeType.equals("ADAPTATION")) {
+			dataToValidate = this.data;
+		}
 
-		if (validationMessages(this.data, this.adaptSelecCBR, selectedStuationTO)) {
+		if (selectedNode == null) {
+			RequestContext currentInstance = RequestContext.getCurrentInstance();
+			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Seleccione nodo");
+			currentInstance.showMessageInDialog(message);
+			return;
+		}
+
+		if (validationMessages(dataToValidate, AdaptationType.CONTENT_BASED_ROUTER, getSelectedSituationTO())) {
 
 			AdaptationTreeNodeTO treeNode = new AdaptationTreeNodeTO();
 
 			if (this.nodeType.equals("ADAPTATION")) {
+				if (!validationMessages(this.data, adaptSelec, getSelectedSituationTO())) {
+					return;
+				}
 				AdaptationTO ad = new AdaptationTO();
 				ad.setAdaptationType(this.adaptSelec);
 				ad.setData(this.data);
@@ -455,6 +471,13 @@ public class ItineraryBean {
 
 			break;
 		case CONTENT_BASED_ROUTER:
+
+			if (!validateCBRXPath(data)) {
+				FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error en el XPath",
+						"El XPath no es válido");
+				currentInstance.showMessageInDialog(message);
+				return false;
+			}
 			break;
 		case DELAY:
 			Pattern p = Pattern.compile("\\d+");
@@ -495,4 +518,33 @@ public class ItineraryBean {
 		return true;
 	}
 
+	private boolean validateCBRXPath(String data) {
+		try {
+			XPathFactory xpathFactory = XPathFactory.newInstance();
+			XPath xpath = xpathFactory.newXPath();
+			xpath.compile(data);
+			return true;
+
+		} catch (XPathExpressionException e) {
+			return false;
+		}
+	}
+
+	private boolean validateCBRTree(AdaptationTreeNodeTO node, XPath xpath) {
+		if (node == null)
+			return true;
+
+		if (node.getXpath() != null) {
+			try {
+				xpath.compile(node.getXpath());
+				return this.validateCBRTree(node.getLeftNode(), xpath)
+						&& this.validateCBRTree(node.getRightNode(), xpath);
+			} catch (XPathExpressionException e) {
+				return false;
+			}
+
+		} else {
+			return true;
+		}
+	}
 }

@@ -35,7 +35,7 @@ import edu.fing.commons.dto.ContextualDataTO;
 
 	rule "Notify Situation ${rule.situationName}"
 	when
-		//Condición para detectar situación
+		//Condicion para detectar situación
 	then
 	    HashMap<String,Object> contextualData = new HashMap<String,Object>();
 	    /*

@@ -48,13 +48,13 @@
 					</p:panelGrid>
 				</h:form>
 			</p:layoutUnit>
-			<p:layoutUnit position="west" size="230">
+			<p:layoutUnit position="west" size="255">
 				<p:growl autoUpdate="true" sticky="true" showDetail="true"
 					escape="true" showSummary="true" />
 				<h:form id="ruleForm">
 					<p:selectOneListbox id="ruleSelectOneListbox"
 						value="#{rulesBean.selectedRule}" converter="ruleConverter"
-						style="width:210px">
+						style="width:235px">
 						<f:ajax listener="#{rulesBean.selectedRuleChanged}"
 							render=":codeMirrorForm:codeMirror" />
 						<f:selectItems value="#{rulesBean.selectedVersion.rules}"
@@ -115,7 +115,7 @@
 					</p:columnGroup>
 
 				</p:layoutUnit>
-				<p:layoutUnit position="south" size="100">
+				<p:layoutUnit position="south" size="140" style="overflow:hidden">
 
 					<p:commandButton value="Crear nueva versión" update="display"
 						styleClass="ui-priority-primary" oncomplete="PF('dlg').show()"
