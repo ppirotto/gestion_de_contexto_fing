@@ -8,7 +8,7 @@
 	template="/masterTemplate.xhtml"
 	xmlns:c="http://java.sun.com/jsp/jstl/core">
 
-	<ui:define name="title">Información contextual</ui:define>
+	<ui:define name="title">Situaciones activas</ui:define>
 	<ui:define name="body">
 
 
@@ -28,10 +28,10 @@
 					<p:column headerText="Tipo" style="width:120px" >
 						<h:outputText value="#{document.type}" />
 					</p:column>
-					<p:column style="width:45px"  headerText="Regla" >
+					<p:column style="width:45px;text-align: center;"  headerText="Regla"	 >
 						
 						<p:commandLink update=":form:dialog"  value="Ver regla" rendered="#{document.type== 'Situación'}"
-							oncomplete="PF('documentDialog').show()" title="Ver regla"
+							oncomplete="PF('documentDialog').show()" title="Ver regla" style="margin-left:14px"
 							styleClass="ui-icon ui-icon-search">
 							<f:setPropertyActionListener value="#{document}"
 								target="#{viewSituationContextDataBean.selectedNode}" />

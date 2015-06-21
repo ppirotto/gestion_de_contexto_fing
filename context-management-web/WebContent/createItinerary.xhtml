@@ -190,7 +190,7 @@
 		</p:dialog>
 		
 			
-		<p:dialog header="Definir el ruteo basado en itinerario"
+		<p:dialog header="Definir ruteo basado en contenido"
 			onShow="hidePanels()" widgetVar="contentBasedDialog" modal="true"
 			appendTo="@(body)" showEffect="fade" hideEffect="fade" width="60%"
 			height="500px" resizable="false">
@@ -205,7 +205,7 @@
 					</p:panelGrid>
 
 					<p:tree value="#{itineraryBean.root}" var="node" dynamic="true"
-						id="tree" selectionMode="single"
+						id="tree" selectionMode="single" 
 						selection="#{itineraryBean.selectedNode}"
 						onSelectUpdate="messagess" onExpandUpdate="messagess"
 						orientation="horizontal">

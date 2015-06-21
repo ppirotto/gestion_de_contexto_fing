@@ -13,10 +13,10 @@
 		<p:messages autoUpdate="true" id="messagesGeneral" />
 	
 <p:panel style="border: 0px; padding:0px">
-				<f:facet name="header">Ver Itinerarios Activos</f:facet>
+				<f:facet name="header">Itinerarios Activos</f:facet>
 		<h:form id="form">
 			<p:dataTable var="itineray" 
-				value="#{viewItineraryBean.itineraryList}" style="width:90%;"
+				value="#{viewItineraryBean.itineraryList}" style="width:100%;"
 				widgetVar="itinerayTable" emptyMessage="No hay itinerarios activos"
 				filteredValue="#{viewItineraryBean.filteredItineraryList}">
 
@@ -28,27 +28,27 @@
 							placeholder="Escriba aquí" />
 					</p:outputPanel>
 				</f:facet>
-				<p:column filterBy="#{itineray.priority}" headerText="Prioridad" width="95px" 
-					filterMatchMode="contains" filterStyle="height: 12px"> 
+				<p:column filterBy="#{itineray.priority}" headerText="Prioridad" width="55px"  style="width:62px; text-align: center;"
+					filterMatchMode="contains" filterStyle="height: 13px; width:50px; text-align: center;"> 
 					<h:outputText value="#{itineray.priority}" />
 				</p:column>
-				<p:column filterBy="#{itineray.service}/#{itineray.operation}" headerText="Servicio/Operación" width="250"
-					filterMatchMode="contains" filterStyle="height: 12px">
+				<p:column filterBy="#{itineray.service}/#{itineray.operation}" headerText="Servicio/Operación" style="width:320px;"
+					filterMatchMode="contains" filterStyle="height: 13px">
 					<h:outputText value="#{itineray.service}/#{itineray.operation}" />
 				</p:column>
 
-				<p:column filterBy="#{itineray.situation}" headerText="Situación"
-					filterMatchMode="contains" filterStyle="height: 12px">
+				<p:column filterBy="#{itineray.situation}" headerText="Situación"  style="width:120px;"
+					filterMatchMode="contains" filterStyle="height: 13px">
 					<h:outputText value="#{itineray.situation}" />
 				</p:column>
 
-				<p:column filterBy="#{itineray.user}" headerText="Usuario"
-					filterMatchMode="contains" filterStyle="height: 12px">
+				<p:column filterBy="#{itineray.user}" headerText="Usuario"  style="width:72px;"
+					filterMatchMode="contains" filterStyle="height: 13px;width:50px;">
 					<h:outputText value="#{itineray.user}" />
 				</p:column>
 
 				<p:column filterBy="#{itineray.adaptationNames}"
-					headerText="Adaptaciones" filterMatchMode="contains" filterStyle="height: 12px">
+					headerText="Adaptaciones" filterMatchMode="contains" filterStyle="height: 13px">
 					<h:outputText value="#{itineray.adaptationNames}" />
 				</p:column>
 				<p:column style="width:32px;text-align: center">
