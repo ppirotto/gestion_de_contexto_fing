@@ -30,12 +30,12 @@
 					</p:column>
 					<p:column style="width:45px;text-align: center;"  headerText="Regla"	 >
 						
-						<p:commandLink update=":form:dialog"  value="Ver regla" rendered="#{document.type== 'Situación'}"
+						<p:commandButton update=":form:dialog"   rendered="#{document.type== 'Situación'}"
 							oncomplete="PF('documentDialog').show()" title="Ver regla" style="margin-left:14px"
-							styleClass="ui-icon ui-icon-search">
+							icon="ui-icon-search" > 
 							<f:setPropertyActionListener value="#{document}"
 								target="#{viewSituationContextDataBean.selectedNode}" />
-						</p:commandLink>
+						</p:commandButton>
 					
 					</p:column>
 				</p:treeTable>
