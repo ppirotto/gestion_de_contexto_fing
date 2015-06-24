@@ -11,6 +11,8 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
+import org.primefaces.context.RequestContext;
+
 import com.predic8.wsdl.Binding;
 import com.predic8.wsdl.BindingOperation;
 import com.predic8.wsdl.Definitions;
@@ -91,20 +93,25 @@ public class ServiceBean {
 	}
 
 	public void getOperationsForService() {
-		if (!this.serviceURL.isEmpty()) {
-			this.operations.clear();
-			WSDLParser parser = new WSDLParser();
+		try {
 
-			Definitions defs = parser.parse(this.serviceURL + "?wsdl");
+			if (!this.serviceURL.isEmpty()) {
+				this.operations.clear();
+				WSDLParser parser = new WSDLParser();
 
-			for (Binding pt : defs.getBindings()) {
+				Definitions defs = parser.parse(this.serviceURL + "?wsdl");
 
-				for (BindingOperation op : pt.getOperations()) {
-					this.operations.add(op.getName());
+				for (Binding pt : defs.getBindings()) {
+					for (BindingOperation op : pt.getOperations()) {
+						this.operations.add(op.getName());
+					}
 				}
 			}
-		} else {
+		} catch (Exception e) {
+			RequestContext currentInstance = RequestContext.getCurrentInstance();
 
+			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERROR", "El servicio no es válido");
+			currentInstance.showMessageInDialog(message);
 		}
 
 	}
