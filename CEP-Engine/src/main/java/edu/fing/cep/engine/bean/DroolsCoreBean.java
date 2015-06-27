@@ -27,9 +27,10 @@ import edu.fing.commons.front.dto.VersionTO;
 @Service(DroolsCore.class)
 public class DroolsCoreBean implements DroolsCore {
 
-	private static KieSession kSession;
-	private static KieContainer kContainer;
+	private static KieSession kSession = null;
 	private static KieServices kServices = null;
+	
+	
 	private KieBaseConfiguration streamModeConfig;
 
 	@Inject
@@ -78,7 +79,7 @@ public class DroolsCoreBean implements DroolsCore {
 
 	private void startSession(KieModule kieModule) {
 		// Create a session and fire rules
-		kContainer = kServices.newKieContainer(kieModule.getReleaseId());
+		KieContainer kContainer = kServices.newKieContainer(kieModule.getReleaseId());
 		KieBase kBase = kContainer.newKieBase(streamModeConfig);
 		try {
 			lock.writeLock().lock();
@@ -127,7 +128,7 @@ public class DroolsCoreBean implements DroolsCore {
 			return buildRulesVersionResponseTO(e);
 		}
 
-		kContainer = kServices.newKieContainer(kieModule.getReleaseId());
+		KieContainer kContainer = kServices.newKieContainer(kieModule.getReleaseId());
 		KieBase kBase = kContainer.newKieBase(streamModeConfig);
 
 		startSession(kieModule);
