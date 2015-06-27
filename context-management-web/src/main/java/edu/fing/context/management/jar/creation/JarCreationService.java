@@ -78,11 +78,9 @@ public class JarCreationService {
 		String aux = new String(buffer, 0, bytesRead);
 //		aux = aux.replace("${serviceName}", vS.getServiceName());
 //		aux = aux.replace("${serviceUrl}", vS.getServiceURL());
-//		aux = aux.replace("${virtualService}", vS.getVirtualService());
 		Map<String, Object> inputMap = new HashMap<String, Object>();
 		inputMap.put("serviceName", vS.getServiceName());
 		inputMap.put("serviceUrl", vS.getServiceURL());
-		inputMap.put("virtualService", vS.getVirtualService());
 		aux = applyTemplate(inputMap , aux);
 		bytesRead = aux.length();
 		output.write(aux.getBytes(), 0, bytesRead);
