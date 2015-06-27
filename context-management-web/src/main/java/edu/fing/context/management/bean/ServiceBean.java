@@ -35,13 +35,12 @@ public class ServiceBean {
 	private List<String> situationList;
 	private String serviceName;
 	private String serviceURL;
-	private String contextPath;
 
 	public String crearServicio() {
 		System.out.println("Crear servicio");
 		// llamar servicio para crear virtual service
 		VirtualServiceDto vS = new VirtualServiceDto();
-		vS.setServiceName(this.contextPath);
+		vS.setServiceName(this.serviceName);
 		vS.setServiceURL(this.serviceURL);
 
 		try {
@@ -161,14 +160,6 @@ public class ServiceBean {
 
 	public void setSituationList(List<String> situationList) {
 		this.situationList = situationList;
-	}
-
-	public String getContextPath() {
-		return contextPath;
-	}
-
-	public void setContextPath(String contextPath) {
-		this.contextPath = contextPath;
 	}
 
 }

@@ -1,12 +1,8 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
-<ui:composition xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:p="http://primefaces.org/ui"
-	xmlns:pe="http://primefaces.org/ui/extensions"
-	template="/masterTemplate.xhtml"
-	xmlns:c="http://java.sun.com/jsp/jstl/core">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:pe="http://primefaces.org/ui/extensions"
+	template="/masterTemplate.xhtml" xmlns:c="http://java.sun.com/jsp/jstl/core">
 
 	<ui:define name="title">Crear Servicio</ui:define>
 	<ui:define name="body">
@@ -17,66 +13,55 @@
 				<f:facet name="header">Crear Servicio</f:facet>
 
 				<p:panelGrid columns="2">
-		
+
 					<p:outputLabel>
 						<b>Url del servicio</b>
 					</p:outputLabel>
-					<p:inputText size="54" value="#{serviceBean.serviceURL}"
-						required="true" requiredMessage="Ingrese URL" />
+					<p:inputText size="54" value="#{serviceBean.serviceURL}" required="true"
+						requiredMessage="Ingrese URL" />
 
-			<p:spacer></p:spacer>
-						<p:commandButton value="Cargar Datos del Servicio" 
-							actionListener="#{serviceBean.getOperationsForService()}"
-							update="operaciones labelInfo" style="float:right;" />
-					
+					<p:spacer></p:spacer>
+					<p:commandButton value="Cargar Datos del Servicio"
+						actionListener="#{serviceBean.getOperationsForService()}" update="operaciones labelInfo"
+						style="float:right;" />
+
 				</p:panelGrid>
 
 
 
-				<p:panelGrid id="labelInfo" columns="2"   style="width:662px;padding:0px">
-					
+				<p:panelGrid id="labelInfo" columns="2" style="width:662px;padding:0px">
+
 					<f:facet name="header">Datos del servicio cargado</f:facet>
-					
+
 					<p:outputLabel>
 						<b>Nombre del Servicio</b>
 					</p:outputLabel>
-					<p:outputLabel  style="width:300px"  value="#{serviceBean.serviceName}"></p:outputLabel>
+					<p:outputLabel style="width:300px" value="#{serviceBean.serviceName}"></p:outputLabel>
 
-					
-					<p:outputLabel >
+
+					<p:outputLabel>
 						<b>Url servicio virtual</b>
 					</p:outputLabel>
 					<p:outputLabel style="width:300px"
 						value="http://#{serviceBean.ip}:8080/vs-#{serviceBean.serviceName}/#{serviceBean.serviceName}" />
 
-
-				
-	
-
-					
-
 					<p:outputLabel>
 						<b>Seleccione operación</b>
 					</p:outputLabel>
-					<p:dataTable id="operaciones" var="op" style="width:452px"
-						value="#{serviceBean.operations}" 
+					<p:dataTable id="operaciones" var="op" style="width:452px" value="#{serviceBean.operations}"
 						selection="#{serviceBean.selectedOperations}" rowKey="#{op}">
 
-						<p:column selectionMode="multiple"
-							style="width:16px;text-align:center" />
+						<p:column selectionMode="multiple" style="width:16px;text-align:center" />
 						<p:column headerText="Nombre">
 							<h:outputText value="#{op}" />
 						</p:column>
 
 					</p:dataTable>
-</p:panelGrid>
+				</p:panelGrid>
 
-				<p:growl autoUpdate="true" sticky="true" showDetail="true"
-					escape="true" showSummary="true" />
-				<p:commandButton value="Crear Servicio"
-					action="#{serviceBean.crearServicio()}"
-					styleClass="ui-priority-primary "
-					style="margin-top: -35px;float:right;" />
+				<p:growl autoUpdate="true" sticky="true" showDetail="true" escape="true" showSummary="true" />
+				<p:commandButton value="Crear Servicio" action="#{serviceBean.crearServicio()}"
+					styleClass="ui-priority-primary " style="margin-top: -35px;float:right;" />
 			</p:panel>
 		</h:form>
 	</ui:define>
