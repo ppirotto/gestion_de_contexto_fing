@@ -103,7 +103,9 @@ public class ServiceBean {
 
 				for (Binding pt : defs.getBindings()) {
 					for (BindingOperation op : pt.getOperations()) {
-						this.operations.add(op.getName());
+						if (op.getBinding().getName().toLowerCase().contains("soap")) {
+							this.operations.add(op.getName());
+						}
 					}
 				}
 			}
