@@ -35,15 +35,14 @@ public class ServiceBean {
 	private List<String> situationList;
 	private String serviceName;
 	private String serviceURL;
-	private String virtualService;
+	private String contextPath;
 
 	public String crearServicio() {
 		System.out.println("Crear servicio");
 		// llamar servicio para crear virtual service
 		VirtualServiceDto vS = new VirtualServiceDto();
-		vS.setServiceName(this.serviceName);
+		vS.setServiceName(this.contextPath);
 		vS.setServiceURL(this.serviceURL);
-		vS.setVirtualService(this.virtualService);
 
 		try {
 			JarCreationService.createVirtualService(vS);
@@ -100,10 +99,12 @@ public class ServiceBean {
 				WSDLParser parser = new WSDLParser();
 
 				Definitions defs = parser.parse(this.serviceURL + "?wsdl");
+				this.serviceName = defs.getServices().get(0).getName();
 
 				for (Binding pt : defs.getBindings()) {
 					for (BindingOperation op : pt.getOperations()) {
 						if (op.getBinding().getName().toLowerCase().contains("soap")) {
+							op.getBinding().getPortType().getName();
 							this.operations.add(op.getName());
 						}
 					}
@@ -134,10 +135,6 @@ public class ServiceBean {
 		return this.situationList;
 	}
 
-	public String getVirtualService() {
-		return this.virtualService;
-	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
@@ -166,8 +163,12 @@ public class ServiceBean {
 		this.situationList = situationList;
 	}
 
-	public void setVirtualService(String virtualService) {
-		this.virtualService = virtualService;
+	public String getContextPath() {
+		return contextPath;
+	}
+
+	public void setContextPath(String contextPath) {
+		this.contextPath = contextPath;
 	}
 
 }

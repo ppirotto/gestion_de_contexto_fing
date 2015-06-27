@@ -17,43 +17,49 @@
 				<f:facet name="header">Crear Servicio</f:facet>
 
 				<p:panelGrid columns="2">
-					<p:outputLabel>
-						<b>Nombre del servicio</b>
-					</p:outputLabel>
-					<p:inputText size="50" value="#{serviceBean.serviceName}"
-						required="true" requiredMessage="Ingrese nombre">
-						<p:ajax event="keyup" update="labelInfo" />
-					</p:inputText>
+		
 					<p:outputLabel>
 						<b>Url del servicio</b>
 					</p:outputLabel>
-					<p:inputText size="50" value="#{serviceBean.serviceURL}"
+					<p:inputText size="54" value="#{serviceBean.serviceURL}"
 						required="true" requiredMessage="Ingrese URL" />
 
+			<p:spacer></p:spacer>
+						<p:commandButton value="Cargar Datos del Servicio" 
+							actionListener="#{serviceBean.getOperationsForService()}"
+							update="operaciones labelInfo" style="float:right;" />
+					
 				</p:panelGrid>
 
 
 
-				<p:panel header="Servicio virtual publicado" style="width:662px;padding:0px">
-					<p:outputLabel id="labelInfo"
-						value="http://#{serviceBean.ip}:8080/virtual-service/#{serviceBean.serviceName}" />
+				<p:panelGrid id="labelInfo" columns="2"   style="width:662px;padding:0px">
+					
+					<f:facet name="header">Datos del servicio cargado</f:facet>
+					
+					<p:outputLabel>
+						<b>Nombre del Servicio</b>
+					</p:outputLabel>
+					<p:outputLabel  style="width:300px"  value="#{serviceBean.serviceName}"></p:outputLabel>
+
+					
+					<p:outputLabel >
+						<b>Url servicio virtual</b>
+					</p:outputLabel>
+					<p:outputLabel style="width:300px"
+						value="http://#{serviceBean.ip}:8080/vs-#{serviceBean.serviceName}/#{serviceBean.serviceName}" />
 
 
-				</p:panel>
-				<p:spacer height="20" />
-				<p:panelGrid columns="2"  style="width:660px;">
+				
+	
 
-					<f:facet name="footer">
-						<p:commandButton value="Cargar Operaciones del Servicio" 
-							actionListener="#{serviceBean.getOperationsForService()}"
-							update="operaciones" style="float:right;" />
-					</f:facet>
+					
 
 					<p:outputLabel>
 						<b>Seleccione operación</b>
 					</p:outputLabel>
-					<p:dataTable id="operaciones" var="op" style="width:450px"
-						value="#{serviceBean.operations}"
+					<p:dataTable id="operaciones" var="op" style="width:452px"
+						value="#{serviceBean.operations}" 
 						selection="#{serviceBean.selectedOperations}" rowKey="#{op}">
 
 						<p:column selectionMode="multiple"
@@ -63,9 +69,8 @@
 						</p:column>
 
 					</p:dataTable>
+</p:panelGrid>
 
-
-				</p:panelGrid>
 				<p:growl autoUpdate="true" sticky="true" showDetail="true"
 					escape="true" showSummary="true" />
 				<p:commandButton value="Crear Servicio"
