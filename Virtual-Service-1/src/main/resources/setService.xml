@@ -3,7 +3,7 @@
     <route>
         <from uri="switchyard://VirtualService"/>
         <setHeader headerName="serviceUrl">
-            <simple>http://localhost:8080/attractions-provider/AttractionsService</simple>
+            <simple>http://localhost:8080/attractions-provider/AttractionsService?wsdl</simple>
         </setHeader>
         <setHeader headerName="serviceName">
             <simple>AttractionsService</simple>

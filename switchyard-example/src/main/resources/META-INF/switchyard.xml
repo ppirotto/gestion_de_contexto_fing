@@ -10,6 +10,7 @@
     <sca:service name="ExampleServicePortType" promote="ExampleServiceBean/ExampleService">
       <sca:interface.wsdl interface="ExampleService.wsdl#wsdl.porttype(ExampleServicePortType)"/>
       <soap:binding.soap name="soap1">
+        <soap:contextMapper soapHeadersType="XML"/>
         <soap:wsdl>ExampleService.wsdl</soap:wsdl>
         <soap:contextPath>switchyard-example1</soap:contextPath>
       </soap:binding.soap>

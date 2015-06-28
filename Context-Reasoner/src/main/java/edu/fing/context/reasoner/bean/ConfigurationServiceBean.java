@@ -179,9 +179,9 @@ public class ConfigurationServiceBean implements ConfigurationService {
 		StringBuilder queryString = new StringBuilder();
 		queryString.append("SELECT situation ");
 		queryString.append("FROM Situation situation ");
-		queryString.append("JOIN FETCH situation.inputContextData ");
-		queryString.append("JOIN FETCH situation.outputContextData ");
-		queryString.append("JOIN FETCH situation.contextSources ");
+		queryString.append("LEFT JOIN FETCH situation.inputContextData ");
+		queryString.append("LEFT JOIN FETCH situation.outputContextData ");
+		queryString.append("LEFT JOIN FETCH situation.contextSources ");
 		queryString.append("JOIN FETCH situation.rule ");
 
 		Query query = session.createQuery(queryString.toString());
@@ -191,38 +191,42 @@ public class ConfigurationServiceBean implements ConfigurationService {
 		Set<Situation> situations = new HashSet<Situation>(situationsList);
 
 		for (Situation situation : situations) {
-			SituationTO situationTO = new SituationTO();
-			situationTO.setName(situation.getName());
-
-			// Context Sources
-			List<ContextSourceTO> contextSourcesTO = new ArrayList<ContextSourceTO>();
-			for (ContextSource contextSource : situation.getContextSources()) {
-				ContextSourceTO contextSourceTO = new ContextSourceTO();
-				contextSourceTO.setEventName(contextSource.getName());
-				List<ContextDatum> contextData = this.findContexDataByContextSourceAndSituation(contextSource, situation, session);
-				contextSourceTO.setContextData(this.mapContextData(new HashSet<ContextDatum>(contextData)));
-				contextSourcesTO.add(contextSourceTO);
-			}
-			situationTO.setContextSources(contextSourcesTO);
-
-			// Output contextData
-			situationTO.setOutputContextData(this.mapContextData(situation.getOutputContextData()));
-
-			// Rule
+			
+			// Regla activa
 			StringBuilder queryStringRule = new StringBuilder();
 			queryStringRule.append("SELECT ruleVersion ");
 			queryStringRule.append("FROM ActiveConfiguration ac ");
-			queryStringRule.append("JOIN ac.lastVersion lastVersion ");
-			queryStringRule.append("JOIN lastVersion.ruleVersions ruleVersion ");
+			queryStringRule.append("JOIN ac.activeVersion activeVersion ");
+			queryStringRule.append("JOIN activeVersion.ruleVersions ruleVersion ");
 			queryStringRule.append("JOIN ruleVersion.rule rule ");
 			queryStringRule.append("WHERE rule.id = :ruleId ");
 
 			Query queryRule = session.createQuery(queryStringRule.toString());
 			queryRule.setParameter("ruleId", situation.getRule().getId());
 			RuleVersion ruleVersion = (RuleVersion) queryRule.uniqueResult();
+			
+			if(ruleVersion != null){ //La regla esta deployada
+				
+				SituationTO situationTO = new SituationTO();
+				situationTO.setRule(ruleVersion.getDrl());
+				situationTO.setName(situation.getName());
 
-			situationTO.setRule(ruleVersion.getDrl());
-			situationTOs.add(situationTO);
+				// Context Sources
+				List<ContextSourceTO> contextSourcesTO = new ArrayList<ContextSourceTO>();
+				for (ContextSource contextSource : situation.getContextSources()) {
+					ContextSourceTO contextSourceTO = new ContextSourceTO();
+					contextSourceTO.setEventName(contextSource.getName());
+					List<ContextDatum> contextData = this.findContexDataByContextSourceAndSituation(contextSource, situation, session);
+					contextSourceTO.setContextData(this.mapContextData(new HashSet<ContextDatum>(contextData)));
+					contextSourcesTO.add(contextSourceTO);
+				}
+				situationTO.setContextSources(contextSourcesTO);
+	
+				// Output contextData
+				situationTO.setOutputContextData(this.mapContextData(situation.getOutputContextData()));
+	
+				situationTOs.add(situationTO);
+			}
 		}
 
 		session.close();

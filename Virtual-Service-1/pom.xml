@@ -99,6 +99,11 @@
     	<artifactId>jboss-servlet-api_3.0_spec</artifactId>
     	<version>1.0.2.Final</version>
     </dependency>
+    <dependency>
+    	<groupId>org.switchyard.components</groupId>
+    	<artifactId>switchyard-component-http</artifactId>
+    	<version>${switchyard.version}</version>
+    </dependency>
   </dependencies>
   <build>
     <plugins>

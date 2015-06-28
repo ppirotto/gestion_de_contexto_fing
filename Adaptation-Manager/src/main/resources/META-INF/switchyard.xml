@@ -21,7 +21,7 @@
         <sca:interface.java interface="edu.fing.adaptation.manager.EnrichService"/>
       </sca:reference>
     </sca:component>
-    <sca:component name="Delay">
+    <sca:component name="Delayer">
       <camel:implementation.camel>
         <camel:java class="edu.fing.adaptation.manager.Delay"/>
       </camel:implementation.camel>
@@ -48,7 +48,7 @@
         <sca:interface.java interface="edu.fing.adaptation.manager.ServiceInvoker"/>
       </sca:reference>
     </sca:component>
-    <sca:component name="Router">
+    <sca:component name="ContentBasedRouter">
       <camel:implementation.camel>
         <camel:java class="edu.fing.adaptation.manager.ContentBasedRouter"/>
       </camel:implementation.camel>

@@ -9,21 +9,22 @@
         <sca:interface.java interface="edu.fing.virtual.service.AdaptationGatewayService"/>
       </sca:reference>
       <sca:service name="VirtualService">
-        <sca:interface.java interface="edu.fing.virtual.service.VirtualService"/>
+        <sy:interface.esb inputType="java.lang.String" outputType="java.lang.String"/>
       </sca:service>
     </sca:component>
-    <sca:service name="VirtualService" promote="SetService/VirtualService">
-      <sca:interface.java interface="edu.fing.virtual.service.VirtualService"/>
-      <soap:binding.soap name="soap1">
-        <soap:contextMapper class="edu.fing.virtual.service.SoapHeadersContextMapper" soapHeadersType="XML"/>
-        <soap:wsdl>http://localhost:8080/attractions-provider/AttractionsService?wsdl</soap:wsdl>
-        <soap:contextPath>Virtual-Service-1</soap:contextPath>
-      </soap:binding.soap>
-    </sca:service>
     <sca:reference name="AdaptationGatewayService" multiplicity="0..1" promote="SetService/AdaptationGatewayService">
       <sca:interface.java interface="edu.fing.virtual.service.AdaptationGatewayService"/>
       <sca:binding.sca sy:targetNamespace="urn:edu.fing.context.management:adaptation-gateway:1.0" sy:target="AdaptationService" name="sca1123"/>
     </sca:reference>
+    <sca:service name="VirtualService" promote="SetService/VirtualService">
+      <sy:interface.esb inputType="java.lang.String" outputType="java.lang.String"/>
+      <soap:binding.soap name="soap1">
+        <soap:contextMapper class="edu.fing.virtual.service.SoapHeadersContextMapper" soapHeadersType="XML"/>
+        <soap:wsdl>http://localhost:8080/attractions-provider/AttractionsService?wsdl</soap:wsdl>
+        <soap:wsdlPort>AttractionsServicePort</soap:wsdlPort>
+        <soap:contextPath>virtual-service-1</soap:contextPath>
+      </soap:binding.soap>
+    </sca:service>
   </sca:composite>
   <sy:domain>
     <sy:properties/>

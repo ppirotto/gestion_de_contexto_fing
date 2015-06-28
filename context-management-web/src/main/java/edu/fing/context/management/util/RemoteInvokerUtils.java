@@ -46,7 +46,7 @@ public class RemoteInvokerUtils {
 			reply = invoker.invoke(message);
 
 			if (reply.isFault()) {
-				System.err.println("Oops ... something bad happened.  " + reply.getContent());
+				System.err.println("Error en la invación. " + reply.getContent());
 			} else {
 				response = reply.getContent();
 			}
