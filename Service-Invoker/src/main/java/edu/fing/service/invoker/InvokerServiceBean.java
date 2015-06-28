@@ -27,13 +27,9 @@ public class InvokerServiceBean implements InvokerService {
 	public AdaptedMessage submit(AdaptedMessage adaptedMessage) {
 
 		String message = adaptedMessage.getMessage();
-		String service = adaptedMessage.getService();
-		
-		if (adaptedMessage.getAdaptations() != null) {
-			AdaptationTO adaptationTO = adaptedMessage.getAdaptations().get(0);
-			service = (String) adaptationTO.getData();
-			adaptedMessage.getAdaptations().remove(0);
-		}
+		AdaptationTO adaptationTO = adaptedMessage.getAdaptations().get(0);
+		String service = (String) adaptationTO.getData();
+		adaptedMessage.getAdaptations().remove(0);
 		
 		String response = null;
 		String request = this.addEnvelopeToRequest(message);
@@ -76,7 +72,7 @@ public class InvokerServiceBean implements InvokerService {
 			con.setRequestMethod("POST");
 			// con.setRequestProperty("User-Agent", USER_AGENT);
 			con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
-
+			con.setRequestProperty("Content-Type", "text/xml; charset=utf-8");
 			// Send post request
 			con.setDoOutput(true);
 			DataOutputStream wr = new DataOutputStream(con.getOutputStream());
@@ -86,8 +82,9 @@ public class InvokerServiceBean implements InvokerService {
 
 			BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
 			String inputLine;
+			
 			StringBuffer response = new StringBuffer();
-
+			
 			while ((inputLine = in.readLine()) != null) {
 				response.append(inputLine);
 			}

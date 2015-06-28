@@ -1,9 +1,12 @@
 package edu.fing.adaptation.manager;
 
+import java.util.List;
+
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 import org.apache.camel.builder.RouteBuilder;
 
+import edu.fing.commons.dto.AdaptationTO;
 import edu.fing.commons.dto.AdaptedMessage;
 
 public class ExternalInvocation extends RouteBuilder {
@@ -13,12 +16,18 @@ public class ExternalInvocation extends RouteBuilder {
 	 * required to be a SwitchYard service.
 	 */
 	public void configure() {
-		// TODO Auto-generated method stub
+
 		from("switchyard://ExternalInvocationService").process(new Processor() {
 
 			@Override
 			public void process(Exchange exchange) throws Exception {
-				AdaptedMessage adaptedMessage = exchange.getIn().getHeader("adaptedMessage", AdaptedMessage.class);
+				@SuppressWarnings("unchecked")
+				List<AdaptationTO> adaptationDirective = exchange.getIn().getHeader("adaptationDirective", List.class);
+				String message = (String)exchange.getIn().getBody();
+				
+				AdaptedMessage adaptedMessage = new AdaptedMessage();
+				adaptedMessage.setMessage(message);
+				adaptedMessage.setAdaptations(adaptationDirective);
 				exchange.getIn().setBody(adaptedMessage);
 
 			}
@@ -27,7 +36,7 @@ public class ExternalInvocation extends RouteBuilder {
 			@Override
 			public void process(Exchange exchange) throws Exception {
 				AdaptedMessage adaptedMessage = exchange.getIn().getBody(AdaptedMessage.class);
-				exchange.getIn().setHeader("adaptedMessage", adaptedMessage);
+				exchange.getIn().setHeader("adaptationDirective", adaptedMessage.getAdaptations());
 				exchange.getIn().setBody(adaptedMessage.getMessage());
 			}
 		});

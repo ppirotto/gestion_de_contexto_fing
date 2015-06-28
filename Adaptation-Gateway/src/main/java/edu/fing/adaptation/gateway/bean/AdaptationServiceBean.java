@@ -28,6 +28,7 @@ import org.xml.sax.SAXException;
 import edu.fing.adaptation.gateway.model.ContextAwareAdaptation;
 import edu.fing.adaptation.gateway.model.Itinerary;
 import edu.fing.adaptation.gateway.util.HibernateUtils;
+import edu.fing.commons.constant.AdaptationType;
 import edu.fing.commons.dto.AdaptationTO;
 import edu.fing.commons.dto.AdaptedMessage;
 
@@ -49,15 +50,14 @@ public class AdaptationServiceBean implements AdaptationService {
 		AdaptedMessage adaptedMessage = new AdaptedMessage();
 		adaptedMessage.setMessage(message);
 		String serviceName = this.context.getPropertyValue("serviceName");
-		String serviceUrl = this.context.getPropertyValue("serviceUrl");
-		adaptedMessage.setService(serviceUrl);
+		
 		String operationName = this.getOperationName(message);
 		String userName = this.getWSSecurityUsername();
-		String itineraryUris = null;
+		ArrayList<AdaptationTO> adaptations = new ArrayList<AdaptationTO>();
+		
 		if (userName != null && operationName != null) {
 			Itinerary itinerary = this.findItineraryByUserAndService(userName, serviceName, operationName);
 			if (itinerary != null) {
-				ArrayList<AdaptationTO> adaptations = new ArrayList<AdaptationTO>();
 				Set<ContextAwareAdaptation> adaptationDirective = itinerary.getAdaptationDirective();
 				List<ContextAwareAdaptation> adaptationDirectiveList = new ArrayList<ContextAwareAdaptation>(adaptationDirective);
 				Collections.sort(adaptationDirectiveList, ContextAwareAdaptation.ORDER_COMPARATOR);
@@ -68,20 +68,29 @@ public class AdaptationServiceBean implements AdaptationService {
 					adapt.setData(contextAwareAdaptation.getData());
 					adaptations.add(adapt);
 				}
-				itineraryUris = StringUtils.join(adaptationUris, ",");
 				adaptedMessage.setAdaptations(adaptations);
+				adaptedMessage.setItinerary(StringUtils.join(adaptationUris, ","));
 			} else {
-				itineraryUris = "switchyard://ExternalInvocationService";
+				this.serviceInvocationAdaptation(adaptedMessage, adaptations);
 			}
 		} else {
-			itineraryUris = "switchyard://ExternalInvocationService";
+			this.serviceInvocationAdaptation(adaptedMessage, adaptations);
 		}
-		adaptedMessage.setItinerary(itineraryUris);
+		
 
 		return this.adaptationManager.submit(adaptedMessage);
 	}
+	
+	private void serviceInvocationAdaptation(AdaptedMessage adaptedMessage,ArrayList<AdaptationTO> adaptations){
+		AdaptationTO adaptationTO = new AdaptationTO();
+		String serviceUrl = this.context.getPropertyValue("serviceUrl");
+		adaptationTO.setData(serviceUrl);
+		adaptations.add(adaptationTO);
+		adaptedMessage.setAdaptations(adaptations);
+		adaptedMessage.setItinerary(AdaptationType.SERVICE_INVOCATION.getUri());
+	}
 
-	public String getWSSecurityUsername() {
+	private String getWSSecurityUsername() {
 
 		String securityHeader = this.context.getPropertyValue("wsse");
 		Pattern p = Pattern.compile("<wsse:Username>(\\w*?)</wsse:Username>");

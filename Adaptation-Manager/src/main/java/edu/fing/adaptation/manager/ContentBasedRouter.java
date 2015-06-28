@@ -1,6 +1,7 @@
 package edu.fing.adaptation.manager;
 
 import java.io.StringReader;
+import java.util.List;
 
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
@@ -31,9 +32,13 @@ public class ContentBasedRouter extends RouteBuilder {
 
 					@Override
 					public void process(Exchange exchange) throws Exception {
-						AdaptedMessage adaptedMessage = exchange.getIn().getHeader("adaptedMessage", AdaptedMessage.class);
+						@SuppressWarnings("unchecked")
+						List<AdaptationTO> adaptationDirective = exchange.getIn().getHeader("adaptationDirective", List.class);
+						String message = (String)exchange.getIn().getBody();
+						
 						XPathFactory xpathFactory = XPathFactory.newInstance();
 						XPath xpath = xpathFactory.newXPath();
+						
 						// XPathExpression expr = xpath.compile((String)
 						// adaptedMessage.getAdaptations().get(0).getData());
 						// XPathExpression expr =
@@ -46,17 +51,16 @@ public class ContentBasedRouter extends RouteBuilder {
 						ObjectMapper objectMapper = new ObjectMapper();
 						AdaptationTreeNodeTO adaptationTreeNode = null;
 						try {
-							adaptationTreeNode = objectMapper.readValue((String) adaptedMessage.getAdaptations().get(0).getData(),
+							adaptationTreeNode = objectMapper.readValue((String) adaptationDirective.get(0).getData(),
 									AdaptationTreeNodeTO.class);
 						} catch (Exception e) {
 							e.printStackTrace();
 						}
-						AdaptationTO adaptationTO = this.preOrderSearch(adaptationTreeNode, xpath, adaptedMessage.getMessage());
-						adaptedMessage.getAdaptations().remove(0);
+						AdaptationTO adaptationTO = this.preOrderSearch(adaptationTreeNode, xpath, message);
+						adaptationDirective.remove(0);
 						if (adaptationTO != null) {
-							adaptedMessage.getAdaptations().add(0, adaptationTO);
+							adaptationDirective.add(0, adaptationTO);
 						}
-						exchange.getIn().setHeader("adaptedMessage", adaptedMessage);
 						exchange.getIn().setHeader("uri", adaptationTO.getAdaptationType().getUri());
 					}
 

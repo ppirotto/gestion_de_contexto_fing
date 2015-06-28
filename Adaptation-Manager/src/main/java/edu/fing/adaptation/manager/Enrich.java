@@ -2,6 +2,7 @@ package edu.fing.adaptation.manager;
 
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.util.List;
 
 import javax.xml.transform.Templates;
 import javax.xml.transform.TransformerFactory;
@@ -12,6 +13,7 @@ import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 import org.apache.camel.builder.RouteBuilder;
 
+import edu.fing.commons.dto.AdaptationTO;
 import edu.fing.commons.dto.AdaptedMessage;
 
 public class Enrich extends RouteBuilder {
@@ -28,22 +30,23 @@ public class Enrich extends RouteBuilder {
 
 			@Override
 			public void process(Exchange exchange) throws Exception {
-				AdaptedMessage adaptedMessage = exchange.getIn().getHeader("adaptedMessage", AdaptedMessage.class);
-				String xslt = (String) adaptedMessage.getAdaptations().get(0).getData();
-				StringReader reader = new StringReader(adaptedMessage.getMessage());
+				@SuppressWarnings("unchecked")
+				List<AdaptationTO> adaptationDirective = exchange.getIn().getHeader("adaptationDirective", List.class);
+				String message = (String)exchange.getIn().getBody();
+				
+				String xslt = (String) adaptationDirective.get(0).getData();
+				StringReader reader = new StringReader(message);
 				StringWriter writer = new StringWriter();
 				try {
 					Templates templates = tFactory.newTemplates(new StreamSource(new StringReader(xslt)));
 					javax.xml.transform.Transformer transformer = templates.newTransformer();
 					transformer.transform(new StreamSource(reader), new StreamResult(writer));
-					adaptedMessage.setMessage(writer.toString());
+					message = writer.toString();
 
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-				adaptedMessage.getAdaptations().remove(0);
-				exchange.getIn().setHeader("adaptedMessage", adaptedMessage);
-				exchange.getIn().setBody(adaptedMessage.getMessage());
+				adaptationDirective.remove(0);
 			}
 		}).log("Enrich body : ${body}");
 		;
