@@ -43,13 +43,6 @@ public class ServiceBean {
 		vS.setServiceName(this.serviceName);
 		vS.setServiceURL(this.serviceURL);
 
-		try {
-			JarCreationService.createVirtualService(vS);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
 		ServiceTO serv = new ServiceTO();
 		serv.setOperationNames(this.selectedOperations);
 		serv.setServiceName(this.serviceName);
@@ -59,6 +52,12 @@ public class ServiceBean {
 		Boolean result = (Boolean) RemoteInvokerUtils.invoke(RemoteInvokerUtils.ContextReasonerConfigService,
 				"createService", serv, ServiceIp.ContextReasonerIp);
 		if (result) {
+			try {
+				JarCreationService.createVirtualService(vS);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
 			String mensaje = "Servicio creado con exito";
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(null, mensaje));
