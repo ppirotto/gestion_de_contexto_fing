@@ -60,6 +60,7 @@ public class RulesBean {
 			FacesContext fctx = FacesContext.getCurrentInstance();
 			FacesMessage message = new FacesMessage("OK", "Versión " + this.newVersionName + " creada");
 			fctx.addMessage(null, message);
+
 			return "ruleManagement";
 		}
 

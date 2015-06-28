@@ -9,11 +9,13 @@
 
 	<ui:define name="title">Manejo de Reglas</ui:define>
 	<ui:define name="body">
-
 		<p:layout>
 			<p:layoutUnit position="north" size="90" style="border: 0px;"
 				header="Manejo de Reglas">
+				
+				
 				<h:form>
+					
 					<p:panelGrid columns="8" cellpadding="3" style="border: 0px;">
 						<p:outputLabel for="versionSelectOneMenu">
 							<b>Seleccionar versión base:</b>
@@ -49,8 +51,7 @@
 				</h:form>
 			</p:layoutUnit>
 			<p:layoutUnit position="west" size="255">
-				<p:growl autoUpdate="true" sticky="true" showDetail="true"
-					escape="true" showSummary="true" />
+		
 				<h:form id="ruleForm">
 					<p:selectOneListbox id="ruleSelectOneListbox"
 						value="#{rulesBean.selectedRule}" converter="ruleConverter"
@@ -82,9 +83,9 @@
 						</p:panelGrid>
 						<p:commandButton value="Crear"
 							styleClass="ui-priority-primary" icon="ui-icon-check"
-							action="#{rulesBean.createVersion()}" update="display2"
+							actionListener="#{rulesBean.createVersion()}" update="display2"
 							style="float:right"
-							oncomplete="if (#{!rulesBean.responseMsg.success}){PF('dlg').hide();PF('messageResponseDialog').show()}"
+							onsuccess="if (#{!rulesBean.responseMsg.success}){PF('dlg').hide();PF('messageResponseDialog').show()}"
 							title="Crear nueva version!" />
 					</p:dialog>
 
@@ -105,7 +106,7 @@
 						</p:panelGrid>
 
 						<p:commandButton value="OK" icon="ui-icon-check"
-							style="float:right"
+							style="float:right" action="ruleManagement"
 							oncomplete="PF('messageResponseDialog').hide()" title="OK" />
 					</p:dialog>
 
