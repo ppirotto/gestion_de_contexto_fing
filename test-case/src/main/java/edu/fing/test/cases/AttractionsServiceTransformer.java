@@ -6,20 +6,26 @@ import java.util.List;
 import org.switchyard.annotations.Transformer;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 public final class AttractionsServiceTransformer {
 
 	@Transformer(to = "{urn:com.example.switchyard:switchyard-example:1.0}getAttractionsResponse")
-	public String transformListToGetAttractionsResponse(List<String> from) {
-		String res = "<getAttractionsResponse xmlns=\"urn:com.example.switchyard:switchyard-example:1.0\">";
-		for (String elem : from) {
-			boolean outside = false;
-			if (elem.equals("Parque")) {
-				outside = true;
-			}
-			res += "<attraction><place>" + elem + "</place><outside>" + outside + "</outside></attraction>";
+	public String transformListToGetAttractionsResponse(List<AttractionDTO> from) {
+		String res = "<getAttractionsResponse>";
+		for (AttractionDTO attractionDTO : from) {
+			res += "<attraction><place>" + attractionDTO.getAttraction() + "</place><description>" + attractionDTO.getDescription() +
+					"</description><city>"+ attractionDTO.getCity() +"</city><outside>" + attractionDTO.isOutside() + 
+					"</outside></attraction>";
 		}
+		
+		
+//		for (String elem : from) {
+//			boolean outside = false;
+//			if (elem.equals("Parque")) {
+//				outside = true;
+//			}
+//			res += "<attraction><place>" + elem + "</place><outside>" + outside + "</outside></attraction>";
+//		}
 		res += "</getAttractionsResponse>";
 		return res;
 	}

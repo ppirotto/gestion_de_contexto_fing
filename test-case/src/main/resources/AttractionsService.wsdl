@@ -11,7 +11,8 @@
 			<xsd:element name="getAttractions" type="tns:getAttractions" />
 			<xsd:complexType name="getAttractions">
 				<xsd:sequence>
-					<xsd:element minOccurs="0" name="city" type="xsd:string" />
+					<xsd:element minOccurs="0" name="city"
+						type="xsd:string" />
 				</xsd:sequence>
 			</xsd:complexType>
 			<xsd:element name="getAttractionsResponse" type="tns:getAttractionsResponse" />

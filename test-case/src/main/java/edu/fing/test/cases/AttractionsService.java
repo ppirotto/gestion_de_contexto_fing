@@ -4,5 +4,5 @@ import java.util.List;
 
 public interface AttractionsService {
 
-	List<String> getAttractions(String city);
+	List<AttractionDTO> getAttractions(String city);
 }

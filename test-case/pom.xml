@@ -45,11 +45,6 @@
   	</dependency>
   	<dependency>
   		<groupId>org.switchyard.components</groupId>
-  		<artifactId>switchyard-component-http</artifactId>
-  		<version>${switchyard.version}</version>
-  	</dependency>
-  	<dependency>
-  		<groupId>org.switchyard.components</groupId>
   		<artifactId>switchyard-component-soap</artifactId>
   		<version>${switchyard.version}</version>
   	</dependency>

@@ -93,11 +93,12 @@ public class AdaptationServiceBean implements AdaptationService {
 	private String getWSSecurityUsername() {
 
 		String securityHeader = this.context.getPropertyValue("wsse");
-		Pattern p = Pattern.compile("<wsse:Username>(\\w*?)</wsse:Username>");
-		Matcher m = p.matcher(securityHeader);
-
-		if (m.find()) {
-			return m.group(1);
+		if (securityHeader != null){
+			Pattern p = Pattern.compile("<wsse:Username>(\\w*?)</wsse:Username>");
+			Matcher m = p.matcher(securityHeader);
+			if (m.find()) {
+				return m.group(1);
+			}
 		}
 		return null;
 	}

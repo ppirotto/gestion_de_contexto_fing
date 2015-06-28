@@ -23,7 +23,7 @@ public class ExternalInvocation extends RouteBuilder {
 			public void process(Exchange exchange) throws Exception {
 				@SuppressWarnings("unchecked")
 				List<AdaptationTO> adaptationDirective = exchange.getIn().getHeader("adaptationDirective", List.class);
-				String message = (String)exchange.getIn().getBody();
+				String message = (String) exchange.getIn().getBody();
 				
 				AdaptedMessage adaptedMessage = new AdaptedMessage();
 				adaptedMessage.setMessage(message);

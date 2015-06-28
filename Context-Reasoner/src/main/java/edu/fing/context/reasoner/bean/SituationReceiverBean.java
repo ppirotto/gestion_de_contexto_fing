@@ -46,11 +46,11 @@ public class SituationReceiverBean implements SituationReceiver {
 	public String receiveSituationFromCEP(/* SituationDetectedTO cepSituation */) {
 
 		SituationDetectedTO cepSituation = new SituationDetectedTO();
-		cepSituation.setSituationName("IN-MONTEVIDEO");
+		cepSituation.setSituationName("InMontevideo");
 		cepSituation.setUserId("Vane");
-		// Map<String, Object> contextualData = new HashMap<String, Object>();
-		// contextualData.put("city", "Montevideo");
-		// cepSituation.setContextualData(contextualData);
+		 Map<String, Object> contextualData = new HashMap<String, Object>();
+		 contextualData.put("city", "Montevideo");
+		 cepSituation.setContextualData(contextualData);
 
 		Session session = this.sessionFactory.openSession();
 

@@ -47,6 +47,7 @@ public class Enrich extends RouteBuilder {
 					e.printStackTrace();
 				}
 				adaptationDirective.remove(0);
+				exchange.getIn().setBody(message);
 			}
 		}).log("Enrich body : ${body}");
 		;
