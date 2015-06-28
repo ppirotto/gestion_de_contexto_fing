@@ -36,7 +36,7 @@ public class ContextDatumBean {
 			FacesContext.getCurrentInstance().addMessage(null,
 					new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERROR", mensaje));
 		}
-		return "inicio";
+		return "createContextDatum";
 	}
 
 	public String getAtributeName() {
