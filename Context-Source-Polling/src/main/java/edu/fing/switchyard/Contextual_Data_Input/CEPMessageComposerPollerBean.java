@@ -162,41 +162,6 @@ public class CEPMessageComposerPollerBean implements CEPMessageComposerPoller {
             } else return reader.getValue();
             return map;
         }
-
-
     }
-
-
-	
-	public static Map<String, Object> convertNodesFromXml(String xml) throws Exception {
-	    InputStream is = new ByteArrayInputStream(xml.getBytes());
-	    DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-	    dbf.setNamespaceAware(true);
-	    DocumentBuilder db = dbf.newDocumentBuilder();
-	    Document document = db.parse(is);
-	    return createMap(document.getDocumentElement());
-	}
-
-	public static Map<String, Object> createMap(Node node) {
-	    Map<String, Object> map = new HashMap<String, Object>();
-	    NodeList nodeList = node.getChildNodes();
-	    for (int i = 0; i < nodeList.getLength(); i++) {
-	        Node currentNode = nodeList.item(i);
-//	        if (currentNode.hasAttributes()) {
-//	            for (int j = 0; j < currentNode.getAttributes().getLength(); j++) {
-//	                Node item = currentNode.getAttributes().item(i);
-//	                map.put(item.getNodeName(), item.getTextContent());
-//	            }
-//	        }
-	        if (node.getFirstChild() != null && node.getFirstChild().getNodeType() == Node.ELEMENT_NODE) {
-	            map.putAll(createMap(currentNode));
-	        } else if (node.getFirstChild().getNodeType() == Node.TEXT_NODE && currentNode.getLocalName()!=null) {
-	        	System.out.println(currentNode);
-	            map.put(currentNode.getLocalName(), currentNode.getTextContent());
-	            
-	        }
-	    }
-	    return map;
-	}
 
 }
