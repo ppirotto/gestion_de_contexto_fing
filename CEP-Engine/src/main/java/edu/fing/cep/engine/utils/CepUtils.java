@@ -14,7 +14,7 @@ import edu.fing.commons.dto.SituationDetectedTO;
 public class CepUtils {
 
 	private static final QName SERVICE = new QName(
-			"urn:edu.fing.switchyard:Context-Reasoner:1.0", "SituationReceiver");
+			"urn:edu.fing.context.management:context-reasoner:1.0", "SituationReceiver");
 
 	public static void notifyContextReasoner(SituationDetectedTO situation){
 		
