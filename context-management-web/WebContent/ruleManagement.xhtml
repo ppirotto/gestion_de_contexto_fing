@@ -106,7 +106,7 @@
 						</p:panelGrid>
 
 						<p:commandButton value="OK" icon="ui-icon-check"
-							style="float:right" action="ruleManagement"
+							style="float:right" action="#{rulesBean.refreshIfValid()}"
 							oncomplete="PF('messageResponseDialog').hide()" title="OK" />
 					</p:dialog>
 

@@ -49,6 +49,14 @@ public class RulesBean {
 
 	}
 
+	public String refreshIfValid() {
+		if (responseMsg.isSuccess()) {
+
+			return "ruleManagement";
+		} else
+			return null;
+	}
+
 	public String createVersion() {
 		System.out.println("createVersion");
 		this.selectedVersion.setVersionNumber(this.newVersionName);
