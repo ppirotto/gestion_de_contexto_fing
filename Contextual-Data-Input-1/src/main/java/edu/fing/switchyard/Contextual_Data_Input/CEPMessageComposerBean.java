@@ -17,14 +17,12 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.switchyard.component.bean.Reference;
 import org.switchyard.component.bean.Service;
 import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.converters.Converter;
 import com.thoughtworks.xstream.converters.MarshallingContext;
 import com.thoughtworks.xstream.converters.UnmarshallingContext;
-import com.thoughtworks.xstream.converters.collections.MapConverter;
 import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 import com.thoughtworks.xstream.io.xml.DomDriver;
@@ -82,16 +80,23 @@ public class CEPMessageComposerBean implements CEPMessageComposer {
 				e.printStackTrace();
 			}
 		} else if (mode.equals(ContextualDataModeConverter.XML)) {
-		    XStream xStream = new XStream(new DomDriver());
-		    xStream.alias("map", java.util.Map.class);
-		    xStream.registerConverter(new MapEntryConverter());
-		    String cleanInput = input.replaceAll("\r", "").replaceAll("\n", "");
-		    Map<String, Object> asd = (Map<String,Object>)xStream.fromXML(cleanInput);
-		    objectAsMap = asd;
+			String cleanInput = input.replaceAll("\r", "").replaceAll("\n", "");
+			DocumentBuilderFactory dbf =DocumentBuilderFactory.newInstance();
+            DocumentBuilder db;
+			try {
+				db = dbf.newDocumentBuilder();
+				Document doc = db.parse(new InputSource(new ByteArrayInputStream(cleanInput.getBytes("utf-8"))));
+				String root = doc.getDocumentElement().getNodeName();
+			    XStream xStream = new XStream(new DomDriver());
+			    xStream.alias(root, java.util.Map.class);
+			    xStream.registerConverter(new MapEntryConverter());
+			    objectAsMap = (Map<String,Object>)xStream.fromXML(cleanInput);				
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
-
 		ContextualDataTO data = new ContextualDataTO();
-		
 		data.setEventName(eventName);
 		data.setInfo(objectAsMap);
 		for(String key : objectAsMap.keySet()){
@@ -135,7 +140,7 @@ public class CEPMessageComposerBean implements CEPMessageComposer {
 	                		 reader.moveUp();
 	                	 }
 	                } else {
-		                String key = reader.getNodeName(); // nodeName aka element's name
+		                String key = reader.getNodeName();
 		                String value = reader.getValue();
 		                map.put(key, value);
 	                }
@@ -150,35 +155,5 @@ public class CEPMessageComposerBean implements CEPMessageComposer {
 
 
 	
-	public static Map<String, Object> convertNodesFromXml(String xml) throws Exception {
-	    InputStream is = new ByteArrayInputStream(xml.getBytes());
-	    DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-	    dbf.setNamespaceAware(true);
-	    DocumentBuilder db = dbf.newDocumentBuilder();
-	    Document document = db.parse(is);
-	    return createMap(document.getDocumentElement());
-	}
-
-	public static Map<String, Object> createMap(Node node) {
-	    Map<String, Object> map = new HashMap<String, Object>();
-	    NodeList nodeList = node.getChildNodes();
-	    for (int i = 0; i < nodeList.getLength(); i++) {
-	        Node currentNode = nodeList.item(i);
-//	        if (currentNode.hasAttributes()) {
-//	            for (int j = 0; j < currentNode.getAttributes().getLength(); j++) {
-//	                Node item = currentNode.getAttributes().item(i);
-//	                map.put(item.getNodeName(), item.getTextContent());
-//	            }
-//	        }
-	        if (node.getFirstChild() != null && node.getFirstChild().getNodeType() == Node.ELEMENT_NODE) {
-	            map.putAll(createMap(currentNode));
-	        } else if (node.getFirstChild().getNodeType() == Node.TEXT_NODE && currentNode.getLocalName()!=null) {
-	        	System.out.println(currentNode);
-	            map.put(currentNode.getLocalName(), currentNode.getTextContent());
-	            
-	        }
-	    }
-	    return map;
-	}
 
 }
