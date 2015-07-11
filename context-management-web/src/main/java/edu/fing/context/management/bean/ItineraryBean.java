@@ -29,6 +29,7 @@ import org.primefaces.model.UploadedFile;
 import edu.fing.commons.constant.AdaptationType;
 import edu.fing.commons.dto.AdaptationTO;
 import edu.fing.commons.front.dto.AdaptationTreeNodeTO;
+import edu.fing.commons.front.dto.FrontResponseTO;
 import edu.fing.commons.front.dto.ItineraryTO;
 import edu.fing.commons.front.dto.ServiceTO;
 import edu.fing.commons.front.dto.SituationTO;
@@ -134,9 +135,10 @@ public class ItineraryBean {
 		ServiceTO serviceTO = new ServiceTO();
 		serviceTO.setId(this.selectedService);
 		itinerary.setService(serviceTO);
-		Boolean result = (Boolean) RemoteInvokerUtils.invoke(RemoteInvokerUtils.ContextReasonerConfigService,
-				"createItinerary", itinerary, ServiceIp.ContextReasonerIp);
-		if (result) {
+		FrontResponseTO result = (FrontResponseTO) RemoteInvokerUtils.invoke(
+				RemoteInvokerUtils.ContextReasonerConfigService, "createItinerary", itinerary,
+				ServiceIp.ContextReasonerIp);
+		if (result.isSuccess()) {
 			String mensaje = "Itinerario creado con éxito";
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(mensaje, null));
 		}
@@ -538,21 +540,4 @@ public class ItineraryBean {
 		}
 	}
 
-	private boolean validateCBRTree(AdaptationTreeNodeTO node, XPath xpath) {
-		if (node == null)
-			return true;
-
-		if (node.getXpath() != null) {
-			try {
-				xpath.compile(node.getXpath());
-				return this.validateCBRTree(node.getLeftNode(), xpath)
-						&& this.validateCBRTree(node.getRightNode(), xpath);
-			} catch (XPathExpressionException e) {
-				return false;
-			}
-
-		} else {
-			return true;
-		}
-	}
 }
