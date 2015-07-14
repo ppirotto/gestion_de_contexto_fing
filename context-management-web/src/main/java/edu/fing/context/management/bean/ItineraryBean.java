@@ -169,7 +169,7 @@ public class ItineraryBean {
 			return;
 		}
 
-		if (validationMessages(dataToValidate, AdaptationType.CONTENT_BASED_ROUTER, getSelectedSituationTO())) {
+		if (validationMessages(dataToValidate, adaptSelecCBR, getSelectedSituationTO())) {
 
 			AdaptationTreeNodeTO treeNode = new AdaptationTreeNodeTO();
 
