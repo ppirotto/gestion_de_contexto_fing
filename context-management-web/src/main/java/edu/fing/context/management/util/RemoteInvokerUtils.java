@@ -8,7 +8,7 @@ import org.switchyard.remote.http.HttpInvoker;
 
 public class RemoteInvokerUtils {
 	public enum ServiceIp {
-		ContextReasonerIp("localhost"), AdaptationGatewayIp("192.168.0.103");
+		ContextReasonerIp("localhost"), AdaptationGatewayIp("localhost");
 
 		private String ip;
 
