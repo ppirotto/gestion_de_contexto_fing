@@ -43,14 +43,7 @@ public class SituationReceiverBean implements SituationReceiver {
 	private final SessionFactory sessionFactory = HibernateUtils.getSessionFactory();
 
 	@Override
-	public String receiveSituationFromCEP(/* SituationDetectedTO cepSituation */) {
-
-		SituationDetectedTO cepSituation = new SituationDetectedTO();
-		cepSituation.setSituationName("InMontevideo");
-		cepSituation.setUserId("Vane");
-		 Map<String, Object> contextualData = new HashMap<String, Object>();
-		 contextualData.put("city", "Montevideo");
-		 cepSituation.setContextualData(contextualData);
+	public String receiveSituationFromCEP(SituationDetectedTO cepSituation) {
 
 		Session session = this.sessionFactory.openSession();
 

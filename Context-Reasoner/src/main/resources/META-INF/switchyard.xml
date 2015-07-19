@@ -13,10 +13,6 @@
     <sca:service name="SituationReceiver" promote="SituationReceiverBean/SituationReceiver">
       <sca:interface.java interface="edu.fing.context.reasoner.bean.SituationReceiver"/>
       <sca:binding.sca name="sca1"/>
-      <http:binding.http name="http122">
-        <sy:operationSelector operationName="receiveSituationFromCEP"/>
-        <http:contextPath>context-reasoner</http:contextPath>
-      </http:binding.http>
     </sca:service>
     <sca:reference name="AdaptationGatewayService" multiplicity="0..1" promote="SituationReceiverBean/AdaptationGatewayService">
       <sca:interface.java interface="edu.fing.context.reasoner.bean.AdaptationGatewayService"/>

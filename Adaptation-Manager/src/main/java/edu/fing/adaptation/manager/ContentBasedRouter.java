@@ -39,15 +39,6 @@ public class ContentBasedRouter extends RouteBuilder {
 						XPathFactory xpathFactory = XPathFactory.newInstance();
 						XPath xpath = xpathFactory.newXPath();
 						
-						// XPathExpression expr = xpath.compile((String)
-						// adaptedMessage.getAdaptations().get(0).getData());
-						// XPathExpression expr =
-						// xpath.compile("/*[local-name()='getAttractions'][*[local-name()='city'] = 'Montevideo']");
-						// *[local-name()='a'][*[local-name()='aCode']='aaa']
-						// Boolean message = (Boolean) expr.evaluate(new
-						// InputSource(new
-						// StringReader(adaptedMessage.getMessage())),
-						// XPathConstants.BOOLEAN);
 						ObjectMapper objectMapper = new ObjectMapper();
 						AdaptationTreeNodeTO adaptationTreeNode = null;
 						try {

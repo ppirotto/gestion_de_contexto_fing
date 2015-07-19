@@ -57,7 +57,6 @@ public class InvokerServiceBean implements InvokerService {
 			return writer.toString();
 
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
@@ -70,7 +69,6 @@ public class InvokerServiceBean implements InvokerService {
 
 			// add request header
 			con.setRequestMethod("POST");
-			// con.setRequestProperty("User-Agent", USER_AGENT);
 			con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
 			con.setRequestProperty("Content-Type", "text/xml; charset=utf-8");
 			// Send post request
@@ -93,7 +91,6 @@ public class InvokerServiceBean implements InvokerService {
 			return response.toString();
 
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
