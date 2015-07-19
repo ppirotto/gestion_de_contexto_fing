@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<wsdl:definitions name="AttractionsService" targetNamespace="urn:edu.fing.context.management:test-case:1.0" 
-xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="urn:edu.fing.context.management:test-case:1.0" 
-xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+<wsdl:definitions name="ColoniaAttractionsService" targetNamespace="urn:edu.fing.context.management:test-case:1.0" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="urn:edu.fing.context.management:test-case:1.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
   <wsdl:types>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="urn:edu.fing.context.management:test-case:1.0" 
-attributeFormDefault="unqualified" elementFormDefault="unqualified" 
-targetNamespace="urn:edu.fing.context.management:test-case:1.0">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="urn:edu.fing.context.management:test-case:1.0" attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="urn:edu.fing.context.management:test-case:1.0">
   <xs:complexType name="attractionDTO">
     <xs:sequence>
       <xs:element minOccurs="0" name="attraction" type="xs:string"/>
@@ -14,13 +10,11 @@ targetNamespace="urn:edu.fing.context.management:test-case:1.0">
       <xs:element name="outside" type="xs:boolean"/>
     </xs:sequence>
   </xs:complexType>
-  <xs:element name="getAttractions" type="tns:getAttractions"/>
+  <xs:element name="getAttractions" type="getAttractions"/>
   <xs:complexType name="getAttractions">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="city" type="xs:string"/>
-    </xs:sequence>
+    <xs:sequence/>
   </xs:complexType>
-  <xs:element name="getAttractionsResponse" type="tns:getAttractionsResponse"/>
+  <xs:element name="getAttractionsResponse" type="getAttractionsResponse"/>
   <xs:complexType name="getAttractionsResponse">
     <xs:sequence>
       <xs:element maxOccurs="unbounded" minOccurs="0" name="list" type="attractionDTO"/>
@@ -36,7 +30,7 @@ targetNamespace="urn:edu.fing.context.management:test-case:1.0">
     <wsdl:part name="parameters" element="tns:getAttractions">
     </wsdl:part>
   </wsdl:message>
-  <wsdl:portType name="AttractionsServicePortType">
+  <wsdl:portType name="ColoniaAttractionsServicePortType">
     <wsdl:operation name="getAttractions">
       <wsdl:input name="getAttractions" message="tns:getAttractions">
     </wsdl:input>
@@ -44,7 +38,7 @@ targetNamespace="urn:edu.fing.context.management:test-case:1.0">
     </wsdl:output>
     </wsdl:operation>
   </wsdl:portType>
-  <wsdl:binding name="AttractionsServiceSoapBinding" type="tns:AttractionsServicePortType">
+  <wsdl:binding name="ColoniaAttractionsServiceSoapBinding" type="tns:ColoniaAttractionsServicePortType">
     <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
     <wsdl:operation name="getAttractions">
       <soap:operation soapAction="getAttractions" style="document"/>
@@ -56,9 +50,9 @@ targetNamespace="urn:edu.fing.context.management:test-case:1.0">
       </wsdl:output>
     </wsdl:operation>
   </wsdl:binding>
-  <wsdl:service name="AttractionsService">
-    <wsdl:port name="AttractionsServicePort" binding="tns:AttractionsServiceSoapBinding">
-      <soap:address location="http://localhost:8080/test-case/AttractionsService"/>
+  <wsdl:service name="ColoniaAttractionsService">
+    <wsdl:port name="ColoniaAttractionsServicePort" binding="tns:ColoniaAttractionsServiceSoapBinding">
+      <soap:address location="http://localhost:8080/test-case/ColoniaAttractionsService"/>
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

@@ -9,7 +9,7 @@ import org.w3c.dom.Node;
 
 public final class AttractionsServiceTransformer {
 
-	@Transformer(to = "{urn:com.example.switchyard:switchyard-example:1.0}getAttractionsResponse")
+	@Transformer(to = "{urn:edu.fing.context.management:test-case:1.0}getAttractionsResponse")
 	public String transformListToGetAttractionsResponse(List<AttractionDTO> from) {
 		String res = "<getAttractionsResponse>";
 		for (AttractionDTO attractionDTO : from) {
@@ -18,19 +18,11 @@ public final class AttractionsServiceTransformer {
 					"</outside></attraction>";
 		}
 		
-		
-//		for (String elem : from) {
-//			boolean outside = false;
-//			if (elem.equals("Parque")) {
-//				outside = true;
-//			}
-//			res += "<attraction><place>" + elem + "</place><outside>" + outside + "</outside></attraction>";
-//		}
 		res += "</getAttractionsResponse>";
 		return res;
 	}
 
-	@Transformer(from = "{urn:com.example.switchyard:switchyard-example:1.0}getAttractions")
+	@Transformer(from = "{urn:edu.fing.context.management:test-case:1.0}getAttractions")
 	public String transformGetAttractionsToString(Element from) {
 		Node item = from.getElementsByTagName("city").item(0);
 		String city = null;

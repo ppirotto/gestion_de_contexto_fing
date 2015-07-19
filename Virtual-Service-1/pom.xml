@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>edu.fing.context.management</groupId>
   <artifactId>virtual-service-1</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>1.0</version>
   <name>edu.fing.context.management:virtual-service-1</name>
   <properties>
     <switchyard.version>1.1.0.Final</switchyard.version>
@@ -98,11 +98,6 @@
     	<groupId>org.jboss.spec.javax.servlet</groupId>
     	<artifactId>jboss-servlet-api_3.0_spec</artifactId>
     	<version>1.0.2.Final</version>
-    </dependency>
-    <dependency>
-    	<groupId>org.switchyard.components</groupId>
-    	<artifactId>switchyard-component-http</artifactId>
-    	<version>${switchyard.version}</version>
     </dependency>
   </dependencies>
   <build>

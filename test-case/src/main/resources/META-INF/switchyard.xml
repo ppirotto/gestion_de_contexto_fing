@@ -1,13 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<sy:switchyard xmlns:bean="urn:switchyard-component-bean:config:1.0" xmlns:sca="http://docs.oasis-open.org/ns/opencsa/sca/200912" xmlns:soap="urn:switchyard-component-soap:config:1.0" xmlns:sy="urn:switchyard-config:switchyard:1.0" name="test-case" targetNamespace="urn:edu.fing.context.management:test-case:0.0.1-SNAPSHOT">
-  <sca:composite name="test-case" targetNamespace="urn:edu.fing.context.management:test-case:0.0.1-SNAPSHOT">
+<sy:switchyard xmlns:bean="urn:switchyard-component-bean:config:1.0" xmlns:sca="http://docs.oasis-open.org/ns/opencsa/sca/200912" xmlns:soap="urn:switchyard-component-soap:config:1.0" xmlns:sy="urn:switchyard-config:switchyard:1.0" name="test-case" targetNamespace="urn:edu.fing.context.management:test-case:1.0">
+  <sca:composite name="test-case" targetNamespace="urn:edu.fing.context.management:test-case:1.0">
     <sca:component name="AttractionsServiceBean">
       <bean:implementation.bean class="edu.fing.test.cases.AttractionsServiceBean"/>
       <sca:service name="AttractionsService">
         <sca:interface.java interface="edu.fing.test.cases.AttractionsService"/>
       </sca:service>
     </sca:component>
-    <sca:service name="AttractionsService" promote="AttractionsServiceBean/AttractionsService">
+    <sca:component name="MontevideoAttractionsServiceBean">
+      <bean:implementation.bean class="edu.fing.test.cases.MontevideoAttractionsServiceBean"/>
+      <sca:service name="MontevideoAttractionsService">
+        <sca:interface.java interface="edu.fing.test.cases.MontevideoAttractionsService"/>
+      </sca:service>
+    </sca:component>
+    <sca:component name="MaldonadoAttractionsServiceBean">
+      <bean:implementation.bean class="edu.fing.test.cases.MaldonadoAttractionsServiceBean"/>
+      <sca:service name="MaldonadoAttractionsService">
+        <sca:interface.java interface="edu.fing.test.cases.MaldonadoAttractionsService"/>
+      </sca:service>
+    </sca:component>
+    <sca:component name="ColoniaAttractionsServiceBean">
+      <bean:implementation.bean class="edu.fing.test.cases.ColoniaAttractionsServiceBean"/>
+      <sca:service name="ColoniaAttractionsService">
+        <sca:interface.java interface="edu.fing.test.cases.ColoniaAttractionsService"/>
+      </sca:service>
+    </sca:component>
+    <sca:service name="MontevideoAttractionsServicePortType" promote="MontevideoAttractionsServiceBean/MontevideoAttractionsService">
+      <sca:interface.wsdl interface="MontevideoAttractionsService.wsdl#wsdl.porttype(MontevideoAttractionsServicePortType)"/>
+      <soap:binding.soap name="soap2">
+        <soap:wsdl>MontevideoAttractionsService.wsdl</soap:wsdl>
+        <soap:contextPath>intendencia-montevideo</soap:contextPath>
+      </soap:binding.soap>
+    </sca:service>
+    <sca:service name="MaldonadoAttractionsServicePortType" promote="MaldonadoAttractionsServiceBean/MaldonadoAttractionsService">
+      <sca:interface.wsdl interface="MaldonadoAttractionsService.wsdl#wsdl.porttype(MaldonadoAttractionsServicePortType)"/>
+      <soap:binding.soap name="soap3">
+        <soap:wsdl>MaldonadoAttractionsService.wsdl</soap:wsdl>
+        <soap:contextPath>intendencia-maldonado</soap:contextPath>
+      </soap:binding.soap>
+    </sca:service>
+    <sca:service name="ColoniaAttractionsServicePortType" promote="ColoniaAttractionsServiceBean/ColoniaAttractionsService">
+      <sca:interface.wsdl interface="ColoniaAttractionsService.wsdl#wsdl.porttype(ColoniaAttractionsServicePortType)"/>
+      <soap:binding.soap name="soap4">
+        <soap:wsdl>ColoniaAttractionsService.wsdl</soap:wsdl>
+        <soap:contextPath>intendencia-colonia</soap:contextPath>
+      </soap:binding.soap>
+    </sca:service>
+    <sca:service name="AttractionsServicePortType" promote="AttractionsServiceBean/AttractionsService">
       <sca:interface.wsdl interface="AttractionsService.wsdl#wsdl.porttype(AttractionsServicePortType)"/>
       <soap:binding.soap name="soap1">
         <soap:contextMapper soapHeadersType="XML"/>
