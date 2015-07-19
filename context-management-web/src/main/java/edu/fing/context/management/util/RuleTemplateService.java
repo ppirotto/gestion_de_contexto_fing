@@ -91,8 +91,7 @@ public class RuleTemplateService {
 			for (String input : elem.getContextData()) {// para cada input
 				String camelInput = input.substring(0, 1).toUpperCase()
 						+ input.substring(1);
-				Pattern p = Pattern.compile("inputEvent\\.set" + camelInput
-						+ "\\(.*info\\.get\\(.*(\\.get\\(\")*" + input
+				Pattern p = Pattern.compile(".*(\\.get\\(\")*" + input
 						+ "\"\\)");
 				Matcher m = p.matcher(drl);
 				if (!m.find()) {
