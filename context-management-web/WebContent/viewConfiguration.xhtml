@@ -8,11 +8,11 @@
 	<ui:define name="body">
 
 
-		<p:panel style=" border:0px;padding:0px">
+		<p:panel style="border:0px;padding:0px;width:800px;">
 			<f:facet name="header">Itinerarios configurados</f:facet>
 			<h:form id="form">
 
-				<p:treeTable value="#{configurationBean.root}" var="document" style="width:800px;">
+				<p:treeTable value="#{configurationBean.root}" var="document" style="width:750px;">
 
 					<p:column headerText="Nombre">
 						<h:outputText value="#{document.name}" />

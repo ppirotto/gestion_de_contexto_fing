@@ -12,6 +12,18 @@
 .topAligned {
     vertical-align: top;
 }
+.nopadding{
+	padding:0 !important;
+}
+
+#form:panelRegla_content{
+	
+	padding:0 !important;
+}
+#form:panelRegla{
+	
+	padding:0 !important;
+}
 .CodeMirror-scroll {
     height: auto !important;
     outline: 0 none;

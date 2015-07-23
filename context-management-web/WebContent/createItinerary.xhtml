@@ -83,7 +83,7 @@
 
 
 						</p:panelGrid>
-					<p:spacer width="70px"></p:spacer>
+					<p:spacer width="38px"></p:spacer>
 
 						<p:dataTable var="situation" id="tableSituation" style="width:300px;" paginator="true" rows="5"  paginatorPosition="bottom"
 							value="#{itineraryBean.situationsForService}" > 
@@ -168,7 +168,7 @@
 		</h:form>
 		<p:dialog header="Configuración de la adaptación" widgetVar="itinerayDialog"
 			modal="true" appendTo="@(body)" showEffect="fade" hideEffect="fade"
-			width="60%" height="400px" resizable="false">
+			width="80%" height="400px" resizable="false">
 			<h:form id="itineraryDialogForm">
 				<p:panel style="width:90%; height:350px;" id="adaptationDetail">
 					<f:facet name="header">
@@ -192,7 +192,7 @@
 			
 		<p:dialog header="Definir ruteo basado en contenido"
 			onShow="hidePanels()" widgetVar="contentBasedDialog" modal="true"
-			appendTo="@(body)" showEffect="fade" hideEffect="fade" width="60%"
+			appendTo="@(body)" showEffect="fade" hideEffect="fade" width="80%"
 			height="500px" resizable="false">
 
 			<h:form id="contentBasedDialogForm">

@@ -50,7 +50,7 @@
 								<f:facet name="header">Datos de entrada de la regla</f:facet>
 
 
-								<h:panelGrid columns="2" cellpadding="10">
+								<h:panelGrid columns="2" cellpadding="5">
 									<h:panelGrid columns="1">
 										<p:outputLabel style=" font-weight: bold;" value="Fuente de contexto" />
 
@@ -95,10 +95,10 @@
 
 
 							</p:panel>
-							<p:spacer width="50px"></p:spacer>
+							<p:spacer width="15px"></p:spacer>
 							<p:panel>
 								<f:facet name="header">Datos de salida de la regla</f:facet>
-								<p:dataTable id="dataTableOutput" var="dat" style="width:220px"
+								<p:dataTable id="dataTableOutput" var="dat" style="width:200px"
 									value="#{situationBean.contextDataList}" scrollable="true" scrollHeight="274"
 									selection="#{situationBean.selectedOutputData}" rowKey="#{dat}">
 
@@ -118,23 +118,21 @@
 
 
 				<p:tab id="ruleTab" title="Regla">
-					<p:panel header="Definir la regla: #{situationBean.name}" style="padding:0px">
-						<h:panelGrid columns="2" columnClasses="topAligned">
-							<h:panelGrid columns="1">
+					<p:panel id="panelRegla" header="Definir la regla: #{situationBean.name}" style="padding: 0 !important ;width:99%;" styleClass="nopadding">
+						<h:panelGrid columns="2" columnClasses="topAligned" style="margin: 0px !important ;padding: 0 !important " cellpadding="0" styleClass="nopadding">
+							
+								<p:panel styleClass="nopadding" style="height:400px;width:147px;margin: 0px !important ;padding: 0 !important " header="Reglas:"  >
 
-
-								<p:panel style="height:300px" header="Reglas:">
-
-									<p:selectOneListbox id="ruleSelectOneListbox" value="#{situationBean.selectedRule}"
-										converter="ruleConverterSituation" style="width:210px">
+									<p:selectOneListbox id="ruleSelectOneListbox" value="#{situationBean.selectedRule}" styleClass="nopadding"
+										converter="ruleConverterSituation" style="width:120px;margin: 0px !important ;padding: 0 !important ">
 										<f:ajax listener="#{situationBean.selectedRuleChanged}" render=":form:codeMirror" />
 										<f:selectItems value="#{situationBean.versionRules.rules}" var="rule"
 											itemLabel="#{rule.name}" itemValue="#{rule}" />
 									</p:selectOneListbox>
 
 								</p:panel>
-							</h:panelGrid>
-							<p:panel style="min-width:600px;min-height:300px;">
+							
+							<p:panel style="min-width:600px;min-height:300px;padding: 0 !important ">
 								<pe:codeMirror id="codeMirror" mode="javascript" readOnly="#{situationBean.isReadOnly()}"
 									theme="eclipse" value="#{situationBean.selectedRule.drl}" lineNumbers="true"
 									matchBrackets="true" lineWrapping="true" />
