@@ -32,24 +32,24 @@ public class AttractionsServiceBean implements AttractionsService {
 	static {
 		cities = new ArrayList<String>();
 		cities.add(MONTEVIDEO);
-		cities.add(CANELONES);
+//		cities.add(CANELONES);
 		cities.add(MALDONADO);
-		cities.add(SAN_JOSE);
-		cities.add(FLORIDA);
-		cities.add(FLORES);
-		cities.add(DURAZNO);
-		cities.add(LAVALLEJA);
-		cities.add(ARTIGAS);
-		cities.add(SALTO);
-		cities.add(PAYSANDU);
-		cities.add(RIO_NEGRO);
-		cities.add(TACUAREMBO);
-		cities.add(RIVERA);
-		cities.add(CERRO_LARGO);
-		cities.add(SORIANO);
+//		cities.add(SAN_JOSE);
+//		cities.add(FLORIDA);
+//		cities.add(FLORES);
+//		cities.add(DURAZNO);
+//		cities.add(LAVALLEJA);
+//		cities.add(ARTIGAS);
+//		cities.add(SALTO);
+//		cities.add(PAYSANDU);
+//		cities.add(RIO_NEGRO);
+//		cities.add(TACUAREMBO);
+//		cities.add(RIVERA);
+//		cities.add(CERRO_LARGO);
+//		cities.add(SORIANO);
 		cities.add(COLONIA);
-		cities.add(ROCHA);
-		cities.add(TREINTA_Y_TRES);
+//		cities.add(ROCHA);
+//		cities.add(TREINTA_Y_TRES);
 		
 	}
 
@@ -87,6 +87,20 @@ public class AttractionsServiceBean implements AttractionsService {
 				attractionSolis.setOutside(false);
 				attractions.add(attractionSolis);
 				
+				AttractionDTO attractionSodre = new AttractionDTO();
+				attractionSodre.setAttraction("Auditorio del Sodre");
+				attractionSodre.setCity("Montevideo");
+				attractionSodre.setDescription("Nuevo auditorio nacional uruguayo");
+				attractionSodre.setOutside(false);
+				attractions.add(attractionSodre);
+				
+				AttractionDTO attractionMercado = new AttractionDTO();
+				attractionMercado.setAttraction("Mercado Agricola Montevideo");
+				attractionMercado.setCity("Montevideo");
+				attractionMercado.setDescription("Uno de los mercados agrícolas más grandes de Montevideo");
+				attractionMercado.setOutside(false);
+				attractions.add(attractionMercado);
+				
 				break;
 				
 			case COLONIA:
@@ -97,6 +111,13 @@ public class AttractionsServiceBean implements AttractionsService {
 				attractionSuspiros.setOutside(true);
 				attractions.add(attractionSuspiros);
 				
+				AttractionDTO attractionBasilica = new AttractionDTO();
+				attractionBasilica.setAttraction("Basílica del Santísimo Sacramento");
+				attractionBasilica.setCity("Colonia");
+				attractionBasilica.setDescription("Considerada la iglesia más antigua del Uruguay");
+				attractionBasilica.setOutside(false);
+				attractions.add(attractionBasilica);
+				
 				break;
 			case MALDONADO:
 				AttractionDTO attractionPuertoPE = new AttractionDTO();
@@ -106,7 +127,12 @@ public class AttractionsServiceBean implements AttractionsService {
 				attractionPuertoPE.setOutside(true);
 				attractions.add(attractionPuertoPE);
 
-				
+				AttractionDTO attractionCasPueblo = new AttractionDTO();
+				attractionCasPueblo.setAttraction("Museo Casapueblo");
+				attractionCasPueblo.setCity("Maldonado");
+				attractionCasPueblo.setDescription("Edificación construida por el artista uruguayo Carlos Páez Vilaró ubicada en Punta Ballena");
+				attractionCasPueblo.setOutside(false);
+				attractions.add(attractionCasPueblo);
 			}
 			
 		}

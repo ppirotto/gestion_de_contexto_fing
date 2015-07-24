@@ -41,6 +41,13 @@ public class MontevideoAttractionsServiceBean implements
 		attractionTresCruces.setOutside(false);
 		attractions.add(attractionTresCruces);
 		
+		AttractionDTO attractionMercado = new AttractionDTO();
+		attractionMercado.setAttraction("Mercado Agricola Montevideo");
+		attractionMercado.setCity("Montevideo");
+		attractionMercado.setDescription("El Mercado Agricola Montevideo como mercado minorista es una propuesta única en Uruguay, que brinda atención personalizada, calidad y confort para los clientes, quienes podrán disfrutar del mismo en un amplio horario de 8 a 22 hs. todos los días de la semana.");
+		attractionMercado.setOutside(false);
+		attractions.add(attractionMercado);
+		
 		return attractions;
 	}
 	

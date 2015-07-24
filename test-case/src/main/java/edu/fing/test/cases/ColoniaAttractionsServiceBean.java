@@ -22,7 +22,7 @@ public class ColoniaAttractionsServiceBean implements ColoniaAttractionsService 
 		attractionBasilica.setAttraction("Basílica del Santísimo Sacramento");
 		attractionBasilica.setCity("Colonia");
 		attractionBasilica.setDescription("La Basílica del Santísimo Sacramento es la iglesia más importante de Colonia del Sacramento. Fue construida en 1808, en el actual Casco Histórico, el mismo lugar donde en 1680 se había levantado un rancho de pidras que sirvió como primer iglesia de la ciudad.");
-		attractionBasilica.setOutside(true);
+		attractionBasilica.setOutside(false);
 		attractions.add(attractionBasilica);
 		return attractions;
 		
